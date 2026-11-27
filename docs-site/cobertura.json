@@ -105,6 +105,13 @@
     "status": "escrito"
   },
   {
+    "grupo": "configuracoes",
+    "artigo": "tema-escuro-e-claro",
+    "titulo": "Usar o tema escuro ou o claro",
+    "fase": "extra",
+    "status": "escrito"
+  },
+  {
     "grupo": "conversas",
     "artigo": "dominio-de-email",
     "titulo": "Domínio de envio de e-mail",

@@ -372,7 +372,7 @@ function paintGaugeFrame(canvas, paint, rate) {
   paint.clearRect(0, 0, 240, 240);
   paint.lineWidth = 16;
   const styles = getComputedStyle(canvas);
-  const brand = styles.color || styles.getPropertyValue('--dash-accent').trim() || styles.getPropertyValue('--g-brand').trim() || '#ff4f9a';
+  const brand = styles.color || styles.getPropertyValue('--dash-accent').trim() || styles.getPropertyValue('--g-brand').trim() || '#5dd62c';
   paint.strokeStyle = styles.getPropertyValue('--g-gauge-track').trim() || '#e4eaf7';
   paint.beginPath(); paint.arc(120, 120, 110, 0, Math.PI * 2); paint.stroke();
   paint.lineCap = 'round';

@@ -491,7 +491,7 @@ dialog h2{font-weight:800;letter-spacing:-.03em}
 
 
 /* ═════════ Refinements: clarity, deference, legibility ═════════
-   The graao pink #ff4f9a (purple #c4a7ff second; buttons use the pink → lilac → blue gradient) stays the identity colour (logo, current-page marker, focus, dots).
+   The graao green #5dd62c (dark green #337418 second; buttons use the solid green with #0f0f0f text) stays the identity colour (logo, current-page marker, focus, dots).
    Surfaces that carry white text use a deeper tone of the same pink so the text clears 4.5:1.
    Pink marks the one primary action and the current location; selection inside a page
    (segmented tabs) is neutral, like a system segmented control. Motion explains change and
@@ -1362,7 +1362,7 @@ button.shc-card:active{
   border-color:color-mix(in srgb,var(--cu-accent) 30%,var(--g-line-2));
 }
 
-.dash-gauge canvas{color:var(--dash-accent,var(--g-brand,#ff4f9a))}
+.dash-gauge canvas{color:var(--dash-accent,var(--g-brand, #337418))}
 .dash-gauge b,
 :root[data-theme=dark] .dash-gauge b{
   font-size:30px;

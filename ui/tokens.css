@@ -12,33 +12,37 @@
 :root{
   color-scheme:light;
 
+  /* Paleta oficial (2026-11-27): #0F0F0F preto, #202020 grafite, #5DD62C verde, #337418 verde-escuro, #F8F8F8 branco.
+     O escuro é o tema padrão; este bloco é o tema claro, que segue disponível. */
+
   /* Texto */
-  --g-ink:#14161a; --g-ink-2:#3a3f48; --g-dim:#5c626d; --g-faint:#656b76;
+  --g-ink:#0f0f0f; --g-ink-2:#2e2e2e; --g-dim:#575757; --g-faint:#616161;
 
   /* Linhas */
-  --g-line:rgba(20,22,26,.09); --g-line-2:rgba(20,22,26,.15); --g-line-strong:rgba(20,22,26,.28);
+  --g-line:rgba(15,15,15,.09); --g-line-2:rgba(15,15,15,.15); --g-line-strong:rgba(15,15,15,.28);
 
   /* Superfícies de conteúdo (sólidas) */
-  --g-canvas:#f2f3f6;
-  --g-surface:#ffffff; --g-surface-2:#f4f5f8; --g-surface-3:#e4e6eb; --g-paper:255 255 255;
-  --g-stage:#f2f3f6; --g-shell:#f2f3f6;
+  --g-canvas:#f8f8f8;
+  --g-surface:#ffffff; --g-surface-2:#f2f2f2; --g-surface-3:#e5e5e5; --g-paper:255 255 255;
+  --g-stage:#f8f8f8; --g-shell:#f8f8f8;
   --panel:#fff;
 
   /* Preenchimentos de controles no conteúdo */
-  --g-fill:rgba(118,122,133,.12); --g-fill-hover:rgba(118,122,133,.19); --g-fill-press:rgba(118,122,133,.26);
+  --g-fill:rgba(32,32,32,.08); --g-fill-hover:rgba(32,32,32,.13); --g-fill-press:rgba(32,32,32,.19);
   --g-field:#ffffff;
 
-  /* Marca: rosa na ação principal e no item ativo, com texto escuro (6,1:1) */
-  --g-brand:#ff4f9a; --g-brand-hover:#bd1f66; --g-brand-bright:#e8559a;
-  --g-brand-fill:#ff4f9a; --g-brand-fill-hover:#ff6aa9; --g-brand-on:#2a0616;
-  --g-brand-surface:#fdeef5; --g-brand-line:#f6c3db; --g-brand-tint:#7d1544; --g-brand-text:#b01f62;
-  --g-brand-accent:#6bc9ff;
-  --g-brand-2:#c4a7ff; --g-brand-2-hover:#8125a8; --g-brand-2-bright:#b45fd6;
-  --g-brand-2-surface:#f4effd; --g-brand-2-line:#dfc4ee; --g-brand-2-tint:#5a1a75;
-  --g-brand-2-text:#7a239e; --g-brand-2-fill:#c4a7ff; --g-brand-2-fill-hover:#d0b8ff; --g-brand-2-on:#1d0b33;
+  /* Marca: verde #5DD62C na ação principal e no item ativo, com texto #0F0F0F (10:1).
+     Sobre fundo claro o verde não tem contraste como texto: texto de marca usa o verde-escuro #337418 (5,4:1). */
+  --g-brand:#337418; --g-brand-hover:#2a6113; --g-brand-bright:#4cb81f;
+  --g-brand-fill:#5dd62c; --g-brand-fill-hover:#6fe03f; --g-brand-on:#0f0f0f;
+  --g-brand-surface:#ecf8e5; --g-brand-line:#bfe6ac; --g-brand-tint:#24540f; --g-brand-text:#337418;
+  --g-brand-accent:#5dd62c;
+  --g-brand-2:#337418; --g-brand-2-hover:#2a6113; --g-brand-2-bright:#4a9a26;
+  --g-brand-2-surface:#e7f0e2; --g-brand-2-line:#b8d1ab; --g-brand-2-tint:#1f4a0e;
+  --g-brand-2-text:#2a6113; --g-brand-2-fill:#337418; --g-brand-2-fill-hover:#3d8a1d; --g-brand-2-on:#f8f8f8;
   /* O gradiente da identidade fica no logo. Nos controles, "gradiente da marca" é a cor cheia. */
-  --g-grad-logo:linear-gradient(135deg,#ff4f9a 0%,#c4a7ff 58%,#6bc9ff 100%);
-  --g-grad-logo-on:#1d0b1a;
+  --g-grad-logo:linear-gradient(135deg,#5dd62c 0%,#337418 100%);
+  --g-grad-logo-on:#0f0f0f;
   --g-grad-brand:linear-gradient(var(--g-brand-fill),var(--g-brand-fill));
   --g-grad-brand-hover:linear-gradient(var(--g-brand-fill-hover),var(--g-brand-fill-hover));
   --g-grad-on:var(--g-brand-on);
@@ -55,8 +59,8 @@
      regular: navegação, menus, popovers. thick: folhas e diálogos com muito texto.
      clear: só sobre mídia, sempre com --lg-dim atrás se o fundo for claro. */
   --lg-blur:22px; --lg-sat:1.8;
-  --lg-regular:rgba(252,252,254,.66);
-  --lg-thick:rgba(252,252,254,.9);
+  --lg-regular:rgba(250,250,250,.66);
+  --lg-thick:rgba(250,250,250,.9);
   --lg-clear:rgba(255,255,255,.18);
   --lg-dim:rgba(0,0,0,.35);
   --lg-tint-on:rgba(20,22,26,.07);
@@ -89,7 +93,7 @@
   /* ── Papéis derivados ── */
   --g-focus:0 0 0 3px color-mix(in srgb,var(--g-brand) 42%,transparent);
   --g-scrollbar-thumb:rgba(20,22,26,.2); --g-scrollbar-thumb-hover:rgba(20,22,26,.38); --g-scrollbar-track:transparent;
-  --g-gauge-track:#e4e6eb;
+  --g-gauge-track:#e5e5e5;
   --g-select-bg:var(--g-field); --g-select-bg-hover:var(--g-surface-2);
   --g-select-border:var(--g-line-2); --g-select-border-hover:var(--g-line-strong);
   --g-menu-bg:var(--lg-regular); --g-menu-border:transparent; --g-menu-divider:var(--g-line);
@@ -105,7 +109,7 @@
   --g-utabs-nested-bg:var(--g-surface-2); --g-utabs-nested-border:var(--g-line);
   --g-utabs-panel-surface:var(--g-surface); --g-utabs-panel-surface-alt:var(--g-surface);
   --shc-bg:var(--g-surface); --shc-bg-hover:var(--g-surface-2); --shc-border:var(--g-line); --shc-inset:rgba(20,24,30,.035); --shc-inset-hover:rgba(20,24,30,.06);
-  --shc-drop:rgba(20,24,30,.06); --shc-lift:rgba(15,19,26,.08); --shc-icon-rest:#7b828d; --shc-mono:#14161a; --shc-whatsapp:#128046;
+  --shc-drop:rgba(20,24,30,.06); --shc-lift:rgba(15,19,26,.08); --shc-icon-rest:#7a7a7a; --shc-mono:#0f0f0f; --shc-whatsapp:#128046;
 
   --g-eb-bg:var(--g-brand-fill); --g-eb-border:transparent; --g-eb-text:var(--g-brand-on); --g-eb-shadow:none;
 
@@ -118,21 +122,21 @@
 
 :root[data-theme=dark]{
   color-scheme:dark;
-  --g-ink:#f3f4f6; --g-ink-2:#cdd1d8; --g-dim:#9aa0ab; --g-faint:#868d98;
-  --g-line:rgba(255,255,255,.09); --g-line-2:rgba(255,255,255,.15); --g-line-strong:rgba(255,255,255,.28);
-  --g-canvas:#0a0b0d;
-  --g-surface:#15171b; --g-surface-2:#1c1f24; --g-surface-3:#2a2e35; --g-paper:21 23 27;
-  --g-stage:#0a0b0d; --g-shell:#0a0b0d;
-  --panel:#15171b;
-  --g-fill:rgba(140,146,160,.2); --g-fill-hover:rgba(140,146,160,.29); --g-fill-press:rgba(140,146,160,.36);
-  --g-field:#1c1f24;
+  --g-ink:#f8f8f8; --g-ink-2:#d6d6d6; --g-dim:#a6a6a6; --g-faint:#8f8f8f;
+  --g-line:rgba(248,248,248,.09); --g-line-2:rgba(248,248,248,.15); --g-line-strong:rgba(248,248,248,.28);
+  --g-canvas:#0f0f0f;
+  --g-surface:#202020; --g-surface-2:#272727; --g-surface-3:#333333; --g-paper:32 32 32;
+  --g-stage:#0f0f0f; --g-shell:#0f0f0f;
+  --panel:#202020;
+  --g-fill:rgba(248,248,248,.08); --g-fill-hover:rgba(248,248,248,.13); --g-fill-press:rgba(248,248,248,.19);
+  --g-field:#272727;
 
-  --g-brand:#ff5fa3; --g-brand-hover:#ff86b9; --g-brand-bright:#ff9cc6;
-  --g-brand-fill:#ff5fa3; --g-brand-fill-hover:#ff7bb3; --g-brand-on:#2a0616;
-  --g-brand-surface:#331021; --g-brand-line:#6a2145; --g-brand-tint:#f7a8cb; --g-brand-text:#ff8dbd;
-  --g-brand-2:#c4a7ff; --g-brand-2-hover:#d4bfff; --g-brand-2-bright:#dccbff;
-  --g-brand-2-surface:rgba(196,167,255,.14); --g-brand-2-line:#4b3a72; --g-brand-2-text:#d2bcff; --g-brand-2-tint:#dccbff;
-  --g-brand-2-fill:#c4a7ff; --g-brand-2-fill-hover:#d0b8ff;
+  --g-brand:#5dd62c; --g-brand-hover:#7be04f; --g-brand-bright:#8ee86a;
+  --g-brand-fill:#5dd62c; --g-brand-fill-hover:#72e043; --g-brand-on:#0f0f0f;
+  --g-brand-surface:#1b2915; --g-brand-line:#2f5420; --g-brand-tint:#a6ec88; --g-brand-text:#7be04f;
+  --g-brand-2:#337418; --g-brand-2-hover:#3d8a1d; --g-brand-2-bright:#4a9a26;
+  --g-brand-2-surface:#18240f; --g-brand-2-line:#2b4a1d; --g-brand-2-text:#86c96a; --g-brand-2-tint:#9fd885;
+  --g-brand-2-fill:#337418; --g-brand-2-fill-hover:#3d8a1d; --g-brand-2-on:#f8f8f8;
 
   --g-orange:#ff9d57; --g-amber:#fbbf24; --g-orange-100:rgba(249,115,22,.16); --g-orange-200:#6b4525; --g-orange-ink:#ffb17a;
   --g-blue:#86c5ff; --g-blue-100:rgba(134,197,255,.16);
@@ -140,8 +144,8 @@
   --g-mint:#76d29b; --g-mint-100:rgba(118,210,155,.16);
   --g-red:#ff8a8f; --g-red-fill:#d8434a; --g-red-fill-hover:#e2555c; --g-red-100:rgba(255,95,102,.16);
 
-  --lg-regular:rgba(34,37,43,.62);
-  --lg-thick:rgba(30,33,38,.92);
+  --lg-regular:rgba(32,32,32,.66);
+  --lg-thick:rgba(32,32,32,.94);
   --lg-clear:rgba(255,255,255,.1);
   --lg-tint-on:rgba(255,255,255,.1);
   --lg-edge:rgba(0,0,0,.5);
@@ -153,10 +157,10 @@
   --g-shadow:none;
   --g-shadow-lift:0 18px 40px -20px rgba(0,0,0,.9);
   --g-scrollbar-thumb:rgba(255,255,255,.2); --g-scrollbar-thumb-hover:rgba(255,255,255,.38);
-  --g-gauge-track:#2a2e35;
+  --g-gauge-track:#333333;
   --g-utabs-indicator:rgba(255,255,255,.16); --g-utabs-nested-bg:var(--g-surface-2);
   --shc-inset:rgba(255,255,255,.035); --shc-inset-hover:rgba(255,255,255,.06); --shc-drop:rgba(255,255,255,.06); --shc-lift:rgba(0,0,0,.38);
-  --shc-icon-rest:#868d98; --shc-mono:#f3f4f6; --shc-whatsapp:#25d366;
+  --shc-icon-rest:#8f8f8f; --shc-mono:#f8f8f8; --shc-whatsapp:#25d366;
 }
 
 /* App móvel da agência: a plataforma veste o tema do app (--cm-*, ver mobile-app-view.js). Cores de estado não mudam. */
@@ -180,17 +184,17 @@
 /* Reduzir transparência: o vidro vira superfície opaca, com a mesma hierarquia */
 @media (prefers-reduced-transparency:reduce){
   :root{--lg-blur:0px; --lg-sat:1; --lg-regular:#fbfbfd; --lg-thick:#ffffff; --lg-clear:rgba(20,22,26,.78); --lg-edge:rgba(20,22,26,.16)}
-  :root[data-theme=dark]{--lg-regular:#1f2227; --lg-thick:#1f2227; --lg-clear:rgba(0,0,0,.82); --lg-edge:rgba(255,255,255,.18)}
+  :root[data-theme=dark]{--lg-regular:#202020; --lg-thick:#202020; --lg-clear:rgba(0,0,0,.82); --lg-edge:rgba(255,255,255,.18)}
 }
 
 /* Aumentar contraste: linhas visíveis, texto mais escuro e bordas nos controles */
 @media (prefers-contrast:more){
-  :root{--g-ink:#000; --g-ink-2:#1b1e24; --g-dim:#3a3f48; --g-faint:#454b55; --g-line:rgba(0,0,0,.4); --g-line-2:rgba(0,0,0,.6); --g-line-strong:#000; --g-brand-text:#8a0f47; --g-brand-fill:#ff7ab3; --lg-regular:#fff; --lg-thick:#fff; --lg-edge:rgba(0,0,0,.6); --lg-blur:0px; --lg-sat:1}
-  :root[data-theme=dark]{--g-ink:#fff; --g-ink-2:#f0f1f3; --g-dim:#d3d7de; --g-faint:#bcc2cb; --g-line:rgba(255,255,255,.45); --g-line-2:rgba(255,255,255,.65); --g-line-strong:#fff; --g-brand-text:#ffb8d5; --lg-regular:#14161a; --lg-thick:#14161a; --lg-edge:rgba(255,255,255,.65)}
+  :root{--g-ink:#000; --g-ink-2:#1b1e24; --g-dim:#3a3f48; --g-faint:#454b55; --g-line:rgba(0,0,0,.4); --g-line-2:rgba(0,0,0,.6); --g-line-strong:#000; --g-brand-text:#24540f; --g-brand-fill:#5dd62c; --lg-regular:#fff; --lg-thick:#fff; --lg-edge:rgba(0,0,0,.6); --lg-blur:0px; --lg-sat:1}
+  :root[data-theme=dark]{--g-ink:#fff; --g-ink-2:#f0f1f3; --g-dim:#d3d7de; --g-faint:#bcc2cb; --g-line:rgba(255,255,255,.45); --g-line-2:rgba(255,255,255,.65); --g-line-strong:#fff; --g-brand-text:#a6ec88; --lg-regular:#0f0f0f; --lg-thick:#0f0f0f; --lg-edge:rgba(255,255,255,.65)}
 }
 
 /* Navegador sem desfoque: material opaco */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   :root{--lg-regular:#fbfbfd}
-  :root[data-theme=dark]{--lg-regular:#1f2227}
+  :root[data-theme=dark]{--lg-regular:#202020}
 }

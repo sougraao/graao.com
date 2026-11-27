@@ -45,7 +45,7 @@
     import * as B from '/beautiful-ui-more.js';
 
     const html = document.documentElement;
-    try { if (localStorage.getItem('graao.theme') === 'dark') html.dataset.theme = 'dark'; } catch {}
+    try { if (localStorage.getItem('graao.theme') !== 'light') html.dataset.theme = 'dark'; } catch {}
     document.getElementById('theme').addEventListener('click', () => {
       if (html.dataset.theme === 'dark') delete html.dataset.theme; else html.dataset.theme = 'dark';
     });

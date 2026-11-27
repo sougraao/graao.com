@@ -1148,9 +1148,9 @@ export function startAgency(env) {
             </div>
             <div class="ag-brand-mockup-panel" data-ag-brand-mockup-panel="surfaces" role="tabpanel" aria-label="Prévia: fundos e estados" hidden>
               <div class="ag-brand-surfaces-demo" inert>
-                <div class="ag-brand-surface-tile ag-brand-surface-pink"><span>Primária</span><b>Ações que pedem decisão</b><small>Rosa Graao · var(--g-brand)</small></div>
-                <div class="ag-brand-surface-tile ag-brand-surface-lilac"><span>Secundária</span><b>Camadas e agrupamentos</b><small>Lilás Graao · var(--g-brand-2)</small></div>
-                <div class="ag-brand-surface-tile ag-brand-surface-blue"><span>Acento</span><b>Feedback e descoberta</b><small>Azul Graao · var(--g-brand-accent)</small></div>
+                <div class="ag-brand-surface-tile ag-brand-surface-pink"><span>Primária</span><b>Ações que pedem decisão</b><small>Verde Graao · var(--g-brand)</small></div>
+                <div class="ag-brand-surface-tile ag-brand-surface-lilac"><span>Secundária</span><b>Camadas e agrupamentos</b><small>Verde-escuro Graao · var(--g-brand-2)</small></div>
+                <div class="ag-brand-surface-tile ag-brand-surface-blue"><span>Acento</span><b>Feedback e descoberta</b><small>Verde Graao · var(--g-brand-accent)</small></div>
               </div>
             </div>
           </div>

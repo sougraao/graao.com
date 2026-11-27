@@ -14,7 +14,7 @@
   --bui-ink-3: var(--g-faint, #8b929c);
   --bui-line: var(--g-line, #e2e5ea);
   --bui-line-strong: var(--g-line-2, #d2d7de);
-  --bui-accent: var(--g-brand, #ff4f9a);
+  --bui-accent: var(--g-brand, #337418);
   --bui-green: oklch(0.603 0.155 150.883);
   --bui-green-tint: oklch(0.958 0.017 159.118);
   --bui-red: oklch(0.621 0.192 23.042);

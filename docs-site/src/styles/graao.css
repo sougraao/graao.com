@@ -1,15 +1,23 @@
-/* Tema da graao: cor de destaque e fonte do app (ui/style.css). Fundos e cinzas ficam os do Starlight, com contraste garantido. */
+/* Tema da graao: paleta oficial (#0F0F0F, #202020, #5DD62C, #337418, #F8F8F8) e fonte do app.
+   No escuro o destaque é o verde #5DD62C; no claro, o verde-escuro #337418, que tem contraste como texto. */
 :root {
   --sl-font: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --sl-color-accent-low: #3d0a24;
-  --sl-color-accent: #e0408a;
-  --sl-color-accent-high: #ffd3e8;
+  --sl-color-accent-low: #1b2915;
+  --sl-color-accent: #5dd62c;
+  --sl-color-accent-high: #c8f2b4;
+  --sl-color-white: #f8f8f8;
+  --sl-color-gray-5: #333333;
+  --sl-color-gray-6: #202020;
+  --sl-color-black: #0f0f0f;
 }
 
 :root[data-theme='light'] {
-  --sl-color-accent-low: #fde3ef;
-  --sl-color-accent: #d62976;
-  --sl-color-accent-high: #7a0b46;
+  --sl-color-accent-low: #ecf8e5;
+  --sl-color-accent: #337418;
+  --sl-color-accent-high: #1f4a0e;
+  --sl-color-white: #0f0f0f;
+  --sl-color-gray-7: #f2f2f2;
+  --sl-color-black: #f8f8f8;
 }
 
 .site-title img { height: 2rem; width: auto; }

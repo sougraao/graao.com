@@ -3,7 +3,7 @@
 .report-source h2{font-size:16px}.report-source p{color:var(--dim);font-size:13px;line-height:1.5}.report-source .secondary{justify-self:start;margin-top:auto}
 .report-empty{display:grid;place-items:center;gap:11px;min-height:300px;padding:28px;text-align:center}
 .report-empty h2{font-size:19px}.report-empty p,.report-no-results{color:var(--dim)}
-.report-empty-art{position:relative;display:grid;place-items:center;width:82px;height:74px;color:var(--blue-dark);background:var(--g-brand-surface,#fff0f6);border-radius:var(--r-sheet)}
+.report-empty-art{position:relative;display:grid;place-items:center;width:82px;height:74px;color:var(--blue-dark);background:var(--g-brand-surface, #ecf8e5);border-radius:var(--r-sheet)}
 .report-empty-art svg:last-child{position:absolute;right:-9px;bottom:-7px;padding:6px;width:34px;height:34px;color:var(--g-brand-on,#2a0616);background:var(--blue);border-radius:50%;box-shadow:0 4px 12px #a0007030}
 .report-actions{display:flex;align-items:center;flex-wrap:wrap;gap:6px}.report-actions .icon-btn{height:29px;min-width:29px}.report-no-results{margin:0;padding:20px;text-align:center}
 .report-editor{max-width:1920px;padding-top:14px;--report-paper:#fff;--report-edge:#dce3ee;--report-ink:#17243a;--report-soft:#f6f8fc}
@@ -31,7 +31,7 @@
 .report-shared-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}
 .report-shared-head h1{font-size:26px;letter-spacing:-.03em;margin:2px 0}
 .report-shared-lang{display:flex;gap:4px}.report-shared-lang a{border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-weight:700;font-size:12.5px;color:var(--ink);text-decoration:none}
-.report-shared-lang a[aria-current]{background:var(--report-accent,var(--blue));border-color:transparent;color:#fff}
+.report-shared-lang a[aria-current]{background:var(--report-accent,var(--blue));border-color:transparent;color:var(--g-brand-on)}
 .report-shared .dash-card-filters{display:none}
 .report-shared-foot{text-align:center;margin-top:18px;font-size:12.5px}
 @media print{.report-shared-lang{display:none}}

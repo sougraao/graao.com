@@ -5,8 +5,8 @@
   --pr-dim:var(--g-dim,#5d6673);
   --pr-line:var(--g-line,#e2e5ea);
   --pr-soft:var(--g-surface-2,#f4f6f8);
-  --pr-accent:var(--g-brand,#ff4f9a);
-  --pr-accent-soft:var(--g-brand-surface,#fff0f6);
+  --pr-accent:var(--g-brand, #337418);
+  --pr-accent-soft:var(--g-brand-surface, #ecf8e5);
   --pr-pink:var(--g-brand-2-text,#b85c00);
   --pr-pink-soft:var(--g-brand-2-surface,#fff5ea);
   --pr-good:#157f3c;
@@ -22,10 +22,10 @@
   --pr-dim:var(--g-dim,#8d939d);
   --pr-line:var(--g-line,#25292d);
   --pr-soft:var(--g-surface-2,#1b1d22);
-  --pr-accent:var(--g-brand,#ff4f9a);
-  --pr-accent-soft:color-mix(in srgb,var(--g-brand,#ff4f9a) 14%,transparent);
+  --pr-accent:var(--g-brand, #337418);
+  --pr-accent-soft:color-mix(in srgb,var(--g-brand, #337418) 14%,transparent);
   --pr-pink:var(--g-brand-2-text,#ffb366);
-  --pr-pink-soft:color-mix(in srgb,var(--g-brand-2,#c4a7ff) 15%,transparent);
+  --pr-pink-soft:color-mix(in srgb,var(--g-brand-2, #337418) 15%,transparent);
   --pr-good:var(--g-mint,#76d29b);
   --pr-good-soft:rgba(118,210,155,.14);
   --pr-bad:#f2a7b5;
@@ -61,13 +61,13 @@
   min-height: 38px;
   font-weight: 700;
   color: var(--g-eb-text, var(--g-grad-on, white));
-  background: var(--g-eb-bg, var(--g-grad-brand, linear-gradient(135deg, #ff4f9a 0%, #c4a7ff 58%, #6bc9ff 100%)));
+  background: var(--g-eb-bg, var(--g-grad-brand, linear-gradient(#5dd62c, #5dd62c)));
   border-color: var(--g-eb-border, rgba(255, 255, 255, 0.12));
   box-shadow: var(--g-eb-shadow, inset 0 1px 0 rgba(255, 255, 255, 0.2));
 }
 .pr-btn.pr-primary:hover {
   color: var(--g-eb-text, var(--g-grad-on, white));
-  background: var(--g-eb-bg, var(--g-grad-brand-hover, linear-gradient(135deg, #c70093 0%, #d96f0a 100%)));
+  background: var(--g-eb-bg, var(--g-grad-brand-hover, linear-gradient(#6fe03f, #6fe03f)));
   border-color: var(--g-eb-border, rgba(255, 255, 255, 0.18));
 }
 .pr-btn.pr-primary:disabled, .pr-btn:disabled, .pr-icon:disabled {
@@ -161,7 +161,7 @@
 .pr-copy + p,.pr-category-list + .pr-actions { margin-top:16px; }
 .pr-choices { max-height:255px; overflow:auto; }
 .pr-page .pr-check,#dialog .pr-check { display:flex; align-items:center; gap:7px; width:auto; font-weight:560; font-size:13px; }
-.pr-check input { flex-shrink:0; accent-color:var(--g-brand,#ff4f9a); margin:0; }
+.pr-check input { flex-shrink:0; accent-color:var(--g-brand, #337418); margin:0; }
 .pr-contact { border-block:1px solid var(--pr-line); padding:12px 0; }
 .pr-contact summary { font-size:13px; font-weight:680; cursor:pointer; }
 .pr-contact .pr-field-grid { margin-top:11px; }
@@ -193,7 +193,7 @@
 .pr-bars { display:grid; gap:8px; }
 .pr-bars > div { display:grid; grid-template-columns:68px 1fr 55px; align-items:center; gap:9px; font-size:12.5px; }
 .pr-bar-track { display:flex; align-items:center; background:var(--pr-soft); height:10px; border-radius:10px; overflow:hidden; }
-.pr-bar-track > span { height:100%; background:var(--g-brand,#bd1f66); }
+.pr-bar-track > span { height:100%; background:var(--g-brand, #337418); }
 .pr-bar-track > span + span { background:#35a878; }
 .pr-public { background:var(--pr-bg); padding:24px; margin:0; font:14px/1.5 system-ui,sans-serif; }
 .pr-audit { --pr-report:#2158dc; --pr-report-soft:#edf3ff; background:var(--pr-surface); border:1px solid var(--pr-line); border-radius:var(--r-group); overflow:hidden; }

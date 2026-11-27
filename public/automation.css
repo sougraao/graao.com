@@ -169,7 +169,7 @@
 .wf-ai-modal{padding:4px 0}
 .wf-ai-desc{margin:0 0 16px;color:var(--g-dim);font-size:13px;line-height:1.4}
 .wf-ai-modal textarea{width:100%;border-radius:var(--r-control);resize:vertical;min-height:90px;font-family:inherit;font-size:13px;line-height:1.4;padding:10px 12px;border:1px solid var(--g-line);background:var(--g-surface-2);color:var(--g-ink)}
-.wf-ai-modal textarea:focus{border-color:#7657ff;outline:none;box-shadow:0 0 0 1px #7657ff}
+.wf-ai-modal textarea:focus{border-color:var(--g-brand-fill);outline:none;box-shadow:0 0 0 1px var(--g-brand-fill)}
 .wf-ai-suggestions{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:12px 0 18px}
 .wf-ai-sug-title{font-size:11px;font-weight:700;color:var(--g-dim);}
 @media(max-width:730px){

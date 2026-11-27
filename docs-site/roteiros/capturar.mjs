@@ -24,7 +24,7 @@ export async function demoEmMemoria(servidor = {}) {
   await semear({ base });
   return { base, fechar: () => new Promise(ok => server.close(ok)) };
 }
-const COR_DESTAQUE = '#d62976';
+const COR_DESTAQUE = '#5dd62c';
 
 export const nomeArquivo = (indice, passo) => `${String(indice + 1).padStart(2, '0')}-${passo.nome}.webp`;
 

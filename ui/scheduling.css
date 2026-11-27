@@ -18,7 +18,7 @@
 .sch-link code{flex:1;min-width:0;overflow-wrap:anywhere}
 .sch-route{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:10px}
 .sch-route li{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:14px 16px}
-.sch-stop{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--g-brand-surface,#fff0f6);color:var(--g-brand-text,#a00070);font-weight:700}
+.sch-stop{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--g-brand-surface, #ecf8e5);color:var(--g-brand-text, #337418);font-weight:700}
 .sch-job{flex:1;min-width:220px;display:grid;gap:2px}
 .sch-job a{display:inline-flex;align-items:center;gap:4px;font-size:13px}
 .sch-steps{display:flex;flex-wrap:wrap;gap:6px}

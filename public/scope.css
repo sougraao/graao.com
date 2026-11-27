@@ -10,7 +10,7 @@
   --ag-purple:var(--g-brand-2);
   --ag-blue:var(--g-brand-accent);
   --ag-aurora-alpha:.62;
-  --lg-scroll-edge:#f6f4fa;
+  --lg-scroll-edge:#f4f4f4;
   position:relative;
   isolation:isolate;
 }
@@ -27,7 +27,7 @@
     radial-gradient(60% 80% at 106% 62%,color-mix(in srgb,var(--ag-pink) 34%,transparent) 0%,transparent 64%),
     radial-gradient(55% 65% at 62% -12%,color-mix(in srgb,var(--ag-purple) 26%,transparent) 0%,transparent 64%),
     radial-gradient(45% 55% at -4% -8%,color-mix(in srgb,var(--ag-blue) 22%,transparent) 0%,transparent 62%),
-    linear-gradient(120deg,#f4f8fc 0%,#faf5fb 50%,#f5faff 100%);
+    linear-gradient(120deg,#f8f8f8 0%,#f1f7ee 50%,#f8f8f8 100%);
 }
 
 /* ───────── Workspace switchers (agency ↔ sub-accounts) ───────── */

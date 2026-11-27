@@ -25,10 +25,12 @@ import { apiScopes,
 export const AGENCY_ID = 'agency';
 const platformLanguage = 'Português (Brasil)';
 const platformBrand = 'graao';
-const defaultPrimary = '#ff4f9a';
-const defaultSecondary = '#c4a7ff';
-// Blue is the Graao visual accent used across marketing and landing surfaces.
-const defaultAccent = '#6bc9ff';
+// Paleta oficial da graao (2026-11-27): verde #5DD62C, verde-escuro #337418.
+const defaultPrimary = '#5dd62c';
+const defaultSecondary = '#337418';
+const defaultAccent = '#5dd62c';
+// O padrão anterior (rosa, lilás e azul): quem nunca trocou as cores passa para a paleta nova.
+const previousDefault = { primary: '#ff4f9a', secondary: '#c4a7ff', accent: '#6bc9ff' };
 const fail = (message, status = 400) => { throw Object.assign(new Error(message), { status }); };
 const str = (value, limit = 240) => typeof value === 'string' ? value.trim().slice(0, limit) : typeof value === 'number' ? String(value).slice(0, limit) : '';
 const req = (value, label, limit) => str(value, limit) || fail(`${label} is required.`);
@@ -114,6 +116,11 @@ export function hydrateAgency(state, id) {
   state.profile.language = platformLanguage;
   state.company.brand = platformBrand;
   state.company.currency = defaults.profile.currency;
+  if (state.company.primary === previousDefault.primary && state.company.secondary === previousDefault.secondary) {
+    state.company.primary = defaultPrimary;
+    state.company.secondary = defaultSecondary;
+    if (!state.company.accent || state.company.accent === previousDefault.accent) state.company.accent = defaultAccent;
+  }
   if (!/^#[0-9a-f]{6}$/i.test(state.company.primary || '')) state.company.primary = defaultPrimary;
   if (!/^#[0-9a-f]{6}$/i.test(state.company.secondary || '')) state.company.secondary = defaultSecondary;
   if (!/^#[0-9a-f]{6}$/i.test(state.company.accent || '')) state.company.accent = defaultAccent;

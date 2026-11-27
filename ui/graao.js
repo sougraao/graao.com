@@ -1231,7 +1231,8 @@ document.fonts?.ready.then(() => document.querySelectorAll('[data-g]').forEach(e
 /* Theme toggle: microkit diagonal wipe via View Transitions API */
 let themeBusy = null;
 let themeStorageKey;
-let themeFallback = 'light';
+// A graao abre no escuro (paleta oficial #0F0F0F/#202020 + verde); o claro é escolha de quem usa.
+let themeFallback = 'dark';
 
 function applyTheme(theme) {
   const html = document.documentElement;
@@ -1240,12 +1241,13 @@ function applyTheme(theme) {
   window.dispatchEvent(new CustomEvent('graao:theme-change'));
 }
 
-// Official Graao triad: pink primary, lilac secondary, electric-blue accent.
-// Older orange/yellow and legacy purple records are treated as defaults until migrated.
-const DEFAULT_BRAND_PRIMARY = '#ff4f9a';
-const DEFAULT_BRAND_SECONDARY = '#c4a7ff';
-const DEFAULT_BRAND_ACCENT = '#6bc9ff';
+// Paleta oficial da graao: verde #5DD62C principal, verde-escuro #337418 secundário (mesmos padrões de agency-model.mjs).
+// Pares que já foram o padrão (rosa/lilás, laranja/amarelo, roxo) contam como padrão até a agência escolher outro.
+const DEFAULT_BRAND_PRIMARY = '#5dd62c';
+const DEFAULT_BRAND_SECONDARY = '#337418';
+const DEFAULT_BRAND_ACCENT = '#5dd62c';
 const LEGACY_DEFAULT_PAIRS = new Set([
+  '#ff4f9a|#c4a7ff',
   '#ff00bb|#fc972d',
   '#ff701a|#ffd52a',
   '#d62976|#962fbf'
@@ -1328,7 +1330,8 @@ export function toggleTheme(to) {
     if (themeStorageKey !== key) return;
     applyTheme(next);
     if (key) {
-      try { localStorage.setItem(key, next); } catch {}
+      // a última escolha também vale para o script do app.html, que pinta o tema antes do JS saber a conta
+      try { localStorage.setItem(key, next); localStorage.setItem('graao.theme', next); } catch {}
     }
   };
 

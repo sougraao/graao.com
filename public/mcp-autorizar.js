@@ -2,7 +2,7 @@
 // devolve a pessoa para a IA com a resposta. Todo texto que vem do pedido entra por textContent.
 try {
   const saved = localStorage.getItem('graao.theme');
-  const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  const dark = saved !== 'light';
   if (dark) document.documentElement.setAttribute('data-theme', 'dark');
 } catch {}
 

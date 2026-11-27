@@ -83,7 +83,7 @@
 .sd-h-pt { margin: -5px 0 0 -5px; border-radius: 50%; cursor: move; }
 .sd-rot { position: absolute; left: calc(50% - 6px); top: -28px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 1.5px solid var(--sd-accent); pointer-events: auto; cursor: grab; box-sizing: border-box; }
 .sd-rot::after { content: ""; position: absolute; left: 4.5px; top: 10px; width: 1.5px; height: 14px; background: var(--sd-accent); }
-.sd-guide { position: absolute; background: #e5398f; }
+.sd-guide { position: absolute; background: #5dd62c; }
 .sd-guide-x { top: 0; bottom: 0; width: 1px; }
 .sd-guide-y { left: 0; right: 0; height: 1px; }
 .sd-marquee { position: absolute; border: 1px solid var(--sd-accent); background: rgba(26,115,232,.08); }
