@@ -1098,7 +1098,7 @@ export function startAgency(env) {
           <label>Fuso horário padrão<select name="timezone">${['America/Sao_Paulo', 'America/New_York', 'Europe/London', 'UTC'].map(z => `<option ${c.timezone === z ? 'selected' : ''}>${z}</option>`).join('')}</select></label>
           <label>Moeda<input readonly value="Real brasileiro (BRL)"></label>
         </div>`)}
-        ${section('brand', 'Cores da marca', 'A primária lidera as ações, a secundária cria camadas e o acento marca links e destaques. A prévia muda enquanto você escolhe.', `<div class="ag-company-colors">
+        ${section('brand', 'Cores da marca', 'A primária lidera as ações, a secundária cria camadas e o acento marca foco, novidades e o assistente. A prévia muda enquanto você escolhe.', `<div class="ag-company-colors">
           ${colorPicker(c.primary, { name: 'primary', label: 'Cor primária', fallback: '#FF6B1A' })}
           ${colorPicker(c.secondary, { name: 'secondary', label: 'Cor secundária', fallback: '#C2410C' })}
           ${colorPicker(c.accent, { name: 'accent', label: 'Cor de acento', fallback: '#1FE5F0' })}
@@ -1134,7 +1134,7 @@ export function startAgency(env) {
                       <label>Nome da automação<input readonly value="Nutrir leads quentes"></label>
                       <div class="ag-brand-mockup-actions"><button type="button" class="ag-brand-mockup-primary">Salvar fluxo</button><a href="#agency/settings/company" class="ag-brand-mockup-link">Ver detalhes</a></div>
                     </div>
-                    <div class="ag-brand-mockup-card ag-brand-mockup-highlight"><span class="ag-brand-mockup-eyebrow">ACENTO</span><b>Clareza em cada toque</b><p>Links, foco e estados ativos usam o azul Graao.</p><a href="#agency/settings/company" class="ag-brand-mockup-link">Explorar interface</a></div>
+                    <div class="ag-brand-mockup-card ag-brand-mockup-highlight"><span class="ag-brand-mockup-eyebrow">ACENTO</span><b>Clareza em cada toque</b><p>Foco, novidades e o assistente ganham o Neon Graao.</p><a href="#agency/settings/company" class="ag-brand-mockup-link">Explorar interface</a></div>
                   </div>
                 </div>
               </div>

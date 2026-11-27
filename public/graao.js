@@ -1254,6 +1254,7 @@ const LEGACY_DEFAULT_PAIRS = new Set([
   '#ff701a|#ffd52a',
   '#d62976|#962fbf'
 ]);
+const LEGACY_DEFAULT_ACCENTS = new Set(['#5dd62c', '#6bc9ff']);
 
 function relativeLuminance(hex) {
   const [red, green, blue] = hex.slice(1).match(/../g).map(part => {
@@ -1270,10 +1271,18 @@ export function applyBrandColor(primaryValue, secondaryValue, accentValue) {
   const accent = /^#[0-9a-f]{6}$/i.test(accentValue) ? accentValue.toLowerCase() : DEFAULT_BRAND_ACCENT;
   const custom = (primary !== DEFAULT_BRAND_PRIMARY || secondary !== DEFAULT_BRAND_SECONDARY)
     && !LEGACY_DEFAULT_PAIRS.has(`${primary}|${secondary}`);
+  // O acento vale sozinho: trocar só ele (mantendo laranja e brasa) também muda a plataforma. O neon do graao
+  // fica nos tokens (texto #00727C no claro); um acento próprio ganha texto e superfícies derivados em graao.css.
+  const customAccent = accent !== DEFAULT_BRAND_ACCENT && !LEGACY_DEFAULT_ACCENTS.has(accent);
+  if (customAccent) {
+    root.style.setProperty('--g-brand-accent', accent);
+    root.style.setProperty('--g-brand-accent-on', relativeLuminance(accent) > 0.18 ? '#0f131a' : '#fff');
+  } else {
+    root.style.removeProperty('--g-brand-accent');
+    root.style.removeProperty('--g-brand-accent-on');
+  }
+  root.toggleAttribute('data-custom-accent', customAccent);
   root.toggleAttribute('data-custom-brand', custom);
-  // Na paleta do graao o acento muda com o tema (neon no escuro, mais fechado no claro): só a marca própria fixa um valor.
-  if (custom) root.style.setProperty('--g-brand-accent', accent);
-  else root.style.removeProperty('--g-brand-accent');
   if (!custom) {
     for (const prop of [
       '--g-custom-brand', '--g-custom-brand-2', '--g-custom-brand-accent',

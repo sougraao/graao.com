@@ -37,7 +37,10 @@
   --g-brand:#b8460b; --g-brand-hover:#9a3a09; --g-brand-bright:#e85a10;
   --g-brand-fill:#ff6b1a; --g-brand-fill-hover:#ff7f38; --g-brand-on:#1a1410;
   --g-brand-surface:#fff0e6; --g-brand-line:#ffd0b0; --g-brand-tint:#7a2e06; --g-brand-text:#b8460b;
-  --g-brand-accent:#0099a8;
+  /* Acento ciano neon: a mesma cor nos dois temas em preenchimentos, pontos e brilhos.
+     Como texto sobre fundo claro ele não tem contraste: lá vira #00727C (5,3:1). Sobre o neon, texto #062A2D. */
+  --g-brand-accent:#1fe5f0; --g-brand-accent-on:#062a2d; --g-brand-accent-text:#00727c;
+  --g-brand-accent-surface:#e3fbfc; --g-brand-accent-line:#a6eef2;
   --g-brand-2:#c2410c; --g-brand-2-hover:#a3360a; --g-brand-2-bright:#e0520f;
   --g-brand-2-surface:#fbebe1; --g-brand-2-line:#f1c3a6; --g-brand-2-tint:#6e2507;
   --g-brand-2-text:#a3360a; --g-brand-2-fill:#c2410c; --g-brand-2-fill-hover:#d14a12; --g-brand-2-on:#faf7f3;
@@ -92,7 +95,7 @@
   --ease-spring:cubic-bezier(.34,1.36,.64,1);
 
   /* ── Papéis derivados ── */
-  --g-focus:0 0 0 3px color-mix(in srgb,var(--g-brand) 42%,transparent);
+  --g-focus:0 0 0 3px color-mix(in srgb,var(--g-brand-accent-text) 55%,transparent);
   --g-scrollbar-thumb:rgba(20,22,26,.2); --g-scrollbar-thumb-hover:rgba(20,22,26,.38); --g-scrollbar-track:transparent;
   --g-gauge-track:#e8e0d6;
   --g-select-bg:var(--g-field); --g-select-bg-hover:var(--g-surface-2);
@@ -135,7 +138,8 @@
   --g-brand:#ff6b1a; --g-brand-hover:#ff8a4c; --g-brand-bright:#ffa070;
   --g-brand-fill:#ff6b1a; --g-brand-fill-hover:#ff7f38; --g-brand-on:#1a1410;
   --g-brand-surface:#2e1a0e; --g-brand-line:#5a2e14; --g-brand-tint:#ffc4a0; --g-brand-text:#ff8a4c;
-  --g-brand-accent:#1fe5f0;
+  --g-brand-accent:#1fe5f0; --g-brand-accent-on:#062a2d; --g-brand-accent-text:#1fe5f0;
+  --g-brand-accent-surface:#0b2729; --g-brand-accent-line:#145a5e;
   --g-brand-2:#c2410c; --g-brand-2-hover:#d14a12; --g-brand-2-bright:#e0520f;
   --g-brand-2-surface:#2a160b; --g-brand-2-line:#4e2410; --g-brand-2-text:#f4a06e; --g-brand-2-tint:#ffc9a8;
   --g-brand-2-fill:#c2410c; --g-brand-2-fill-hover:#d14a12; --g-brand-2-on:#faf7f3;
@@ -175,7 +179,8 @@
   --g-brand:var(--cm-primary); --g-brand-hover:var(--ma-link); --g-brand-bright:var(--ma-link);
   --g-brand-fill:var(--cm-primary); --g-brand-fill-hover:color-mix(in srgb,var(--cm-primary) 88%,var(--cm-onPrimary)); --g-brand-on:var(--cm-onPrimary);
   --g-brand-surface:var(--cm-tertiary); --g-brand-line:color-mix(in srgb,var(--cm-primary) 32%,var(--cm-border)); --g-brand-tint:var(--ma-link); --g-brand-text:var(--ma-link);
-  --g-brand-accent:var(--cm-primary);
+  --g-brand-accent:var(--cm-primary); --g-brand-accent-on:var(--cm-onPrimary); --g-brand-accent-text:var(--ma-link);
+  --g-brand-accent-surface:var(--cm-tertiary); --g-brand-accent-line:color-mix(in srgb,var(--cm-primary) 32%,var(--cm-border));
   --g-brand-2:var(--cm-primary); --g-brand-2-hover:var(--ma-link); --g-brand-2-bright:var(--ma-link); --g-brand-2-surface:var(--cm-tertiary); --g-brand-2-line:color-mix(in srgb,var(--cm-primary) 32%,var(--cm-border));
   --g-brand-2-tint:var(--ma-link); --g-brand-2-text:var(--ma-link); --g-brand-2-fill:var(--cm-primary); --g-brand-2-fill-hover:color-mix(in srgb,var(--cm-primary) 88%,var(--cm-onPrimary)); --g-brand-2-on:var(--cm-onPrimary);
   --g-pink:var(--ma-link); --g-pink-100:var(--cm-tertiary);
@@ -191,8 +196,8 @@
 
 /* Aumentar contraste: linhas visíveis, texto mais escuro e bordas nos controles */
 @media (prefers-contrast:more){
-  :root{--g-ink:#000; --g-ink-2:#1b1e24; --g-dim:#3a3f48; --g-faint:#454b55; --g-line:rgba(0,0,0,.4); --g-line-2:rgba(0,0,0,.6); --g-line-strong:#000; --g-brand-text:#8a3307; --g-brand-fill:#ff6b1a; --lg-regular:#fff; --lg-thick:#fff; --lg-edge:rgba(0,0,0,.6); --lg-blur:0px; --lg-sat:1}
-  :root[data-theme=dark]{--g-ink:#fff; --g-ink-2:#f0f1f3; --g-dim:#d3d7de; --g-faint:#bcc2cb; --g-line:rgba(255,255,255,.45); --g-line-2:rgba(255,255,255,.65); --g-line-strong:#fff; --g-brand-text:#ffc4a0; --lg-regular:#100d0a; --lg-thick:#100d0a; --lg-edge:rgba(255,255,255,.65)}
+  :root{--g-ink:#000; --g-ink-2:#1b1e24; --g-dim:#3a3f48; --g-faint:#454b55; --g-line:rgba(0,0,0,.4); --g-line-2:rgba(0,0,0,.6); --g-line-strong:#000; --g-brand-text:#8a3307; --g-brand-accent-text:#005a62; --g-brand-fill:#ff6b1a; --lg-regular:#fff; --lg-thick:#fff; --lg-edge:rgba(0,0,0,.6); --lg-blur:0px; --lg-sat:1}
+  :root[data-theme=dark]{--g-ink:#fff; --g-ink-2:#f0f1f3; --g-dim:#d3d7de; --g-faint:#bcc2cb; --g-line:rgba(255,255,255,.45); --g-line-2:rgba(255,255,255,.65); --g-line-strong:#fff; --g-brand-text:#ffc4a0; --g-brand-accent-text:#8ff4f9; --lg-regular:#100d0a; --lg-thick:#100d0a; --lg-edge:rgba(255,255,255,.65)}
 }
 
 /* Navegador sem desfoque: material opaco */

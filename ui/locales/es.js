@@ -6179,7 +6179,7 @@ export default {
   "Entendi": "Entendido",
   "Como a sua agência se identifica para clientes e subcontas.": "Cómo se identifica tu agencia ante clientes y subcuentas.",
   "Cores da marca": "Colores de la marca",
-  "A primária lidera as ações, a secundária cria camadas e o acento marca links e destaques. A prévia muda enquanto você escolhe.": "El primario lidera las acciones, el secundario crea capas y el acento marca enlaces y destacados. La vista previa cambia mientras eliges.",
+  "A primária lidera as ações, a secundária cria camadas e o acento marca foco, novidades e o assistente. A prévia muda enquanto você escolhe.": "El primario lidera las acciones, el secundario crea capas y el acento marca el foco, las novedades y el asistente. La vista previa cambia mientras eliges.",
   "Cor de acento": "Color de acento",
   "Restaurar paleta oficial": "Restaurar paleta oficial",
   "Exemplos de aplicação da paleta": "Ejemplos de aplicación de la paleta",

@@ -75,7 +75,7 @@ function hsl([r, g, b]) {
 const fam = h => h >= 345 || h < 18 ? 'red' : h < 68 ? 'orange' : h < 175 ? 'green' : (h < 260 ? 'blue' : 'pink');
 const css = ([r, g, b], a = 1) => a >= 1 ? `rgb(${r} ${g} ${b})` : `rgb(${r} ${g} ${b} / ${+a.toFixed(3)})`;
 const TINT = { pink: [255, 51, 204], blue: [134, 182, 255], orange: [249, 115, 22], red: [242, 167, 181], green: [118, 210, 155] };
-const TEXT_ACCENT = { pink: '#ff9adb', blue: '#86b6ff', orange: '#ffb17a', red: '#f2a7b5', green: '#76d29b' };
+const TEXT_ACCENT = { pink: '#ff9adb', blue: '#8ff4f9', orange: '#ffb17a', red: '#f2a7b5', green: '#76d29b' };
 const LINE_TINT = { pink: [92, 24, 75], blue: [32, 50, 85], orange: [107, 69, 37], red: [90, 38, 51], green: [31, 77, 53] };
 
 function mapColor(token, role) {

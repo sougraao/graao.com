@@ -3228,7 +3228,7 @@ export default {
   "Workspace pessoal": "Workspace pessoal",
   "Como a sua agência se identifica para clientes e subcontas.": "Como a sua agência se identifica para clientes e subcontas.",
   "Cores da marca": "Cores da marca",
-  "A primária lidera as ações, a secundária cria camadas e o acento marca links e destaques. A prévia muda enquanto você escolhe.": "A primária lidera as ações, a secundária cria camadas e o acento marca links e destaques. A prévia muda enquanto você escolhe.",
+  "A primária lidera as ações, a secundária cria camadas e o acento marca foco, novidades e o assistente. A prévia muda enquanto você escolhe.": "A primária lidera as ações, a secundária cria camadas e o acento marca foco, novidades e o assistente. A prévia muda enquanto você escolhe.",
   "Cor de acento": "Cor de acento",
   "Restaurar paleta oficial": "Restaurar paleta oficial",
   "Exemplos de aplicação da paleta": "Exemplos de aplicação da paleta",
