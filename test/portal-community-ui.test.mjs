@@ -118,8 +118,8 @@ test('the member switches the community between light and dark', () => {
   const light = communityPage(makeView(), ui), dark = communityPage(makeView(), { ...ui, mode: 'dark' });
   assert.match(light, /data-cm-public="mode" data-value="dark"[^>]*aria-label="Ativar modo escuro"/);
   assert.match(dark, /data-cm-public="mode" data-value="light"[^>]*aria-label="Ativar modo claro"/);
-  assert.match(dark, /--cm-background:#0f1115/);
-  assert.doesNotMatch(light, /--cm-background:#0f1115/);
+  assert.match(dark, /--cm-background:#111111/);
+  assert.doesNotMatch(light, /--cm-background:#111111/);
 });
 
 test('the ranking period switches on the page', () => {

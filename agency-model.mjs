@@ -1,7 +1,7 @@
 import { AUDIT_IN_DOCUMENT } from './agency-audit.mjs';
 import { usageSummary } from './ui/ai-data.js';
 import { sanitizeFiscal } from './tax-id.mjs';
-import { desktopDefaults, publishDesktop, saveDesktop } from './agency-desktop.mjs';
+import { desktopDefaults, desktopOf, publishDesktop, saveDesktop } from './agency-desktop.mjs';
 import { mobileDefaults, mobileOf, publishMobile, saveMobileLook, saveMobileStore } from './agency-mobile.mjs';
 import { createHash, randomBytes } from 'node:crypto';
 import { isAssetUrl } from './asset-store.mjs';
@@ -115,6 +115,7 @@ export function hydrateAgency(state, id) {
     else if (value && typeof value === 'object' && !Array.isArray(value) && !['accounts', 'integrations', 'reselling', 'systemEmails', 'labs'].includes(key)) state[key] = { ...value, ...state[key] };
   }
   mobileOf(state);
+  desktopOf(state);
   delete state.stripe;
   state.profile.language = platformLanguage;
   state.company.brand = platformBrand;

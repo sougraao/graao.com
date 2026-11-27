@@ -5,10 +5,11 @@ import { icon } from './icons.js';
 
 const h = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 export const desktopPresets = [
-  ['graao', 'Laranja Graao', '#100d0a', '#faf7f3', '#ff6b1a', '#100d0a'], ['rosa', 'Rosa', '#fff5fa', '#1e1821', '#b71889', '#ffffff'], ['oceano', 'Oceano', '#f0f7fc', '#0f2230', '#0e6ba8', '#ffffff'],
-  ['esmeralda', 'Esmeralda', '#f0f9f4', '#14261b', '#1f7a4d', '#ffffff'], ['ardosia', 'Ardósia', '#f4f6f8', '#1f2933', '#334e68', '#ffffff'],
-  ['rose', 'Rosé', '#fff4f5', '#2a1215', '#c2415c', '#ffffff'], ['ambar', 'Âmbar', '#fffaf0', '#2b1d07', '#b45309', '#ffffff'],
-  ['violeta', 'Violeta', '#f7f4ff', '#1f1633', '#6d28d9', '#ffffff'], ['minimal', 'Minimalista', '#ffffff', '#111111', '#111111', '#ffffff']
+  ['graao', 'Laranja Graao', '#111111', '#f5f5f5', '#ff6b1a', '#111111'], ['brasa', 'Brasa', '#fbf6f2', '#2a160b', '#c2410c', '#ffffff'],
+  ['ambar', 'Âmbar', '#fdf8ee', '#2b1d07', '#a15c07', '#ffffff'], ['esmeralda', 'Esmeralda', '#f5f8f3', '#14261b', '#1f7a4d', '#ffffff'],
+  ['oceano', 'Oceano', '#f3f8f8', '#0d2529', '#0e7490', '#ffffff'], ['violeta', 'Violeta', '#f7f4fa', '#1f1633', '#6d28d9', '#ffffff'],
+  ['rosa', 'Rosa', '#fbf4f6', '#2a1220', '#be185d', '#ffffff'], ['ardosia', 'Ardósia', '#f4f6f8', '#1f2933', '#334e68', '#ffffff'],
+  ['neon', 'Neon', '#111111', '#f5f5f5', '#1fe5f0', '#062a2d'], ['minimal', 'Minimalista', '#ffffff', '#1a1a1a', '#1a1a1a', '#ffffff']
 ];
 const tokens = [['background', 'Fundo'], ['text', 'Texto'], ['button', 'Botão'], ['buttonText', 'Texto do botão']];
 const images = [['icon', 'Ícone do app *', '1024 × 1024, PNG. Aparece na barra de tarefas e no menu iniciar.', 'image/png'], ['logo', 'Logo completo', '512 × 128. No topo da tela de entrada.', 'image/png,image/jpeg,image/webp'],
@@ -24,8 +25,8 @@ function screen(app) {
 }
 
 export function desktopPage(agency, origin, agencyId) {
-  const app = { appName: 'My Agency', title: '', subtitle: '', theme: { preset: 'graao', background: '#100d0a', text: '#faf7f3', button: '#ff6b1a', buttonText: '#100d0a' }, status: 'draft', version: 0, ...agency.desktopApp };
-  app.theme = { preset: 'graao', background: '#100d0a', text: '#faf7f3', button: '#ff6b1a', buttonText: '#100d0a', ...(agency.desktopApp?.theme || {}) };
+  const app = { appName: 'My Agency', title: '', subtitle: '', theme: { preset: 'graao', background: '#111111', text: '#f5f5f5', button: '#ff6b1a', buttonText: '#111111' }, status: 'draft', version: 0, ...agency.desktopApp };
+  app.theme = { preset: 'graao', background: '#111111', text: '#f5f5f5', button: '#ff6b1a', buttonText: '#111111', ...(agency.desktopApp?.theme || {}) };
   const link = `${origin}/desktop/${agencyId}/`;
   const steps = [Boolean(app.icon), Boolean(app.appName && app.title && app.subtitle), app.status === 'published'];
   return `<div class="page"><header class="page-head"><div><h1>Aplicativo desktop</h1><p>O app da sua agência para Windows, macOS e Linux: janela própria, seu nome e seu ícone, abrindo direto na tela de entrada com a sua marca.</p></div></header>

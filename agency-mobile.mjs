@@ -56,6 +56,12 @@ export function mobileOf(state) {
   // The old defaults were in English; a draft nobody renamed starts in Portuguese.
   if (app.status !== 'published' && app.appName === 'My Agency') app.appName = 'Minha Agência';
   if (app.status !== 'published' && app.loginTitle === 'Welcome back') app.loginTitle = 'Bem-vindo de volta';
+  // Um rascunho ainda no tema Padrão antigo (rosa #b71889) passa para o Padrão novo, laranja.
+  // O mesmo vale para o Padrão laranja sobre creme (#faf7f3), que virou cinza neutro.
+  const padraoAntigo = app.theme?.tokens?.primary === '#b71889' || app.theme?.tokens?.background === '#faf7f3';
+  if (app.status !== 'published' && app.theme?.preset === 'default' && padraoAntigo) {
+    app.theme = defaultTheme(); app.primary = app.theme.tokens.primary;
+  }
   return app;
 }
 

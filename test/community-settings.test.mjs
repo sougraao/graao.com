@@ -31,7 +31,7 @@ test('Group settings: plans, theme tokens, join questions, onboarding, tabs, mod
   const g = group();
   assert.equal(g.name, 'Clube', 'settings saved alone keep the name');
   assert.deepEqual(g.plans.map(row => [row.name, row.price, row.interval]), [['Mensal', 49.9, 'month'], ['Vitalício', 497, 'once']]);
-  assert.deepEqual([g.theme.preset, g.theme.tokens.primary], ['oceano', '#0e6ba8']);
+  assert.deepEqual([g.theme.preset, g.theme.tokens.primary], ['oceano', '#0e7490']);
   assert.deepEqual(g.tabs.map(row => [row.key, row.label, row.visible]), [['about', 'Comece aqui', true], ['events', 'Eventos', false], ['discussion', 'Discussão', true], ['academy', 'Academia', true], ['members', 'Membros', true], ['ranking', 'Ranking', true]]);
   assert.deepEqual(g.moderation, { keywords: ['golpe', 'pirâmide'], spamPack: true });
   assert.equal(heldReason(g, 'Entre nessa PIRÂMIDE'), 'Palavra-chave: pirâmide');
@@ -55,7 +55,7 @@ test('Layout: widgets keep known keys in order, composer prompt is trimmed, old 
 test('Themes: onPrimary token, dark presets and withAcademyTab', () => {
   const s = blank();
   const id = save(s, { name: 'Clube', theme: { preset: 'noite-neon' } });
-  assert.equal(s.communities.find(row => row.id === id).theme.tokens.onPrimary, '#0b0d10');
+  assert.equal(s.communities.find(row => row.id === id).theme.tokens.onPrimary, '#062a2d');
   save(s, { theme: { preset: 'custom', tokens: { primary: '#123456', background: '#ffffff', tertiary: '#eeeeee', font: '#111111', sidebar: '#ffffff', surface: '#ffffff', border: '#dddddd', error: '#cc0000' } } }, id);
   assert.equal(s.communities.find(row => row.id === id).theme.tokens.onPrimary, '#ffffff', 'a custom theme saved before onPrimary existed still validates');
   assert.deepEqual(withAcademyTab([{ key: 'about', label: 'Sobre' }, { key: 'discussion', label: 'Feed' }]).map(row => row.key), ['about', 'discussion', 'academy']);

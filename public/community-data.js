@@ -9,23 +9,26 @@ export const themeTokens = [
 
 /** Ready-made themes. */
 export const themePresets = [
-  { id: 'default', name: 'Padrão', tokens: { onPrimary: '#ffffff', primary: '#b71889', background: '#f7f5f8', tertiary: '#fde7f4', font: '#1e1821', sidebar: '#ffffff', surface: '#ffffff', border: '#e8e1e9', error: '#c0262d' } },
-  { id: 'ameixa', name: 'Ameixa', tokens: { onPrimary: '#ffffff', primary: '#6d28d9', background: '#f6f3fd', tertiary: '#ede5ff', font: '#1f1633', sidebar: '#ffffff', surface: '#ffffff', border: '#e3dbf5', error: '#c0262d' } },
-  { id: 'floresta', name: 'Floresta', tokens: { onPrimary: '#ffffff', primary: '#1f7a4d', background: '#f2f7f3', tertiary: '#dcefe2', font: '#14261b', sidebar: '#ffffff', surface: '#ffffff', border: '#d5e6da', error: '#b42318' } },
-  { id: 'citrico', name: 'Cítrico', tokens: { onPrimary: '#ffffff', primary: '#c2410c', background: '#fff8f1', tertiary: '#ffedd5', font: '#2b1a0e', sidebar: '#ffffff', surface: '#ffffff', border: '#f5dcc4', error: '#b42318' } },
-  { id: 'sol', name: 'Sol', tokens: { onPrimary: '#ffffff', primary: '#a16207', background: '#fffbeb', tertiary: '#fef3c7', font: '#27200b', sidebar: '#ffffff', surface: '#ffffff', border: '#f1e3b5', error: '#b42318' } },
-  { id: 'oceano', name: 'Oceano', tokens: { onPrimary: '#ffffff', primary: '#0e6ba8', background: '#f1f7fb', tertiary: '#dbeefa', font: '#0f2230', sidebar: '#ffffff', surface: '#ffffff', border: '#d3e5f1', error: '#c0262d' } },
-  { id: 'chiclete', name: 'Chiclete', tokens: { onPrimary: '#ffffff', primary: '#db2777', background: '#fff4f8', tertiary: '#fce7f3', font: '#2a1220', sidebar: '#ffffff', surface: '#ffffff', border: '#f6d5e5', error: '#b42318' } },
-  { id: 'marfim', name: 'Marfim', tokens: { onPrimary: '#ffffff', primary: '#57534e', background: '#faf8f3', tertiary: '#efe9dc', font: '#1c1917', sidebar: '#fffdf8', surface: '#fffdf8', border: '#e7e0d1', error: '#b42318' } },
-  { id: 'meia-noite', name: 'Meia-noite', tokens: { onPrimary: '#0f1220', primary: '#8b9cff', background: '#0f1220', tertiary: '#1d2340', font: '#e7e9f5', sidebar: '#151a2e', surface: '#171c31', border: '#2a3152', error: '#ff6b6b' } },
-  { id: 'grafite', name: 'Grafite', tokens: { primary: '#f4f4f5', onPrimary: '#111113', background: '#0e0f11', tertiary: '#1c1e22', font: '#ececee', sidebar: '#131417', surface: '#16181b', border: '#26292e', error: '#ff6b6b' } },
-  { id: 'noite-neon', name: 'Noite neon', tokens: { primary: '#c6f432', onPrimary: '#0b0d10', background: '#0b0d10', tertiary: '#1a1f14', font: '#eef1ea', sidebar: '#111418', surface: '#14171b', border: '#252a30', error: '#ff6b6b' } }
+  // Paleta do graao: Padrão e Carvão sobre os cinzas neutros do app (#FAFAFA / #111111), os outros com fundo levemente tingido; cada principal lê com o seu texto (WCAG 4,5:1).
+  { id: 'default', name: 'Padrão', tokens: { onPrimary: '#1a1410', primary: '#ff6b1a', background: '#fafafa', tertiary: '#fff0e6', font: '#1a1a1a', sidebar: '#ffffff', surface: '#ffffff', border: '#e5e5e5', error: '#c81e4b' } },
+  { id: 'citrico', name: 'Brasa', tokens: { onPrimary: '#ffffff', primary: '#c2410c', background: '#fbf6f2', tertiary: '#fbebe1', font: '#2a160b', sidebar: '#ffffff', surface: '#ffffff', border: '#eedfd3', error: '#c81e4b' } },
+  { id: 'sol', name: 'Sol', tokens: { onPrimary: '#ffffff', primary: '#a15c07', background: '#fdf8ee', tertiary: '#fbefd5', font: '#2b1d07', sidebar: '#ffffff', surface: '#ffffff', border: '#ece0c6', error: '#c81e4b' } },
+  { id: 'floresta', name: 'Floresta', tokens: { onPrimary: '#ffffff', primary: '#1f7a4d', background: '#f5f8f3', tertiary: '#e2efe5', font: '#14261b', sidebar: '#ffffff', surface: '#ffffff', border: '#dbe5da', error: '#c81e4b' } },
+  { id: 'oceano', name: 'Oceano', tokens: { onPrimary: '#ffffff', primary: '#0e7490', background: '#f3f8f8', tertiary: '#dcf1f3', font: '#0d2529', sidebar: '#ffffff', surface: '#ffffff', border: '#d4e4e6', error: '#c81e4b' } },
+  { id: 'ameixa', name: 'Ameixa', tokens: { onPrimary: '#ffffff', primary: '#6d28d9', background: '#f7f4fa', tertiary: '#ede6fb', font: '#1f1633', sidebar: '#ffffff', surface: '#ffffff', border: '#e4ddef', error: '#c81e4b' } },
+  { id: 'chiclete', name: 'Chiclete', tokens: { onPrimary: '#ffffff', primary: '#be185d', background: '#fbf4f6', tertiary: '#fbe4ee', font: '#2a1220', sidebar: '#ffffff', surface: '#ffffff', border: '#efdae3', error: '#c81e4b' } },
+  { id: 'marfim', name: 'Marfim', tokens: { onPrimary: '#ffffff', primary: '#5c534a', background: '#faf7f3', tertiary: '#efe8df', font: '#1c1917', sidebar: '#fffdf9', surface: '#fffdf9', border: '#e6ded2', error: '#c81e4b' } },
+  { id: 'carvao', name: 'Carvão', tokens: { onPrimary: '#1a1410', primary: '#ff6b1a', background: '#111111', tertiary: '#2e1a0e', font: '#f5f5f5', sidebar: '#161616', surface: '#1c1c1c', border: '#333333', error: '#ff8a9e' } },
+  { id: 'grafite', name: 'Grafite', tokens: { onPrimary: '#111111', primary: '#f5f5f5', background: '#111111', tertiary: '#262626', font: '#f5f5f5', sidebar: '#161616', surface: '#1c1c1c', border: '#333333', error: '#ff8a9e' } },
+  { id: 'meia-noite', name: 'Meia-noite', tokens: { onPrimary: '#0f1220', primary: '#8b9cff', background: '#0f1220', tertiary: '#1d2340', font: '#e7e9f5', sidebar: '#151a2e', surface: '#171c31', border: '#2a3152', error: '#ff8a9e' } },
+  { id: 'noite-neon', name: 'Noite neon', tokens: { onPrimary: '#062a2d', primary: '#1fe5f0', background: '#111111', tertiary: '#0b2729', font: '#f5f5f5', sidebar: '#161616', surface: '#1c1c1c', border: '#333333', error: '#ff8a9e' } }
 ];
 export const defaultTheme = () => ({ preset: 'default', tokens: { ...themePresets[0].tokens } });
 
 /** The CSS variables a theme sets on the community page. */
 // A token missing from a theme saved before it existed falls back to the theme's preset, then to the default.
-export const themeStyle = theme => themeTokens.map(([key]) => `--cm-${key}:${theme?.tokens?.[key] || themePresets.find(row => row.id === theme?.preset)?.tokens[key] || themePresets[0].tokens[key]}`).join(';');
+export const themeStyle = theme => themeTokens.map(([key]) => `--cm-${key}:${theme?.tokens?.[key] || themePresets.find(row => row.id === theme?.preset)?.tokens[key]
+  || (key === 'onPrimary' && /^#[0-9a-f]{6}$/i.test(theme?.tokens?.primary || '') ? textOn(theme.tokens.primary) : themePresets[0].tokens[key])}`).join(';');
 
 // Light and dark mode for the member: the owner picks one theme; the other mode is derived from it, keeping
 // the owner's main color but moving it until text and buttons stay readable (WCAG 4.5:1).
@@ -43,8 +46,8 @@ export const themeIsDark = theme => luminance(tokensOf(theme).background) < 0.2;
 const readable = (color, toward, against) => { let out = color; for (let step = 0; step < 14 && contrast(out, against) < 4.5; step++) out = mixColor(out, toward, 0.12); return out; };
 const textOn = color => contrast('#ffffff', color) >= contrast('#0b0d10', color) ? '#ffffff' : '#0b0d10';
 const modeBases = {
-  dark: { background: '#0f1115', sidebar: '#15181d', surface: '#181b21', border: '#2a2e36', font: '#eceef2', error: '#ff6b6b' },
-  light: { background: '#f6f6f8', sidebar: '#ffffff', surface: '#ffffff', border: '#e4e4ea', font: '#17181c', error: '#c0262d' }
+  dark: { background: '#111111', sidebar: '#161616', surface: '#1c1c1c', border: '#333333', font: '#f5f5f5', error: '#ff8a9e' },
+  light: { background: '#fafafa', sidebar: '#ffffff', surface: '#ffffff', border: '#e5e5e5', font: '#1a1a1a', error: '#c81e4b' }
 };
 /** The theme in the mode the member chose ('light' | 'dark'); no choice, or the theme's own mode, keeps it as is. */
 export function themeMode(theme, mode) {
@@ -70,6 +73,8 @@ export function cleanTheme(input) {
     if (!error && !/^#[0-9a-f]{6}$/.test(value)) error = `A cor "${label}" precisa estar no formato #RRGGBB.`;
     return [key, value];
   }));
+  // Tema próprio salvo antes do onPrimary: o texto do botão sai da própria cor principal, não do Padrão.
+  if (!preset && input?.tokens?.onPrimary == null && /^#[0-9a-f]{6}$/.test(tokens.primary)) tokens.onPrimary = textOn(tokens.primary);
   return { theme: { preset: preset ? preset.id : 'custom', tokens }, error };
 }
 
