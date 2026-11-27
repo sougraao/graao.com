@@ -20,7 +20,7 @@
 .ps-mail { border: 1px solid var(--g-line, #eaecf0); border-radius: var(--r-group); padding: 14px 16px; background: var(--g-surface-2, #f9fafb); font-size: 14px; }
 .ps-mail-head { margin: 0 0 6px; color: var(--g-dim, #475467); }
 .ps-mail-body { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--g-line, #eaecf0); overflow-wrap: anywhere; }
-.ps-link { color: var(--g-brand-text, #155eef); }
+.ps-link { color: var(--g-brand-text, #b8460b); }
 .ps-taxes, .table-shell table.ps-taxes { width: 100%; min-width: 0; table-layout: fixed; }
 .ps-taxes th:nth-child(2) { width: 92px; }
 .ps-taxes th:last-child { width: 44px; }

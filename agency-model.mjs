@@ -25,12 +25,15 @@ import { apiScopes,
 export const AGENCY_ID = 'agency';
 const platformLanguage = 'Português (Brasil)';
 const platformBrand = 'graao';
-// Paleta oficial do graao (2026-11-27): verde #5DD62C, verde-escuro #337418.
-const defaultPrimary = '#5dd62c';
-const defaultSecondary = '#337418';
-const defaultAccent = '#5dd62c';
-// O padrão anterior (rosa, lilás e azul): quem nunca trocou as cores passa para a paleta nova.
-const previousDefault = { primary: '#ff4f9a', secondary: '#c4a7ff', accent: '#6bc9ff' };
+// Paleta oficial do graao (2026-11-27): laranja #FF6B1A, brasa #C2410C e ciano neon #1FE5F0.
+const defaultPrimary = '#ff6b1a';
+const defaultSecondary = '#c2410c';
+const defaultAccent = '#1fe5f0';
+// Padrões anteriores (verde; rosa, lilás e azul): quem nunca trocou as cores passa para a paleta nova.
+const previousDefaults = [
+  { primary: '#5dd62c', secondary: '#337418', accent: '#5dd62c' },
+  { primary: '#ff4f9a', secondary: '#c4a7ff', accent: '#6bc9ff' }
+];
 const fail = (message, status = 400) => { throw Object.assign(new Error(message), { status }); };
 const str = (value, limit = 240) => typeof value === 'string' ? value.trim().slice(0, limit) : typeof value === 'number' ? String(value).slice(0, limit) : '';
 const req = (value, label, limit) => str(value, limit) || fail(`${label} is required.`);
@@ -116,10 +119,11 @@ export function hydrateAgency(state, id) {
   state.profile.language = platformLanguage;
   state.company.brand = platformBrand;
   state.company.currency = defaults.profile.currency;
-  if (state.company.primary === previousDefault.primary && state.company.secondary === previousDefault.secondary) {
+  const previous = previousDefaults.find(p => state.company.primary === p.primary && state.company.secondary === p.secondary);
+  if (previous) {
     state.company.primary = defaultPrimary;
     state.company.secondary = defaultSecondary;
-    if (!state.company.accent || state.company.accent === previousDefault.accent) state.company.accent = defaultAccent;
+    if (!state.company.accent || state.company.accent === previous.accent) state.company.accent = defaultAccent;
   }
   if (!/^#[0-9a-f]{6}$/i.test(state.company.primary || '')) state.company.primary = defaultPrimary;
   if (!/^#[0-9a-f]{6}$/i.test(state.company.secondary || '')) state.company.secondary = defaultSecondary;

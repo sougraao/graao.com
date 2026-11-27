@@ -1231,7 +1231,7 @@ document.fonts?.ready.then(() => document.querySelectorAll('[data-g]').forEach(e
 /* Theme toggle: microkit diagonal wipe via View Transitions API */
 let themeBusy = null;
 let themeStorageKey;
-// O graao abre no escuro (paleta oficial #0F0F0F/#202020 + verde); o claro é escolha de quem usa.
+// O graao abre no escuro (carvão #100D0A/#1E1A16 + laranja #FF6B1A); o claro é escolha de quem usa.
 let themeFallback = 'dark';
 
 function applyTheme(theme) {
@@ -1241,12 +1241,14 @@ function applyTheme(theme) {
   window.dispatchEvent(new CustomEvent('graao:theme-change'));
 }
 
-// Paleta oficial do graao: verde #5DD62C principal, verde-escuro #337418 secundário (mesmos padrões de agency-model.mjs).
-// Pares que já foram o padrão (rosa/lilás, laranja/amarelo, roxo) contam como padrão até a agência escolher outro.
-const DEFAULT_BRAND_PRIMARY = '#5dd62c';
-const DEFAULT_BRAND_SECONDARY = '#337418';
-const DEFAULT_BRAND_ACCENT = '#5dd62c';
+// Paleta oficial do graao: laranja #FF6B1A principal, brasa #C2410C secundária e ciano neon #1FE5F0 de acento
+// (mesmos padrões de agency-model.mjs). Pares que já foram o padrão (verde, rosa/lilás, laranja/amarelo, roxo)
+// contam como padrão até a agência escolher outro.
+const DEFAULT_BRAND_PRIMARY = '#ff6b1a';
+const DEFAULT_BRAND_SECONDARY = '#c2410c';
+const DEFAULT_BRAND_ACCENT = '#1fe5f0';
 const LEGACY_DEFAULT_PAIRS = new Set([
+  '#5dd62c|#337418',
   '#ff4f9a|#c4a7ff',
   '#ff00bb|#fc972d',
   '#ff701a|#ffd52a',
@@ -1266,10 +1268,12 @@ export function applyBrandColor(primaryValue, secondaryValue, accentValue) {
   const primary = /^#[0-9a-f]{6}$/i.test(primaryValue) ? primaryValue.toLowerCase() : DEFAULT_BRAND_PRIMARY;
   const secondary = /^#[0-9a-f]{6}$/i.test(secondaryValue) ? secondaryValue.toLowerCase() : DEFAULT_BRAND_SECONDARY;
   const accent = /^#[0-9a-f]{6}$/i.test(accentValue) ? accentValue.toLowerCase() : DEFAULT_BRAND_ACCENT;
-  root.style.setProperty('--g-brand-accent', accent);
   const custom = (primary !== DEFAULT_BRAND_PRIMARY || secondary !== DEFAULT_BRAND_SECONDARY)
     && !LEGACY_DEFAULT_PAIRS.has(`${primary}|${secondary}`);
   root.toggleAttribute('data-custom-brand', custom);
+  // Na paleta do graao o acento muda com o tema (neon no escuro, mais fechado no claro): só a marca própria fixa um valor.
+  if (custom) root.style.setProperty('--g-brand-accent', accent);
+  else root.style.removeProperty('--g-brand-accent');
   if (!custom) {
     for (const prop of [
       '--g-custom-brand', '--g-custom-brand-2', '--g-custom-brand-accent',

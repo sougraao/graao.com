@@ -8,7 +8,7 @@
 
 /* Avatares e marcadores */
 .agent-avatar {
-  --hue: var(--g-brand, #337418); flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: var(--r-control);
+  --hue: var(--g-brand, #b8460b); flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: var(--r-control);
   color: var(--hue); background: color-mix(in srgb, var(--hue) 13%, var(--g-surface));
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hue) 22%, transparent);
 }
@@ -73,7 +73,7 @@
   display: block; width: 100%; min-height: 58px; max-height: 180px; padding: 17px 58px 15px 20px; border-radius: var(--r-sheet) !important;
   resize: none; line-height: 1.45; background: var(--g-surface) !important; box-shadow: var(--g-shadow) !important;
 }
-.ags-describe textarea:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--g-brand, #337418) 20%, transparent), var(--g-shadow) !important; }
+.ags-describe textarea:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--g-brand, #b8460b) 20%, transparent), var(--g-shadow) !important; }
 .ags-send, .ags-composer > button {
   position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 38px; height: 38px; padding: 0;
   border: 0; border-radius: 50%; background: var(--g-grad-brand); color: var(--g-grad-on, #fff);

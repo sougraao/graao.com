@@ -1,23 +1,23 @@
-/* Tema do graao: paleta oficial (#0F0F0F, #202020, #5DD62C, #337418, #F8F8F8) e fonte do app.
-   No escuro o destaque é o verde #5DD62C; no claro, o verde-escuro #337418, que tem contraste como texto. */
+/* Tema do graao: paleta oficial (laranja #FF6B1A, brasa #C2410C, ciano neon #1FE5F0, carvão #100D0A/#1E1A16, creme #FAF7F3)
+   e fonte do app. No escuro os links usam o laranja claro #FF8A4C; no claro, o laranja fechado #B8460B, que tem contraste como texto. */
 :root {
   --sl-font: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --sl-color-accent-low: #1b2915;
-  --sl-color-accent: #5dd62c;
-  --sl-color-accent-high: #c8f2b4;
-  --sl-color-white: #f8f8f8;
-  --sl-color-gray-5: #333333;
-  --sl-color-gray-6: #202020;
-  --sl-color-black: #0f0f0f;
+  --sl-color-accent-low: #2e1a0e;
+  --sl-color-accent: #ff8a4c;
+  --sl-color-accent-high: #ffc4a0;
+  --sl-color-white: #faf7f3;
+  --sl-color-gray-5: #332c25;
+  --sl-color-gray-6: #1e1a16;
+  --sl-color-black: #100d0a;
 }
 
 :root[data-theme='light'] {
-  --sl-color-accent-low: #ecf8e5;
-  --sl-color-accent: #337418;
-  --sl-color-accent-high: #1f4a0e;
-  --sl-color-white: #0f0f0f;
-  --sl-color-gray-7: #f2f2f2;
-  --sl-color-black: #f8f8f8;
+  --sl-color-accent-low: #fff0e6;
+  --sl-color-accent: #b8460b;
+  --sl-color-accent-high: #7a2e06;
+  --sl-color-white: #1a1410;
+  --sl-color-gray-7: #f4efe9;
+  --sl-color-black: #faf7f3;
 }
 
 .site-title img { height: 2rem; width: auto; }

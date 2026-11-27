@@ -2,7 +2,7 @@
 dialog.ask{
   --ask-bg:var(--g-surface,var(--surface,#fff)); --ask-ink:var(--g-ink,var(--text,#0f131a)); --ask-dim:var(--g-dim,var(--muted,#5d6673));
   --ask-line:var(--g-line-2,var(--border,#d9dee5)); --ask-soft:var(--g-surface-2,var(--surface-hover,#f4f6f8));
-  --ask-tint:var(--g-brand, #337418); --ask-ease:var(--ease-out,cubic-bezier(.16,1,.3,1));
+  --ask-tint:var(--g-brand, #b8460b); --ask-ease:var(--ease-out,cubic-bezier(.16,1,.3,1));
   width:min(440px,calc(100vw - 32px)); max-width:none; max-height:calc(100dvh - 32px); margin:auto; padding:0; overflow:auto;
   border:1px solid var(--ask-line); border-radius:var(--r-sheet); background:var(--ask-bg); color:var(--ask-ink);
   box-shadow:0 24px 60px -12px rgba(15,19,26,.35); font-family:inherit; text-align:left;

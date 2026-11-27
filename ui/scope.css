@@ -27,7 +27,7 @@
     radial-gradient(60% 80% at 106% 62%,color-mix(in srgb,var(--ag-pink) 34%,transparent) 0%,transparent 64%),
     radial-gradient(55% 65% at 62% -12%,color-mix(in srgb,var(--ag-purple) 26%,transparent) 0%,transparent 64%),
     radial-gradient(45% 55% at -4% -8%,color-mix(in srgb,var(--ag-blue) 22%,transparent) 0%,transparent 62%),
-    linear-gradient(120deg,#f8f8f8 0%,#f1f7ee 50%,#f8f8f8 100%);
+    linear-gradient(120deg,#faf7f3 0%,#fbf1e8 50%,#faf7f3 100%);
 }
 
 /* ───────── Workspace switchers (agency ↔ sub-accounts) ───────── */
@@ -84,7 +84,7 @@ div.ws-choice:hover,div.ws-choice:active{transform:none}
     linear-gradient(120deg,color-mix(in srgb,var(--g-brand-accent) 24%,var(--g-surface)) 0%,color-mix(in srgb,var(--g-brand) 14%,var(--g-surface)) 55%,color-mix(in srgb,var(--g-brand-2) 16%,var(--g-surface)) 100%) padding-box,
     linear-gradient(135deg,var(--g-brand),var(--g-brand-2) 58%,var(--g-brand-accent)) border-box;
 }
-.ws-agency .ws-tile{border:0;background:var(--g-grad-brand);color:var(--g-brand-on,#2a0616)}
+.ws-agency .ws-tile{border:0;background:var(--g-grad-brand);color:var(--g-brand-on, #1a1410)}
 .ws-agency .ws-current{background:rgba(255,255,255,.75)}
 
 /* ───────── Dark theme ───────── */

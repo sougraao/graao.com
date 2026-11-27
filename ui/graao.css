@@ -164,7 +164,7 @@ a.crumb:hover{color:var(--g-ink)}
 .lang-switcher{position:relative;display:inline-flex;align-items:center;gap:2px;padding:3px;border:1px solid var(--g-line-2);border-radius:var(--r-group);background:var(--g-surface);user-select:none;flex:none}
 .lang-btn{z-index:1;border:0;border-radius:var(--r-control);background:transparent;color:var(--g-dim);font-family:inherit;font-size:11px;font-weight:700;padding:5px 8px;cursor:pointer;line-height:1;transition:all .18s var(--ease-std)}
 .lang-btn:hover{color:var(--g-ink);background:var(--g-surface-2)}
-.lang-btn.active{background:var(--g-brand);color:var(--g-brand-on,#2a0616);box-shadow:0 1px 3px rgba(214,41,118,.3)}
+.lang-btn.active{background:var(--g-brand);color:var(--g-brand-on, #1a1410);box-shadow:0 1px 3px rgba(214,41,118,.3)}
 .tool-group{position:relative;display:flex;align-items:center;gap:2px;padding:3px;border:1px solid var(--g-line-2);border-radius:var(--r-group);background:var(--g-surface)}
 .tool-btn{z-index:1;width:32px;height:32px;border:0;border-radius:var(--r-control);background:transparent}
 .tool-btn:hover{color:var(--g-ink)}
@@ -224,7 +224,7 @@ a.metric:hover{transform:translateY(-3px);box-shadow:0 0 0 1px var(--g-line),var
 
 /* ───────── Buttons ───────── */
 .primary,.secondary,.danger{border-radius:999px;font-weight:700;padding:8px 16px;min-height:38px;letter-spacing:-.005em;transition:transform .16s var(--ease-out),box-shadow .35s var(--ease-std),background-color .25s var(--ease-std),border-color .25s var(--ease-std),color .25s}
-.primary,.dash-save{position:relative;isolation:isolate;overflow:hidden;background:var(--g-brand-fill);border:1px solid rgba(0,0,0,.1);color:var(--g-brand-on,#2a0616);box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+.primary,.dash-save{position:relative;isolation:isolate;overflow:hidden;background:var(--g-brand-fill);border:1px solid rgba(0,0,0,.1);color:var(--g-brand-on, #1a1410);box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
 .primary:hover{background:var(--g-brand-fill-hover);border-color:rgba(0,0,0,.15);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
 /* cursor-tracked light (microkit "cursor edge glow") + shine sweep */
 .primary::before,.continue::before,.studio-create::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s var(--ease-std);background:radial-gradient(90px circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.42),transparent 70%)}
@@ -240,7 +240,7 @@ a.metric:hover{transform:translateY(-3px);box-shadow:0 0 0 1px var(--g-line),var
 .danger:hover{background:#cf3a40;border-color:#cf3a40}
 .danger.plain{color:#cf3a40}
 /* Accent CTA = the orange "Effects" pill */
-.continue,.studio-create,.studio-compose-actions .primary{position:relative;isolation:isolate;overflow:hidden;background:var(--g-grad-brand);border:1px solid rgba(255,255,255,.4);color:var(--g-brand-on,#2a0616);border-radius:999px;box-shadow:inset 0 1px 0 rgba(255,255,255,.45);font-weight:700;transition:transform .16s var(--ease-out),box-shadow .35s var(--ease-std)}
+.continue,.studio-create,.studio-compose-actions .primary{position:relative;isolation:isolate;overflow:hidden;background:var(--g-grad-brand);border:1px solid rgba(255,255,255,.4);color:var(--g-brand-on, #1a1410);border-radius:999px;box-shadow:inset 0 1px 0 rgba(255,255,255,.45);font-weight:700;transition:transform .16s var(--ease-out),box-shadow .35s var(--ease-std)}
 .continue:not(:disabled):hover,.studio-create:hover{background:var(--g-grad-brand);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
 .icon-btn{border-radius:var(--r-control);color:var(--g-dim);transition:background .2s var(--ease-std),color .2s,transform .16s var(--ease-out)}
 .icon-btn:hover{background:var(--g-brand-2-surface);color:var(--g-brand-2-text)}
@@ -256,7 +256,7 @@ a.metric:hover{transform:translateY(-3px);box-shadow:0 0 0 1px var(--g-line),var
 .tabs::-webkit-scrollbar{display:none}
 .tabs button{position:relative;z-index:1;min-height:32px;height:32px;padding:0 14px;border:0;border-radius:999px;color:var(--g-dim);font-size:13px;font-weight:650;transition:color .28s var(--ease-std)}
 .tabs button:hover{color:var(--g-ink)}
-.tabs button.selected,.tabs button[aria-selected=true]{color:var(--g-brand-on,#2a0616);background:var(--g-brand)}
+.tabs button.selected,.tabs button[aria-selected=true]{color:var(--g-brand-on, #1a1410);background:var(--g-brand)}
 .tabs.g-pill button.selected,.tabs.g-pill button[aria-selected=true]{background:transparent;color:#fff}
 .thread-list .tabs{margin:0 10px 8px;padding:3px;gap:1px}
 .thread-list .tabs button{padding:0 10px;font-size:12.5px;height:28px;min-height:28px}
@@ -387,7 +387,7 @@ input[type=radio],input[type=range]{accent-color:var(--g-brand)}
 .day{border-color:var(--g-line);transition:background .2s}
 .day.off{background:var(--g-surface-2)}
 .day.today{background:var(--g-brand-surface)}
-.day-number:hover,.day.today .day-number{background:var(--g-brand);color:var(--g-brand-on,#2a0616)}
+.day-number:hover,.day.today .day-number{background:var(--g-brand);color:var(--g-brand-on, #1a1410)}
 .appointment{border-radius:var(--r-chip);background:var(--g-brand-2-surface);color:var(--g-brand-2-text);font-weight:600;transition:transform .2s var(--ease-out)}
 .appointment:hover{transform:translateX(2px)}
 .kanban-col{background:var(--g-surface-2);border:1px solid var(--g-line);border-top:3px solid var(--tone);border-radius:var(--g-r);box-shadow:none}
@@ -491,7 +491,7 @@ dialog h2{font-weight:800;letter-spacing:-.03em}
 
 
 /* ═════════ Refinements: clarity, deference, legibility ═════════
-   The graao green #5dd62c (dark green #337418 second; buttons use the solid green with #0f0f0f text) stays the identity colour (logo, current-page marker, focus, dots).
+   The graao orange #ff6b1a (ember #c2410c second, neon cyan #1fe5f0 accent; buttons use the solid orange with #1a1410 text) stays the identity colour (logo, current-page marker, focus, dots).
    Surfaces that carry white text use a deeper tone of the same pink so the text clears 4.5:1.
    Pink marks the one primary action and the current location; selection inside a page
    (segmented tabs) is neutral, like a system segmented control. Motion explains change and
@@ -545,7 +545,7 @@ dialog h2{font-weight:750;letter-spacing:-.02em}
 .badge.red{color:#be123c}
 .empty p,.kanban-empty{color:var(--g-dim)}
 .thread-preview small{font-size:var(--t-caption)}
-.day-number:hover,.day.today .day-number{background:var(--g-brand-fill);color:var(--g-brand-on,#fff)}
+.day-number:hover,.day.today .day-number{background:var(--g-brand-fill);color:var(--g-brand-on, #1a1410)}
 .dash-quick button{color:var(--g-brand-2-text)}
 .dash-quick button:disabled{color:var(--g-faint);cursor:default}
 
@@ -1362,7 +1362,7 @@ button.shc-card:active{
   border-color:color-mix(in srgb,var(--cu-accent) 30%,var(--g-line-2));
 }
 
-.dash-gauge canvas{color:var(--dash-accent,var(--g-brand, #337418))}
+.dash-gauge canvas{color:var(--dash-accent,var(--g-brand, #b8460b))}
 .dash-gauge b,
 :root[data-theme=dark] .dash-gauge b{
   font-size:30px;

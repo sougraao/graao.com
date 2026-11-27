@@ -1099,9 +1099,9 @@ export function startAgency(env) {
           <label>Moeda<input readonly value="Real brasileiro (BRL)"></label>
         </div>`)}
         ${section('brand', 'Cores da marca', 'A primária lidera as ações, a secundária cria camadas e o acento marca links e destaques. A prévia muda enquanto você escolhe.', `<div class="ag-company-colors">
-          ${colorPicker(c.primary, { name: 'primary', label: 'Cor primária', fallback: '#FF4F9A' })}
-          ${colorPicker(c.secondary, { name: 'secondary', label: 'Cor secundária', fallback: '#C4A7FF' })}
-          ${colorPicker(c.accent, { name: 'accent', label: 'Cor de acento', fallback: '#6BC9FF' })}
+          ${colorPicker(c.primary, { name: 'primary', label: 'Cor primária', fallback: '#FF6B1A' })}
+          ${colorPicker(c.secondary, { name: 'secondary', label: 'Cor secundária', fallback: '#C2410C' })}
+          ${colorPicker(c.accent, { name: 'accent', label: 'Cor de acento', fallback: '#1FE5F0' })}
         </div>
         <div class="ag-brand-showcase">
           <div class="ag-brand-mockup-tabs" role="tablist" aria-label="Exemplos de aplicação da paleta">
@@ -1148,9 +1148,9 @@ export function startAgency(env) {
             </div>
             <div class="ag-brand-mockup-panel" data-ag-brand-mockup-panel="surfaces" role="tabpanel" aria-label="Prévia: fundos e estados" hidden>
               <div class="ag-brand-surfaces-demo" inert>
-                <div class="ag-brand-surface-tile ag-brand-surface-pink"><span>Primária</span><b>Ações que pedem decisão</b><small>Verde Graao · var(--g-brand)</small></div>
-                <div class="ag-brand-surface-tile ag-brand-surface-lilac"><span>Secundária</span><b>Camadas e agrupamentos</b><small>Verde-escuro Graao · var(--g-brand-2)</small></div>
-                <div class="ag-brand-surface-tile ag-brand-surface-blue"><span>Acento</span><b>Feedback e descoberta</b><small>Verde Graao · var(--g-brand-accent)</small></div>
+                <div class="ag-brand-surface-tile ag-brand-surface-pink"><span>Primária</span><b>Ações que pedem decisão</b><small>Laranja Graao · var(--g-brand)</small></div>
+                <div class="ag-brand-surface-tile ag-brand-surface-lilac"><span>Secundária</span><b>Camadas e agrupamentos</b><small>Brasa Graao · var(--g-brand-2)</small></div>
+                <div class="ag-brand-surface-tile ag-brand-surface-blue"><span>Acento</span><b>Feedback e descoberta</b><small>Neon Graao · var(--g-brand-accent)</small></div>
               </div>
             </div>
           </div>
@@ -1389,7 +1389,8 @@ Authorization: Bearer &lt;sua-chave&gt;</pre></div>`,
     const brandReset = ev.target.closest('[data-ag-brand-reset]');
     if (brandReset) {
       const form = brandReset.closest('form[data-ag-form="company"]');
-      const defaults = { primary: '#FF4F9A', secondary: '#C4A7FF', accent: '#6BC9FF' };
+      // paleta oficial do graao (mesmos padrões de agency-model.mjs e graao.js)
+      const defaults = { primary: '#FF6B1A', secondary: '#C2410C', accent: '#1FE5F0' };
       for (const [name, value] of Object.entries(defaults)) {
         const field = form?.querySelector('[name="' + name + '"]');
         if (!field) continue;

@@ -14,11 +14,11 @@
   height: 36px; white-space: nowrap; border: 1px solid #ccd5e4; border-radius: var(--r-control);
   padding: 0 13px; background: white; color: #344761; box-shadow: 0 1px 2px #20304a0a; font-size: 13px; font-weight: 620;
 }
-.dash-tool:hover { background: var(--g-brand-surface, #ecf8e5); border-color: #afbfda; }
+.dash-tool:hover { background: var(--g-brand-surface, #fff0e6); border-color: #afbfda; }
 .dash-switch:has(> .dash-tool) h1 .dash-tool { min-width: 118px; }
 
 .dash-square { width: 36px; padding: 0; }
-.dash-save { background: var(--g-brand-fill, #5dd62c); color: var(--g-brand-on, white); border-color: var(--g-brand-fill, #5dd62c); }
+.dash-save { background: var(--g-brand-fill, #ff6b1a); color: var(--g-brand-on, white); border-color: var(--g-brand-fill, #ff6b1a); }
 .dash-quick { display: flex; align-items: center; gap: 10px; min-height: 53px; }
 .dash-quick > button { border: 0; border-right: 1px solid #e4e8ef; background: none; padding: 3px 13px 3px 0; color: #1852e8; font-weight: 600; }
 .dash-quick > button:disabled { color: #7d9df8; }
@@ -28,7 +28,7 @@
 .dash-card { min-width: 0; display: flex; flex-direction: column; background: white; border: 1px solid #e1e6ef; border-radius: var(--r-control); overflow: hidden; }
 .dash-card.dash-primary { min-height: 416px; }
 .dash-card > header { min-height: 73px; display: flex; gap: 6px; justify-content: space-between; align-items: center; padding: 13px 16px; border-bottom: 1px solid #e5e9f2; }
-.dash-card > header[draggable] { cursor: grab; background: var(--g-brand-surface, #ecf8e5); }
+.dash-card > header[draggable] { cursor: grab; background: var(--g-brand-surface, #fff0e6); }
 .dash-card h2 { margin: 0; font-size: 15px; font-weight: 660; letter-spacing: -.01em; overflow-wrap: anywhere; }
 .dash-card > header p { font-size: 12.5px; margin: 2px 0 0; }
 .dash-card-settings { width: 30px; margin-left: auto; flex: 0 0 30px; }
@@ -55,8 +55,8 @@
 .dash-meter div, .dash-funnel td:first-child>div { justify-content: space-between; display: flex; gap: 8px; }
 .dash-meter meter, .dash-funnel meter { display: block; width: 100%; height: 12px; }
 .dash-meter meter::-webkit-meter-bar, .dash-funnel meter::-webkit-meter-bar { border: 0; background: #edf1f7; }
-.tone-blue { --dash-meter: var(--dash-accent, var(--g-brand, #337418)); }.tone-green { --dash-meter: #55b69b; }.tone-red { --dash-meter: #e2818c; }.tone-gray { --dash-meter: #b0bdd2; }
-.dash-meter meter::-webkit-meter-optimum-value, .dash-funnel meter::-webkit-meter-optimum-value { background: var(--dash-meter,var(--dash-accent,#5dd62c)); }
+.tone-blue { --dash-meter: var(--dash-accent, var(--g-brand, #b8460b)); }.tone-green { --dash-meter: #55b69b; }.tone-red { --dash-meter: #e2818c; }.tone-gray { --dash-meter: #b0bdd2; }
+.dash-meter meter::-webkit-meter-optimum-value, .dash-funnel meter::-webkit-meter-optimum-value { background: var(--dash-meter,var(--dash-accent,#ff6b1a)); }
 .dash-funnel { overflow: auto; max-height: 340px; margin-top: 15px; }
 .dash-funnel table, .dash-table table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12.5px; }
 .dash-funnel td, .dash-table td, .dash-table th { padding: 8px 7px; border-bottom: 1px solid #eaf0f7; white-space: nowrap; }
@@ -74,7 +74,7 @@
 .dash-task { display: grid; grid-template-columns: 20px minmax(0,1fr) auto; gap: 10px; border-bottom: 1px solid #eaf0f4; padding: 9px 0; }
 .dash-task small { color: #4e6684; }
 .dash-task-check { width: 17px; height: 17px; margin-top: 3px; background: white; border: 1px solid #a5b6cc; border-radius: 4px; padding: 0; }
-.dash-task-check[aria-pressed='true'] { background: var(--g-brand-surface, #ecf8e5); color: var(--g-brand-text, #1d57d5); }
+.dash-task-check[aria-pressed='true'] { background: var(--g-brand-surface, #fff0e6); color: var(--g-brand-text, #b8460b); }
 .dash-edit-tools { display: flex; align-items: center; margin-left: auto; }
 .dash-edit-tools .icon-btn { width: 24px; min-width: 24px; }
 .dash-date-fields { padding: 0; border: 0; margin: 0; }

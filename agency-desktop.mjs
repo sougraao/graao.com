@@ -6,7 +6,7 @@
 import { isAssetUrl } from './asset-store.mjs';
 
 export const desktopPresets = [
-  { id: 'graao', name: 'Verde Graao', background: '#0f0f0f', text: '#f8f8f8', button: '#5dd62c', buttonText: '#0f0f0f' },
+  { id: 'graao', name: 'Laranja Graao', background: '#100d0a', text: '#faf7f3', button: '#ff6b1a', buttonText: '#100d0a' },
   { id: 'rosa', name: 'Rosa', background: '#fff5fa', text: '#1e1821', button: '#b71889', buttonText: '#ffffff' },
   { id: 'oceano', name: 'Oceano', background: '#f0f7fc', text: '#0f2230', button: '#0e6ba8', buttonText: '#ffffff' },
   { id: 'esmeralda', name: 'Esmeralda', background: '#f0f9f4', text: '#14261b', button: '#1f7a4d', buttonText: '#ffffff' },

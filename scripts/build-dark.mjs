@@ -18,8 +18,8 @@ const PREFIX = ':root[data-theme=dark]';
 
 // mesmas superfícies escuras de ui/tokens.css
 const P = {
-  surface: [32, 32, 32], sunken: [39, 39, 39], raised: [51, 51, 51], hairline: [58, 58, 58], divider: [48, 48, 48],
-  text: '#f8f8f8', text2: '#d6d6d6', text3: '#bdbdbd', muted: '#a6a6a6', dim: '#8f8f8f',
+  surface: [30, 26, 22], sunken: [38, 33, 28], raised: [51, 44, 37], hairline: [60, 52, 44], divider: [48, 42, 36],
+  text: '#faf7f3', text2: '#ddd5cc', text3: '#c4bab0', muted: '#ada399', dim: '#978d83',
 };
 
 /* ── tiny CSS reader: rules, @media/@supports blocks; skips @keyframes, @font-face and comments ── */

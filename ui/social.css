@@ -42,13 +42,13 @@
 .sp-day:nth-child(7n){border-right:0}.sp-day.out{background:#fafbfc}.sp-day.out .sp-day-head span{color:#a3acb8}.sp-day.past{background:#fcfcfd}
 .sp-day.drop{background:#fff6ee;outline:2px dashed #f59e0b;outline-offset:-3px}
 .sp-day-head{display:flex;justify-content:space-between;align-items:center}.sp-day-head span{font-size:12.5px;font-weight:650;color:#475569;padding:2px 5px;border-radius:var(--r-chip)}
-.sp-day.today .sp-day-head span{background:var(--blue);color:var(--g-brand-on,#2a0616)}
+.sp-day.today .sp-day-head span{background:var(--blue);color:var(--g-brand-on, #1a1410)}
 .sp-add{opacity:0;border:0;background:#f1f5f9;border-radius:var(--r-chip);width:22px;height:22px;display:grid;place-items:center;color:#475569}
 .sp-day:hover .sp-add,.sp-add:focus-visible{opacity:1}
 .sp-chip{display:grid;gap:2px;text-align:left;border:1px solid #e2e8f0;border-left:3px solid #94a3b8;background:#fff;border-radius:var(--r-chip);padding:4px 6px;font-size:12.5px;min-width:0;cursor:pointer}
 .sp-chip:hover{box-shadow:0 3px 10px #0f172a14}.sp-chip[draggable=true]{cursor:grab}
 .sp-chip.ghost{opacity:.7;border-style:dashed;border-left-style:solid}
-.sp-chip.st-scheduled{border-left-color:var(--g-brand, #337418)}.sp-chip.st-published{border-left-color:#16a34a}.sp-chip.st-failed{border-left-color:#dc2626;background:#fff7f7}
+.sp-chip.st-scheduled{border-left-color:var(--g-brand, #b8460b)}.sp-chip.st-published{border-left-color:#16a34a}.sp-chip.st-failed{border-left-color:#dc2626;background:#fff7f7}
 .sp-chip.st-draft{border-left-color:#94a3b8}.sp-chip.st-in_review{border-left-color:#d97706;background:#fffbf2}.sp-chip.st-in_progress{border-left-color:#2563eb}
 .sp-chip-top{display:flex;align-items:center;gap:3px;color:#475569}.sp-chip-top time{font-weight:700;margin-right:2px;color:var(--ink)}
 .sp-chip-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#475569}
@@ -68,7 +68,7 @@
 .sp-csv-steps li{display:flex;align-items:center;gap:6px;font-size:13px}
 .sp-csv-steps span{display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;width:24px;height:24px}
 .sp-csv-steps [aria-current=step]{color:var(--ink);font-weight:700}
-.sp-csv-steps [aria-current=step] span{background:var(--blue);color:var(--g-brand-on,#2a0616);border-color:var(--blue)}
+.sp-csv-steps [aria-current=step] span{background:var(--blue);color:var(--g-brand-on, #1a1410);border-color:var(--blue)}
 .sp-csv-templates{display:flex;gap:8px;flex-wrap:wrap}
 .sp-csv-file{padding:16px;border:1px dashed var(--line);border-radius:var(--r-control)}
 .sp-csv-review{max-height:460px;overflow:auto}

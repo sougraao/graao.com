@@ -20,7 +20,7 @@
 .inbox-box.selected{background:transparent;color:var(--g-spot-item-active,var(--g-ink));font-weight:650}
 .inbox-box.selected:hover,.inbox-box.selected:focus-visible{background:var(--g-spot-hover-bg,var(--g-surface-2));color:var(--g-spot-item-active,var(--g-ink))}
 .inbox-box.selected>svg{opacity:1;color:var(--g-spot-icon-active,var(--g-brand))}
-.box-count,.unread-count,.filter-count{min-width:18px;height:18px;padding:0 5px;border-radius:var(--r-control);background:var(--g-brand-2);color:var(--g-brand-2-on,#0f131a);font-size:11px;font-weight:700;display:inline-grid;place-items:center;line-height:1}
+.box-count,.unread-count,.filter-count{min-width:18px;height:18px;padding:0 5px;border-radius:var(--r-control);background:var(--g-brand-2);color:var(--g-brand-2-on, #faf7f3);font-size:11px;font-weight:700;display:inline-grid;place-items:center;line-height:1}
 .view-delete{opacity:0;width:26px;height:26px}
 .inbox-nav li:hover .view-delete,.view-delete:focus-visible{opacity:1}
 .create-view{display:inline-flex;align-items:center;gap:6px;padding:4px;font-size:13px;background:none;border:0}
@@ -146,7 +146,7 @@
 .tx-layout{display:grid;gap:14px}.tx-layout.has-detail{grid-template-columns:minmax(280px,1fr) minmax(0,1.4fr);align-items:start}
 .tx-list{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .tx-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;width:100%;padding:10px 12px;border:1px solid var(--line,#e3e8ef);border-radius:var(--r-control);background:var(--g-surface,#fff);text-align:left;font:inherit;color:inherit;cursor:pointer}
-.tx-row.active{border-color:var(--g-brand, #337418);box-shadow:0 0 0 2px color-mix(in srgb,var(--g-brand, #337418) 20%,transparent)}
+.tx-row.active{border-color:var(--g-brand, #b8460b);box-shadow:0 0 0 2px color-mix(in srgb,var(--g-brand, #b8460b) 20%,transparent)}
 .tx-num{font:600 12px ui-monospace,monospace;color:var(--g-dim,#59677a)}.tx-main{display:grid;min-width:0}.tx-main b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tx-main small{color:var(--g-dim,#59677a)}
 .tx-tags{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
 .tx-detail{padding:16px;display:grid;gap:12px;position:sticky;top:12px}.tx-detail header{display:flex;justify-content:space-between;gap:10px}.tx-detail h2{margin:2px 0}.tx-detail header p{margin:0}

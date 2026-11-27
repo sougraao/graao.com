@@ -12,7 +12,7 @@ export const dashboardPeriods = {
 };
 export const comparisonModes = { '':'Sem comparação', previous:'Período anterior', year:'Mesmo período do ano anterior' };
 export const dashboardThemes = {
-  default:['Cor da marca','var(--g-brand, #5dd62c)'], blue:['Azul','#2563eb'], green:['Verde','#15803d'], purple:['Roxo','#7c3aed'], red:['Vermelho','#dc2626'],
+  default:['Cor da marca','var(--g-brand, #ff6b1a)'], blue:['Azul','#2563eb'], green:['Verde','#15803d'], purple:['Roxo','#7c3aed'], red:['Vermelho','#dc2626'],
   orange:['Laranja','#ea580c'], yellow:['Âmbar','#d97706'], teal:['Turquesa','#0e7490'], graphite:['Grafite','#475569']
 };
 export const widgets = {

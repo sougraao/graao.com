@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="100%" height="100%" fill="none" aria-hidden="true">
-  <defs><linearGradient id="sk-grad" x1="15%" y1="90%" x2="85%" y2="10%"><stop offset="0%" stop-color="#5dd62c"/><stop offset="100%" stop-color="#337418"/></linearGradient></defs>
+  <defs><linearGradient id="sk-grad" x1="15%" y1="90%" x2="85%" y2="10%"><stop offset="0%" stop-color="#ff6b1a"/><stop offset="100%" stop-color="#c2410c"/></linearGradient></defs>
   <style>
     .sk-flame { fill: url(#sk-grad); } .sk-head, .sk-glint { fill: #ffffff; } .sk-feat { fill: #0d0f12; }
     .fr { opacity: 0; animation: sk-flick .6s steps(1, end) infinite; }
