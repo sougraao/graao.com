@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <title>Importar para a soci</title>
+  <title>Importar para a graao</title>
   <style>
     :root { --ink: #1d1b22; --muted: #6b6775; --line: #e7e4ec; --brand: #ff4f9a; --brand-ink: #fff; --bad: #c62f4a; --good: #127a52; --bg: #fff; --soft: #f7f5fa; }
     @media (prefers-color-scheme: dark) { :root { --ink: #f2eff7; --muted: #a9a4b4; --line: #34303d; --bg: #17151c; --soft: #211e28; --bad: #ff7a90; --good: #5fd3a0; } }
@@ -30,21 +30,21 @@
   </style>
 </head>
 <body>
-  <header><img src="icon-128.png" alt=""><strong>Importar para a soci</strong></header>
+  <header><img src="icon-128.png" alt=""><strong>Importar para a graao</strong></header>
   <main>
     <section id="nolocation" hidden>
       <p>Abra no GHL a subconta onde o snapshot está carregado (o endereço tem <code>/location/…</code>) e clique na extensão de novo.</p>
     </section>
     <form id="form" hidden>
       <ol>
-        <li>Na soci, em Setups de conta, clique em <strong>Importar do GHL</strong>.</li>
+        <li>Na graao, em Setups de conta, clique em <strong>Importar do GHL</strong>.</li>
         <li>Copie o código que aparece lá e cole aqui.</li>
         <li>Deixe esta janela aberta até terminar.</li>
       </ol>
       <label>Código de importação<input id="code" autocomplete="off" spellcheck="false" maxlength="11" placeholder="XXX-XXX-XXX" required></label>
       <details>
         <summary>Avançado</summary>
-        <label>Endereço da soci<input id="origin" type="url" placeholder="https://soci.app.br"></label>
+        <label>Endereço da graao<input id="origin" type="url" placeholder="https://graao.com"></label>
       </details>
       <button id="go" type="submit">Importar esta subconta</button>
       <div class="bar" id="bar" hidden><span></span></div>

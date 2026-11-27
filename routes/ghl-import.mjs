@@ -1,6 +1,6 @@
 // Importar do GHL (/api/ghl-import/* e /api/agency/ghl-import*): a agência gera um código, a extensão do Chrome manda a
-// extração em partes autenticadas por ele (sem sessão: vem de chrome-extension://) e a janela da soci avança a conversão
-// em passos (ghl-import-run.mjs). A soci nunca recebe senha, token ou cookie do GHL.
+// extração em partes autenticadas por ele (sem sessão: vem de chrome-extension://) e a janela da graao avança a conversão
+// em passos (ghl-import-run.mjs). A graao nunca recebe senha, token ou cookie do GHL.
 import { lookup } from 'node:dns/promises';
 import { requireCapability } from '../authorization.mjs';
 import { acceptPart, finishUpload, jobByCode, jobView, codeHash, newImportCode, PART_MAX } from '../ghl-import-model.mjs';
@@ -17,7 +17,7 @@ const rowPrefix = jobId => `ghl-import-${jobId}`;
 export function ghlImportCors(req) {
   const origin = String(req.headers.origin || '');
   return /^chrome-extension:\/\/[a-p]{32}$/.test(origin)
-    ? { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, X-Soci-Import-Code', 'Access-Control-Max-Age': '600', Vary: 'Origin' }
+    ? { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, X-Graao-Import-Code', 'Access-Control-Max-Age': '600', Vary: 'Origin' }
     : {};
 }
 
@@ -34,9 +34,9 @@ export function createGhlImportRoutes(deps) {
 
   /** A agência dona do código (o código vem no cabeçalho, nunca na URL). */
   async function agencyOfCode(req) {
-    const code = String(req.headers['x-soci-import-code'] || '');
+    const code = String(req.headers['x-graao-import-code'] || '');
     const found = code ? await store.findAgency({ ghlImports: [{ codeHash: codeHash(code) }] }) : null;
-    if (!found) throw error('Código inválido ou expirado. Gere outro na soci.', 401);
+    if (!found) throw error('Código inválido ou expirado. Gere outro na graao.', 401);
     return { code, agencyId: found.id };
   }
 

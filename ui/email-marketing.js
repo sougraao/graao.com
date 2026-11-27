@@ -1,6 +1,6 @@
 // Marketing → E-mails: statistics, campaigns and templates, the block editor with a live preview, and the
 // report of each campaign (opens, clicks, unsubscribes and the A/B result). Follows GoHighLevel's
-// /marketing/emails (Statistics, Campaigns, Templates); the names, texts and look are Soci's.
+// /marketing/emails (Statistics, Campaigns, Templates); the names, texts and look are Graao's.
 import { aiTool } from './content-ai.js';
 import { sequencesScreen } from './sequences.js';
 import { colorOf, defaultBoard } from './brand-data.js';
@@ -121,7 +121,7 @@ function preview(c) {
   const d = ed.draft, values = sampleValues(c);
   const { html } = renderEmail({ blocks: d.blocks, style: d.style, preheader: fillText(d.preheader, values), business: c.s.profile?.name, values, unsubscribe: '#', keepUnknown: true,
     countdownSrc: id => (c.s.countdownTimers || []).some(t => t.id === id) ? `${location.origin}/cd/${c.workspace}/${id}.gif` : '' });
-  return { html, subject: fillText(d.subject, values, true), from: d.fromName || c.s.profile?.name || 'Soci' };
+  return { html, subject: fillText(d.subject, values, true), from: d.fromName || c.s.profile?.name || 'Graao' };
 }
 const previewHead = p => `<p><b>De:</b> ${h(p.from)}</p><p><b>Assunto:</b> ${h(p.subject || 'Sem assunto')}</p>`;
 

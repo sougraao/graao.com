@@ -119,7 +119,7 @@ test('Destinations resolve to addresses, and fall back to the message when the t
   assert.deepEqual(to({ action: 'page', siteId: 'p1', page: 'agenda' }, { link: 'abc' }), { href: '/s/demo/p1/agenda?link=abc', external: false });
   assert.deepEqual(to({ action: 'page', siteId: 'p1', page: 'index' }), { href: '/s/demo/p1', external: false });
   assert.equal(to({ action: 'page', siteId: 'p1', page: 'apagada' }), null);
-  assert.deepEqual(to({ action: 'booking', serviceId: service }, { event: 'lead.1' }), { href: `/agendar/demo?servico=${service}&soci_ev=lead.1`, external: false });
+  assert.deepEqual(to({ action: 'booking', serviceId: service }, { event: 'lead.1' }), { href: `/agendar/demo?servico=${service}&graao_ev=lead.1`, external: false });
   s.scheduling.enabled = false;
   assert.equal(to({ action: 'booking', serviceId: service }), null);
 });
@@ -155,8 +155,8 @@ test('Only known players and https video files become a video', () => {
 test('Embed markers become frames only when the page is served, and the policy allows only what is used', () => {
   const formId = '11111111-1111-4111-8111-111111111111', serviceId = '22222222-2222-4222-8222-222222222222';
   const page = body => `<!doctype html><html><head></head><body>${body}</body></html>`;
-  const raw = page(`<div data-soci-embed="video" data-src="https://youtu.be/UV19exMToaY"><span>Vídeo</span></div>
-    <div data-soci-embed="form" data-id="${formId}"></div><div data-soci-embed="booking" data-id="${serviceId}"></div>`);
+  const raw = page(`<div data-graao-embed="video" data-src="https://youtu.be/UV19exMToaY"><span>Vídeo</span></div>
+    <div data-graao-embed="form" data-id="${formId}"></div><div data-graao-embed="booking" data-id="${serviceId}"></div>`);
   const html = renderEmbeds(raw, { workspace: 'demo', link: 'a'.repeat(32) });
   assert.match(html, /<iframe[^>]+src="https:\/\/www\.youtube-nocookie\.com\/embed\/UV19exMToaY"[^>]+referrerpolicy="strict-origin-when-cross-origin"/);
   assert.match(html, new RegExp(`src="/form/demo/${formId}\\?embed=1"`));
@@ -167,13 +167,13 @@ test('Embed markers become frames only when the page is served, and the policy a
   assert.doesNotMatch(headers['Content-Security-Policy'], /vimeo|unsafe-inline/);
   assert.match(served, /<script>[\s\S]+<\/script><\/body>/);
 
-  const broken = renderEmbeds(page('<div data-soci-embed="video" data-src="javascript:alert(1)"></div><div data-soci-embed="form" data-id="&quot;><script>"></div>'), { workspace: 'demo' });
+  const broken = renderEmbeds(page('<div data-graao-embed="video" data-src="javascript:alert(1)"></div><div data-graao-embed="form" data-id="&quot;><script>"></div>'), { workspace: 'demo' });
   assert.doesNotMatch(broken, /<iframe|<video/);
-  assert.equal(broken.match(/data-soci-empty/g).length >= 2, true, 'what is not set up stays hidden');
+  assert.equal(broken.match(/data-graao-empty/g).length >= 2, true, 'what is not set up stays hidden');
   const plain = page('<p>Oi</p>');
   assert.equal(renderEmbeds(plain, { workspace: 'demo' }), plain);
   assert.deepEqual(withEmbeds({ a: 1 }, plain), [{ a: 1 }, plain]);
-  assert.match(renderEmbeds(page('<div data-soci-embed="video" data-src="https://cdn.exemplo.com/a.mp4"></div>'), { workspace: 'demo' }), /<video[^>]+controls[^>]+src="https:\/\/cdn\.exemplo\.com\/a\.mp4"/);
+  assert.match(renderEmbeds(page('<div data-graao-embed="video" data-src="https://cdn.exemplo.com/a.mp4"></div>'), { workspace: 'demo' }), /<video[^>]+controls[^>]+src="https:\/\/cdn\.exemplo\.com\/a\.mp4"/);
 });
 
 /* ───────── Pixel ───────── */
@@ -185,24 +185,24 @@ function runPixels({ search = '', meta = '', embedded = false, seen = {} } = {})
     sessionStorage: { getItem: k => store[k] || null, setItem: (k, v) => { store[k] = v; } } };
   win.parent = embedded ? { location: { origin } } : win;
   const document = { createElement: () => ({}), head: { appendChild() {} }, addEventListener: (name, fn) => { listeners[name] = fn; },
-    querySelector: sel => sel.includes('soci-event') && meta ? { getAttribute: () => meta } : null };
+    querySelector: sel => sel.includes('graao-event') && meta ? { getAttribute: () => meta } : null };
   win.fbq = (...args) => calls.push(args);
   vm.runInNewContext(pixelsScript({ ga4: '', gtm: '', metaPixel: '123456789012' }), { window: win, document, location: win.location, URLSearchParams, Date, encodeURIComponent });
   return { calls, listeners, replaced, store };
 }
 
 test('Lead and Schedule fire once from the server marker, with an id, and the address is cleaned', () => {
-  const lead = runPixels({ search: '?soci_ev=lead.abc&link=t' });
+  const lead = runPixels({ search: '?graao_ev=lead.abc&link=t' });
   assert.deepEqual(lead.calls.filter(c => c[1] === 'Lead').map(c => JSON.parse(JSON.stringify(c))), [['track', 'Lead', {}, { eventID: 'lead.abc' }]]);
   assert.deepEqual(lead.replaced, ['/x?link=t']);
-  assert.equal(runPixels({ search: '?soci_ev=lead.abc', seen: lead.store }).calls.filter(c => c[1] === 'Lead').length, 0, 'reloading does not count twice');
+  assert.equal(runPixels({ search: '?graao_ev=lead.abc', seen: lead.store }).calls.filter(c => c[1] === 'Lead').length, 0, 'reloading does not count twice');
   assert.equal(runPixels({ meta: 'schedule.9' }).calls.filter(c => c[1] === 'Schedule').length, 1);
-  assert.equal(runPixels({ search: '?soci_ev=purchase.1' }).calls.filter(c => c[1] !== 'PageView' && c[0] === 'track').length, 0, 'unknown events are ignored');
+  assert.equal(runPixels({ search: '?graao_ev=purchase.1' }).calls.filter(c => c[1] !== 'PageView' && c[0] === 'track').length, 0, 'unknown events are ignored');
 });
 
 test('Forms decided by the server do not fire Lead on the click, and an embedded form does not count another page view', () => {
   const page = runPixels();
-  const submit = marked => page.listeners.submit({ target: { hasAttribute: name => marked && name === 'data-soci-lead' } });
+  const submit = marked => page.listeners.submit({ target: { hasAttribute: name => marked && name === 'data-graao-lead' } });
   submit(true);
   assert.equal(page.calls.filter(c => c[1] === 'Lead').length, 0);
   submit(false);
@@ -246,13 +246,13 @@ test('Qualified leads go to the calendar with their data and Lead; disqualified 
   const url = new URL(yes.headers.get('location'), 'http://x');
   assert.equal(url.pathname, '/agendar/demo');
   assert.equal(url.searchParams.get('servico'), service);
-  assert.match(url.searchParams.get('soci_ev'), /^lead\./);
+  assert.match(url.searchParams.get('graao_ev'), /^lead\./);
   const booking = await (await get(url.pathname + url.search)).text();
   assert.match(booking, /value="ana@exemplo\.com"/);
   assert.match(booking, /pixels\.js/);
   const no = await post(path, { email: 'bia@exemplo.com', [k]: 'Não' });
   assert.equal(no.headers.get('location'), `/s/demo/${site}/obrigado`);
-  assert.match(await (await get(path)).text(), /<form[^>]+data-soci-lead/);
+  assert.match(await (await get(path)).text(), /<form[^>]+data-graao-lead/);
 });
 
 test('Booking ends on the confirmation page of the service with Schedule', async t => {
@@ -261,7 +261,7 @@ test('Booking ends on the confirmation page of the service with Schedule', async
   const inicio = page.match(/name="inicio" value="([^"]+)"/)[1];
   const done = await post(`/agendar/demo?servico=${service}`, { servico: service, inicio, nome: 'Ana', email: 'ana@exemplo.com' });
   assert.equal(done.status, 303);
-  assert.match(done.headers.get('location'), new RegExp(`^/s/demo/${site}/obrigado\\?soci_ev=schedule\\.`));
+  assert.match(done.headers.get('location'), new RegExp(`^/s/demo/${site}/obrigado\\?graao_ev=schedule\\.`));
 });
 
 test('Inside a page, form and calendar open in frames and leave through the whole window', async t => {
@@ -274,7 +274,7 @@ test('Inside a page, form and calendar open in frames and leave through the whol
   assert.equal(out.status, 200);
   const html = await out.text();
   assert.match(html, /<a[^>]+target="_top"[^>]+href="\/agendar\/demo\?/);
-  assert.match(html, /soci_ev=lead\./);
+  assert.match(html, /graao_ev=lead\./);
   const bad = await post(`${path}?embed=1`, { email: '', [k]: 'Sim' });
   assert.equal(bad.status, 422, 'errors stay inside the frame');
   assert.doesNotMatch(await bad.text(), /target="_top"/);
@@ -287,7 +287,7 @@ test('An external destination fires Lead on a short page before leaving', async 
   const out = await post(`/form/demo/${form.id}`, { email: 'ana@exemplo.com', [k]: 'Sim' });
   assert.equal(out.status, 200);
   const html = await out.text();
-  assert.match(html, /<meta name="soci-event" content="lead\.[^"]+">/);
+  assert.match(html, /<meta name="graao-event" content="lead\.[^"]+">/);
   assert.match(html, /href="https:\/\/exemplo\.com\/obrigado\?a=1"/);
   await act({ type: 'tracking-settings', data: { metaPixel: '' } });
   assert.equal((await post(`/form/demo/${form.id}`, { email: 'ana@exemplo.com', [k]: 'Sim' })).status, 303, 'without a pixel it goes straight');
@@ -310,9 +310,9 @@ test('A quiz keeps the message of its tier, unless a rule of the tier has its ow
 
 test('A published funnel page shows the embeds and hands the visit link to the calendar', async t => {
   const { call, get, site, doc, form, service } = await funnel(t);
-  const html = `<!doctype html><html lang="pt-BR"><head><title>x</title></head><body><main><div data-soci-embed="form" data-id="${form.id}"></div><div data-soci-embed="booking" data-id="${service}"></div></main></body></html>`;
+  const html = `<!doctype html><html lang="pt-BR"><head><title>x</title></head><body><main><div data-graao-embed="form" data-id="${form.id}"></div><div data-graao-embed="booking" data-id="${service}"></div></main></body></html>`;
   const { doc: after } = await call('/api/studio/save?workspace=demo', { id: site, pageId: doc.pages[0].id, html });
-  assert.match(after.pages[0].html, /data-soci-embed="form"/, 'the marker survives the sanitizer');
+  assert.match(after.pages[0].html, /data-graao-embed="form"/, 'the marker survives the sanitizer');
   await call('/api/studio/publish?workspace=demo', { id: site, publish: true });
   const token = 'b'.repeat(32);
   const page = await get(`/s/demo/${site}?link=${token}`);

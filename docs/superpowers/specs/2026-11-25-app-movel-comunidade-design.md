@@ -5,14 +5,14 @@ Proposta visual aprovada em conceito (abordagem B): https://claude.ai/artifact/9
 
 ## Intenção
 
-O dono da soci pediu para melhorar o **criador de aplicativo móvel** e o **aplicativo móvel** "com a mesma estética das
+O dono da graao pediu para melhorar o **criador de aplicativo móvel** e o **aplicativo móvel** "com a mesma estética das
 novas comunidades". A referência é a comunidade do portal (estilo graao, PRs 70 a 75, `ui/portal-community.css`).
 
 O app é um PWA com a marca da agência, que a **equipe do cliente** instala para usar a plataforma em "modo app"
 (`/app?shell=mobile&agency=<id>`). Hoje ele está quebrado no celular e não parece da agência:
 
 - o conteúdo fica espremido em 60 px, porque `liquid-glass.css` (`:root:root .shell`) vence a regra do modo app;
-- a barra de abas é branca também no escuro; os botões saem na cor da soci, não na da agência;
+- a barra de abas é branca também no escuro; os botões saem na cor da graao, não na da agência;
 - a troca de subconta fica na barra lateral, que o app esconde;
 - a barra mostra módulos sem checar a permissão de quem está usando;
 - no criador, a prévia mostra uma lista que não existe no app, e há rótulos em inglês.
@@ -123,7 +123,7 @@ Até 760 px, Conversas abre na lista, com as pastas no botão que já existe. O 
 - **Salvar:** barra "Alterações não salvas" com Descartar e Salvar, em qualquer seção. "Publicar" salva antes. Sem ícone,
   "Publicar" leva à Identidade e explica. Como hoje, o que é salvo já vale no app publicado; a tela diz isso.
 - Sair com alterações pede confirmação com `ask` (nunca diálogo nativo).
-- **Cores:** as da soci (`--g-*`), com a forma da comunidade; vidro só onde o design system permite.
+- **Cores:** as da graao (`--g-*`), com a forma da comunidade; vidro só onde o design system permite.
 - **Largura:** abaixo de 1280 px a prévia desce; abaixo de 760 px as seções viram uma faixa rolável.
 
 ### 8. Dados

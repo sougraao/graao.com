@@ -84,7 +84,7 @@ export function embedPage(timer, { key }) {
   const s = { ...DEFAULT_STYLE, ...timer.style };
   return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${esc(timer.name)}</title>
 <style>html,body{margin:0;background:${s.background}}</style></head><body><div id="cd">${countdownMarkup(timer, timer.mode === 'evergreen' ? durationMinutes(timer.duration) * 60000 : Date.parse(timer.endAt) - Date.now())}</div>
-<script>(function(){var c=${config};var start=Date.now();if(c.mode==='evergreen'){try{var k='soci-cd-'+c.key,v=Number(localStorage.getItem(k));if(v&&v<=Date.now())start=v;else localStorage.setItem(k,String(start));}catch(e){}}
+<script>(function(){var c=${config};var start=Date.now();if(c.mode==='evergreen'){try{var k='graao-cd-'+c.key,v=Number(localStorage.getItem(k));if(v&&v<=Date.now())start=v;else localStorage.setItem(k,String(start));}catch(e){}}
 var end=c.mode==='evergreen'?start+c.minutes*60000:Date.parse(c.endAt);function pad(n){return n<10?'0'+n:String(n);}
 function tick(){var t=Math.max(0,Math.floor((end-Date.now())/1000));if(t===0&&c.expired.mode==='text'){var box=document.querySelector('.cd');if(box&&!box.hasAttribute('data-cd-expired')){box.setAttribute('data-cd-expired','');box.style.display='block';box.style.textAlign='center';box.style.font='700 22px/1.3 system-ui,sans-serif';box.textContent=c.expired.text;}return;}
 var v={days:Math.min(999,Math.floor(t/86400)),hours:Math.floor(t%86400/3600),minutes:Math.floor(t%3600/60),seconds:t%60};

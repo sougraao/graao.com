@@ -2,7 +2,7 @@ import { brandHighlight, brandIcon, shcLayers } from './icons.js';
 import { network, networks } from './social-data.js';
 
 try {
-  const saved = localStorage.getItem('soci.theme');
+  const saved = localStorage.getItem('graao.theme');
   const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
   if (dark) document.documentElement.setAttribute('data-theme', 'dark');
 } catch {}
@@ -37,7 +37,7 @@ get('networks').addEventListener('click', async ev => {
 });
 
 window.addEventListener('message', async ev => {
-  if (ev.origin !== location.origin || ev.source !== popup || ev.data?.type !== 'soci-social') return;
+  if (ev.origin !== location.origin || ev.source !== popup || ev.data?.type !== 'graao-social') return;
   try {
     if (ev.data.error) throw Error(ev.data.error);
     requestId = ev.data.requestId;

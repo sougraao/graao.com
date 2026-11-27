@@ -49,7 +49,7 @@ test('The server sends workflow and team e-mails through the mailer; a mailer er
   const sent = [];
   let fail = '';
   const documentMail = {
-    linkOf: item => item.path ? `https://app.soci.test${item.path}` : '',
+    linkOf: item => item.path ? `https://app.graao.test${item.path}` : '',
     // Like the real mailer: always a sentence, "e-mail enviado" on success.
     async email(to, { subject, text }, idempotency, options) { if (fail) return fail; sent.push({ to, subject, text, idempotency, options }); return 'e-mail enviado'; }
   };
@@ -69,7 +69,7 @@ test('The server sends workflow and team e-mails through the mailer; a mailer er
   const bia = s.contacts.find(row => row.id === contactId);
   assert.equal(sent[0].to, 'bia@example.test');
   assert.equal(sent[0].subject, 'Bem-vinda, Bia');
-  assert.equal(sent[0].text, `Que bom ter você aqui.\n\n—\nPara escolher o que você recebe: https://app.soci.test/preferencias/demo/${bia.prefToken}`);
+  assert.equal(sent[0].text, `Que bom ter você aqui.\n\n—\nPara escolher o que você recebe: https://app.graao.test/preferencias/demo/${bia.prefToken}`);
   assert.match(sent[0].idempotency, /^wf-email-demo-/);
   assert.ok(s.runs.find(row => row.name === 'Boas-vindas').results.includes('E-mail: enviado'));
 

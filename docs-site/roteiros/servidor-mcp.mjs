@@ -5,9 +5,9 @@ const RETORNO = 'https://claude.ai/api/mcp/auth_callback';
 async function abrirTela(page) {
   await page.locator('[data-sp-view="mcp"]').first().click();
   await page.locator('[data-mcp-tools] li').first().waitFor();
-  // O endereço do print é o da soci, não o do servidor local.
+  // O endereço do print é o da graao, não o do servidor local.
   await page.evaluate(() => {
-    const trocar = texto => texto.replaceAll(location.origin, 'https://soci.app.br');
+    const trocar = texto => texto.replaceAll(location.origin, 'https://graao.com');
     for (const campo of document.querySelectorAll('.mcp-copy input')) campo.value = trocar(campo.value);
     for (const codigo of document.querySelectorAll('.mcp-code code')) codigo.textContent = trocar(codigo.textContent);
   });

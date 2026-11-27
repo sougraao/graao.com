@@ -33,7 +33,7 @@ export function callReportView(c, { pageShell, tabs }) {
       <td>${h(number ? number.name || number.number : row.source === 'external' ? tr('Registrada') : '—')}</td><td>${audio}</td></tr>`;
   });
   return pageShell({
-    title: tr('Relatórios'), desc: tr('Ligações feitas e recebidas pelos números da Soci e as registradas nos fluxos.'), tabs,
+    title: tr('Relatórios'), desc: tr('Ligações feitas e recebidas pelos números da Graao e as registradas nos fluxos.'), tabs,
     content: `<div class="seg call-filter" role="group" aria-label="${h(tr('Direção'))}">${filter}</div>
       <div class="metrics four">${metric('Ligações', t.total)}${metric('Atendidas', t.answered)}${metric('Não atendidas', t.missed)}${metric('Duração média', minutes(t.average))}</div>
       <div class="surface table-shell"><table><thead><tr>${['Data e hora', 'Contato', 'Direção', 'Resultado', 'Duração', 'Número', 'Gravação'].map(col => `<th scope="col">${h(tr(col))}</th>`).join('')}</tr></thead>

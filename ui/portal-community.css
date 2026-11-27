@@ -238,7 +238,7 @@ html.cp-cm-on::-webkit-scrollbar-corner{background:var(--cm-scroll-track)}
 .cp-cm-course-body>.cp-public-primary{margin-top:10px}
 .cp-cm-course-note{display:flex;align-items:center;gap:6px;margin:auto 0 0!important;padding-top:8px;font-size:13px;font-weight:600}
 
-/* Troca claro/escuro: a mesma cortina diagonal do app da soci (View Transitions). */
+/* Troca claro/escuro: a mesma cortina diagonal do app da graao (View Transitions). */
 :root[data-cm-mode-to]::view-transition-old(root),:root[data-cm-mode-to]::view-transition-new(root){animation:none;mix-blend-mode:normal}
 :root[data-cm-mode-to]::view-transition-old(root){z-index:1}
 :root[data-cm-mode-to]::view-transition-new(root){z-index:2;animation:.7s cubic-bezier(.4,0,.2,1) forwards cm-reveal-light}

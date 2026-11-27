@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { makeServer } from '../server.mjs';
 import { createSqliteStore } from '../storage.mjs';
 
-// Caminho "ao vivo" do Pergunte à Soci: um provedor compatível com a OpenAI (aqui simulado por
+// Caminho "ao vivo" do Pergunte à Graao: um provedor compatível com a OpenAI (aqui simulado por
 // openAIRequest, sem rede) com streaming e raciocínio.
 const AI_BASE = 'http://ia.teste/v1';
 
@@ -22,7 +22,7 @@ const titleReply = () => Response.json({ choices: [{ message: { content: 'Padari
 
 async function start(t, openAIRequest) {
   const { server, host } = makeServer({ allowLocalAccess: true, auth: null, store: createSqliteStore(':memory:'), port: 0, openAIRequest,
-    openAISecret: 'soci-chat-live-seal-secret-32ch!!' });
+    openAISecret: 'graao-chat-live-seal-secret-32ch!!' });
   await new Promise((resolve, reject) => { server.on('error', reject); server.listen(0, host, resolve); });
   t.after(() => new Promise(resolve => server.close(resolve)));
   const base = `http://${host}:${server.address().port}`;

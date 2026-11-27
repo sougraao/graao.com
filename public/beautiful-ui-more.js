@@ -910,8 +910,8 @@ export function agentScreen({
     { icon: 'write', label: 'Escreveu', chip: 'follow-up.md', mono: true }
   ] });
   const answer = streamingText({ text: response, sources: [
-    { name: 'Painel da agência', domain: 'soci', href: '#' },
-    { name: 'Histórico do funil', domain: 'soci', href: '#' }
+    { name: 'Painel da agência', domain: 'graao', href: '#' },
+    { name: 'Histórico do funil', domain: 'graao', href: '#' }
   ], followUps: ['Abrir oportunidades', 'Montar a sequência de follow-up'], onFollowUp: onSend });
   thread.append(thought.el, toolsBlock.el, answer.el);
   if (chunks.length) thread.append(contextCards({ header: 'Contexto usado', chunks }).el);

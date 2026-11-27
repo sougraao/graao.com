@@ -20,7 +20,7 @@ test('Launch template mirrors the Parceiras structure', () => {
   assert.ok(Object.values(p.brief).every(Boolean), 'brief inteiro preenchido com marcadores');
 });
 
-test('Launch template copy is niche-neutral and uses Soci variables', () => {
+test('Launch template copy is niche-neutral and uses Graao variables', () => {
   const messages = messageTemplates('2026-12-10');
   const all = messages.map(m => m.notes).join('\n');
   assert.doesNotMatch(all, /\[nome\]|social media|\bposts?\b|cliente pede/i);

@@ -1,4 +1,4 @@
-// App desktop white-label (6.7): the agency's own installable app. Soci is a web platform, so the desktop
+// App desktop white-label (6.7): the agency's own installable app. Graao is a web platform, so the desktop
 // app is a branded Progressive Web App: Chrome and Edge install it on Windows, macOS and Linux with its own
 // window, name and icon. It opens on a branded sign-in screen; sign-in happens in the same window and lands in
 // the platform. The agency customizes the theme, icon, name, title, subtitle, logo, background and illustration.
@@ -6,7 +6,7 @@
 import { isAssetUrl } from './asset-store.mjs';
 
 export const desktopPresets = [
-  { id: 'rosa', name: 'Rosa Soci', background: '#fff5fa', text: '#1e1821', button: '#b71889', buttonText: '#ffffff' },
+  { id: 'rosa', name: 'Rosa Graao', background: '#fff5fa', text: '#1e1821', button: '#b71889', buttonText: '#ffffff' },
   { id: 'oceano', name: 'Oceano', background: '#f0f7fc', text: '#0f2230', button: '#0e6ba8', buttonText: '#ffffff' },
   { id: 'esmeralda', name: 'Esmeralda', background: '#f0f9f4', text: '#14261b', button: '#1f7a4d', buttonText: '#ffffff' },
   { id: 'ardosia', name: 'Ardósia', background: '#f4f6f8', text: '#1f2933', button: '#334e68', buttonText: '#ffffff' },

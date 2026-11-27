@@ -10,13 +10,13 @@ const page = Object.assign(new EventTarget(), {
   fetch: async (input, init) => { sent.push({ url: String(input instanceof Request ? input.url : input), headers: new Headers(init?.headers) }); return reply(); },
 });
 page.parent = page;
-page.addEventListener('soci:account-changed', () => changed.push(true));
+page.addEventListener('graao:account-changed', () => changed.push(true));
 Object.defineProperty(globalThis, 'window', { value: page, configurable: true });
-Object.defineProperty(globalThis, 'location', { value: new URL('https://soci.app.br/app?account=conta-de-fora#agency/dashboard'), configurable: true });
+Object.defineProperty(globalThis, 'location', { value: new URL('https://graao.com/app?account=conta-de-fora#agency/dashboard'), configurable: true });
 
 const guard = await import('../ui/account-guard.js');
 const { accountsMenu } = await import('../ui/accounts.js');
-const sentAccount = async (input, init) => { sent.length = 0; await page.fetch(input, init); return sent[0].headers.get('x-soci-account'); };
+const sentAccount = async (input, init) => { sent.length = 0; await page.fetch(input, init); return sent[0].headers.get('x-graao-account'); };
 
 test('a conta da aba não vem do endereço e só a primeira vale', async () => {
   assert.equal(guard.tabAccountId(), '');
@@ -28,9 +28,9 @@ test('a conta da aba não vem do endereço e só a primeira vale', async () => {
 
 test('só a API da própria origem recebe a conta da aba', async () => {
   assert.equal(await sentAccount('/api/state?workspace=demo'), 'conta-1');
-  assert.equal(await sentAccount(new Request('https://soci.app.br/api/action', { method: 'POST', headers: { 'X-Outro': '1' } })), 'conta-1');
+  assert.equal(await sentAccount(new Request('https://graao.com/api/action', { method: 'POST', headers: { 'X-Outro': '1' } })), 'conta-1');
   assert.equal(sent[0].headers.get('x-outro'), '1');
-  assert.equal(await sentAccount('/api/action', { method: 'POST', headers: { 'X-Soci-Account': 'forjada' } }), 'conta-1');
+  assert.equal(await sentAccount('/api/action', { method: 'POST', headers: { 'X-Graao-Account': 'forjada' } }), 'conta-1');
   assert.equal(await sentAccount('/api/auth/switch', { method: 'POST' }), null);
   assert.equal(await sentAccount('/tokens.css'), null);
   assert.equal(await sentAccount('https://storage.example/api/upload'), null);
@@ -39,7 +39,7 @@ test('só a API da própria origem recebe a conta da aba', async () => {
 test('a resposta de conta trocada avisa a página uma vez por pedido', async () => {
   await page.fetch('/api/state');
   assert.equal(changed.length, 0);
-  reply = () => Response.json({ code: 'ACCOUNT_CHANGED' }, { status: 409, headers: { 'X-Soci-Account-Changed': '1' } });
+  reply = () => Response.json({ code: 'ACCOUNT_CHANGED' }, { status: 409, headers: { 'X-Graao-Account-Changed': '1' } });
   const response = await page.fetch('/api/action', { method: 'POST' });
   assert.equal(response.status, 409);
   assert.equal(changed.length, 1);

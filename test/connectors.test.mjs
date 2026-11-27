@@ -65,8 +65,8 @@ test('Actions: Slack, Google Sheets (service account, header-based rows), Airtab
   assert.deepEqual([next.cursor, next.events.map(e => [e.ctx.row, e.ctx.Nome])], [4, [[4, 'Davi']]]);
 
   const airtable = fakeFetch([[/POST https:\/\/api\.airtable\.com\/v0\/appX\/Leads/, call => [200, { id: 'rec1', fields: call.body.fields }]]]);
-  assert.deepEqual(await runConnectorAction('airtable', 'create_record', { token: 'pat1' }, { baseId: 'appX', table: 'Leads', fields: 'Nome = Ana\nOrigem = Soci' }, { request: airtable.request }), { airtable_record: 'rec1' });
-  assert.deepEqual(airtable.calls[0].body, { fields: { Nome: 'Ana', Origem: 'Soci' }, typecast: true });
+  assert.deepEqual(await runConnectorAction('airtable', 'create_record', { token: 'pat1' }, { baseId: 'appX', table: 'Leads', fields: 'Nome = Ana\nOrigem = Graao' }, { request: airtable.request }), { airtable_record: 'rec1' });
+  assert.deepEqual(airtable.calls[0].body, { fields: { Nome: 'Ana', Origem: 'Graao' }, typecast: true });
   const linear = fakeFetch([[/api\.linear\.app\/graphql/, [200, { data: { issueCreate: { success: true, issue: { id: 'L1', url: 'https://linear.app/x/L1' } } } }]]]);
   assert.deepEqual(await runConnectorAction('linear', 'create_issue', { apiKey: 'lin_api_1' }, { team: 'T1', title: 'Bug' }, { request: linear.request }), { linear_id: 'L1', linear_url: 'https://linear.app/x/L1' });
   assert.equal(linear.calls[0].headers.Authorization, 'lin_api_1');

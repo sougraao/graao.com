@@ -30,7 +30,7 @@ export const triggerTypes = [
   { id: 'schedule', group: 'scheduled', label: 'Programação', text: 'Executa o agente numa frequência fixa.', icon: 'clock', popular: true,
     field: { label: 'Frequência', options: scheduleOptions } },
   { id: 'workflow', group: 'custom', label: 'Chamado por uma automação', text: 'Executa quando um workflow aciona este agente.', icon: 'flow', popular: true },
-  { id: 'api', group: 'custom', label: 'Chamado pela API', text: 'Executa quando o seu sistema chama este agente pela API da soci.', icon: 'key' },
+  { id: 'api', group: 'custom', label: 'Chamado pela API', text: 'Executa quando o seu sistema chama este agente pela API da graao.', icon: 'key' },
   { id: 'webhook', group: 'custom', label: 'Webhook de entrada', text: 'Executa quando um sistema externo envia uma requisição para a URL do agente.', icon: 'link' }
 ];
 
@@ -86,7 +86,7 @@ export const agentFieldNames = {
 
 const lines = list => list.join('\n');
 
-// Starting points written for soci. Every template is editable after it is chosen.
+// Starting points written for graao. Every template is editable after it is chosen.
 export const agentTemplates = [
   {
     id: 'support', name: 'Atendimento ao cliente', icon: 'chat',

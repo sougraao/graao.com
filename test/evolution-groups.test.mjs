@@ -21,7 +21,7 @@ async function connected(t, { open = true } = {}) {
     const u = new URL(url), body = init.body ? JSON.parse(init.body) : null;
     calls.push({ path: u.pathname, search: u.search, body });
     if (u.pathname === '/instance/create') return json({ instance: { instanceName: body.instanceName }, hash: 'h' }, 201);
-    if (u.pathname === '/instance/fetchInstances') return json([{ name: 'soci_demo', connectionStatus: evo.state, ownerJid: '5511999990000@s.whatsapp.net' }]);
+    if (u.pathname === '/instance/fetchInstances') return json([{ name: 'graao_demo', connectionStatus: evo.state, ownerJid: '5511999990000@s.whatsapp.net' }]);
     if (u.pathname.startsWith('/instance/connect/')) return json({ base64: 'data:image/png;base64,AAAA', code: 'x' });
     if (u.pathname.startsWith('/message/') || u.pathname.startsWith('/group/')) {
       if (evo.reply) return evo.reply(u, body);
@@ -32,8 +32,8 @@ async function connected(t, { open = true } = {}) {
     }
     return json({});
   };
-  const dir = mkdtempSync(join(tmpdir(), 'soci-evo-groups-')), store = createSqliteStore(join(dir, 'go.sqlite'));
-  const options = { evolutionBaseUrl: 'https://evo.soci.test', evolutionApiKey: KEY };
+  const dir = mkdtempSync(join(tmpdir(), 'graao-evo-groups-')), store = createSqliteStore(join(dir, 'go.sqlite'));
+  const options = { evolutionBaseUrl: 'https://evo.graao.test', evolutionApiKey: KEY };
   const { server } = makeServer({ store, auth: null, allowLocalAccess: true, port: 0, openAISecret: SECRET, socialScheduler: false, whatsappRequest: request, ...options });
   await new Promise(done => server.listen(0, '127.0.0.1', done));
   const base = `http://127.0.0.1:${server.address().port}`;
@@ -51,7 +51,7 @@ test('Lists the groups of the connected number by name', async t => {
   const wa = await connected(t);
   assert.deepEqual(await wa.groups(), { reason: '', groups: [{ jid: '5511999990000-1600000000@g.us', name: 'Alunas', size: 40 }, { jid: GROUP, name: 'Zeladores', size: 12 }] });
   const call = wa.calls.find(c => c.path.startsWith('/group/'));
-  assert.equal(call.path + call.search, '/group/fetchAllGroups/soci_demo?getParticipants=false');
+  assert.equal(call.path + call.search, '/group/fetchAllGroups/graao_demo?getParticipants=false');
   const res = await fetch(`${wa.base}/api/whatsapp/workspace/groups?workspace=demo`);
   assert.equal(res.status, 200);
   assert.equal((await res.json()).groups.length, 2);
@@ -82,7 +82,7 @@ test('Sends text and polls to a group and text to a phone', async t => {
   assert.equal((await wa.send({ to: GROUP, part: { kind: 'poll', question: 'Vai?', options: ['Sim', 'Não'] } })).outcome, 'sent');
   assert.equal((await wa.send({ to: '+55 (11) 98888-7777', part: text('Oi') })).outcome, 'sent');
   assert.deepEqual(sends(wa.calls).map(c => [c.path, c.body.number]), [
-    ['/message/sendText/soci_demo', GROUP], ['/message/sendPoll/soci_demo', GROUP], ['/message/sendText/soci_demo', '5511988887777']
+    ['/message/sendText/graao_demo', GROUP], ['/message/sendPoll/graao_demo', GROUP], ['/message/sendText/graao_demo', '5511988887777']
   ]);
   assert.equal(sends(wa.calls)[0].body.text, 'Oi *grupo*');
   assert.deepEqual([sends(wa.calls)[1].body.name, sends(wa.calls)[1].body.values, sends(wa.calls)[1].body.selectableCount], ['Vai?', ['Sim', 'Não'], 1]);

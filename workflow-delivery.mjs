@@ -32,7 +32,7 @@ export async function deliverWebhook(item, { fetchImpl = fetch, resolve = lookup
   try {
     const response = await fetchImpl(target, {
       method, redirect: 'manual', signal: AbortSignal.timeout(timeout),
-      headers: { 'content-type': 'application/json', 'user-agent': 'soci-workflows/1.0' },
+      headers: { 'content-type': 'application/json', 'user-agent': 'graao-workflows/1.0' },
       ...(method === 'GET' ? {} : { body: JSON.stringify(item.body ?? {}) })
     });
     return response.ok ? `enviado (${response.status})` : `falhou (${response.status})`;
@@ -55,7 +55,7 @@ export async function deliverCustomWebhook(item, { fetchImpl = fetch, resolve = 
   const target = await publicTarget(item.url, resolve);
   if (typeof target === 'string') return { error: target };
   const method = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].includes(item.method) ? item.method : 'POST';
-  const headers = { 'user-agent': 'soci-workflows/1.0' };
+  const headers = { 'user-agent': 'graao-workflows/1.0' };
   for (const [key, value] of Object.entries(item.headers || {}).slice(0, 20)) {
     const header = String(key).trim().toLowerCase();
     if (/^[a-z0-9-]{1,60}$/.test(header) && !blockedHeaders.has(header)) headers[header] = String(value ?? '').replace(/[\r\n]+/g, ' ').slice(0, 2000);

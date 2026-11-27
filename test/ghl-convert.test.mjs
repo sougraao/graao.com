@@ -28,7 +28,7 @@ test('lists the pages the converter will read', () => {
 
 test('finds and replaces image urls', () => {
   assert.deepEqual(imageUrls('<img src="https://a/x.png"><div style="background:url(https://a/y.jpg)"></div>'), ['https://a/x.png', 'https://a/y.jpg']);
-  const swapped = replaceUrls({ html: '<img src="https://a/x.png">', nested: ['https://a/x.png'] }, new Map([['https://a/x.png', 'https://soci.app.br/asset/h.png']]));
-  assert.match(swapped.html, /soci\.app\.br\/asset\/h\.png/);
-  assert.equal(swapped.nested[0], 'https://soci.app.br/asset/h.png');
+  const swapped = replaceUrls({ html: '<img src="https://a/x.png">', nested: ['https://a/x.png'] }, new Map([['https://a/x.png', 'https://graao.com/asset/h.png']]));
+  assert.match(swapped.html, /graao\.com\/asset\/h\.png/);
+  assert.equal(swapped.nested[0], 'https://graao.com/asset/h.png');
 });

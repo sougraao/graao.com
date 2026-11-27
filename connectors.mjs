@@ -193,7 +193,7 @@ export async function runConnectorAction(id, key, auth, input, { request = fetch
     return v({ id: d.data?.create_item?.id });
   }
   if (id === 'basecamp') {
-    const d = await call(request, `https://3.basecampapi.com/${encodeURIComponent(auth.account)}/buckets/${encodeURIComponent(input.project)}/todolists/${encodeURIComponent(input.list)}/todos.json`, { method: 'POST', headers: { ...bearer(auth.token), 'User-Agent': 'Soci (suporte@soci.app.br)' }, body: { content: input.content, description: input.description || '' } });
+    const d = await call(request, `https://3.basecampapi.com/${encodeURIComponent(auth.account)}/buckets/${encodeURIComponent(input.project)}/todolists/${encodeURIComponent(input.list)}/todos.json`, { method: 'POST', headers: { ...bearer(auth.token), 'User-Agent': 'Graao (suporte@graao.com)' }, body: { content: input.content, description: input.description || '' } });
     return v({ id: d.id, url: d.app_url });
   }
   if (id === 'klaviyo') {
@@ -214,7 +214,7 @@ export async function runConnectorAction(id, key, auth, input, { request = fetch
   if (id === 'browse_ai') { const d = await call(request, `https://api.browse.ai/v2/robots/${encodeURIComponent(input.robot)}/tasks`, { method: 'POST', headers: bearer(auth.apiKey), body: { inputParameters: json(input.input, 'Parâmetros') } }); return v({ task: d.result?.id, status: d.result?.status }); }
   if (id === 'mistral' || id === 'openrouter') {
     const url = id === 'mistral' ? 'https://api.mistral.ai/v1/chat/completions' : 'https://openrouter.ai/api/v1/chat/completions';
-    const d = await call(request, url, { method: 'POST', headers: { ...bearer(auth.apiKey), ...(id === 'openrouter' ? { 'X-Title': 'Soci' } : {}) }, body: { model: input.model, messages: [{ role: 'user', content: clip(input.prompt, 12000) }] } });
+    const d = await call(request, url, { method: 'POST', headers: { ...bearer(auth.apiKey), ...(id === 'openrouter' ? { 'X-Title': 'Graao' } : {}) }, body: { model: input.model, messages: [{ role: 'user', content: clip(input.prompt, 12000) }] } });
     return v({ answer: d.choices?.[0]?.message?.content || '' });
   }
   fail('Ação de conector desconhecida.', 404);

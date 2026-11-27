@@ -26,7 +26,7 @@ export function hoursPeriods(rows) {
   });
 }
 
-// The optimization checklist: what Google looks at in a complete profile, plus activity soci can see.
+// The optimization checklist: what Google looks at in a complete profile, plus activity graao can see.
 export function gbpChecklist(details = {}, { reviews = [], posts = 0 } = {}) {
   const description = String(details.profile?.description || '');
   const google = reviews.filter(row => row.googleName);
@@ -48,7 +48,7 @@ export function gbpChecklist(details = {}, { reviews = [], posts = 0 } = {}) {
   return { score, items, description };
 }
 
-// Main directories for Brazilian and Latin American local businesses. soci does not sync them
+// Main directories for Brazilian and Latin American local businesses. graao does not sync them
 // (that needs a paid partner such as Yext); the team keeps each profile right by hand and tracks it here.
 export const directories = [
   ['google', 'Google (Perfil da Empresa)', 'https://business.google.com/', 'Busca e Maps. O mais importante.'],

@@ -1,4 +1,4 @@
-// Sites → QR Codes: dynamic codes (the printed code points to soci, so the destination can change later),
+// Sites → QR Codes: dynamic codes (the printed code points to graao, so the destination can change later),
 // design, downloads and scan analytics.
 import { icon } from './icons.js';
 import { h, pageShell } from './screens.js';
@@ -70,7 +70,7 @@ function editorView(c) {
     <div class="qr-edit"><div class="fb-settings qr-settings">
       <section class="surface padded"><h2>Destino</h2><label>Nome<input data-qr-set="name" value="${h(d.name)}" maxlength="80"></label>
         <fieldset class="qr-types"><legend>Tipo</legend>${types.map(([id, label, ico]) => `<label class="qr-type"><input type="radio" name="qr-type" data-qr-set="type" value="${id}"${d.type === id ? ' checked' : ''}><span>${icon(ico, 16)} ${label}</span></label>`).join('')}</fieldset>
-        ${fieldsFor(c, d)}<p class="dim">O código impresso aponta para a soci, que redireciona. Trocar o destino aqui não exige reimprimir.</p></section>
+        ${fieldsFor(c, d)}<p class="dim">O código impresso aponta para a graao, que redireciona. Trocar o destino aqui não exige reimprimir.</p></section>
       <section class="surface padded"><h2>Aparência</h2><div class="fb-two"><label>Cor do código<span class="fb-color"><input type="color" data-qr-set="fg" value="${h(d.fg)}"><code>${h(d.fg)}</code></span></label><label>Fundo<span class="fb-color"><input type="color" data-qr-set="bg" value="${h(d.bg)}"><code>${h(d.bg)}</code></span></label></div>
         <p class="dim">Prefira código escuro sobre fundo claro, com bom contraste, para leitura em qualquer celular.</p></section>
       <section class="surface padded"><h2>Leituras</h2><div class="metrics three"><div class="surface metric"><span>Total</span><b>${qr.scans || 0}</b></div><div class="surface metric"><span>Únicas</span><b>${qr.unique || 0}</b></div><div class="surface metric"><span>Última</span><b class="qr-last">${qr.lastScan ? when(qr.lastScan) : '—'}</b></div></div>

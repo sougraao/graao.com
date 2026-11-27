@@ -215,7 +215,7 @@ const list: Command[] = [
   {
     id: 'help.about',
     label: 'Sobre a Prancheta',
-    run: () => store.toast('Prancheta soci — editor de design da agência e das subcontas'),
+    run: () => store.toast('Prancheta graao — editor de design da agência e das subcontas'),
   },
 ];
 

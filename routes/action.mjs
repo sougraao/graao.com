@@ -85,7 +85,7 @@ export function createCommandRunner(deps) {
       let reason = '';
       if (!contact?.email) reason = 'no_email';
       else {
-        const outcome = await documentMail.email(contact.email, { subject: row?.subject || `Mensagem de ${state.profile?.name || 'Soci'}`, text: row?.body || String(command.data.body || '') },
+        const outcome = await documentMail.email(contact.email, { subject: row?.subject || `Mensagem de ${state.profile?.name || 'Graao'}`, text: row?.body || String(command.data.body || '') },
           `team-email-${id}-${result.id}`, { fromName: state.profile?.name || '', fromAddress: await sendingAddress(id), replyTo: inboundAddress(id) }).catch(problem => problem.message);
         if (!mailSent(outcome)) reason = /não configurado/.test(String(outcome)) ? 'not_connected' : 'provider_error';
       }

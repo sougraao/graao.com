@@ -1,4 +1,4 @@
--- soci AI Gateway: log de requisições de IA (só metadados: nunca prompt nem resposta).
+-- graao AI Gateway: log de requisições de IA (só metadados: nunca prompt nem resposta).
 -- Uma linha por pedido, com tentativas, tokens, custo em micro-dólares (bigint, sem float) e a decisão de rota.
 -- Só inclusão: atualizar é proibido. Apagar só pela retenção (prune do servidor, linhas com mais de 180 dias).
 -- A política de acesso fica em provision-storage.sql (a mesma chave de servidor de go_workspaces).

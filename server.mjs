@@ -106,13 +106,15 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 // Per request: the affiliate referral cookies a public visitor carries (one per workspace).
 const requestScope = new AsyncLocalStorage();
 // Per request: where the visitor came from, per workspace (first and last touch; see ui/ads-data.js).
-const touchCookie = workspace => `soci_at_${workspace.replace(/[^\w-]/g, '')}`;
+const TOUCH_COOKIE_PREFIX = 'graao_at_';
+const REFERRAL_COOKIE_PREFIX = 'graao_af_';
+const touchCookie = workspace => `${TOUCH_COOKIE_PREFIX}${workspace.replace(/[^\w-]/g, '')}`;
 function touchesOf(req) {
   const out = {};
   for (const part of String(req.headers.cookie || '').split(';')) {
     const [name, value = ''] = part.trim().split('=');
-    if (!name?.startsWith('soci_at_')) continue;
-    try { const v = JSON.parse(Buffer.from(decodeURIComponent(value), 'base64url').toString('utf8')); out[name.slice(8)] = { first: cleanTouch(v.f), last: cleanTouch(v.l) }; } catch { /* a broken cookie is ignored */ }
+    if (!name?.startsWith(TOUCH_COOKIE_PREFIX)) continue;
+    try { const v = JSON.parse(Buffer.from(decodeURIComponent(value), 'base64url').toString('utf8')); out[name.slice(TOUCH_COOKIE_PREFIX.length)] = { first: cleanTouch(v.f), last: cleanTouch(v.l) }; } catch { /* a broken cookie is ignored */ }
   }
   return out;
 }
@@ -120,9 +122,9 @@ function referralsOf(req) {
   const refs = {};
   for (const part of String(req.headers.cookie || '').split(';')) {
     const [name, value = ''] = part.trim().split('=');
-    if (!name?.startsWith('soci_af_')) continue;
+    if (!name?.startsWith(REFERRAL_COOKIE_PREFIX)) continue;
     const [affiliateId, campaignId, at] = decodeURIComponent(value).split('.');
-    if (/^[0-9a-f-]{36}$/.test(affiliateId || '') && /^[0-9a-f-]{36}$/.test(campaignId || '') && /^\d{13}$/.test(at || '')) refs[name.slice(8)] = { affiliateId, campaignId, at: Number(at) };
+    if (/^[0-9a-f-]{36}$/.test(affiliateId || '') && /^[0-9a-f-]{36}$/.test(campaignId || '') && /^\d{13}$/.test(at || '')) refs[name.slice(REFERRAL_COOKIE_PREFIX.length)] = { affiliateId, campaignId, at: Number(at) };
   }
   return refs;
 }
@@ -147,7 +149,7 @@ import { agencySender, emailDomains, normalizeLocalPart, workspaceSender } from 
 import { abandonedOf } from './checkout-model.mjs';
 import { reportsDue } from './report-model.mjs';
 import { brandGroupData } from './ui/brand-group-data.js';
-import { createAskHandler } from './soci-chat.mjs';
+import { createAskHandler } from './graao-chat.mjs';
 import { createWahaHandler } from './waha.mjs';
 import { createMessageMedia } from './message-media.mjs';
 import { createWhatsAppHandler } from './whatsapp.mjs';
@@ -172,7 +174,7 @@ import { inBackground } from './background.mjs';
 import { createEventSender } from './event-sender.mjs';
 import { eventSendDue } from './event-send-model.mjs';
 import { runInBatches } from './cron-batch.mjs';
-import { createSociAI } from './ai-gateway/gateway.mjs';
+import { createGraaoAI } from './ai-gateway/gateway.mjs';
 import { createAiGatewayRoutes } from './routes/ai-gateway.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
@@ -201,7 +203,7 @@ export const staticFiles = new Map([
   ['/agency.js','text/javascript; charset=utf-8'], ['/agency-data.js','text/javascript; charset=utf-8'], ['/platform.js','text/javascript; charset=utf-8'], ['/ai-gateway.js','text/javascript; charset=utf-8'], ['/ghl-import-view.js','text/javascript; charset=utf-8'], ['/platform-format.js','text/javascript; charset=utf-8'], ['/setup-art.js','text/javascript; charset=utf-8'], ['/agency.css','text/css; charset=utf-8'],
   ['/deck-model.js','text/javascript; charset=utf-8'], ['/deck-render.js','text/javascript; charset=utf-8'], ['/deck-editor.js','text/javascript; charset=utf-8'], ['/deck.css','text/css; charset=utf-8'],
   ['/presentations.js','text/javascript; charset=utf-8'], ['/presentation-data.js','text/javascript; charset=utf-8'], ['/presentations.css','text/css; charset=utf-8'],
-  ['/soci-chat.js','text/javascript; charset=utf-8'], ['/soci-chat.css','text/css; charset=utf-8'],
+  ['/graao-chat.js','text/javascript; charset=utf-8'], ['/graao-chat.css','text/css; charset=utf-8'],
   ['/beautiful-ui.js','text/javascript; charset=utf-8'], ['/beautiful-ui.css','text/css; charset=utf-8'],
   ['/beautiful-ui-more.js','text/javascript; charset=utf-8'], ['/beautiful-ui.html','text/html; charset=utf-8'], ['/bui-mounts.js','text/javascript; charset=utf-8'],
   ['/highlight.js','text/javascript; charset=utf-8'], ['/toast.js','text/javascript; charset=utf-8'], ['/toast.css','text/css; charset=utf-8'], ['/rodape.js','text/javascript; charset=utf-8'], ['/rodape.css','text/css; charset=utf-8'], ['/ask.js','text/javascript; charset=utf-8'], ['/ask.css','text/css; charset=utf-8'], ['/accounts.js','text/javascript; charset=utf-8'], ['/accounts.css','text/css; charset=utf-8'], ['/account-guard.js','text/javascript; charset=utf-8'], ['/scope.css','text/css; charset=utf-8'],
@@ -229,7 +231,7 @@ export const sessionOnlyFiles = new Set(['/prancheta-editor.html']);
 for (const file of readdirSync(resolve(root, 'ui', 'setup-art'))) if (/^[a-z0-9-]+\.svg$/.test(file)) staticFiles.set(`/setup-art/${file}`, 'image/svg+xml');
 const host = '127.0.0.1';
 const defaultPort = Number(process.env.GO_PORT || 4317);
-// Editor da Prancheta: abre num iframe da própria soci e baixa o MediaPipe (remoção de fundo) por CDN.
+// Editor da Prancheta: abre num iframe da própria graao e baixa o MediaPipe (remoção de fundo) por CDN.
 const pranchetaEditorCsp = () => csp
   .replace("frame-ancestors 'none'", "frame-ancestors 'self'")
   .replace("script-src 'self'", "script-src 'self' 'wasm-unsafe-eval'")
@@ -301,7 +303,7 @@ function loadChoices(input) {
   return { items, modes };
 }
 
-// Tipo de uso de IA da subconta (ai-model.mjs) → funcionalidade do soci AI Gateway (política, classe de dado, log).
+// Tipo de uso de IA da subconta (ai-model.mjs) → funcionalidade do graao AI Gateway (política, classe de dado, log).
 const AI_FEATURE_OF_KIND = { blog: 'blog.writer', brand: 'content.writer', reputation: 'content.writer', conversations: 'conversation.reply', meetings: 'meeting.summary',
   visibility: 'seo.writer', social: 'social.writer', workflow: 'workflow.ai', agents: 'agent.reply', email: 'content.writer', sms: 'content.writer' };
 const aiFeatureOf = kind => AI_FEATURE_OF_KIND[kind] || 'content.writer';
@@ -315,7 +317,7 @@ export function makeServer({
   auth=authFromEnv(), agencyOwnerId=process.env.GO_AGENCY_OWNER_ID, agentModel=openAIModel, generateAgentReply=replyAsAgent, contentAI=null, workflowAI=null, mediaAI=null, brandFetch=fetch, ghlFetch=fetch, ghlResolve=null, metaFetch=fetch, inboundFetch=fetch, twilioRequest=fetch, phoneEnv=process.env, brandResolve=null, designAgentConfig=designAgent,
   emailResolver=undefined, openAISecret=process.env.GO_STORAGE_KEY, openAIRequest=fetch, aiGatewayEnv=process.env, aiGatewayRequest=null, fetchMedia=fetchPage, wahaRequest=fetch, whatsappRequest=fetch, abacatePayRequest=fetch,
   evolutionBaseUrl=process.env.EVOLUTION_BASE_URL || '', evolutionApiKey=process.env.EVOLUTION_API_KEY || '',
-  phoneVerify={ number: process.env.SOCI_VERIFY_WHATSAPP || '', instance: process.env.SOCI_VERIFY_INSTANCE || '', secret: process.env.SOCI_VERIFY_SECRET || '' },
+  phoneVerify={ number: process.env.GRAAO_VERIFY_WHATSAPP || '', instance: process.env.GRAAO_VERIFY_INSTANCE || '', secret: process.env.GRAAO_VERIFY_SECRET || '' },
   portalOptions={}, prospectAudit=collectProspectAudit, reportMail=reportMailer(), documentMail=documentMailer(), emailDomainApi=emailDomains(), campaignMail=campaignMailer(),
   signupOpen=undefined, allowLocalAccess=process.env.GO_DEV_NO_AUTH === '1', r2=r2FromEnv(), platformEnv=process.env, platformRequest=fetch, hosting=hostingDomains()
 }={}) {
@@ -333,7 +335,7 @@ export function makeServer({
   async function meteredAI(who, id, kind, run) {
     checkAiBudget(await store.load(id));
     const meter = usageMeter();
-    // Escopo do soci AI Gateway: a subconta é a organização do pedido; transcrição e busca na web só com a chave da agência.
+    // Escopo do graao AI Gateway: a subconta é a organização do pedido; transcrição e busca na web só com a chave da agência.
     const scope = { org: id, feature: aiFeatureOf(kind), allowPlatform: !['meetings', 'visibility'].includes(kind) };
     const connection = localAccess && contentAI ? { onUsage: meter.onUsage, model: agentModel }
       : { ...await openAI.requireConnection(who.session, scope), onUsage: meter.onUsage };
@@ -346,9 +348,9 @@ export function makeServer({
       throw problem;
     }
   }
-  // soci AI Gateway: camada única entre as funcionalidades e os provedores de IA (ai-gateway/, docs/ai-gateway/).
-  const sociAI = createSociAI({ store, env: aiGatewayEnv, request: aiGatewayRequest || openAIRequest, allowLocalUrls: localAccess, log: console });
-  const openAI = createOpenAI({ store, model: agentModel, secret: openAISecret, request: openAIRequest, gateway: sociAI });
+  // graao AI Gateway: camada única entre as funcionalidades e os provedores de IA (ai-gateway/, docs/ai-gateway/).
+  const graaoAI = createGraaoAI({ store, env: aiGatewayEnv, request: aiGatewayRequest || openAIRequest, allowLocalUrls: localAccess, log: console });
+  const openAI = createOpenAI({ store, model: agentModel, secret: openAISecret, request: openAIRequest, gateway: graaoAI });
   async function voiceAgentReply(workspace, { agentId, input, workflowId = '', voiceKey = null }) {
     const state = await store.load(workspace);
     const connection = localAccess && generateAgentReply !== replyAsAgent ? { model: agentModel }
@@ -602,7 +604,7 @@ export function makeServer({
       copy.published = null;
       copy.updatedAt = stamp();
       // Forms and services shown inside the pages point at the records this account received.
-      const relink = html => String(html || '').replace(/(<div\b[^>]*\sdata-soci-embed=[^>]*\sdata-id=")([^"]*)(")/gi, (_, a, ref, b) => a + (studioMap.ids?.get(ref) || ref) + b);
+      const relink = html => String(html || '').replace(/(<div\b[^>]*\sdata-graao-embed=[^>]*\sdata-id=")([^"]*)(")/gi, (_, a, ref, b) => a + (studioMap.ids?.get(ref) || ref) + b);
       // The pages get new ids, and the versions follow them: a version page without HTML shares the current page's.
       const pageIds = new Map();
       if (Array.isArray(copy.pages)) copy.pages = copy.pages.map(pg => { const id = uid(); pageIds.set(pg.id, id); return { ...pg, id, html: relink(pg.html) }; });
@@ -632,9 +634,9 @@ export function makeServer({
       requestUsers.set(req, auth.user(req,res).then(user => {
         if (!user) throw error('Entre na sua conta para continuar.',401);
         // Uma aba aberta antes da troca de conta diz em qual conta está: se não é mais esta, nada é lido nem gravado.
-        const tabAccount = req.headers['x-soci-account'];
+        const tabAccount = req.headers['x-graao-account'];
         if (tabAccount && tabAccount !== user.id) {
-          res.setHeader('X-Soci-Account-Changed','1');
+          res.setHeader('X-Graao-Account-Changed','1');
           throw Object.assign(error('Você trocou de conta em outra aba. Recarregue a página para continuar.',409), { code: 'ACCOUNT_CHANGED' });
         }
         return accountProfile(user);
@@ -643,7 +645,7 @@ export function makeServer({
     return requestUsers.get(req);
   }
   // Agência sem celular confirmado ou bloqueada só abre as rotas que levam até a confirmação ou o pagamento.
-  // Sem a linha de confirmação (SOCI_VERIFY_*), as agências que já existem seguem como estão e só o cadastro novo fecha.
+  // Sem a linha de confirmação (GRAAO_VERIFY_*), as agências que já existem seguem como estão e só o cadastro novo fecha.
   const verifyOn = Boolean(phoneVerify?.number && phoneVerify?.instance && phoneVerify?.secret);
   // Fora da Vercel (testes, máquina local) o cadastro fica aberto mesmo sem a linha.
   const openSignup = signupOpen ?? (verifyOn || !platformEnv.VERCEL);
@@ -653,13 +655,13 @@ export function makeServer({
     const access = agencyAccess(agency.billing, new Date());
     if (access.canUse) return null;
     if (invited && access.gate === 'PHONE_REQUIRED') return { code: 'AGENCY_NOT_ACTIVE', error: 'A agência ainda não foi ativada pelo responsável.' };
-    return { code: access.gate, error: access.gate === 'PHONE_REQUIRED' ? 'Confirme seu celular pelo WhatsApp para começar a usar a soci.' : 'A agência está bloqueada por falta de pagamento.' };
+    return { code: access.gate, error: access.gate === 'PHONE_REQUIRED' ? 'Confirme seu celular pelo WhatsApp para começar a usar a graao.' : 'A agência está bloqueada por falta de pagamento.' };
   }
   function requireAgencyOpen(agency, invited) {
     const closed = agencyGate(agency, invited);
     if (closed) throw Object.assign(error(closed.error, 402), { code: closed.code, billing: publicBilling(agency.billing, new Date()) });
   }
-  // Qual agência é dona do domínio da requisição ({ id, name }) ou null na soci. Só o id e o nome ficam um minuto em
+  // Qual agência é dona do domínio da requisição ({ id, name }) ou null na graao. Só o id e o nome ficam um minuto em
   // memória: o resto da agência é sempre lido de novo.
   const domainAgencies = new Map();
   async function domainAgency(req) {
@@ -680,7 +682,7 @@ export function makeServer({
     catch (e) { if (e.status !== 404 || agencyId === AGENCY_ID) throw e; }
     if (!agency) {
       const email = session.email.toLowerCase();
-      // White Label: no domínio de uma agência só entra quem ela liberou; ninguém vira cliente novo da soci por ali.
+      // White Label: no domínio de uma agência só entra quem ela liberou; ninguém vira cliente novo da graao por ali.
       const domain = await domainAgency(req);
       let invite = await store.findAgency({ users: [{ email, loginEnabled: true }] });
       if (domain && invite && invite.id !== domain.id) {
@@ -1703,7 +1705,7 @@ export function makeServer({
   }
   // AI steps run in the background with the OpenAI key of whoever saved the workflow, and only while that
   // person still belongs to the agency that owns the sub-account (or it is their own personal account).
-  // Sem a chave, as etapas só de texto (`scope.allowPlatform`) usam a IA gratuita da soci quando o dono a liberou.
+  // Sem a chave, as etapas só de texto (`scope.allowPlatform`) usam a IA gratuita da graao quando o dono a liberou.
   async function workflowConnection(workspace, state, workflowId, scope = {}) {
     if (localAccess && workflowAI) return { model: agentModel };
     return keyConnection(workspace, state, state.workflows.find(row => row.id === workflowId)?.aiKey, 'salve o fluxo de novo para usar as ações de IA', 'quem salvou o fluxo não tem mais acesso a esta subconta; salve o fluxo de novo', 'conecte a OpenAI de quem salvou o fluxo (Visão da agência → Configurações → OpenAI)', { org: workspace, feature: 'workflow.ai', ...scope });
@@ -1799,7 +1801,7 @@ export function makeServer({
         if (item.runId) results.push({ runId: item.runId, kind: 'push', text: devices.length ? `enviada para ${sent.filter(row => row.ok).length} de ${devices.length} aparelho(s)` : 'nenhum aparelho com notificações ativadas' });
       }
       if (item.kind === 'phone-call' || item.kind === 'voicemail-drop' || item.kind === 'voice-ai-call') {
-        const text = !phoneOrigin() ? 'erro: defina PHONE_PUBLIC_ORIGIN para a Twilio chamar a Soci'
+        const text = !phoneOrigin() ? 'erro: defina PHONE_PUBLIC_ORIGIN para a Twilio chamar a Graao'
           : await phone.workflowItem(workspace, item, phoneOrigin()).catch(problem => `erro: ${problem.message}`);
         results.push({ runId: item.runId, kind: 'phone', text });
       }
@@ -2077,7 +2079,7 @@ export function makeServer({
   const accountPurge = createAccountPurge({ store, r2, whatsapp });
   // Lixeira de subcontas: passados TRASH_DAYS da exclusão, a subconta é apagada de vez com tudo o que era dela
   // (account-purge.mjs) e sai da agência. Se o R2 ou a Evolution falham, ela espera na lixeira e o servidor tenta de
-  // novo a cada hora; depois de 7 dias de falha, apaga o que é da soci e anota no histórico o que ficou de fora.
+  // novo a cada hora; depois de 7 dias de falha, apaga o que é da graao e anota no histórico o que ficou de fora.
   async function purgeTrash(agencyId, at = Date.now()) {
     const agency = await store.load(agencyId), done = [];
     for (const id of trashExpired(agency, at)) {
@@ -2145,23 +2147,23 @@ export function makeServer({
     }
     await trackingLog.sweep(at);
     await auditLog.sweep(at);
-    await sociAI.admin.prune(at);
+    await graaoAI.admin.prune(at);
     if (skipped.length) console.warn(`Cron: ${skipped.length} de ${spaces.length} workspaces ficaram para o próximo minuto.`);
     return total;
   }
   const socialTimer = socialScheduler ? setInterval(() => { ready.then(() => runAllSocial(process.env.SOCIAL_PUBLIC_URL || `http://${host}:${port}`)).catch(() => {}); }, 60_000) : null;
   socialTimer?.unref?.();
-  const socialPopup = (base, message) => `<!doctype html><meta charset="utf-8"><title>soci</title><body style="font-family:system-ui;padding:24px">
+  const socialPopup = (base, message) => `<!doctype html><meta charset="utf-8"><title>graao</title><body style="font-family:system-ui;padding:24px">
 <p>${message.error ? 'Não foi possível conectar.' : 'Conta autorizada. Você pode fechar esta janela.'}</p><script>
-const m=${JSON.stringify({ type: 'soci-social', ...message }).replace(/</g, '\\u003c')};
+const m=${JSON.stringify({ type: 'graao-social', ...message }).replace(/</g, '\\u003c')};
 if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); window.close(); } else location.href='/app#marketing/social';
 </script>`;
   // ---- Anúncios (Meta Ads, Google Ads) --------------------------------------------------------
   // Tokens live sealed in the `ads-<workspace>` row; the workspace keeps campaigns and daily numbers.
   const adsCallbackPath = '/api/ads/callback';
-  const adsPopup = (base, message) => `<!doctype html><meta charset="utf-8"><title>soci</title><body style="font-family:system-ui;padding:24px">
+  const adsPopup = (base, message) => `<!doctype html><meta charset="utf-8"><title>graao</title><body style="font-family:system-ui;padding:24px">
 <p>${message.error ? 'Não foi possível conectar a conta de anúncios.' : 'Conta de anúncios conectada. Você pode fechar esta janela.'}</p><script>
-const m=${JSON.stringify({ type: 'soci-ads', ...message }).replace(/</g, '\\u003c')};
+const m=${JSON.stringify({ type: 'graao-ads', ...message }).replace(/</g, '\\u003c')};
 if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); window.close(); } else location.href='/app#marketing/ads';
 </script>`;
   const adsView = row => ({ configured: adsConfigured(), ...Object.fromEntries(['meta', 'google'].map(network => {
@@ -2287,9 +2289,9 @@ if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); wind
   const googleCallbackPath = '/api/google/callback';
   const googleCache = new Map();
   const searchCache = new Map();
-  const googlePopup = (base, message) => `<!doctype html><meta charset="utf-8"><title>soci</title><body style="font-family:system-ui;padding:24px">
+  const googlePopup = (base, message) => `<!doctype html><meta charset="utf-8"><title>graao</title><body style="font-family:system-ui;padding:24px">
 <p>${message.error ? 'Não foi possível conectar o Google.' : 'Conta Google conectada. Você pode fechar esta janela.'}</p><script>
-const m=${JSON.stringify({ type: 'soci-google', ...message }).replace(/</g, '\\u003c')};
+const m=${JSON.stringify({ type: 'graao-google', ...message }).replace(/</g, '\\u003c')};
 if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); window.close(); } else location.href='/app#settings/google';
 </script>`;
   const googleView = (row, manage) => {
@@ -2354,7 +2356,7 @@ if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); wind
   // Rotas por domínio (P2.1): cada módulo recebe o que vive neste fechamento e devolve NEXT_ROUTE quando a rota não é dele.
   const platformMonitor = createPlatformMonitor({ store, env: platformEnv, request: platformRequest, mailer: documentMail, pushEnv, pushRequest });
   const platformRoute = createPlatformRoutes({ monitor: platformMonitor, verifiedUser, agencyOwnerId, auth, localAccess, error, payload });
-  const aiGatewayRoute = createAiGatewayRoutes({ gateway: sociAI, verifiedUser, agencyOwnerId, auth, localAccess, error, payload });
+  const aiGatewayRoute = createAiGatewayRoutes({ gateway: graaoAI, verifiedUser, agencyOwnerId, auth, localAccess, error, payload });
   const socialRoute = createSocialRoutes({ platformMonitor, store, auth, localAccess, redirectToR2, ready, root, error, spaceId, privateSpace, stamp, socialFilePath, socialInvitePath, socialApprovePath, accountIsActive, approvalView, brandVoiceOf, callbackPath, change, content, fileBytes, inviteAttach, meteredAI, openAI, payload, publicAccountPolicy, publicBase, routeMetaAccounts, runAllSocial, runSocial, socialActor, socialPopup, socialRow, socialSecrets, startSocialOAuth, validateApproval, validateInvite, whatsapp, workspaceAccess });
   const adsRoute = createAdsRoutes({ store, localAccess, error, spaceId, privateSpace, stamp, adsAccess, adsCallbackPath, adsPopup, adsView, payload, publicBase, recordAudit, runAds, socialActor, socialRow, workspaceAccess });
   const runCommand = createCommandRunner({ store, r2, messageMedia, clearVideoChunks, documentMail, error, privateSpace, mailSent, deliveryFailure, accountIsActive, change, deliverMetaMessage, emailLater, eventSendsLater, flushLater, listWorkspaces, publicBase, recordAudit, sendingAddress, whatsapp, workspaceAccess });
@@ -2424,7 +2426,7 @@ if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); wind
   const accountRoute = createAccountRoutes({ error, verifiedUser, openAI, payload, access, createAccount, listWorkspaces, visibleWorkspaces });
   const workspaceRoute = createWorkspaceRoutes({ store, error, spaceId, privateSpace, accessContext, verifiedUser, requireWorkspaceAccess, visibleWorkspaces, workspaceAccess, payload, openAI, writeAudit, localAccess, contentAI, reportMail, agentModel });
   const ghlImportRoute = createGhlImportRoutes({ store, error, access, loadAgency, changeAgency, logTo, ghlFetch, ghlResolve,
-    publicOrigin: String(process.env.PORTAL_PUBLIC_ORIGIN || 'https://soci.app.br').replace(/\/+$/, '') });
+    publicOrigin: String(process.env.PORTAL_PUBLIC_ORIGIN || 'https://graao.com').replace(/\/+$/, '') });
   const agencyRoute = createAgencyRoutes({ error, spaceId, privateSpace, access, accessContext, verifiedUser, requireWorkspaceAccess, visibleWorkspaces, agencyPayload, agencyRequest, auditLog, payload });
   const pageRoute = createPageRoutes({ store, ready, error, workspaceSegment, payload, change, publicAccountPolicy, staticFiles, sessionOnlyFiles, localAccess, auth, pranchetaEditorCsp, root });
   const server=createServer(async (req,res) => {

@@ -26,7 +26,7 @@ A leitura dos módulos selecionados encontrou `launchpad-main`, `product-list`, 
 
 Limites: o grafo REA é parcial, com dependências externas e relações dinâmicas não resolvidas. O trace literal de `launchpad.progressTitle` não teve correspondência no grafo indexado; isso não demonstra ausência da string, presente na leitura direta do módulo. Não foram observadas chamadas de conclusão de tarefas no backend do HighLevel. A abertura inicial após criar uma conta no HighLevel é requisito fornecido pelo usuário, não um cadastro realizado nesta inspeção.
 
-## Comportamento na Soci
+## Comportamento na Graao
 
 - `#launchpad` é a entrada padrão ao abrir ou trocar uma subconta. Links explícitos para módulos e a entrada sem hash da agência conservam seus destinos.
 - `#launchpad/initial`, `/marketing`, `/sales`, `/website` e `/commerce` permitem acessar categorias diretamente.

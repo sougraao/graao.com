@@ -1,7 +1,7 @@
 // Consentimento do servidor MCP (/mcp/autorizar): mostra quem pede acesso, em qual subconta e com qual alcance, e
 // devolve a pessoa para a IA com a resposta. Todo texto que vem do pedido entra por textContent.
 try {
-  const saved = localStorage.getItem('soci.theme');
+  const saved = localStorage.getItem('graao.theme');
   const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
   if (dark) document.documentElement.setAttribute('data-theme', 'dark');
 } catch {}
@@ -41,7 +41,7 @@ async function answer(allow) {
 try {
   const { client, person, workspaces, selected } = await call(`/api/mcp/consent${location.search}`);
   const options = selected ? workspaces.filter(row => row.id === selected) : workspaces;
-  get('title').textContent = `Conectar ${client.name} à soci?`;
+  get('title').textContent = `Conectar ${client.name} à graao?`;
   if (!options.length) throw Error('Seu usuário não abre nenhuma subconta para esta conexão.');
   get('who').textContent = `Pedido por ${client.host}. Você entrou como ${person}.`;
   form.elements.workspace.replaceChildren(...(options.length > 1 ? [new Option('Escolha a subconta', '')] : []), ...options.map(row => new Option(row.name, row.id)));

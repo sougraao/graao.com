@@ -75,7 +75,7 @@ function layout(store, base, title, body, script = '') {
 }
 
 // Shared by every page: the cart in localStorage, the counter and the "add to cart" buttons.
-const cartScript = storeId => `const KEY='soci-cart:'+${JSON.stringify(storeId)};
+const cartScript = storeId => `const KEY='graao-cart:'+${JSON.stringify(storeId)};
 const readCart=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]').filter(x=>x&&x.productId&&x.qty>0)}catch{return[]}};
 const writeCart=c=>{try{localStorage.setItem(KEY,JSON.stringify(c))}catch{}count()};
 const count=()=>{const n=readCart().reduce((a,x)=>a+x.qty,0);document.querySelectorAll('[data-st-count]').forEach(e=>{e.textContent=n})};
@@ -109,7 +109,7 @@ export function storeProduct(state, store, item, { base }) {
       <label class="st-hp" aria-hidden="true">Site<input name="website" tabindex="-1" autocomplete="off"></label>
       <p class="st-error" data-st-review-error role="alert" hidden></p><button class="st-add" type="submit">Enviar avaliação</button></form></section>`;
   // Only a visitor whose cart session already exists (the cart page made it) reports the view.
-  const script = `try{const sv=localStorage.getItem('soci-cart-session:'+${JSON.stringify(store.id)});if(/^[0-9a-f]{32}$/.test(sv||''))fetch(${JSON.stringify(api)}+'/view',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:sv,productId:${JSON.stringify(item.id)}}),keepalive:true}).catch(()=>{})}catch{}
+  const script = `try{const sv=localStorage.getItem('graao-cart-session:'+${JSON.stringify(store.id)});if(/^[0-9a-f]{32}$/.test(sv||''))fetch(${JSON.stringify(api)}+'/view',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:sv,productId:${JSON.stringify(item.id)}}),keepalive:true}).catch(()=>{})}catch{}
 const rf=document.querySelector('[data-st-review]');
 rf.addEventListener('change',e=>{if(e.target.name!=='rating')return;const v=Number(e.target.value);rf.querySelectorAll('[data-st-rate] label').forEach((l,i)=>l.classList.toggle('on',i<v))});
 rf.addEventListener('submit',async e=>{e.preventDefault();const er=rf.querySelector('[data-st-review-error]');for(const el of rf.elements){if(el.willValidate&&!el.checkValidity()){el.reportValidity();return}}
@@ -148,7 +148,7 @@ const items=${JSON.stringify(items).replace(/</g, '\\u003c')},api=${JSON.stringi
 const brl=v=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0);
 const form=document.querySelector('[data-st-form]'),lines=document.querySelector('[data-st-lines]'),sum=document.querySelector('[data-st-sum]'),err=document.querySelector('[data-st-error]');
 let coupon='',gift='';
-const SKEY='soci-cart-session:'+${JSON.stringify(store.id)};
+const SKEY='graao-cart-session:'+${JSON.stringify(store.id)};
 const newSession=()=>[...crypto.getRandomValues(new Uint8Array(16))].map(b=>b.toString(16).padStart(2,'0')).join('');
 let session=(()=>{try{let v=localStorage.getItem(SKEY);if(!/^[0-9a-f]{32}$/.test(v||'')){v=newSession();localStorage.setItem(SKEY,v)}return v}catch{return newSession()}})();
 let capTimer=0;

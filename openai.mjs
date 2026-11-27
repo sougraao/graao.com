@@ -6,10 +6,10 @@ const fail = (message, status) => Object.assign(new Error(message), { status });
 const connectMessage = 'Conecte sua chave da OpenAI em Visão da agência → Configurações → OpenAI.';
 const rowId = session => `openai-${session.id}`;
 
-// `gateway` (soci AI Gateway, ai-gateway/gateway.mjs): quando presente, toda chamada à Responses API passa por ele
+// `gateway` (graao AI Gateway, ai-gateway/gateway.mjs): quando presente, toda chamada à Responses API passa por ele
 // (kill switch, circuit breaker, log de requisições). Sem ele (testes antigos), a chamada vai direto como antes.
 export function createOpenAI({ store, model, secret, request = fetch, gateway = null }) {
-  const key = secret && createHmac('sha256', secret).update('soci:openai:v1').digest();
+  const key = secret && createHmac('sha256', secret).update('graao:openai:v1').digest();
 
   async function connection(session) {
     if (!session || !key) return null;
@@ -33,7 +33,7 @@ export function createOpenAI({ store, model, secret, request = fetch, gateway = 
   }
 
   const status = apiKey => ({ configured: Boolean(apiKey), last4: apiKey?.slice(-4) || '', model });
-  // A IA gratuita da soci está liberada para quem não tem chave (o dono ligou a opção e há modelo grátis ativo).
+  // A IA gratuita da graao está liberada para quem não tem chave (o dono ligou a opção e há modelo grátis ativo).
   const platformFree = async () => Boolean(gateway && await gateway.platformFreeAvailable().catch(() => false));
   const platformConnection = (session, scope) => ({ apiKey: null, model, request, platform: true, ...gatewayScope(session, scope) });
   return {
@@ -41,7 +41,7 @@ export function createOpenAI({ store, model, secret, request = fetch, gateway = 
     platformAvailable: platformFree,
     /**
      * A chave de quem salvou (fluxos, Voice AI). Sem chave: null, ou, com `scope.allowPlatform` e a IA gratuita da
-     * soci liberada, uma conexão sem chave que o gateway atende com modelos gratuitos (só texto).
+     * graao liberada, uma conexão sem chave que o gateway atende com modelos gratuitos (só texto).
      */
     async optionalConnection(session, scope = {}) {
       const apiKey = await connection(session);
@@ -50,7 +50,7 @@ export function createOpenAI({ store, model, secret, request = fetch, gateway = 
     },
     /**
      * A chave da agência (BYOK). `scope`: { org, feature, allowPlatform }. Sem chave, e só quando o dono da plataforma
-     * liberou "Agências sem chave usam a IA gratuita da soci" e a funcionalidade usa apenas texto (allowPlatform),
+     * liberou "Agências sem chave usam a IA gratuita da graao" e a funcionalidade usa apenas texto (allowPlatform),
      * devolve uma conexão sem chave que o gateway atende com modelos gratuitos.
      */
     async requireConnection(session, scope = {}) {
@@ -111,8 +111,8 @@ function legacyError(error, problem, byok) {
 
 // `onUsage`, when the caller meters AI spend, receives the model and token counts of every call,
 // including failed ones (with zero tokens and the error message).
-// Com `gateway` na conexão (o normal no servidor), a chamada passa pelo soci AI Gateway: o corpo segue igual para a
-// OpenAI com a chave da agência, ou, sem chave e com a IA gratuita da soci liberada, vai a um modelo gratuito.
+// Com `gateway` na conexão (o normal no servidor), a chamada passa pelo graao AI Gateway: o corpo segue igual para a
+// OpenAI com a chave da agência, ou, sem chave e com a IA gratuita da graao liberada, vai a um modelo gratuito.
 export async function openAIResponse(body, { apiKey, request, timeout, problem, onUsage, gateway, gatewayContext }) {
   const started = Date.now();
   try {

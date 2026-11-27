@@ -436,9 +436,9 @@ export function drawDashboardGauges(root, { instant = false } = {}) {
   }
 }
 
-if (typeof window !== 'undefined' && !window._sociGaugeThemeBound) {
-  window._sociGaugeThemeBound = true;
-  window.addEventListener('soci:theme-change', () => {
+if (typeof window !== 'undefined' && !window._graaoGaugeThemeBound) {
+  window._graaoGaugeThemeBound = true;
+  window.addEventListener('graao:theme-change', () => {
     const host = document.getElementById('app');
     if (host) drawDashboardGauges(host, { instant: true });
   });

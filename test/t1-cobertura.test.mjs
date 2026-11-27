@@ -14,10 +14,10 @@ test('O mapa de cobertura do T.1 tem os 116 gatilhos e as 180 ações do GHL', (
   }
 });
 
-test('Todo gatilho e ação marcado como coberto existe no catálogo da Soci, e o que está no catálogo sai de "falta"', () => {
+test('Todo gatilho e ação marcado como coberto existe no catálogo da Graao, e o que está no catálogo sai de "falta"', () => {
   const triggers = new Set(allTriggers.map(item => item.type)), actions = new Set(allActions.map(item => item.type));
-  for (const row of gatilhos.filter(row => row.status === 'coberto')) for (const type of row.soci) assert.ok(triggers.has(type), `gatilho ${type} (${row.ghl})`);
-  for (const row of acoes.filter(row => row.status === 'coberto')) for (const type of row.soci) assert.ok(actions.has(type), `ação ${type} (${row.ghl})`);
+  for (const row of gatilhos.filter(row => row.status === 'coberto')) for (const type of row.graao) assert.ok(triggers.has(type), `gatilho ${type} (${row.ghl})`);
+  for (const row of acoes.filter(row => row.status === 'coberto')) for (const type of row.graao) assert.ok(actions.has(type), `ação ${type} (${row.ghl})`);
   // A planned type that already exists only counts as done when the row says so: extending an existing action keeps it here.
   const extending = new Set(['send_messenger', 'send_instagram_dm', 'send_live_chat', 'register_event', 'conversation_ai']);
   for (const row of gatilhos.filter(row => row.status === 'falta')) assert.ok(!triggers.has(row.plano), `gatilho ${row.plano} já existe: marque ${row.ghl} como coberto`);

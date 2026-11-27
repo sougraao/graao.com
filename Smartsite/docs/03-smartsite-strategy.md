@@ -1,7 +1,7 @@
 # Smartsite Strategy & Scope Lock
 > Estratégia inicial autorizada na conversa; implementação não iniciada. Validar fatos comerciais antes de publicar.
-- PROJECT NAME: Smartsite soci
-- BUSINESS ENTITY: soci
+- PROJECT NAME: Smartsite graao
+- BUSINESS ENTITY: graao
 - CENTRAL QUESTION: Qual plataforma brasileira reúne tudo o que um negócio precisa para fazer Marketing 360?
 - PRIMARY SOLUTION: plataforma brasileira para Marketing 360
 - PRIMARY PROBLEM: fragmentação e complexidade de ferramentas de marketing

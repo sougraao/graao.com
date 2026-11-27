@@ -21,7 +21,7 @@ test('T.1 GA4 event: a stable client id from the contact, the value, and no pers
   assert.match(item.clientId, /^\d+\.\d+$/);
   assert.equal(run({ event: 'purchase' }).item.clientId === item.clientId, false, 'each contact has its own client id');
   assert.equal(item.userId, contactId);
-  assert.deepEqual(item.event, { name: 'purchase', params: { source: 'soci_workflow', workflow: 'GA4', engagement_time_msec: 1, value: 89.9, currency: 'BRL' } });
+  assert.deepEqual(item.event, { name: 'purchase', params: { source: 'graao_workflow', workflow: 'GA4', engagement_time_msec: 1, value: 89.9, currency: 'BRL' } });
   assert.doesNotMatch(JSON.stringify(item), /ana@x|99999/, 'no e-mail or phone goes to Google Analytics');
   assert.equal(run({ event: 'custom', customEvent: '1 proposta enviada' }).item.event.name, 'proposta_enviada', 'GA4 names start with a letter');
   assert.match(run({ event: 'generate_lead' }, { ga4: '' }).results, /ID de medição do GA4/);

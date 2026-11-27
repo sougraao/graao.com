@@ -1,4 +1,4 @@
-// Vigia do WhatsApp no soci: roda com o cron, por agência, e protege contra as falhas conhecidas da Evolution API.
+// Vigia do WhatsApp no graao: roda com o cron, por agência, e protege contra as falhas conhecidas da Evolution API.
 //   1. Mensagem recebida que o webhook não entregou: busca na Evolution e guarda, sem repetir.
 //   2. Webhook apagado ou trocado no servidor: registra de novo.
 //   3. Número que caiu em silêncio: marca o incidente na subconta e avisa; avisa de novo quando volta.

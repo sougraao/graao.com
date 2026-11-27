@@ -38,10 +38,10 @@ async function problem(res: Response, fallback: string) {
 }
 
 /**
- * Arquivos da Prancheta guardados na soci: `workspace=agency` para a agência,
+ * Arquivos da Prancheta guardados na graao: `workspace=agency` para a agência,
  * ou o id da subconta. As chamadas vão para a mesma origem, com o cookie da sessão.
  */
-export function createSociRepo(workspace: string) {
+export function createGraaoRepo(workspace: string) {
   const ws = `workspace=${encodeURIComponent(workspace)}`;
   const post = (action: string, body: unknown) => fetch(`/api/prancheta/${action}?${ws}`, {
     method: "POST",
@@ -94,6 +94,6 @@ export function createSociRepo(workspace: string) {
   return repo;
 }
 
-export type SociRepo = ReturnType<typeof createSociRepo>;
+export type GraaoRepo = ReturnType<typeof createGraaoRepo>;
 /** Interface usada pela sessão de salvamento. */
-export type PranchetaRepo = Pick<SociRepo, "getFile" | "saveFile">;
+export type PranchetaRepo = Pick<GraaoRepo, "getFile" | "saveFile">;

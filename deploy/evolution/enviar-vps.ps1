@@ -27,7 +27,7 @@ if ($dns.Count -eq 0) {
 }
 
 # Cópia com fim de linha do Linux: o bash não lê um script com CRLF.
-$stage = Join-Path ([System.IO.Path]::GetTempPath()) ("soci-evolution-" + [guid]::NewGuid().ToString('N'))
+$stage = Join-Path ([System.IO.Path]::GetTempPath()) ("graao-evolution-" + [guid]::NewGuid().ToString('N'))
 $folder = Join-Path $stage 'evolution'
 New-Item -ItemType Directory -Force $folder | Out-Null
 try {

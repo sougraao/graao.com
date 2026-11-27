@@ -15,7 +15,7 @@ function mockWahaServer() {
       return new Response(JSON.stringify({
         name: 'default',
         status: sessionStatus,
-        me: sessionStatus === 'WORKING' ? { id: '5511999990000@c.us', pushName: 'Soci Oficial' } : null
+        me: sessionStatus === 'WORKING' ? { id: '5511999990000@c.us', pushName: 'Graao Oficial' } : null
       }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     }
     if (u.pathname === '/api/sessions/default/start' && init.method === 'POST') {

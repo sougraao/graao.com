@@ -35,7 +35,7 @@ export function phoneKey(e164) {
 }
 
 export function hashCode(code) {
-  return createHash('sha256').update(`soci-verify:${String(code).toUpperCase()}`).digest('hex');
+  return createHash('sha256').update(`graao-verify:${String(code).toUpperCase()}`).digest('hex');
 }
 
 export function newCode(random) {
@@ -46,10 +46,10 @@ export function newCode(random) {
 }
 
 export function codeFromText(text) {
-  const match = /confirmar\s+soci\s+([a-z0-9]{6})\b/i.exec(String(text ?? ''));
+  const match = /confirmar\s+graao\s+([a-z0-9]{6})\b/i.exec(String(text ?? ''));
   return match ? match[1].toUpperCase() : '';
 }
 
 export function verifyLink(number, code) {
-  return `https://wa.me/${number}?text=${encodeURIComponent(`Confirmar soci ${code}`)}`;
+  return `https://wa.me/${number}?text=${encodeURIComponent(`Confirmar graao ${code}`)}`;
 }

@@ -1,4 +1,4 @@
-// soci AI Gateway: o contrato único entre as funcionalidades da soci e os provedores.
+// graao AI Gateway: o contrato único entre as funcionalidades da graao e os provedores.
 // Uma funcionalidade nunca fala com um provedor: monta um pedido normalizado e recebe uma resposta normalizada.
 import { GatewayError } from './errors.mjs';
 import { DATA_CLASSES } from './privacy.mjs';
@@ -8,14 +8,14 @@ export const CAPABILITIES = Object.freeze(['text', 'stream', 'structured', 'tool
 
 // Modos de inteligência: perfis de roteamento, não modelos próprios.
 export const MODES = Object.freeze({
-  auto: { label: 'soci Auto', needs: [], weights: null },
-  free: { label: 'soci Free', needs: [], freeOnly: true, weights: null },
-  fast: { label: 'soci Fast', needs: [], weights: { speed: 0.45, availability: 0.2, cost: 0.2, quality: 0.1, capacity: 0.05 } },
-  pro: { label: 'soci Pro', needs: [], weights: { quality: 0.5, availability: 0.2, cost: 0.15, speed: 0.1, capacity: 0.05 } },
-  reason: { label: 'soci Reason', needs: ['reasoning'], weights: { quality: 0.55, availability: 0.2, cost: 0.15, speed: 0.05, capacity: 0.05 } },
-  vision: { label: 'soci Vision', needs: ['vision'], weights: null },
-  agent: { label: 'soci Agent', needs: ['tools'], weights: null },
-  embeddings: { label: 'soci Embeddings', needs: ['embeddings'], weights: null }
+  auto: { label: 'graao Auto', needs: [], weights: null },
+  free: { label: 'graao Free', needs: [], freeOnly: true, weights: null },
+  fast: { label: 'graao Fast', needs: [], weights: { speed: 0.45, availability: 0.2, cost: 0.2, quality: 0.1, capacity: 0.05 } },
+  pro: { label: 'graao Pro', needs: [], weights: { quality: 0.5, availability: 0.2, cost: 0.15, speed: 0.1, capacity: 0.05 } },
+  reason: { label: 'graao Reason', needs: ['reasoning'], weights: { quality: 0.55, availability: 0.2, cost: 0.15, speed: 0.05, capacity: 0.05 } },
+  vision: { label: 'graao Vision', needs: ['vision'], weights: null },
+  agent: { label: 'graao Agent', needs: ['tools'], weights: null },
+  embeddings: { label: 'graao Embeddings', needs: ['embeddings'], weights: null }
 });
 export const MODE_IDS = Object.freeze(Object.keys(MODES));
 
@@ -129,7 +129,7 @@ export function toResponsesResult(result) {
     output: [{ type: 'message', role: 'assistant', content: [{ type: 'output_text', text: result.text || '' }] }],
     output_text: result.text || '',
     usage: { input_tokens: result.usage.inputTokens, output_tokens: result.usage.outputTokens, total_tokens: result.usage.inputTokens + result.usage.outputTokens },
-    soci: { provider: result.provider, mode: result.mode, fallback: result.attempts > 1 }
+    graao: { provider: result.provider, mode: result.mode, fallback: result.attempts > 1 }
   };
 }
 

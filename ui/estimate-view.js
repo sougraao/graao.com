@@ -11,7 +11,7 @@ const day = value => /^\d{4}-\d{2}-\d{2}/.test(value || '') ? value.slice(0, 10)
 const say = (pt, es) => getLanguage() === 'es' ? es : pt;
 let view = null;
 
-try { if (!localStorage.getItem('soci_lang') && /^es/i.test(navigator.language || '')) await setLanguage('es'); } catch {}
+try { if (!localStorage.getItem('graao_lang') && /^es/i.test(navigator.language || '')) await setLanguage('es'); } catch {}
 
 async function api(action, data = {}) {
   const response = await fetch(`/api/orcamento/${encodeURIComponent(workspace)}`, {
@@ -67,7 +67,7 @@ function renderPay(v) {
 
 function render() {
   const v = view;
-  document.title = `${v.number} · ${v.sender || 'Soci'}`;
+  document.title = `${v.number} · ${v.sender || 'Graao'}`;
   $('title').textContent = v.title;
   $('sender').textContent = say(`Orçamento ${v.number} de ${v.sender}`, `Presupuesto ${v.number} de ${v.sender}`);
   $('doc').innerHTML = v.html;

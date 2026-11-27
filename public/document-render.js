@@ -101,5 +101,5 @@ export function renderCertificate(doc, { zone } = {}) {
     <table class="dc-table"><thead><tr><th>Destinatário</th><th>Ação</th><th>Data e hora</th><th>IP</th></tr></thead><tbody>${people.map(row => `<tr><td><b>${esc(row.name || row.label)}</b><br><small>${esc(row.email)}</small></td>
       <td>${esc(row.status === 'signed' ? (row.role === 'approver' ? 'Aprovou' : 'Assinou') : recipientStates[row.status] || row.status)}</td><td>${esc(when(row.signedAt, zone))}</td><td>${esc(row.ip || '')}</td></tr>`).join('')}</tbody></table>
     <h3>Trilha de auditoria</h3><ol class="dc-audit">${(doc.audit || []).map(entry => `<li><b>${esc(auditNames[entry.event] || entry.event)}</b> · ${esc(when(entry.at, zone))}${entry.detail ? ` · ${esc(entry.detail)}` : ''}${entry.ip ? ` · IP ${esc(entry.ip)}` : ''}</li>`).join('')}</ol>
-    <p class="dc-cert-note">Assinatura eletrônica registrada pela Soci (MP 2.200-2/2001, art. 10, §2º, e Lei 14.063/2020), com identificação por link pessoal enviado a cada destinatário, data, hora e IP. Não é assinatura qualificada ICP-Brasil.</p></section>`;
+    <p class="dc-cert-note">Assinatura eletrônica registrada pela Graao (MP 2.200-2/2001, art. 10, §2º, e Lei 14.063/2020), com identificação por link pessoal enviado a cada destinatário, data, hora e IP. Não é assinatura qualificada ICP-Brasil.</p></section>`;
 }

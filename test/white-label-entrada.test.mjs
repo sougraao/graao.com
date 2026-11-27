@@ -1,7 +1,7 @@
 // White Label: o que aparece depois da tela de entrada no domínio da agência. Produção, 26/11 (graao.com/app): a tela
-// de carregamento mostrava a caveira e "Abrindo a soci…", e quem entrava com uma conta Google sem acesso à agência
-// ganhava uma agência nova na soci e caía em "Confirme seu celular… 15 dias de teste grátis". Como no GoHighLevel,
-// o domínio da agência só abre para quem ela liberou e nunca mostra a soci.
+// de carregamento mostrava a caveira e "Abrindo a graao…", e quem entrava com uma conta Google sem acesso à agência
+// ganhava uma agência nova na graao e caía em "Confirme seu celular… 15 dias de teste grátis". Como no GoHighLevel,
+// o domínio da agência só abre para quem ela liberou e nunca mostra a graao.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -49,11 +49,11 @@ test('No domínio da agência, um e-mail sem acesso recebe o aviso e nenhuma ag�
   assert.equal(blocked.status, 403, JSON.stringify(blocked.body));
   assert.equal(blocked.body.code, 'NOT_INVITED');
   assert.match(blocked.body.error, /estranho@gmail\.test ainda não tem acesso a Agência Um/);
-  assert.doesNotMatch(blocked.body.error, /soci/i);
-  await assert.rejects(async () => store.load('agency-u3'), /Workspace not found/, 'o domínio da agência não vira cadastro na soci');
+  assert.doesNotMatch(blocked.body.error, /graao/i);
+  await assert.rejects(async () => store.load('agency-u3'), /Workspace not found/, 'o domínio da agência não vira cadastro na graao');
 
-  const onSoci = await get('/api/workspaces', 'estranho');
-  assert.equal(onSoci.status, 200, 'na soci.app.br o cadastro segue como antes');
+  const onGraao = await get('/api/workspaces', 'estranho');
+  assert.equal(onGraao.status, 200, 'na graao.com o cadastro segue como antes');
 });
 
 test('No domínio da agência entra quem ela liberou e a dona; quem só foi liberado por outra agência não', async t => {
@@ -69,31 +69,31 @@ test('No domínio da agência entra quem ela liberou e a dona; quem só foi libe
   const foreign = await get('/api/workspaces', 'deOutra', DOMAIN);
   assert.equal(foreign.status, 403);
   assert.equal(foreign.body.code, 'NOT_INVITED');
-  assert.equal((await get('/api/workspaces', 'deOutra')).status, 200, 'na soci.app.br abre a agência que o liberou');
+  assert.equal((await get('/api/workspaces', 'deOutra')).status, 200, 'na graao.com abre a agência que o liberou');
 });
 
-test('O app no domínio da agência carrega com o logotipo e o nome dela, sem a caveira nem "soci"', () => {
+test('O app no domínio da agência carrega com o logotipo e o nome dela, sem a caveira nem "graao"', () => {
   const app = readFileSync(new URL('../ui/app.html', import.meta.url), 'utf8');
   const logo = `/asset/${'b'.repeat(64)}.png`;
-  const page = brandedPage(app, { name: 'graao', logo, primary: '' });
-  assert.match(page, /data-marca="agencia" data-marca-nome="graao" data-marca-logo="\/asset\/b{64}\.png"/);
+  const page = brandedPage(app, { name: 'Agência Exemplo', logo, primary: '' });
+  assert.match(page, /data-marca="agencia" data-marca-nome="Agência Exemplo" data-marca-logo="\/asset\/b{64}\.png"/);
   const bootScreen = page.match(/<div id="app">([\s\S]*?)<\/div><\/div>/)[1];
   assert.match(bootScreen, /<img class="boot-logo" src="\/asset\/b{64}\.png" alt="">/);
-  assert.match(bootScreen, /Abrindo graao…/);
-  assert.doesNotMatch(bootScreen, /soci/i);
+  assert.match(bootScreen, /Abrindo Agência Exemplo…/);
+  assert.doesNotMatch(bootScreen, /graao/i);
   const css = readFileSync(new URL('../ui/graao.css', import.meta.url), 'utf8');
   assert.match(css, /:root\[data-marca=agencia\] \.boot::before\{display:none\}/, 'a caveira do .boot::before some no domínio da agência');
 });
 
-test('A confirmação de celular e o aviso de acesso mostram a agência, não a soci', () => {
-  const marca = { name: 'graao', logo: `/asset/${'c'.repeat(64)}.png` };
+test('A confirmação de celular e o aviso de acesso mostram a agência, não a graao', () => {
+  const marca = { name: 'Agência Exemplo', logo: `/asset/${'c'.repeat(64)}.png` };
   const visible = html => html.replace(/<[^>]+>/g, ' ');
   const phone = gateView({ code: 'PHONE_REQUIRED' }, { step: 'form' }, marca);
-  assert.doesNotMatch(visible(phone), /soci|teste grátis/i);
-  assert.match(phone, /<img class="vf-brand-logo" src="\/asset\/c{64}\.png" alt="graao">/);
-  const denied = gateView({ code: 'NOT_INVITED', error: 'O e-mail x@y.test ainda não tem acesso a graao.' }, undefined, marca);
+  assert.doesNotMatch(visible(phone), /graao|teste grátis/i);
+  assert.match(phone, /<img class="vf-brand-logo" src="\/asset\/c{64}\.png" alt="Agência Exemplo">/);
+  const denied = gateView({ code: 'NOT_INVITED', error: 'O e-mail x@y.test ainda não tem acesso a Agência Exemplo.' }, undefined, marca);
   assert.match(denied, /<h1>Acesso não liberado<\/h1>/);
   assert.match(denied, /Entrar com outra conta/);
-  assert.doesNotMatch(visible(denied), /soci/i);
-  assert.match(gateView({ code: 'PHONE_REQUIRED' }, { step: 'form' }, null), /<div class="vf-brand">soci<\/div>[\s\S]*15 dias de teste grátis/, 'na soci nada muda');
+  assert.doesNotMatch(visible(denied), /graao/i);
+  assert.match(gateView({ code: 'PHONE_REQUIRED' }, { step: 'form' }, null), /<div class="vf-brand">graao<\/div>[\s\S]*15 dias de teste grátis/, 'na graao nada muda');
 });

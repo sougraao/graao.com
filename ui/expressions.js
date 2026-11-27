@@ -415,7 +415,7 @@ export function buildWorkflowContext(state = {}, run = {}, contact = null) {
     phone: contact?.phone || '',
     company: contact?.company || '',
     account: {
-      name: state?.profile?.name || state?.agency?.company?.name || 'soci'
+      name: state?.profile?.name || state?.agency?.company?.name || 'graao'
     },
     user: {
       name: state?.profile?.name || ''

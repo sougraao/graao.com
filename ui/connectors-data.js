@@ -4,7 +4,7 @@
 const f = (key, label, kind = 'text', extra = {}) => ({ key, label, kind, ...extra });
 const lines = 'Uma linha por campo: Coluna = valor (aceita variáveis)';
 
-// How each app connects. webhook: the app calls the Soci URL shown after connecting (with a secret when it signs).
+// How each app connects. webhook: the app calls the Graao URL shown after connecting (with a secret when it signs).
 export const connectors = [
   { id: 'slack', name: 'Slack', category: 'Comunicação', auth: [f('botToken', 'Bot token (xoxb-…)', 'password', { required: true }), f('signingSecret', 'Signing secret (para os gatilhos)', 'password')],
     help: 'Crie um app em api.slack.com, adicione os escopos chat:write, channels:manage, channels:read, groups:read, users:read.email e instale no workspace. Para os gatilhos, ative Event Subscriptions com a URL abaixo.',

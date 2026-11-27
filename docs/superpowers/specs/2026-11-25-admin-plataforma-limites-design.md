@@ -4,7 +4,7 @@ Data: 25/11/2026 · Status: rascunho para aprovação
 
 ## Por que
 
-O soci.app roda em serviços externos com planos e cotas (Supabase no plano gratuito, Vercel, Cloudflare R2, VPS da Hostinger com a Evolution API, Twilio). Hoje ninguém olha esses limites até algo quebrar. Já aconteceu na Vercel: o limite de deploys deixou a main à frente da produção sem ninguém perceber.
+O graao.app roda em serviços externos com planos e cotas (Supabase no plano gratuito, Vercel, Cloudflare R2, VPS da Hostinger com a Evolution API, Twilio). Hoje ninguém olha esses limites até algo quebrar. Já aconteceu na Vercel: o limite de deploys deixou a main à frente da produção sem ninguém perceber.
 
 O objetivo é **não estourar limites**: ser avisado **antes**, com tempo de agir (limpar dados, subir de plano, renovar a VPS).
 
@@ -60,7 +60,7 @@ Limites de cada plano numa tabela no código (`platform-limits.mjs`), por servi�
 |---|---|---|---|
 | **Supabase** (projeto `zlkhoucdqfxgiorujifj`, org no plano **free**) | Tamanho do banco (500 MB); Storage (1 GB); usuários ativos no mês (50 mil); egress (5 GB): a API não informa | Função SQL nova `go_platform_usage()` (migration em `supabase/migrations/`), chamada por RPC com a conexão que já existe (chave de serviço). Ela devolve `pg_database_size`, a soma de `storage.objects` e a contagem de `auth.users` com login no mês. **Sem token novo.** Plano escolhido na página (padrão Free). Se a consulta não responder, o serviço conta como fora do ar | banco e storage: acumulado; MAU: mensal |
 | **Vercel** (time `soci3`) | Deploys nas últimas 24 h (limite do plano: Hobby 100 por dia); uso de banda e de funções, se a API de uso responder | REST (`VERCEL_API_TOKEN`, `VERCEL_TEAM_ID`): `/v2/teams/{id}` para o plano; `/v6/deployments` para a contagem | deploys: janela móvel de 24 h; uso: mensal |
-| **Cloudflare** | R2: armazenamento (10 GB grátis), operações classe A (1 mi por mês) e classe B (10 mi por mês); plano da zona `soci.app.br` | GraphQL Analytics + REST (`CLOUDFLARE_API_TOKEN` só leitura, `R2_ACCOUNT_ID` já existe) | armazenamento: acumulado; operações: mensal |
+| **Cloudflare** | R2: armazenamento (10 GB grátis), operações classe A (1 mi por mês) e classe B (10 mi por mês); plano da zona `graao.com` | GraphQL Analytics + REST (`CLOUDFLARE_API_TOKEN` só leitura, `R2_ACCOUNT_ID` já existe) | armazenamento: acumulado; operações: mensal |
 | **Hostinger** (VPS da Evolution) | Plano; disco, RAM e CPU (média das últimas horas); data de vencimento ou renovação | API Hostinger (`HOSTINGER_API_TOKEN`): máquinas virtuais, métricas e assinaturas | disco: acumulado; CPU e RAM: média recente; vencimento: data |
 | **Evolution API** | Responde ou não; quantidade de instâncias | `EVOLUTION_BASE_URL` e `EVOLUTION_API_KEY` (já existem) | a cada conferência |
 | **Twilio** | Saldo da conta (alerta abaixo de um valor mínimo; padrão US$ 10, editável na página) | `TWILIO_ACCOUNT_SID` e `TWILIO_AUTH_TOKEN` (já existem): `Balance.json` | a cada conferência |
@@ -111,7 +111,7 @@ No celular, os cartões ficam em uma coluna.
 
 - Os tokens de administração ficam só em variáveis de ambiente da Vercel, nunca no store nem no navegador. Erros das APIs são resumidos antes de salvar ou mostrar, sem cabeçalhos nem URLs com segredo.
 - Testes com `node --test` em `test/` e `fetch` falso: tabela de limites, cálculo de porcentagem e cor, previsão, decisão de alerta (mudança de nível, lembrete de 24 h, 3 falhas) e o bloqueio de acesso para quem não é o dono.
-- Documentação **interna**, só no repositório (`docs/plataforma-limites.md`), no mesmo PR: o que a página mostra e como criar cada token com as permissões mínimas. Esta entrega é exceção à regra de publicar na doc.soci.app.br, porque o artigo exporia a infraestrutura.
+- Documentação **interna**, só no repositório (`docs/plataforma-limites.md`), no mesmo PR: o que a página mostra e como criar cada token com as permissões mínimas. Esta entrega é exceção à regra de publicar na doc.graao.com, porque o artigo exporia a infraestrutura.
 - Trabalho numa branch nova a partir da `origin/main` atualizada.
 
 ## Decidido pelo dono

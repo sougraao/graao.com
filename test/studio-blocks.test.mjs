@@ -33,7 +33,7 @@ test('Form blocks become real lead forms on the published page', () => {
 
 test('Links and photos accept safe addresses only', () => {
   for (const ok of ['https://wa.me/5511999990000', 'mailto:a@b.co', 'tel:+55 11 99999-0000', 'page:contato', 'page:index#servicos', '#orcamento']) assert.equal(cleanLink(ok), ok);
-  assert.equal(cleanLink('soci.app.br/planos'), 'https://soci.app.br/planos');
+  assert.equal(cleanLink('graao.com/planos'), 'https://graao.com/planos');
   for (const bad of ['javascript:alert(1)', 'data:text/html,x', 'JaVaScRiPt:x', 'https://a.co/"onclick=', 'texto solto', '']) assert.equal(cleanLink(bad), '', bad);
   assert.equal(cleanImage(' https://images.example.test/a.jpg '), 'https://images.example.test/a.jpg');
   for (const bad of ['http://a.co/a.jpg', 'data:image/png;base64,x', 'javascript:x', '']) assert.equal(cleanImage(bad), '', bad);

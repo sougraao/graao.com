@@ -1,5 +1,5 @@
 // Marketing → Contadores: countdown timers for e-mails (animated GIF) and pages (embed code).
-// Follows GoHighLevel's /marketing/countdown-timer; the names, texts and look are Soci's.
+// Follows GoHighLevel's /marketing/countdown-timer; the names, texts and look are Graao's.
 import { icon } from './icons.js';
 import { h, pageShell } from './screens.js';
 import { DEFAULT_STYLE, TEMPLATES, countdownMarkup, describeTimer, durationMinutes, embedCode } from './countdown-data.js';

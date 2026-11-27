@@ -1,5 +1,5 @@
 /*
- * soci — botões (Liquid Glass)
+ * graao — botões (Liquid Glass)
  *
  * Três pesos, uma forma (cápsula):
  *   primário   cor da marca cheia. Um por tela: a ação principal.
@@ -9,30 +9,30 @@
  * rodapés flutuantes) não recebem vidro próprio. Cores e raios vêm de tokens.css.
  */
 :root {
-  --soci-btn-font-size: 13.5px;
-  --soci-btn-font-weight: 650;
-  --soci-btn-letter-spacing: -0.005em;
-  --soci-btn-height: 38px;
-  --soci-btn-height-sm: 32px;
-  --soci-btn-height-lg: 46px;
-  --soci-btn-pad-x: 16px;
-  --soci-btn-gap: 7px;
-  --soci-btn-radius: var(--r-pill);
-  --soci-btn-radius-pill: var(--r-pill);
-  --soci-btn-border: transparent;
-  --soci-btn-surface: var(--g-fill);
-  --soci-btn-surface-hover: var(--g-fill-hover);
-  --soci-btn-fg: var(--g-ink);
-  --soci-btn-primary-bg: var(--g-brand-fill);
-  --soci-btn-primary-hover: var(--g-brand-fill-hover);
-  --soci-btn-primary-fg: var(--g-brand-on);
-  --soci-btn-danger-bg: var(--g-red-fill);
-  --soci-btn-danger-hover: var(--g-red-fill-hover);
-  --soci-btn-danger-fg: var(--g-red-on);
-  --soci-btn-shadow: none;
-  --soci-btn-shadow-hover: none;
-  --soci-btn-focus-ring: var(--g-focus);
-  --soci-btn-motion: background-color .18s var(--ease-std), color .18s var(--ease-std), box-shadow .18s var(--ease-std), transform .28s var(--ease-spring), opacity .18s;
+  --graao-btn-font-size: 13.5px;
+  --graao-btn-font-weight: 650;
+  --graao-btn-letter-spacing: -0.005em;
+  --graao-btn-height: 38px;
+  --graao-btn-height-sm: 32px;
+  --graao-btn-height-lg: 46px;
+  --graao-btn-pad-x: 16px;
+  --graao-btn-gap: 7px;
+  --graao-btn-radius: var(--r-pill);
+  --graao-btn-radius-pill: var(--r-pill);
+  --graao-btn-border: transparent;
+  --graao-btn-surface: var(--g-fill);
+  --graao-btn-surface-hover: var(--g-fill-hover);
+  --graao-btn-fg: var(--g-ink);
+  --graao-btn-primary-bg: var(--g-brand-fill);
+  --graao-btn-primary-hover: var(--g-brand-fill-hover);
+  --graao-btn-primary-fg: var(--g-brand-on);
+  --graao-btn-danger-bg: var(--g-red-fill);
+  --graao-btn-danger-hover: var(--g-red-fill-hover);
+  --graao-btn-danger-fg: var(--g-red-on);
+  --graao-btn-shadow: none;
+  --graao-btn-shadow-hover: none;
+  --graao-btn-focus-ring: var(--g-focus);
+  --graao-btn-motion: background-color .18s var(--ease-std), color .18s var(--ease-std), box-shadow .18s var(--ease-std), transform .28s var(--ease-spring), opacity .18s;
 }
 
 :root:root :is(.primary, .continue, .studio-create, .studio-compose-actions .primary, .dash-save, .ag-brand-mockup-side-cta, .ag-brand-mockup-primary, .ag-brand-demo-primary, .pr-btn.pr-primary, .secondary, .ag-brand-demo-secondary, .dash-tool, .danger, .pill-button) {
@@ -41,15 +41,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--soci-btn-gap);
-  min-height: var(--soci-btn-height);
-  padding: 0 var(--soci-btn-pad-x);
+  gap: var(--graao-btn-gap);
+  min-height: var(--graao-btn-height);
+  padding: 0 var(--graao-btn-pad-x);
   border: 1px solid transparent;
-  border-radius: var(--soci-btn-radius);
+  border-radius: var(--graao-btn-radius);
   font-family: inherit;
-  font-size: var(--soci-btn-font-size);
-  font-weight: var(--soci-btn-font-weight);
-  letter-spacing: var(--soci-btn-letter-spacing);
+  font-size: var(--graao-btn-font-size);
+  font-weight: var(--graao-btn-font-weight);
+  letter-spacing: var(--graao-btn-letter-spacing);
   line-height: 1.2;
   text-align: center;
   text-decoration: none;
@@ -57,7 +57,7 @@
   vertical-align: middle;
   cursor: pointer;
   filter: none;
-  transition: var(--soci-btn-motion);
+  transition: var(--graao-btn-motion);
 }
 :root:root :is(.primary, .continue, .studio-create, .studio-compose-actions .primary, .dash-save, .ag-brand-mockup-side-cta, .ag-brand-mockup-primary, .ag-brand-demo-primary, .pr-btn.pr-primary, .secondary, .ag-brand-demo-secondary, .dash-tool, .danger, .pill-button) svg { flex: none; }
 
@@ -66,21 +66,21 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: var(--soci-btn-primary-bg);
-  color: var(--soci-btn-primary-fg);
+  background: var(--graao-btn-primary-bg);
+  color: var(--graao-btn-primary-fg);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / .34);
 }
-:root:root :is(.primary, .continue, .studio-create, .studio-compose-actions .primary, .dash-save, .ag-brand-mockup-side-cta, .ag-brand-mockup-primary, .ag-brand-demo-primary, .pr-btn.pr-primary):not(:disabled):hover { background: var(--soci-btn-primary-hover); color: var(--soci-btn-primary-fg); box-shadow: inset 0 1px 0 rgb(255 255 255 / .34); }
+:root:root :is(.primary, .continue, .studio-create, .studio-compose-actions .primary, .dash-save, .ag-brand-mockup-side-cta, .ag-brand-mockup-primary, .ag-brand-demo-primary, .pr-btn.pr-primary):not(:disabled):hover { background: var(--graao-btn-primary-hover); color: var(--graao-btn-primary-fg); box-shadow: inset 0 1px 0 rgb(255 255 255 / .34); }
 :root:root :is(.primary, .continue, .studio-create, .studio-compose-actions .primary, .dash-save, .ag-brand-mockup-side-cta, .ag-brand-mockup-primary, .ag-brand-demo-primary, .pr-btn.pr-primary)::before, :root:root :is(.primary, .continue, .studio-create, .studio-compose-actions .primary, .dash-save, .ag-brand-mockup-side-cta, .ag-brand-mockup-primary, .ag-brand-demo-primary, .pr-btn.pr-primary)::after { content: none; display: none; }
 
 /* Secundário e ferramentas */
-:root:root :is(.secondary, .ag-brand-demo-secondary, .dash-tool) { background: var(--soci-btn-surface); color: var(--soci-btn-fg); box-shadow: none; }
-:root:root :is(.secondary, .ag-brand-demo-secondary, .dash-tool):not(:disabled):hover { background: var(--soci-btn-surface-hover); color: var(--g-ink); box-shadow: none; }
+:root:root :is(.secondary, .ag-brand-demo-secondary, .dash-tool) { background: var(--graao-btn-surface); color: var(--graao-btn-fg); box-shadow: none; }
+:root:root :is(.secondary, .ag-brand-demo-secondary, .dash-tool):not(:disabled):hover { background: var(--graao-btn-surface-hover); color: var(--g-ink); box-shadow: none; }
 
 /* Destrutivo */
-:root:root .danger:not(.plain) { background: var(--soci-btn-danger-bg); color: var(--soci-btn-danger-fg); box-shadow: none; }
-:root:root .danger:not(.plain):not(:disabled):hover { background: var(--soci-btn-danger-hover); color: var(--soci-btn-danger-fg); }
-:root:root .secondary.danger:not(.plain) { background: var(--soci-btn-surface); color: var(--g-red); }
+:root:root .danger:not(.plain) { background: var(--graao-btn-danger-bg); color: var(--graao-btn-danger-fg); box-shadow: none; }
+:root:root .danger:not(.plain):not(:disabled):hover { background: var(--graao-btn-danger-hover); color: var(--graao-btn-danger-fg); }
+:root:root .secondary.danger:not(.plain) { background: var(--graao-btn-surface); color: var(--g-red); }
 :root:root .secondary.danger:not(.plain):not(:disabled):hover { background: var(--g-red-100); color: var(--g-red); }
 :root:root .danger.plain { min-height: 32px; padding: 0 8px; background: transparent; color: var(--g-red); box-shadow: none; }
 :root:root .danger.plain:not(:disabled):hover { background: var(--g-red-100); color: var(--g-red); }
@@ -92,14 +92,14 @@
 :root:root :is(.primary, .continue, .studio-create, .studio-compose-actions .primary, .dash-save, .ag-brand-mockup-side-cta, .ag-brand-mockup-primary, .ag-brand-demo-primary, .pr-btn.pr-primary, .secondary, .ag-brand-demo-secondary, .dash-tool, .danger, .pill-button, .icon-btn, .side-toggle, .theme-toggle, .tool-btn, .top-menu, .lang-btn):focus-visible { outline: 2px solid var(--g-ink); outline-offset: 2px; }
 
 /* Tamanhos compactos */
-:root:root :is(.dash-tool, .ags-small, .ag-brand-mockup-side-cta, .ag-brand-mockup-primary, .ag-brand-demo-primary, .ag-brand-demo-secondary) { min-height: var(--soci-btn-height-sm); padding-inline: 13px; }
+:root:root :is(.dash-tool, .ags-small, .ag-brand-mockup-side-cta, .ag-brand-mockup-primary, .ag-brand-demo-primary, .ag-brand-demo-secondary) { min-height: var(--graao-btn-height-sm); padding-inline: 13px; }
 :root:root .dash-tool.dash-square { width: 34px; min-width: 34px; padding: 0; }
 :root:root .pill-button { min-height: 28px; padding-inline: 11px; font-size: 12.5px; box-shadow: none; }
 :root:root .pill-button:not(.completed) { background: var(--g-fill); color: var(--g-ink-2); }
 
 /* Botões redondos só com ícone (agentes) */
-:root:root :is(.ags-send, .ags-new) { display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 50%; background: var(--soci-btn-primary-bg); color: var(--soci-btn-primary-fg); box-shadow: none; cursor: pointer; }
-:root:root :is(.ags-send, .ags-new):not(:disabled):hover { background: var(--soci-btn-primary-hover); }
+:root:root :is(.ags-send, .ags-new) { display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 50%; background: var(--graao-btn-primary-bg); color: var(--graao-btn-primary-fg); box-shadow: none; cursor: pointer; }
+:root:root :is(.ags-send, .ags-new):not(:disabled):hover { background: var(--graao-btn-primary-hover); }
 :root:root .ags-send { position: absolute; right: 10px; bottom: 10px; }
 
 /* "Adicionar" dentro das colunas do funil continua quieto: a tela já tem uma ação principal */
@@ -119,38 +119,38 @@
   background: transparent;
   color: var(--g-ink-2);
   cursor: pointer;
-  transition: var(--soci-btn-motion);
+  transition: var(--graao-btn-motion);
 }
 :root:root :is(.icon-btn, .tool-btn, .top-menu, .theme-toggle) { width: 34px; height: 34px; }
 :root:root :is(.icon-btn, .side-toggle, .theme-toggle, .tool-btn, .top-menu):not(:disabled):hover { background: var(--g-fill); color: var(--g-ink); border-color: transparent; }
 :root:root :is(.icon-btn, .tool-btn, .top-menu, .theme-toggle):not(:disabled):active { transform: scale(.92); }
 
 /* Envio de arquivo */
-input[type="file"] { min-height: var(--soci-btn-height); padding: 4px; border: 1px solid var(--g-line-2); border-radius: var(--r-pill); background: var(--g-field); color: var(--g-ink-2); font-size: var(--soci-btn-font-size); }
-input[type="file"]::file-selector-button { min-height: 30px; margin-right: 10px; padding: 0 13px; border: 0; border-radius: var(--r-pill); background: var(--g-fill); color: var(--g-ink); font: inherit; font-weight: var(--soci-btn-font-weight); cursor: pointer; }
+input[type="file"] { min-height: var(--graao-btn-height); padding: 4px; border: 1px solid var(--g-line-2); border-radius: var(--r-pill); background: var(--g-field); color: var(--g-ink-2); font-size: var(--graao-btn-font-size); }
+input[type="file"]::file-selector-button { min-height: 30px; margin-right: 10px; padding: 0 13px; border: 0; border-radius: var(--r-pill); background: var(--g-fill); color: var(--g-ink); font: inherit; font-weight: var(--graao-btn-font-weight); cursor: pointer; }
 input[type="file"]::file-selector-button:hover { background: var(--g-fill-hover); }
 
-/* ── Soci Icon Swap: contrato visual compartilhado com a Microkit ── */
-:root:root .soci-icon-swap { gap: 0; }
-.soci-icon-swap-content:has(> .soci-icon-swap-label:empty) { gap: 0; }
-.soci-icon-swap {
+/* ── Graao Icon Swap: contrato visual compartilhado com a Microkit ── */
+:root:root .graao-icon-swap { gap: 0; }
+.graao-icon-swap-content:has(> .graao-icon-swap-label:empty) { gap: 0; }
+.graao-icon-swap {
   position: relative;
   overflow: hidden;
   white-space: nowrap;
 }
-.soci-icon-swap-content,
-.soci-icon-swap-arrow {
+.graao-icon-swap-content,
+.graao-icon-swap-arrow {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
-.soci-icon-swap-content {
+.graao-icon-swap-content {
   min-width: 0;
-  gap: var(--soci-btn-gap, 8px);
+  gap: var(--graao-btn-gap, 8px);
   transform: translateX(0);
   transition: transform 520ms cubic-bezier(.16, 1, .3, 1);
 }
-.soci-icon-swap-icon {
+.graao-icon-swap-icon {
   display: inline-flex;
   width: 1.15em;
   max-width: 1.15em;
@@ -162,8 +162,8 @@ input[type="file"]::file-selector-button:hover { background: var(--g-fill-hover)
   transform: translateX(0);
   transition: width 520ms cubic-bezier(.16, 1, .3, 1), max-width 520ms cubic-bezier(.16, 1, .3, 1), opacity 260ms ease, transform 520ms cubic-bezier(.16, 1, .3, 1);
 }
-.soci-icon-swap-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-.soci-icon-swap-arrow {
+.graao-icon-swap-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.graao-icon-swap-arrow {
   width: 0;
   max-width: 0;
   flex: 0 0 auto;
@@ -172,53 +172,53 @@ input[type="file"]::file-selector-button:hover { background: var(--g-fill-hover)
   transform: translateX(10px);
   transition: width 520ms cubic-bezier(.16, 1, .3, 1), max-width 520ms cubic-bezier(.16, 1, .3, 1), opacity 260ms ease 100ms, transform 520ms cubic-bezier(.16, 1, .3, 1);
 }
-.soci-icon-swap:is(:hover, :focus-visible) .soci-icon-swap-icon {
+.graao-icon-swap:is(:hover, :focus-visible) .graao-icon-swap-icon {
   width: 0;
   max-width: 0;
   opacity: 0;
   transform: translateX(-10px);
 }
-.soci-icon-swap:is(:hover, :focus-visible) .soci-icon-swap-content { transform: translateX(-3px); }
-.soci-icon-swap:is(:hover, :focus-visible) .soci-icon-swap-arrow {
+.graao-icon-swap:is(:hover, :focus-visible) .graao-icon-swap-content { transform: translateX(-3px); }
+.graao-icon-swap:is(:hover, :focus-visible) .graao-icon-swap-arrow {
   width: 1.15em;
   max-width: 1.15em;
   opacity: 1;
   transform: translateX(0);
 }
-.soci-icon-swap:active .soci-icon-swap-content { transform: translateX(-3px) scale(.985); }
-.soci-icon-swap:disabled .soci-icon-swap-icon,
-.soci-icon-swap[aria-disabled="true"] .soci-icon-swap-icon { opacity: .7; }
+.graao-icon-swap:active .graao-icon-swap-content { transform: translateX(-3px) scale(.985); }
+.graao-icon-swap:disabled .graao-icon-swap-icon,
+.graao-icon-swap[aria-disabled="true"] .graao-icon-swap-icon { opacity: .7; }
 
 :root:root :is(.secondary, .primary, .dash-tool):is(.md-square, .dash-square) { padding: 0; }
-:root:root .md-square .soci-icon-swap-icon { width: auto; max-width: none; overflow: visible; }
-:root:root .md-square:is(:hover, :focus-visible) .soci-icon-swap-icon { width: auto; max-width: none; opacity: 1; transform: none; }
-:root:root .md-square .soci-icon-swap-arrow { display: none; }
+:root:root .md-square .graao-icon-swap-icon { width: auto; max-width: none; overflow: visible; }
+:root:root .md-square:is(:hover, :focus-visible) .graao-icon-swap-icon { width: auto; max-width: none; opacity: 1; transform: none; }
+:root:root .md-square .graao-icon-swap-arrow { display: none; }
 
 /* Beautiful UI */
-:root:root .bui-btn.soci-icon-swap {
-  min-height: var(--soci-btn-height-sm);
+:root:root .bui-btn.graao-icon-swap {
+  min-height: var(--graao-btn-height-sm);
   padding: 0 13px;
   border: 1px solid transparent;
-  border-radius: var(--soci-btn-radius);
-  background: var(--soci-btn-primary-bg);
-  color: var(--soci-btn-primary-fg);
+  border-radius: var(--graao-btn-radius);
+  background: var(--graao-btn-primary-bg);
+  color: var(--graao-btn-primary-fg);
   font-family: inherit;
   font-size: 13px;
-  font-weight: var(--soci-btn-font-weight);
+  font-weight: var(--graao-btn-font-weight);
   line-height: 1.2;
   box-shadow: none;
-  transition: var(--soci-btn-motion);
+  transition: var(--graao-btn-motion);
 }
-:root:root .bui-btn.soci-icon-swap:is(.is-primary, .is-accent):not(:disabled):hover { background: var(--soci-btn-primary-hover); }
-:root:root .bui-btn.soci-icon-swap.is-secondary { background: var(--soci-btn-surface); color: var(--soci-btn-fg); }
-:root:root .bui-btn.soci-icon-swap.is-secondary:not(:disabled):hover { background: var(--soci-btn-surface-hover); }
-:root:root .bui-btn.soci-icon-swap:is(.is-ghost, .is-quiet) { background: transparent; color: var(--soci-btn-fg); }
-:root:root .bui-btn.soci-icon-swap:is(.is-ghost, .is-quiet):not(:disabled):hover { background: var(--g-fill); color: var(--g-ink); }
-:root:root .bui-btn.soci-icon-swap.is-success { background: var(--g-mint); color: #fff; }
-:root:root[data-theme="dark"] .bui-btn.soci-icon-swap.is-success { color: #06210f; }
-:root:root .bui-btn.soci-icon-swap.is-xs { min-height: 28px; padding-inline: 11px; font-size: 12px; }
-:root:root .bui-btn.soci-icon-swap.is-md { min-height: var(--soci-btn-height); padding-inline: 16px; }
-:root:root .bui-btn.soci-icon-swap:focus-visible { outline: 2px solid var(--g-ink); outline-offset: 2px; }
+:root:root .bui-btn.graao-icon-swap:is(.is-primary, .is-accent):not(:disabled):hover { background: var(--graao-btn-primary-hover); }
+:root:root .bui-btn.graao-icon-swap.is-secondary { background: var(--graao-btn-surface); color: var(--graao-btn-fg); }
+:root:root .bui-btn.graao-icon-swap.is-secondary:not(:disabled):hover { background: var(--graao-btn-surface-hover); }
+:root:root .bui-btn.graao-icon-swap:is(.is-ghost, .is-quiet) { background: transparent; color: var(--graao-btn-fg); }
+:root:root .bui-btn.graao-icon-swap:is(.is-ghost, .is-quiet):not(:disabled):hover { background: var(--g-fill); color: var(--g-ink); }
+:root:root .bui-btn.graao-icon-swap.is-success { background: var(--g-mint); color: #fff; }
+:root:root[data-theme="dark"] .bui-btn.graao-icon-swap.is-success { color: #06210f; }
+:root:root .bui-btn.graao-icon-swap.is-xs { min-height: 28px; padding-inline: 11px; font-size: 12px; }
+:root:root .bui-btn.graao-icon-swap.is-md { min-height: var(--graao-btn-height); padding-inline: 16px; }
+:root:root .bui-btn.graao-icon-swap:focus-visible { outline: 2px solid var(--g-ink); outline-offset: 2px; }
 
 @media (pointer: coarse), (max-width: 540px) {
   :root:root :is(.primary, .secondary, .danger):not(.plain, .pill-button) { min-height: 44px; }
@@ -227,7 +227,7 @@ input[type="file"]::file-selector-button:hover { background: var(--g-fill-hover)
   :root:root :is(.secondary, .ag-brand-demo-secondary, .dash-tool) { border-color: var(--g-line-2); }
 }
 @media (prefers-reduced-motion: reduce) {
-  :root:root :is(.primary, .continue, .studio-create, .studio-compose-actions .primary, .dash-save, .ag-brand-mockup-side-cta, .ag-brand-mockup-primary, .ag-brand-demo-primary, .pr-btn.pr-primary, .secondary, .ag-brand-demo-secondary, .dash-tool, .danger, .pill-button, .icon-btn, .side-toggle, .theme-toggle, .tool-btn, .top-menu, .lang-btn), .soci-icon-swap-content, .soci-icon-swap-icon, .soci-icon-swap-arrow { transition: none; }
+  :root:root :is(.primary, .continue, .studio-create, .studio-compose-actions .primary, .dash-save, .ag-brand-mockup-side-cta, .ag-brand-mockup-primary, .ag-brand-demo-primary, .pr-btn.pr-primary, .secondary, .ag-brand-demo-secondary, .dash-tool, .danger, .pill-button, .icon-btn, .side-toggle, .theme-toggle, .tool-btn, .top-menu, .lang-btn), .graao-icon-swap-content, .graao-icon-swap-icon, .graao-icon-swap-arrow { transition: none; }
 }
 @media (forced-colors: active) {
   :root:root :is(.primary, .continue, .studio-create, .studio-compose-actions .primary, .dash-save, .ag-brand-mockup-side-cta, .ag-brand-mockup-primary, .ag-brand-demo-primary, .pr-btn.pr-primary, .secondary, .ag-brand-demo-secondary, .dash-tool, .danger, .pill-button) { border-color: ButtonText; }

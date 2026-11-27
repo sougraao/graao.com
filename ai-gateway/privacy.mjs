@@ -1,4 +1,4 @@
-// soci AI Gateway: classificação de dados e política de privacidade por provedor.
+// graao AI Gateway: classificação de dados e política de privacidade por provedor.
 // Cada funcionalidade declara a classe do contexto que envia; o roteador só usa provedores cuja política,
 // confirmada pelo administrador, aceita essa classe. Sem confirmação, o provedor só recebe dado público/interno.
 

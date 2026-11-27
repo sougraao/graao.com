@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Manutenção diária da Evolution (agendada pelo install.sh em /etc/cron.d/evolution-maintenance, 03:30).
 #   1. Backup compactado do Postgres em ./backups (guarda BACKUP_RETENTION_DAYS dias).
-#   2. Apaga mensagens com mais de MESSAGE_RETENTION_DAYS dias (o soci.app já tem a cópia delas).
+#   2. Apaga mensagens com mais de MESSAGE_RETENTION_DAYS dias (o graao.app já tem a cópia delas).
 #   3. Remove imagens Docker antigas para o disco não encher.
 set -euo pipefail
 cd "$(dirname "$0")"

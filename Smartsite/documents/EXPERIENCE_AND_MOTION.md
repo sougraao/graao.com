@@ -1,4 +1,4 @@
-# soci — Experience, Interaction & Visual Quality Contract
+# graao — Experience, Interaction & Visual Quality Contract
 
 ## Arte e composição
 Mobile first a partir de 390px. Paleta institucional pink/laranja/preto/branco; extrair HEX e fontes oficiais. Sem degradês decorativos, glassmorphism, glow, stock corporativo genérico, card para tudo ou grid repetitivo. Use composição editorial, contraste, espaço negativo, tipografia expressiva, ilustrações flat outline proprietárias e interface real. Referência obrigatória https://pro.magicui.design/ (3–6 componentes com URL, aprendizado e adaptação, sem ativos licenciados não autorizados). A home é demonstração da marca, não uma coleção de efeitos.

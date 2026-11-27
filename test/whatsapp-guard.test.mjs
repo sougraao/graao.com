@@ -10,7 +10,7 @@ import { createWhatsAppGuard, guardTimes } from '../whatsapp-guard.mjs';
 import { API_KEY, fakeEvolution } from './helpers/fake-evolution.mjs';
 
 const SECRET = 'guard-test-seal-secret-32-characters!';
-const ORIGIN = 'https://soci.test';
+const ORIGIN = 'https://graao.test';
 const MIN = 60_000;
 const START = Date.parse('2026-11-25T12:00:00.000Z');
 
@@ -19,24 +19,24 @@ async function setup(t, { connected = true } = {}) {
   const evo = fakeEvolution();
   const world = { now: START, fault: null, incidents: [], delivered: [] };
   const request = (url, init) => (world.fault ? world.fault(url, init) : null) || evo.request(url, init);
-  const dir = mkdtempSync(join(tmpdir(), 'soci-guard-'));
+  const dir = mkdtempSync(join(tmpdir(), 'graao-guard-'));
   const store = createSqliteStore(join(dir, 'go.sqlite'));
-  const server = makeServer({ store, auth: null, allowLocalAccess: true, port: 0, openAISecret: SECRET, socialScheduler: false, whatsappRequest: request, evolutionBaseUrl: 'https://evo.soci.test', evolutionApiKey: API_KEY });
+  const server = makeServer({ store, auth: null, allowLocalAccess: true, port: 0, openAISecret: SECRET, socialScheduler: false, whatsappRequest: request, evolutionBaseUrl: 'https://evo.graao.test', evolutionApiKey: API_KEY });
   await new Promise(done => server.server.listen(0, '127.0.0.1', done));
   t.after(async () => { await new Promise(done => server.server.close(done)); rmSync(dir, { recursive: true, force: true }); });
-  const wa = createWhatsAppHandler({ store, secret: SECRET, request, evolutionBaseUrl: 'https://evo.soci.test', evolutionApiKey: API_KEY, qrPause: 1 });
+  const wa = createWhatsAppHandler({ store, secret: SECRET, request, evolutionBaseUrl: 'https://evo.graao.test', evolutionApiKey: API_KEY, qrPause: 1 });
   const api = (op, method = 'POST', body = {}) => wa.handleWorkspaceApi({ req: {}, url: new URL(`http://x/api/whatsapp/workspace/${op}`), method, agencyId: 'agency', workspaceId: 'demo',
     payload: async () => body, publicOrigin: ORIGIN, requireActiveAccount: async () => {}, json: data => data });
   if (connected) {
     await api('connect');
-    evo.markOpen('soci_demo', '5531988887777', 'Demo');
+    evo.markOpen('graao_demo', '5531988887777', 'Demo');
     await api('status', 'GET');
   }
   const guard = createWhatsAppGuard({ wa: wa.guardOps, store, now: () => world.now, onIncident: async event => { world.incidents.push(event); }, onStored: id => world.delivered.push(id), log: () => {} });
   const round = async (minutes = 2) => { world.now += minutes * MIN; return guard.run('agency', ['demo'], ORIGIN); };
   const state = () => store.load('demo');
   const saved = () => store.load('whatsapp-agency').subaccounts.demo;
-  const received = (id, text, at, extra = {}) => evo.store.push({ instance: 'soci_demo', key: { id, remoteJid: '5511977776666@s.whatsapp.net', fromMe: false, ...extra }, pushName: 'Carla', message: { conversation: text }, messageTimestamp: Math.floor(at / 1000) });
+  const received = (id, text, at, extra = {}) => evo.store.push({ instance: 'graao_demo', key: { id, remoteJid: '5511977776666@s.whatsapp.net', fromMe: false, ...extra }, pushName: 'Carla', message: { conversation: text }, messageTimestamp: Math.floor(at / 1000) });
   const addOutbound = async (id, failed, createdAt, more = {}) => store.change('demo', s => {
     let contact = s.contacts.find(c => c.phone === '+5511977776666');
     if (!contact) { contact = { id: 'c-carla', name: 'Carla', phone: '+5511977776666', tags: [], custom: {}, created: new Date(START).toISOString() }; s.contacts.push(contact); }
@@ -129,41 +129,41 @@ test('Busca que não leu tudo entra com o que leu, mas não avança o marcador',
 test('Webhook apagado ou com outro segredo no servidor é registrado de novo, sem trocar o domínio', async t => {
   const w = await setup(t);
   await w.round();
-  const good = w.evo.instances.get('soci_demo').webhook.url;
-  w.evo.instances.get('soci_demo').webhook = null;
+  const good = w.evo.instances.get('graao_demo').webhook.url;
+  w.evo.instances.get('graao_demo').webhook = null;
   await w.round(12);
-  assert.equal(w.evo.instances.get('soci_demo').webhook.url, good);
-  w.evo.instances.get('soci_demo').webhook = { enabled: true, url: good.replace(/[a-f0-9]{48}$/, '0'.repeat(48)), events: ['MESSAGES_UPSERT', 'CONNECTION_UPDATE'] };
+  assert.equal(w.evo.instances.get('graao_demo').webhook.url, good);
+  w.evo.instances.get('graao_demo').webhook = { enabled: true, url: good.replace(/[a-f0-9]{48}$/, '0'.repeat(48)), events: ['MESSAGES_UPSERT', 'CONNECTION_UPDATE'] };
   await w.round(12);
-  assert.equal(w.evo.instances.get('soci_demo').webhook.url, good);
+  assert.equal(w.evo.instances.get('graao_demo').webhook.url, good);
   assert.equal(w.saved().guard.webhookFixes, 2);
   // O cron pode ser chamado por outro endereço da Vercel: um webhook certo em outro domínio fica onde está.
-  w.evo.instances.get('soci_demo').webhook.url = good.replace('soci.test', 'app.soci.test');
+  w.evo.instances.get('graao_demo').webhook.url = good.replace('graao.test', 'app.graao.test');
   await w.round(12);
-  assert.equal(new URL(w.evo.instances.get('soci_demo').webhook.url).host, 'app.soci.test');
+  assert.equal(new URL(w.evo.instances.get('graao_demo').webhook.url).host, 'app.graao.test');
   assert.equal(w.saved().guard.webhookFixes, 2);
 });
 
 test('Webhook registrado antes das ligações passa a receber CALL sem reconectar o número', async t => {
   const w = await setup(t);
   await w.round();
-  const webhook = w.evo.instances.get('soci_demo').webhook;
-  w.evo.instances.get('soci_demo').webhook = { ...webhook, events: ['MESSAGES_UPSERT', 'CONNECTION_UPDATE'] };
+  const webhook = w.evo.instances.get('graao_demo').webhook;
+  w.evo.instances.get('graao_demo').webhook = { ...webhook, events: ['MESSAGES_UPSERT', 'CONNECTION_UPDATE'] };
   await w.round(12);
-  assert.deepEqual(w.evo.instances.get('soci_demo').webhook.events, ['MESSAGES_UPSERT', 'CONNECTION_UPDATE', 'CALL']);
+  assert.deepEqual(w.evo.instances.get('graao_demo').webhook.events, ['MESSAGES_UPSERT', 'CONNECTION_UPDATE', 'CALL']);
 });
 
 test('Queda avisa uma vez depois de 5 minutos, marca a subconta e avisa a volta', async t => {
   const w = await setup(t);
   await w.round();
-  w.evo.instances.get('soci_demo').state = 'close';
+  w.evo.instances.get('graao_demo').state = 'close';
   await w.round();
   assert.equal(w.world.incidents.length, 0, 'queda curta não vira alerta');
   assert.equal(w.state().whatsappHealth, undefined);
   for (let i = 0; i < 6; i++) await w.round();
   assert.deepEqual(w.world.incidents.map(e => [e.kind, e.reason]), [['down', 'disconnected']]);
   assert.equal(w.state().whatsappHealth.status, 'down');
-  w.evo.instances.get('soci_demo').state = 'open';
+  w.evo.instances.get('graao_demo').state = 'open';
   await w.round();
   assert.deepEqual(w.world.incidents.map(e => e.kind), ['down', 'up']);
   assert.equal(w.state().whatsappHealth, undefined);
@@ -345,7 +345,7 @@ test('QR que não vem: insiste e recria a instância que nunca pareou; a que já
 
   const paired = await setup(t);
   await paired.round();
-  paired.evo.instances.get('soci_demo').state = 'close';
+  paired.evo.instances.get('graao_demo').state = 'close';
   paired.world.fault = url => String(url).includes('/instance/connect/') ? new Response(JSON.stringify({ count: 0 }), { status: 200 }) : null;
   await paired.api('connect');
   assert.equal(paired.evo.calls.some(c => c.path.startsWith('/instance/delete/')), false);

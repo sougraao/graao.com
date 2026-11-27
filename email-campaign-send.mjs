@@ -24,7 +24,7 @@ export function campaignMessage({ workspace, item, campaign, business, from, pub
     link: (url, index) => urls ? urls.click(index) : url, pixel: urls?.pixel || '', unsubscribe: urls?.unsubscribe || '',
     countdownSrc: origin ? id => `${origin}/cd/${workspace}/${id}.gif?s=${sentAt}` : null });
   return {
-    from: `${name(campaign.fromName) || name(business) || 'Soci'} <${from}>`, to: [item.email], subject: fillText(variant.subject, values).slice(0, 250) || '(sem assunto)', html, text,
+    from: `${name(campaign.fromName) || name(business) || 'Graao'} <${from}>`, to: [item.email], subject: fillText(variant.subject, values).slice(0, 250) || '(sem assunto)', html, text,
     ...(campaign.replyTo ? { reply_to: campaign.replyTo } : {}),
     ...(urls ? { headers: { 'List-Unsubscribe': `<${urls.unsubscribe}>`, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' } } : {})
   };
@@ -61,7 +61,7 @@ export function campaignMailer({ key = process.env.RESEND_API_KEY, from = proces
     /** A single test e-mail to the user's own address (no tracking, links point straight to their targets). */
     async sendTest({ to, subject, html, text, fromName, replyTo, fromAddress = '' }) {
       if (!key || !from) throw Object.assign(new Error('O envio de e-mail não está configurado nesta instalação (RESEND_API_KEY e PORTAL_EMAIL_FROM).'), { status: 503 });
-      const message = sender => ({ from: `${name(fromName) || 'Soci'} <${sender}>`, to: [to], subject: `[Teste] ${subject}`.slice(0, 250), html, text, ...(replyTo ? { reply_to: replyTo } : {}) });
+      const message = sender => ({ from: `${name(fromName) || 'Graao'} <${sender}>`, to: [to], subject: `[Teste] ${subject}`.slice(0, 250), html, text, ...(replyTo ? { reply_to: replyTo } : {}) });
       let response = await post([message(fromAddress || platform)], `test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
       if (fromAddress && response?.status === 403) response = await post([message(platform)], `test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
       if (!response?.ok) throw Object.assign(new Error(`O serviço de e-mail não confirmou o envio${response ? ` (HTTP ${response.status})` : ''}.`), { status: 502 });

@@ -35,7 +35,7 @@ test('Server: the Voice AI answers a number, books a free time, transfers, and c
     if (url.endsWith('/Calls.json')) return ok({ sid: `CAout${twilioCalls.length}` });
     return { ok: false, status: 404, json: async () => ({}) };
   };
-  const phoneEnv = { TWILIO_ACCOUNT_SID: 'AC1', TWILIO_AUTH_TOKEN: TOKEN, PHONE_PUBLIC_ORIGIN: 'https://soci.test' };
+  const phoneEnv = { TWILIO_ACCOUNT_SID: 'AC1', TWILIO_AUTH_TOKEN: TOKEN, PHONE_PUBLIC_ORIGIN: 'https://graao.test' };
   const { server, host } = makeServer({ dbPath: ':memory:', port: 0, auth: null, allowLocalAccess: true, socialScheduler: false, twilioRequest, phoneEnv, generateAgentReply, workflowAI: async () => ({ vars: {} }) });
   await new Promise(resolve => server.listen(0, host, resolve));
   t.after(() => new Promise(resolve => server.close(resolve)));
@@ -46,7 +46,7 @@ test('Server: the Voice AI answers a number, books a free time, transfers, and c
   };
   const action = async body => { const r = await call('/api/action?workspace=demo', body); assert.equal(r.status, 200, JSON.stringify(r.body)); return r.body.id; };
   const twilio = async (path, params) => {
-    const r = await fetch(base + path, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Twilio-Signature': twilioSignature(`https://soci.test${path}`, params, TOKEN) }, body: new URLSearchParams(params).toString() });
+    const r = await fetch(base + path, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Twilio-Signature': twilioSignature(`https://graao.test${path}`, params, TOKEN) }, body: new URLSearchParams(params).toString() });
     assert.equal(r.status, 200);
     return r.text();
   };
@@ -54,7 +54,7 @@ test('Server: the Voice AI answers a number, books a free time, transfers, and c
 
   const agent = (await call('/api/agents/create?workspace=demo', { name: 'Recepcionista', instructions: 'Atenda com cordialidade.' })).body.agent;
   assert.equal((await call('/api/agents/publish?workspace=demo', { id: agent.id, revision: agent.revision })).status, 200);
-  await action({ type: 'scheduling-settings', data: { enabled: true, step: 60, leadMinutes: 0, horizonDays: 30, staff: [{ name: 'Ana' }], hours: everyDay, origin: 'https://app.soci.test' } });
+  await action({ type: 'scheduling-settings', data: { enabled: true, step: 60, leadMinutes: 0, horizonDays: 30, staff: [{ name: 'Ana' }], hours: everyDay, origin: 'https://app.graao.test' } });
   const staff = (await state()).scheduling.staff[0].id;
   const service = await action({ type: 'save', key: 'services', data: { name: 'Avaliação', duration: 60, price: 0, staffIds: [staff] } });
   const numberId = (await call('/api/phone/buy?workspace=demo', { number: '+551140001000' })).body.id;
@@ -63,7 +63,7 @@ test('Server: the Voice AI answers a number, books a free time, transfers, and c
 
   // Inbound: welcome, a question, a booking and a transfer.
   let xml = await twilio('/api/phone/twilio/voice/demo', { CallSid: 'CAin1', From: '+5511955554444', To: '+551140001000' });
-  assert.match(xml, /<Gather input="speech" action="https:\/\/soci.test\/api\/phone\/twilio\/agent\/demo\?call=([^"]+)" method="POST" language="pt-BR" speechTimeout="auto"/);
+  assert.match(xml, /<Gather input="speech" action="https:\/\/graao.test\/api\/phone\/twilio\/agent\/demo\?call=([^"]+)" method="POST" language="pt-BR" speechTimeout="auto"/);
   assert.match(xml, /<Say voice="Polly.Vitoria" language="pt-BR">Olá! Você ligou para/);
   const callId = xml.match(/agent\/demo\?call=([^"&]+)/)[1];
   const slot = (await state()) && (await import('../scheduling-model.mjs')).upcomingSlots((await state()), service, { count: 6 })[1];

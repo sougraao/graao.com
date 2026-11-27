@@ -59,7 +59,7 @@ async function start({ ghlFetch = fakeGhl(), ghlResolve = publicDns() } = {}) {
 }
 
 // A extensão roda em chrome-extension://, então o envio chega de outra origem.
-const fromExtension = code => ({ 'X-Soci-Import-Code': code, Origin: 'chrome-extension://abcdefghijklmnopabcdefghijklmnop' });
+const fromExtension = code => ({ 'X-Graao-Import-Code': code, Origin: 'chrome-extension://abcdefghijklmnopabcdefghijklmnop' });
 
 async function upload(local, code, source) {
   for (const name of ['dump', 'triggers', 'surveys']) {
@@ -148,10 +148,10 @@ test('saves the site when a page preview fails', async t => {
   assert.ok(job.notes.includes('A página "Item 266" não pôde ser baixada.'), job.notes.join(' | '));
 });
 
-test('replaces copied images with soci asset urls', async t => {
+test('replaces copied images with graao asset urls', async t => {
   const { html } = await runImport(t);
   const hash = createHash('sha256').update(PNG).digest('hex');
-  assert.ok(html.includes(`https://soci.app.br/asset/${hash}.png`));
+  assert.ok(html.includes(`https://graao.com/asset/${hash}.png`));
   assert.ok(!html.includes(IMAGE));
 });
 
@@ -166,7 +166,7 @@ test('never fetches images on internal networks, not even through a redirect', a
     [LOOP]: () => new Response(PNG, { headers: { 'Content-Type': 'image/png' } }),
   } });
   const { job, html } = await runImport(t, { ghlFetch, ghlResolve: publicDns({ 'interno.exemplo': '10.0.0.5' }) });
-  for (const url of [META, INTERNAL, LOOP]) assert.ok(!seen.includes(url), `a soci pediu ${url}`);
+  for (const url of [META, INTERNAL, LOOP]) assert.ok(!seen.includes(url), `a graao pediu ${url}`);
   assert.ok(seen.includes(HOP));
   assert.ok(html.includes(META) && html.includes(INTERNAL) && html.includes(HOP));
   assert.ok(job.notes.some(text => /3 imagens/.test(text)), job.notes.join(' | '));

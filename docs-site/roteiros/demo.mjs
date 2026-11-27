@@ -1,4 +1,4 @@
-// Sobe o app soci LOCAL para os prints da documentação: sem login e com banco próprio (docs-site/.midia/demo.sqlite).
+// Sobe o app graao LOCAL para os prints da documentação: sem login e com banco próprio (docs-site/.midia/demo.sqlite).
 // Uso: npm --prefix docs-site run demo [-- --limpo]   → http://127.0.0.1:4319/app  (--limpo apaga o banco antes)
 import { mkdirSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';

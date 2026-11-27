@@ -36,7 +36,7 @@ test('Sending checks recipients and signature fields, freezes variables and crea
   const { s, id, doc } = setup();
   const workflow = save(s, 'workflows', { name: 'Avisar envio', active: true, triggers: [{ type: 'document_status', config: { status: 'sent' } }], steps: [{ type: 'add_tag', config: { tag: 'contrato-enviado' } }] });
   assert.ok(workflow);
-  const { links } = act(s, 'document-send', id, { channels: ['email', 'whatsapp'], message: 'Segue o contrato.', origin: 'https://app.soci.test' });
+  const { links } = act(s, 'document-send', id, { channels: ['email', 'whatsapp'], message: 'Segue o contrato.', origin: 'https://app.graao.test' });
   assert.equal(links.length, 2, 'without order, every signer gets a link at once (cc only at the end)');
   assert.match(links[0].path, /^\/assinar\/demo#[0-9a-f]{48}$/);
   const sent = doc();

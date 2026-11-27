@@ -1,4 +1,4 @@
-// Conectar uma IA ao servidor MCP com o login da soci (OAuth 2.1): registro, consentimento, tokens e revogação.
+// Conectar uma IA ao servidor MCP com o login da graao (OAuth 2.1): registro, consentimento, tokens e revogação.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
@@ -156,7 +156,7 @@ test('OAuth do MCP: endereços de retorno perigosos são recusados no registro e
   const swapped = await call('/api/mcp/consent', { user: owner, body: { request: { ...request, redirect_uri: 'https://evil.test/cb' }, allow: false } });
   assert.equal(swapped.status, 400);
   assert.equal(swapped.body.redirect, undefined);
-  const forged = `soci_client_${Buffer.from(JSON.stringify({ n: 'x', r: ['javascript:alert(1)'] })).toString('base64url')}`;
+  const forged = `graao_client_${Buffer.from(JSON.stringify({ n: 'x', r: ['javascript:alert(1)'] })).toString('base64url')}`;
   assert.equal((await call('/api/mcp/consent', { user: owner, body: { request: { ...request, client_id: forged, redirect_uri: 'javascript:alert(1)' }, allow: false } })).status, 400);
 });
 
@@ -174,7 +174,7 @@ test('OAuth do MCP: PKCE é obrigatório e conferido', async t => {
   const flow = await authorize();
   const weak = await call('/api/mcp/consent', { user: owner, body: { request: { ...flow.request, code_challenge_method: 'plain' }, allow: true } });
   assert.equal(weak.status, 400);
-  for (const extra of [{ code_verifier: 'errado'.repeat(10) }, { redirect_uri: 'https://claude.ai/outro' }, { client_id: 'soci_client_outro' }]) {
+  for (const extra of [{ code_verifier: 'errado'.repeat(10) }, { redirect_uri: 'https://claude.ai/outro' }, { client_id: 'graao_client_outro' }]) {
     const response = await exchange(flow, extra);
     assert.equal(response.status, 400);
     assert.equal(response.body.error, 'invalid_grant');

@@ -37,10 +37,10 @@ test('"Associação criada": a contact linked to a registered company, by the re
 });
 
 test('"Vídeo assistido": the tracking script reports HTML5 video marks and a known visitor fires the chosen mark once', () => {
-  const script = trackerScript('demo', 'https://app.soci.test', trackingDefaults());
+  const script = trackerScript('demo', 'https://app.graao.test', trackingDefaults());
   assert.match(script, /timeupdate/);
   assert.doesNotThrow(() => new Function(script));
-  assert.match(trackerScript('demo', 'https://app.soci.test', { ...trackingDefaults(), videos: false }), /"videos":false/);
+  assert.match(trackerScript('demo', 'https://app.graao.test', { ...trackingDefaults(), videos: false }), /"videos":false/);
   const s = blank();
   const half = flow(s, 'metade', { type: 'video_watched', config: { percent: '50', video: 'aula' } });
   const started = flow(s, 'comecou', { type: 'video_watched', config: {} });

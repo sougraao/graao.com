@@ -23,7 +23,7 @@ export default {
       await page.locator('main').getByText('Integrar', { exact: true }).click();
       await page.waitForTimeout(800);
       // O app local mostra 127.0.0.1; no print vai o endereço que o cliente vê na produção.
-      await page.locator('main input, main textarea').evaluateAll(campos => { for (const c of campos) c.value = c.value.replaceAll(/https?:\/\/127\.0\.0\.1:\d+/g, 'https://soci.app.br'); });
+      await page.locator('main input, main textarea').evaluateAll(campos => { for (const c of campos) c.value = c.value.replaceAll(/https?:\/\/127\.0\.0\.1:\d+/g, 'https://graao.com'); });
     }, espera: 600 },
   ],
 };

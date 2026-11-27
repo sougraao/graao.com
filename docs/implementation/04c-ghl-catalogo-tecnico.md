@@ -2,7 +2,7 @@
 
 Gerado em 20/11/2026 a partir de 142 telas visitadas (125 da subconta e 17 da agência) num Chrome com CDP. O código JS de cada tela foi capturado com `Debugger.getScriptSource`, e as chamadas de API foram registradas só como método e caminho, sem headers nem corpo. IDs foram trocados por `:id`/`:locationId`. Chamadas que aparecem em mais de 30% das telas (polling, sessão, sidebar) foram removidas. Evidências REA: `ev_ab5c348b…` (casca) e `ev_1ea708ee…` (construtor de workflows).
 
-Uso: referência para desenhar os modelos de dados e as APIs da Soci. **Não** copiar código nem textos.
+Uso: referência para desenhar os modelos de dados e as APIs da Graao. **Não** copiar código nem textos.
 
 ## 1. Workflows: catálogo de gatilhos e ações
 
@@ -112,7 +112,7 @@ As mesmas apps aparecem nos dois painéis, com uma única diferença: Mistral AI
 
 Airtable · Apify · Asana · Basecamp · Browse AI · Cal.com · Calendly · ClickUp · Fathom · Google Contacts · Google Forms · Housecall Pro · HubSpot · Jira · Jotform · Klaviyo · Linear · Manus AI · Mistral AI · Monday.com · Notion · OpenRouter · Todoist · Typeform, além de "Discover" (marketplace).
 
-Para a Soci, o modelo equivalente é um **catálogo de conectores**, em que cada app declara os próprios gatilhos e ações. O Pergunte a Soci já tem conectores multi-tenant (`soci-chat.mjs`) que podem ser reaproveitados.
+Para a Graao, o modelo equivalente é um **catálogo de conectores**, em que cada app declara os próprios gatilhos e ações. O Pergunte a Graao já tem conectores multi-tenant (`graao-chat.mjs`) que podem ser reaproveitados.
 
 ### 1.4 Tipos internos (snake_case) vistos no código do construtor (`client-app-automation-workflows`)
 
@@ -130,11 +130,11 @@ Tipos encontrados no código do construtor que têm rótulo de interface. Os gen
 | IVR / telefonia | `ivr`, `ivr_say`, `ivr_connect_call`, `ivr_hangup`, `ivr_collect_voicemail`, ivr_incoming_call (gatilho) |
 | Gatilhos extras vistos no construtor | `contact_changed`, `note_changed`, `task_added`, `email_event`, inbound_trigger (e-mail recebido), `inbound_webhook`, `trigger_link`, `affiliate_created`, `payment_received`, `invoice`, product_*/lesson_*/category_* (cursos), `offer_access_*`, `opportunity_decay`, `task_due_date_reminder`, `scheduler_trigger`, `conv_ai_autonomous_trigger` |
 
-> Os nomes de exibição completos estão na seção 1.3. Esta tabela traz os ids internos correspondentes, úteis para modelar o motor de workflows da Soci.
+> Os nomes de exibição completos estão na seção 1.3. Esta tabela traz os ids internos correspondentes, úteis para modelar o motor de workflows da Graao.
 
 ## 2. Telas → micro-apps → APIs
 
-Para cada tela: os micro-frontends carregados e os endpoints específicos que ela chamou. É o mapa para modelar o back-end equivalente na Soci.
+Para cada tela: os micro-frontends carregados e os endpoints específicos que ela chamou. É o mapa para modelar o back-end equivalente na Graao.
 
 ### Subconta · dashboard
 
@@ -1182,7 +1182,7 @@ Cada construtor foi aberto na aba CDP e lido direto da interface. Onde o editor 
 
 ### 4.1 Construtor de comunidades (percorrido por dentro)
 
-Criado o grupo "RASCUNHO SOCI comunidade" e percorrido como administrador no portal do cliente. A interface aparece em pt-BR, na língua do portal. Nada de layout ou tema foi salvo.
+Criado o grupo "RASCUNHO GRAAO comunidade" e percorrido como administrador no portal do cliente. A interface aparece em pt-BR, na língua do portal. Nada de layout ou tema foi salvo.
 
 **Estrutura do portal do cliente** (barra lateral): Painel, Comunidades, Cursos, Eventos, Faturas, Estimativas, Contratos, Arquivos compartilhados, Compromissos, Afiliados e Fidelidade. A comunidade é uma área dentro do mesmo portal onde o cliente vê as faturas, os contratos etc. Há um seletor de grupos com busca e fixação, chat, avisos e notificações.
 
@@ -1217,7 +1217,7 @@ Criado o grupo "RASCUNHO SOCI comunidade" e percorrido como administrador no por
 14. **Importador do Skool**: membros e conteúdo, via credenciais.
 15. **Descoberta**: aparecer na busca pública e no diretório (gokollab.com), com categoria.
 
-**Para a Soci:** a Soci já tem comunidades com canais, publicações, enquetes e ranking por níveis (commit `feat(communities)`). As principais lacunas são:
+**Para a Graao:** a Graao já tem comunidades com canais, publicações, enquetes e ranking por níveis (commit `feat(communities)`). As principais lacunas são:
 - eventos com pagamento e gravações;
 - transmissão ao vivo;
 - assinaturas e planos por comunidade;
@@ -1233,7 +1233,7 @@ Criado o grupo "RASCUNHO SOCI comunidade" e percorrido como administrador no por
 
 ### 4.2 Construtor de cursos (percorrido por dentro)
 
-Criado o curso gratuito "RASCUNHO SOCI curso" e percorrido no editor. Nenhuma alteração de tema foi salva.
+Criado o curso gratuito "RASCUNHO GRAAO curso" e percorrido no editor. Nenhuma alteração de tema foi salva.
 
 **Criação:** wizard em 3 passos (Detalhes: título até 255 e descrição até 2.500 → Thumbnail 1280×720 → Preço: grátis, recorrente ou único). Também é possível importar do Kajabi ou criar com IA. O curso **já nasce com uma estrutura de exemplo**: o módulo "Course Contents" com 5 aulas modelo (boas-vindas, O quê, Por quê, Como, Próximos passos), um **Welcome Badge** e uma **Course Completion Credential**. Esses dois são criados automaticamente em Credentials.
 
@@ -1262,7 +1262,7 @@ Criado o curso gratuito "RASCUNHO SOCI curso" e percorrido no editor. Nenhuma al
 
 Cada seção tem "reset".
 
-**Para a Soci:** a Soci já tem cursos com módulos, aulas, liberação gradual e progresso (commit `feat(courses)`). As principais lacunas são:
+**Para a Graao:** a Graao já tem cursos com módulos, aulas, liberação gradual e progresso (commit `feat(courses)`). As principais lacunas são:
 - estrutura de exemplo ao criar;
 - submódulos;
 - quiz com nota mínima;
@@ -1276,7 +1276,7 @@ Cada seção tem "reset".
 
 ### 4.3 Construtor do app mobile da agência (Agency App Manager, percorrido por dentro)
 
-Iniciado o "Custom Agency App" de rascunho "RASCUNHO SOCI app" (domínio fictício `exemplo-soci.com`, pacote `com.exemplo-soci.rascunhosociapp`). É um app Flutter Web, lido por screenshots. **Nada foi pago, conectado às lojas ou publicado**, e os dados pessoais do perfil de distribuição não foram preenchidos.
+Iniciado o "Custom Agency App" de rascunho "RASCUNHO GRAAO app" (domínio fictício `exemplo-graao.com`, pacote `com.exemplo-graao.rascunhograaoapp`). É um app Flutter Web, lido por screenshots. **Nada foi pago, conectado às lojas ou publicado**, e os dados pessoais do perfil de distribuição não foram preenchidos.
 
 **Visão geral do projeto:** 6 cards com progresso: 1 Branding · 2 Customização · 3 Perfil · 4 Canal de distribuição · 5 Assinatura · 6 Lançar app (build e envio para revisão da Apple e do Google). Aviso: "conclua Branding e Customização e clique em Publicar".
 
@@ -1298,7 +1298,7 @@ Iniciado o "Custom Agency App" de rascunho "RASCUNHO SOCI app" (domínio fictíc
 | Subscription | **Whitelabel App + Zap**: trimestral US$ 1.491 (setup de US$ 497 grátis, suporte prioritário) ou mensal US$ 497. Inclui iOS e Android, marca, cores, logos, reordenar menu, todos os módulos do CRM, faturas e atualizações grátis |
 | Gerador de screenshots | Etapas: escolha de aparelho → telas → … Abas iPhone/iPad/Android, modelos (iPhone 17 Pro/Pro Max, iPad Pro, Samsung S25 Ultra, Pixel 10 Pro), **9 telas** com texto sobreposto, "Download Assets" para as lojas |
 
-**Para a Soci:** hoje a Soci tem o "Aplicativo móvel" na agência. Para chegar a esse nível, faltam:
+**Para a Graao:** hoje a Graao tem o "Aplicativo móvel" na agência. Para chegar a esse nível, faltam:
 - um app nativo único e configurável por agência (white-label), com tema, logos e login;
 - navegação superior e inferior configurável e uma Home com indicadores;
 - categorias de apps;
@@ -1316,15 +1316,15 @@ O modelo de cobrança (assinatura por agência) precisa de decisão de produto.
 - **Formulário** "Form 1"
 - **Survey** "Survey 0"
 - **Quiz** "Quiz 0"
-- **Funil** "RASCUNHO SOCI - mapeamento", com a etapa "Pagina rascunho"
+- **Funil** "RASCUNHO GRAAO - mapeamento", com a etapa "Pagina rascunho"
 - **Campanha de e-mail** "Untitled campaign name"
 - **Documento** "New Document"
 - **Agente Voice AI** "My Agent 447"
 - **Relatório** "My report - 2026 Nov 20"
-- **Grupo de comunidade** "RASCUNHO SOCI comunidade". Está como **grupo público** (padrão) e com Discovery ligado; só entra no diretório público com mais de 10 membros.
+- **Grupo de comunidade** "RASCUNHO GRAAO comunidade". Está como **grupo público** (padrão) e com Discovery ligado; só entra no diretório público com mais de 10 membros.
 
-- **Curso** "RASCUNHO SOCI curso" (gratuito), com as 5 aulas de exemplo, o quiz "Quiz rascunho" e a tarefa "Tarefa rascunho" em rascunho. Também gerou automaticamente o certificado "RASCUNHO SOCI curso Completion Certificate" e o badge "Welcome Badge" em Credentials.
+- **Curso** "RASCUNHO GRAAO curso" (gratuito), com as 5 aulas de exemplo, o quiz "Quiz rascunho" e a tarefa "Tarefa rascunho" em rascunho. Também gerou automaticamente o certificado "RASCUNHO GRAAO curso Completion Certificate" e o badge "Welcome Badge" em Credentials.
 
-- **App mobile da agência** "RASCUNHO SOCI app" (projeto de Custom Agency App, **no nível da agência**). A customização foi salva como rascunho com os valores padrão. Não está pago, não está conectado às lojas e não foi publicado.
+- **App mobile da agência** "RASCUNHO GRAAO app" (projeto de Custom Agency App, **no nível da agência**). A customização foi salva como rascunho com os valores padrão. Não está pago, não está conectado às lojas e não foi publicado.
 
 Não foram salvos: agente de Conversation AI, certificado avulso, blog, countdown, QR, chat widget e brand board.

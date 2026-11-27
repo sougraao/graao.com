@@ -1,10 +1,10 @@
-# BUSINESS BRIEF — Smartsite | soci
+# BUSINESS BRIEF — Smartsite | graao
 > Dados declarados pelo responsável (PROVIDED), propostas editoriais (PROPOSED) e itens a validar (PENDING). Campos vazios são lacunas; não inventar dados. Não incluir segredos.
 
 ## 1. Identidade e fontes
-- Nome comercial: soci (minúsculas).
+- Nome comercial: graao (minúsculas).
 - Razão social:
-- Website atual: https://soci.app.br/
+- Website atual: https://graao.com/
 - Google Business Profile: https://share.google/rzpyeO5GqpoGZ20ln
 - Instagram: https://www.instagram.com/minhasoci/
 - YouTube: https://www.youtube.com/@minhasoci
@@ -45,7 +45,7 @@
 - Agendamento:
 - Objetivo: contratação/cadastro; confirmar fluxo comercial e URL real. Se indisponível, usar canal oficial verificado sem fingir conversão.
 - Processo após contato:
-- CRM/integrações: preferencialmente própria soci, sujeito à configuração autorizada e homologação.
+- CRM/integrações: preferencialmente própria graao, sujeito à configuração autorizada e homologação.
 - Destino dos leads/responsável:
 
 ## 5. Evidências e identidade visual
@@ -61,7 +61,7 @@
 
 ## 6. Tecnologia e publicação
 - Stack: preservar infraestrutura existente; para site novo avaliar Astro/TypeScript ou framework SSR/SSG compatível. Não alterar produto SaaS.
-- Domínio: soci.app.br.
+- Domínio: graao.com.
 - Hospedagem:
 - Analytics/tracking:
 - IA: avaliar rastreadores de busca e treinamento separadamente; conteúdo HTML rastreável; sem promessa de ranking.

@@ -120,7 +120,7 @@ async function safeGet(href, { fetchImpl, resolve, limit, accept }) {
     const addresses = isIP(host) ? [{ address: host }] : await resolve(host, { all: true }).catch(() => []);
     if (!addresses.length) fail('Não encontramos esse domínio.');
     if (addresses.some(entry => privateAddress(entry.address))) fail('Esse endereço não é um site público.');
-    const response = await fetchImpl(target, { redirect: 'manual', signal: AbortSignal.timeout(8000), headers: { 'user-agent': 'soci-brand-import/1.0', accept } })
+    const response = await fetchImpl(target, { redirect: 'manual', signal: AbortSignal.timeout(8000), headers: { 'user-agent': 'graao-brand-import/1.0', accept } })
       .catch(error => fail(error?.name === 'TimeoutError' ? 'O site demorou demais para responder.' : 'Não foi possível abrir o site.', 502));
     if ([301, 302, 303, 307, 308].includes(response.status) && response.headers.get('location')) { href = new URL(response.headers.get('location'), target).href; continue; }
     if (!response.ok) fail(`O site respondeu com erro (${response.status}).`, 502);

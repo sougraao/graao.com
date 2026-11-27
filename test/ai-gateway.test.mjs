@@ -1,10 +1,10 @@
-// soci AI Gateway: roteamento, fallback, cotas, orçamento, segurança e compatibilidade.
+// graao AI Gateway: roteamento, fallback, cotas, orçamento, segurança e compatibilidade.
 // Todos os provedores aqui são SIMULADOS (fetch falso). Os testes provam a lógica do gateway, não o comportamento
 // real de cada provedor em produção.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { DatabaseSync } from 'node:sqlite';
-import { createSociAI } from '../ai-gateway/gateway.mjs';
+import { createGraaoAI } from '../ai-gateway/gateway.mjs';
 import { validateProviderUrl } from '../ai-gateway/ssrf.mjs';
 import { redact } from '../ai-gateway/privacy.mjs';
 import { costMicros, worstCaseMicros } from '../ai-gateway/accounting.mjs';
@@ -64,7 +64,7 @@ function fakeFetch(hosts) {
 
 async function setup({ env = KEYS, hosts = {}, models = [], settings = [], store = memoryStore(), ...options } = {}) {
   const request = fakeFetch(hosts);
-  const gw = createSociAI({ store, env, request, sleep: async () => {}, ...options });
+  const gw = createGraaoAI({ store, env, request, sleep: async () => {}, ...options });
   for (const id of ['groq', 'openrouter']) await gw.admin.saveSettings({ provider: { id, enabled: true, commercialUse: true, freeTier: true } }, 'teste');
   for (const [key, patch, extra = {}] of models) {
     const [provider, ...rest] = key.split('/');
@@ -301,7 +301,7 @@ test('se o documento de cotas falhar, o gratuito segue e o pago é bloqueado', a
 // ---------- Privacidade, uso comercial e segurança ----------
 test('dado confidencial não vai para provedor sem revisão de privacidade; sem uso comercial confirmado também não', async () => {
   const { gw } = await setup({ hosts: both(groqOk('x'), groqOk('x')), models: [['groq/livre', FREE]] });
-  const confidential = await gw.admin.simulate({ ...ASK(), feature: 'soci.chat' }, CTX);
+  const confidential = await gw.admin.simulate({ ...ASK(), feature: 'graao.chat' }, CTX);
   assert.deepEqual(confidential.candidates, []);
   assert.ok(confidential.rejected[0].reasons.includes('privacidade incompatível'));
   await gw.admin.saveSettings({ provider: { id: 'groq', commercialUse: false } }, 'teste');
@@ -324,7 +324,7 @@ test('SSRF: só https público; recusa rede privada, metadados da nuvem, credenc
 test('servidor próprio com URL privada é recusado antes de qualquer chamada', async () => {
   const store = memoryStore();
   const request = fakeFetch({});
-  const gw = createSociAI({ store, request, env: { SOCI_AI_COMPAT_BASE_URL: 'https://interno.exemplo.com/v1' }, resolveHost: async () => [{ address: '10.1.2.3', family: 4 }] });
+  const gw = createGraaoAI({ store, request, env: { GRAAO_AI_COMPAT_BASE_URL: 'https://interno.exemplo.com/v1' }, resolveHost: async () => [{ address: '10.1.2.3', family: 4 }] });
   await assert.rejects(gw.admin.syncProvider('compat', 'teste'));
   assert.equal(request.calls.length, 0);
 });
@@ -359,7 +359,7 @@ test('dinheiro em micro-dólar inteiro: sem arredondamento de ponto flutuante', 
 test('log de requisições no SQLite não aceita alteração', () => {
   const db = new DatabaseSync(':memory:');
   const log = sqliteRequestLog(db);
-  log.append([{ id: 'r1', created_at: new Date().toISOString(), org_id: 'org-a', feature: 'soci.chat', status: 'ok', attempts: 1 }]);
+  log.append([{ id: 'r1', created_at: new Date().toISOString(), org_id: 'org-a', feature: 'graao.chat', status: 'ok', attempts: 1 }]);
   assert.throws(() => db.exec("UPDATE go_ai_requests SET status = 'error' WHERE id = 'r1'"));
 });
 
@@ -380,7 +380,7 @@ test('chave da agência: o corpo vai sem tradução para a OpenAI e os erros ant
   const sent = [];
   const request = async (url, init) => { sent.push({ url: String(url), body: JSON.parse(init.body), auth: init.headers.Authorization || init.headers.authorization });
     return new Response(JSON.stringify({ id: 'resp', model: 'gpt-4.1-mini', status: 'completed', output: [{ type: 'message', content: [{ type: 'output_text', text: 'oi' }] }], usage: { input_tokens: 3, output_tokens: 1 } })); };
-  const gw = createSociAI({ store: memoryStore(), env: {}, request, sleep: async () => {} });
+  const gw = createGraaoAI({ store: memoryStore(), env: {}, request, sleep: async () => {} });
   const body = { model: 'gpt-4.1-mini', input: [{ role: 'user', content: 'oi' }], text: { format: { type: 'json_schema', name: 'x', schema: { type: 'object' } } } };
   const out = await openAIResponse(body, { apiKey: 'sk-agencia', timeout: 5000, problem: 'falhou', gateway: gw, gatewayContext: { org: 'sub-1', feature: 'content.writer' } });
   assert.equal(out.id, 'resp');
@@ -388,10 +388,10 @@ test('chave da agência: o corpo vai sem tradução para a OpenAI e os erros ant
   assert.deepEqual(sent[0].body, { ...body, store: false });
   assert.equal(sent[0].auth, 'Bearer sk-agencia');
 
-  const refused = createSociAI({ store: memoryStore(), env: {}, request: async () => status(401, '{"error":{"message":"bad key"}}'), sleep: async () => {} });
+  const refused = createGraaoAI({ store: memoryStore(), env: {}, request: async () => status(401, '{"error":{"message":"bad key"}}'), sleep: async () => {} });
   await assert.rejects(openAIResponse(body, { apiKey: 'sk-ruim', timeout: 5000, problem: 'falhou', gateway: refused, gatewayContext: { org: 'sub-1' } }),
     error => error.status === 422 && /OpenAI recusou a chave/.test(error.message));
 
-  // Sem chave e sem a IA da soci liberada (padrão): continua pedindo a chave.
+  // Sem chave e sem a IA da graao liberada (padrão): continua pedindo a chave.
   await assert.rejects(gw.responses(body, { org: 'sub-1' }), error => error.kind === 'disabled');
 });

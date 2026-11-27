@@ -1,6 +1,6 @@
 name: Documentação
 
-# Regra da soci: toda entrega que muda o produto traz o artigo da central de ajuda (docs-site/) no mesmo PR.
+# Regra da graao: toda entrega que muda o produto traz o artigo da central de ajuda (docs-site/) no mesmo PR.
 # Fica num workflow próprio para rodar de novo quando o corpo do PR é editado ("Documentação: não se aplica — motivo")
 # sem reiniciar os testes do app.
 on:

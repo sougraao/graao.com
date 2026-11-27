@@ -1,4 +1,4 @@
-// soci sidebar, shared by the sub-account and agency shells.
+// graao sidebar, shared by the sub-account and agency shells.
 // Collapsed it is a 64px icon rail with tooltips; expanded it adds labels and section headings.
 import { icon as i } from './icons.js';
 import { tr } from './i18n.js';

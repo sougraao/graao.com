@@ -1,4 +1,4 @@
-// soci header, shared by the sub-account and agency shells.
+// graao header, shared by the sub-account and agency shells.
 // Left: breadcrumb. Right: global search (Ctrl K), one grouped toolbar,
 // the language toggle, the theme toggle and the profile. The sidebar toggle lives in the sidebar itself.
 import { icon as i } from './icons.js';

@@ -3,10 +3,10 @@
 Status: IMPLEMENTED (Task 2, 2026-11-23). Código: `Smartsite/site/src/layouts/Base.astro`, `src/styles/site.css`, kit em `site/public/assets/`.
 
 ## Direção visual
-- Marca e posicionamento: soci — "A plataforma brasileira para Marketing 360". Editorial contemporâneo, neutro (90–95% da interface), a cor vem do mascote, do produto e de um único acento.
+- Marca e posicionamento: graao — "A plataforma brasileira para Marketing 360". Editorial contemporâneo, neutro (90–95% da interface), a cor vem do mascote, do produto e de um único acento.
 - Público: agências, profissionais de marketing, pequenas empresas brasileiras.
 - Base: kit "tasteskill 2.5" (system.css/system.js/motion), tipo de página `software`, acordo sorteado: hero `collage`, nav `nav-mega`, rodapé `footer-statement` + `close-type`, ritmo `dark-band`, botões `solid`, momentos `word-highlight` e `cursor-spotlight`.
-- Logo: mascote oficial caveira-chama (`ui/skull_flame.svg` → `public/brand/soci.svg`) + "soci" em minúsculas.
+- Logo: mascote oficial caveira-chama (`ui/skull_flame.svg` → `public/brand/graao.svg`) + "graao" em minúsculas.
 
 ## Tokens
 | Token | Valor | Uso |
@@ -30,7 +30,7 @@ Tipografia oficial: **pendente** — Familjen Grotesk é proposta do builder.
 | Componente | Função | Caminho |
 |---|---|---|
 | Header | nav fixa; mega menu de Funcionalidades (Atrair, Converter, Atender e gerir); "Entrar" + CTA primário; menu mobile com `aria-expanded` (system.js) | `src/components/Header.astro`, `src/data/nav.json` |
-| Footer | fechamento com CTA "Começar com a soci" + colunas + legal + Instagram/YouTube | `src/components/Footer.astro` |
+| Footer | fechamento com CTA "Começar com a graao" + colunas + legal + Instagram/YouTube | `src/components/Footer.astro` |
 | Cta | `comecar` (sempre `LOGIN_URL`), `planos`, `link` | `src/components/Cta.astro` |
 | Faq | perguntas abertas por inteiro (sem acordeão), JSON-LD FAQPage quando não há marcador | `src/components/Faq.astro` |
 | Breadcrumbs | trilha + JSON-LD BreadcrumbList | `src/components/Breadcrumbs.astro` |

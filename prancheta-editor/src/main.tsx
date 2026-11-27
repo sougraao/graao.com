@@ -8,16 +8,16 @@ import { bindPersistence, compactDocument, normalizeDocument, saveLocalCopy } fr
 import { createEmptyDocument } from "./editor/model/defaults";
 import type { DocumentData } from "./editor/model/types";
 import { store } from "./editor/store/store";
-import { createSociRepo, type PranchetaFile } from "./repo";
+import { createGraaoRepo, type PranchetaFile } from "./repo";
 import { PranchetaSession } from "./session";
 import "./editor/styles/tokens.css";
 import "./editor/styles/app.css";
-import "./soci.css";
+import "./graao.css";
 
 const params = new URLSearchParams(location.search);
 const workspace = params.get("workspace") || "agency";
 const isAgency = workspace === "agency";
-const repo = createSociRepo(workspace);
+const repo = createGraaoRepo(workspace);
 const embedded = window.parent !== window;
 const messageOf = (error: unknown) => error instanceof Error ? error.message : "Não foi possível concluir. Tente novamente.";
 
@@ -59,12 +59,12 @@ function followPlatformTheme() {
   const host = platformRoot();
   if (!host) return;
   const later = () => requestAnimationFrame(syncPlatformTheme);
-  try { window.parent.addEventListener("soci:theme-change", later); } catch { /* sem acesso ao app */ }
+  try { window.parent.addEventListener("graao:theme-change", later); } catch { /* sem acesso ao app */ }
   new MutationObserver(later).observe(host, { attributes: true, attributeFilter: ["data-theme", "style", "data-custom-brand"] });
 }
 followPlatformTheme();
 
-/** Avisa a soci (janela de fora) sobre o que aconteceu no editor. */
+/** Avisa a graao (janela de fora) sobre o que aconteceu no editor. */
 function notify(message: Record<string, unknown>) {
   if (embedded) window.parent.postMessage({ source: "prancheta-editor", ...message }, location.origin);
 }
@@ -99,7 +99,7 @@ async function renderArt(): Promise<string> {
 
 function SaveIndicator({ session }: { session: PranchetaSession }) {
   const state = useSyncExternalStore(session.subscribe, session.getSnapshot);
-  const label = state.kind === "saved" ? "Salvo na soci" : state.kind === "saving" ? "Salvando…" : state.kind === "dirty" ? "Alterações por salvar" : "Não salvo";
+  const label = state.kind === "saved" ? "Salvo na graao" : state.kind === "saving" ? "Salvando…" : state.kind === "dirty" ? "Alterações por salvar" : "Não salvo";
   return <span className={`pr-save pr-save--${state.kind}`} role="status">{label}</span>;
 }
 

@@ -68,7 +68,7 @@ export function outcomeOf(form, read) {
 export function resolveDestination(s, workspace, dest, { link = '', event = '' } = {}) {
   if (dest?.action === 'redirect' && dest.url) return { href: dest.url, external: true };
   const go = (path, params) => {
-    const query = new URLSearchParams(Object.entries({ ...params, link, soci_ev: event }).filter(([, v]) => v)).toString();
+    const query = new URLSearchParams(Object.entries({ ...params, link, graao_ev: event }).filter(([, v]) => v)).toString();
     return { href: query ? `${path}?${query}` : path, external: false };
   };
   if (dest?.action === 'page') {
@@ -90,10 +90,10 @@ const hashOf = text => `'sha256-${createHash('sha256').update(text).digest('base
 const leaveScript = `(()=>{const a=document.getElementById('go');setTimeout(()=>{try{window.top.location.href=a.href}catch(e){}},Number(a.dataset.wait)||0)})()`;
 export const leaveCsp = ancestors => `default-src 'none'; style-src 'unsafe-inline'; script-src ${hashOf(leaveScript)}; base-uri 'none'; frame-ancestors ${ancestors}`;
 export function leavePage({ href, event = '', wait = 0 }) {
-  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Redirecionando</title>${event ? `<meta name="soci-event" content="${esc(event)}">` : ''}
+  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Redirecionando</title>${event ? `<meta name="graao-event" content="${esc(event)}">` : ''}
 <style>body{margin:0;min-height:160px;display:grid;place-items:center;font:16px/1.5 system-ui,sans-serif;color:#475467}a{color:inherit}</style></head><body><p>Redirecionando… <a id="go" target="_top" data-wait="${Number(wait) || 0}" href="${esc(href)}">Continuar</a></p><script>${leaveScript}</script></body></html>`;
 }
 
 // ---- Height of a framed page -----------------------------------------------------------------------
-export const heightScript = `(()=>{const send=()=>parent!==window&&parent.postMessage({sociHeight:document.documentElement.offsetHeight},'*');send();addEventListener('load',send);new ResizeObserver(send).observe(document.body)})()`;
+export const heightScript = `(()=>{const send=()=>parent!==window&&parent.postMessage({graaoHeight:document.documentElement.offsetHeight},'*');send();addEventListener('load',send);new ResizeObserver(send).observe(document.body)})()`;
 export const heightHash = hashOf(heightScript);

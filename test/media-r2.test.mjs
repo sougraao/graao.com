@@ -5,20 +5,20 @@ import { createR2 } from '../r2-storage.mjs';
 import { CHUNK_BYTES } from '../reputation-media.mjs';
 
 const account = 'b'.repeat(32);
-const endpoint = `https://${account}.r2.cloudflarestorage.com/soci-arquivos/`;
+const endpoint = `https://${account}.r2.cloudflarestorage.com/graao-arquivos/`;
 
 // An in-memory bucket behind the real R2 client, so signing and URLs run as in production.
 function fakeBucket() {
   const objects = new Map();
   const request = async (url, init) => {
-    const key = decodeURIComponent(new URL(url).pathname.replace('/soci-arquivos/', ''));
+    const key = decodeURIComponent(new URL(url).pathname.replace('/graao-arquivos/', ''));
     if (init.method === 'PUT') { objects.set(key, { body: Buffer.from(init.body), type: init.headers['content-type'] }); return new Response('', { status: 200 }); }
     if (init.method === 'DELETE') { objects.delete(key); return new Response(null, { status: 204 }); }
     const found = objects.get(key);
     if (!found) return new Response(null, { status: 404 });
     return new Response(null, { status: 200, headers: { 'content-length': String(found.body.length), 'content-type': found.type } });
   };
-  return { objects, r2: createR2({ accountId: account, accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'soci-arquivos', request }) };
+  return { objects, r2: createR2({ accountId: account, accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'graao-arquivos', request }) };
 }
 
 async function start(t, options) {
@@ -46,7 +46,7 @@ test('Large Mídia Drive files go straight to R2 and come back through a signed 
   assert.equal((await post('/api/media/upload-url?workspace=demo', { name: 'big.mp4', mime: 'video/mp4', size: 60 * 1024 * 1024 })).status, 413);
 
   assert.equal((await post('/api/media/upload-done?workspace=demo', { token: asked.body.token })).status, 409, 'nothing in the bucket yet');
-  const key = decodeURIComponent(upload.pathname.replace('/soci-arquivos/', ''));
+  const key = decodeURIComponent(upload.pathname.replace('/graao-arquivos/', ''));
   objects.set(key, { body: Buffer.alloc(2_000_000), type: 'video/mp4' }); // the browser's PUT
   const done = await post('/api/media/upload-done?workspace=demo', { token: asked.body.token });
   assert.equal(done.status, 201);
@@ -73,7 +73,7 @@ test('Large Mídia Drive files go straight to R2 and come back through a signed 
   // A ticket for another workspace, a tampered one, or an object that does not match is refused.
   assert.equal((await post('/api/media/upload-done?workspace=demo', { token: `${asked.body.token}x` })).status, 400);
   const liar = await post('/api/media/upload-url?workspace=demo', { name: 'a.pdf', mime: 'application/pdf', size: 10 });
-  const liarKey = decodeURIComponent(new URL(liar.body.uploadUrl).pathname.replace('/soci-arquivos/', ''));
+  const liarKey = decodeURIComponent(new URL(liar.body.uploadUrl).pathname.replace('/graao-arquivos/', ''));
   objects.set(liarKey, { body: Buffer.alloc(11), type: 'application/pdf' });
   assert.equal((await post('/api/media/upload-done?workspace=demo', { token: liar.body.token })).status, 422);
   assert.equal(objects.has(liarKey), false, 'the mismatched object is removed');
@@ -125,7 +125,7 @@ test('Finished video testimonials move from chunk rows into R2 and are served fr
   assert.deepEqual(objects.get(row.r2Key).body, video);
   const admin = await fetch(`${base}/api/video?id=${row.id}`, { redirect: 'manual' });
   assert.equal(admin.status, 302);
-  assert.equal(new URL(admin.headers.get('location')).pathname, `/soci-arquivos/ws/demo/videos/${row.id}`);
+  assert.equal(new URL(admin.headers.get('location')).pathname, `/graao-arquivos/ws/demo/videos/${row.id}`);
 
   await post('/api/action', { type: 'delete', key: 'videoTestimonials', id: row.id });
   assert.equal(objects.has(row.r2Key), false, 'deleting the testimonial deletes the object');
@@ -137,7 +137,7 @@ test('AI-generated videos are written to R2 instead of chunk rows', async t => {
   t.after(() => { process.env.CRON_SECRET = cron || ''; });
   const { objects, r2 } = fakeBucket();
   const mediaAI = { start: async () => 'video_abc', status: async () => ({ status: 'completed', progress: 100, error: '' }), content: async () => Buffer.alloc(800 * 1024, 7) };
-  const documentMail = { linkOf: item => item.path ? `https://app.soci.test${item.path}` : '', email: async () => ({ id: 'x' }) };
+  const documentMail = { linkOf: item => item.path ? `https://app.graao.test${item.path}` : '', email: async () => ({ id: 'x' }) };
   const { base, post, state } = await start(t, { r2, mediaAI, documentMail, agentModel: 'gpt-4.1-mini', workflowAI: async () => ({ vars: {} }) });
   await post('/api/action?workspace=demo', { type: 'save', key: 'workflows', data: { name: 'Vídeo', active: true, triggers: [{ type: 'contact_created' }],
     steps: [{ type: 'ai_video_generate', config: { prompt: 'Boas-vindas', seconds: '4', variable: 'video' } }] } });

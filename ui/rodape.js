@@ -1,5 +1,5 @@
-// Linha de direitos e versão no pé das páginas da soci.
-// Páginas estáticas trazem a linha no HTML (`.rodape-soci`) e carregam este módulo só para preencher a versão.
+// Linha de direitos e versão no pé das páginas da graao.
+// Páginas estáticas trazem a linha no HTML (`.rodape-graao`) e carregam este módulo só para preencher a versão.
 // O painel monta a linha com `rodapeHtml(nome)`, que já traz a versão quando ela foi lida.
 const ano = new Date().getFullYear();
 let build = '';
@@ -25,10 +25,10 @@ export function carregarBuild(buscar = globalThis.fetch) {
   return pedido;
 }
 
-/** A linha do rodapé. `nome` é a marca exibida: a soci, ou a da agência no painel da subconta. */
-export function rodapeHtml(nome = 'soci') {
+/** A linha do rodapé. `nome` é a marca exibida: a graao, ou a da agência no painel da subconta. */
+export function rodapeHtml(nome = 'graao') {
   if (typeof document !== 'undefined') carregarBuild();
-  return `<footer class="rodape-soci"><span>© ${ano} ${esc(nome || 'soci')}. Feita no Brasil com ☕, carinho e muita API.</span><span class="rodape-build" data-rodape-build>${esc(textoBuild())}</span></footer>`;
+  return `<footer class="rodape-graao"><span>© ${ano} ${esc(nome || 'graao')}. Feita no Brasil com ☕, carinho e muita API.</span><span class="rodape-build" data-rodape-build>${esc(textoBuild())}</span></footer>`;
 }
 
 if (typeof document !== 'undefined' && document.querySelector('[data-rodape-build]')) carregarBuild();

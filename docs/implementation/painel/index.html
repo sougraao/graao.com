@@ -108,7 +108,7 @@
   var root=document.documentElement, app=document.getElementById('app');
   var store={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
   var savedTheme=store.get('painel-tema'); if(savedTheme) root.setAttribute('data-theme',savedTheme);
-  var P=window.PLANO_SOCI;
+  var P=window.PLANO_GRAAO;
   if(!P){app.innerHTML='<div class="err">Não encontrei <code>progresso.js</code> nesta pasta.</div>';return;}
 
   var NOMES={feito:'Feito',andamento:'Em andamento',pendente:'Pendente',bloqueado:'Bloqueado',fora:'Fora do escopo',decidida:'Decidida'};
@@ -201,7 +201,7 @@
     h+='<span class="pnum">'+esc(f.id)+'</span><span class="pname">'+esc(f.nome)+'</span>';
     h+='<span class="pcount">'+(tot?c.feito+'/'+tot:'—')+'</span>';
     h+='<span class="pobj">'+esc(f.objetivo)+'</span>'+(tot?'<span class="pbar">'+barra(c,tot)+'</span>':'')+'</summary>';
-    if(f.base) h+='<div class="base">Base existente na Soci: '+esc(f.base)+'</div>';
+    if(f.base) h+='<div class="base">Base existente na Graao: '+esc(f.base)+'</div>';
     h+='<ul class="items">';
     f.itens.forEach(function(i){
       var x=[]; if(i.ref)x.push('Ref.: <b>'+esc(i.ref)+'</b>'); if(i.entrega)x.push('Entrega: <b>'+esc(i.entrega)+'</b>'); if(i.data)x.push(fmt(i.data)); if(i.nota)x.push(esc(i.nota));

@@ -67,7 +67,7 @@ export function createProspecting({data,accounts,call,render,dialog,close,flash,
   const shownReport = row => row.report && placeOf(row) ? { ...row.report,business:withPlace(row.report.business,placeOf(row)) } : row.report;
   // Lidos uma vez por sessão do navegador: ficam no sessionStorage da aba (some ao fechar) para que recarregar
   // a página não gaste outra consulta ao Google. Falhas não são guardadas e tentam de novo na próxima carga.
-  const placesKey = () => `soci:prospect-places:${data().access?.agencyId || 'agencia'}`;
+  const placesKey = () => `graao:prospect-places:${data().access?.agencyId || 'agencia'}`;
   let placesRestored = false;
   function restorePlaces() {
     if (placesRestored) return;
@@ -419,7 +419,7 @@ export function createProspecting({data,accounts,call,render,dialog,close,flash,
   }
   function auditDialog(row) {
     const manual = auditAreas.some(([key]) => Number.isFinite(row[`score_${key}`]));
-    openForm('audit','Auditoria de marketing',`<p>A soci analisa o site (velocidade pelo Google PageSpeed, SEO, segurança e LGPD), as ferramentas de marketing, as redes sociais e o perfil no Google. Leva até um minuto.</p>
+    openForm('audit','Auditoria de marketing',`<p>A graao analisa o site (velocidade pelo Google PageSpeed, SEO, segurança e LGPD), as ferramentas de marketing, as redes sociais e o perfil no Google. Leva até um minuto.</p>
       ${row.website ? '' : '<p class="pr-muted">Sem site cadastrado: usaremos o site do perfil no Google, se houver.</p>'}
       <details class="pr-contact"${manual ? ' open' : ''}><summary>Ajustes manuais (opcional)</summary><p class="pr-muted">Uma nota de 0 a 10 substitui a nota automática do pilar. Deixe em branco para usar a automática.</p>
       <div class="pr-field-grid">${auditAreas.map(([key,label]) => input(`score_${key}`,label,row[`score_${key}`] ?? '', 'type="number" step="0.1" min="0" max="10"')).join('')}</div></details>`,{id:row.id,label:'Gerar auditoria'});

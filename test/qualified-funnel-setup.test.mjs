@@ -22,9 +22,9 @@ async function start(t) {
 }
 
 test('The editor offers video, form and calendar blocks, and checks the video address', () => {
-  for (const [id, kind] of [['video', 'video'], ['soci-form', 'form'], ['booking', 'booking']]) {
+  for (const [id, kind] of [['video', 'video'], ['graao-form', 'form'], ['booking', 'booking']]) {
     const html = blockHtml(id);
-    assert.match(html, new RegExp(`^<div data-soci-embed="${kind}"`), id);
+    assert.match(html, new RegExp(`^<div data-graao-embed="${kind}"`), id);
     assert.equal(sanitizeHtml(html).includes(html), true, `${id} survives the sanitizer`);
   }
   assert.equal(cleanVideo(' https://youtu.be/UV19exMToaY '), 'https://youtu.be/UV19exMToaY');

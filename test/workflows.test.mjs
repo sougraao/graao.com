@@ -264,13 +264,13 @@ test('Social engagement automation: comment trigger with keyword executes Instag
   const id = flow(s, {
     triggers: [{ type: 'social_comment_received', config: { network: 'instagram', keyword: 'QUERO' } }],
     steps: [
-      { type: 'send_instagram_dm', config: { body: 'Oi {{contact.first_name}}! Link: https://soci.app/oferta' } },
+      { type: 'send_instagram_dm', config: { body: 'Oi {{contact.first_name}}! Link: https://graao.app/oferta' } },
       { type: 'reply_social_comment', config: { body: 'Enviamos o link no seu Direct!' } }
     ]
   });
   const c = contact(s, { name: 'Lucas Silva', tags: [] });
   execute(s, { type: 'social-interaction-trigger', data: { kind: 'comment', network: 'instagram', comment: 'Eu QUERO saber mais!', contactId: c } });
   assert.equal(runsOf(s, id).length, 1, 'social comment with keyword enrolls contact');
-  assert.ok(s.messages.some(m => m.channel === 'Instagram' && m.body.includes('https://soci.app/oferta')), 'sent DM');
+  assert.ok(s.messages.some(m => m.channel === 'Instagram' && m.body.includes('https://graao.app/oferta')), 'sent DM');
   assert.ok(s.messages.some(m => m.channel === 'Instagram' && m.body.includes('[Resposta ao comentário]')), 'replied to comment');
 });

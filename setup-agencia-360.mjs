@@ -1,5 +1,5 @@
-// Setup Oficial Soci: Agência Completa 360° (Prospecção → Onboarding → Retenção)
-// Converte toda a operação end-to-end de agência em ativos nativos da Soci.
+// Setup Oficial Graao: Agência Completa 360° (Prospecção → Onboarding → Retenção)
+// Converte toda a operação end-to-end de agência em ativos nativos da Graao.
 
 export const agenciaCompleta360Spec = {
   id: 'official-agencia-completa-360',
@@ -40,8 +40,8 @@ export const agenciaCompleta360Spec = {
       { id: 'st360-churn', pipelineId: 'p360-ret', name: 'Risco / Churn' }
     ],
     triggerLinks: [
-      { id: 'tl360-agenda', name: 'Link de Agendamento — Consultoria', url: 'https://soci.app.br/agendar' },
-      { id: 'tl360-onb', name: 'Link do Formulário de Onboarding', url: 'https://soci.app.br/onboarding' }
+      { id: 'tl360-agenda', name: 'Link de Agendamento — Consultoria', url: 'https://graao.com/agendar' },
+      { id: 'tl360-onb', name: 'Link do Formulário de Onboarding', url: 'https://graao.com/onboarding' }
     ],
     forms: [
       { id: 'fm360-optin', name: 'Opt-in | Consultoria Gratuita', description: 'Formulário público de captura para consultoria estratégica gratuita. Dispara a sequência de qualificação e follow-up.', askPhone: true, active: true },

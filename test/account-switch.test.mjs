@@ -125,7 +125,7 @@ test('os cookies das contas são HttpOnly, SameSite=Lax e, em HTTPS, __Host- com
   assert.equal(own.length, 3);
   for (const line of own) assert.match(line, /Path=\/; HttpOnly; SameSite=Lax/);
   const res = { lines: [], getHeader() { return this.lines; }, setHeader(_, value) { this.lines = value; } };
-  await fake.auth.google({ headers: {}, socket: { encrypted: true } }, res, 'https://soci.app.br', '/app');
+  await fake.auth.google({ headers: {}, socket: { encrypted: true } }, res, 'https://graao.com', '/app');
   assert.match(res.lines.join('\n'), /^__Host-go_google_flow=.*; Secure$/m);
 });
 
@@ -309,16 +309,16 @@ test('desistir no Google ao adicionar conta volta para a conta que já estava ab
 test('aba presa na conta anterior não lê nem grava como a nova conta', async t => {
   const { page } = await start(t);
   await page.login('ana');
-  const stale = { 'X-Soci-Account': people.ana.id };
+  const stale = { 'X-Graao-Account': people.ana.id };
   assert.equal((await page.get('/api/agency', stale)).status, 200);
   await page.login('bia', { add: true });
   for (const call of [() => page.get('/api/agency', stale), () => page.post('/api/workspaces', { name: 'Gravado na conta errada' }, stale)]) {
     const blocked = await call();
     assert.equal(blocked.status, 409);
     assert.equal(blocked.data.code, 'ACCOUNT_CHANGED');
-    assert.equal(blocked.headers.get('x-soci-account-changed'), '1');
+    assert.equal(blocked.headers.get('x-graao-account-changed'), '1');
   }
-  assert.deepEqual((await page.get('/api/workspaces', { 'X-Soci-Account': people.bia.id })).data.workspaces, []);
+  assert.deepEqual((await page.get('/api/workspaces', { 'X-Graao-Account': people.bia.id })).data.workspaces, []);
 });
 
 test('renovação atrasada da conta anterior não devolve o navegador para ela', async t => {

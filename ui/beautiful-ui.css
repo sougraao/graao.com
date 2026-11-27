@@ -1,6 +1,6 @@
 /* Beautiful UI (https://www.beautifului.dev, MIT, Shane Levine), portado para JS puro.
  * Fonte original (React/TSX + Tailwind) em vendor/beautifului/. Os tokens da
- * fundação apontam para os tokens --g-* do soci.app, então tema claro/escuro e
+ * fundação apontam para os tokens --g-* do graao.app, então tema claro/escuro e
  * marca vêm do app. Tudo fica sob o prefixo .bui- para não vazar em outras telas. */
 
 :root {

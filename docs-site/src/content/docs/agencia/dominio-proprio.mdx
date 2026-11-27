@@ -1,6 +1,6 @@
 ---
 title: Usar o domínio da agência no endereço das subcontas
-description: Faça seus clientes entrarem na soci por um endereço da agência, como app.suaagencia.com.br, com o seu logotipo na tela de entrada.
+description: Faça seus clientes entrarem na graao por um endereço da agência, como app.suaagencia.com.br, com o seu logotipo na tela de entrada.
 modulo: agencia
 sidebar:
   order: 4
@@ -11,7 +11,7 @@ import { Steps, Aside, CardGrid, LinkCard } from '@astrojs/starlight/components'
 import Print from '../../../components/Print.astro';
 import Requisitos from '../../../components/Requisitos.astro';
 
-Com o domínio próprio, seus clientes entram na soci por um endereço da agência, como app.suaagencia.com.br. A tela de entrada mostra o nome e o logotipo da agência no lugar da marca soci. Você só precisa de um domínio e de acesso ao DNS dele (no Registro.br, na Cloudflare ou onde o domínio estiver).
+Com o domínio próprio, seus clientes entram na graao por um endereço da agência, como app.suaagencia.com.br. A tela de entrada mostra o nome e o logotipo da agência no lugar da marca graao. Você só precisa de um domínio e de acesso ao DNS dele (no Registro.br, na Cloudflare ou onde o domínio estiver).
 
 <Requisitos permissao="Dono ou admin da agência" integracoes={['Acesso ao DNS do domínio da agência']} />
 
@@ -23,7 +23,7 @@ Com o domínio próprio, seus clientes entram na soci por um endereço da agênc
 
    <Print src="docs/agencia/dominio-proprio/01-campo-do-dominio.02a1d4fa.webp" alt="Seção White Label das subcontas com app.agenciademo.com.br no campo Domínio para subcontas." />
 
-2. Clique em **Salvar dados da empresa**. A soci adiciona o domínio à hospedagem.
+2. Clique em **Salvar dados da empresa**. A graao adiciona o domínio à hospedagem.
 
 3. Clique em **Verificar domínio**. Abaixo do botão aparece uma tabela com os registros que faltam no DNS: o **CNAME** do endereço (por exemplo, `app` apontando para `cname.vercel-dns.com`) e, quando a hospedagem pede, um **TXT** que prova que o domínio é seu. Cada linha traz o tipo, o nome e o valor exatos.
 
@@ -31,7 +31,7 @@ Com o domínio próprio, seus clientes entram na soci por um endereço da agênc
 
    <Print src="docs/agencia/dominio-proprio/02-verificar-dominio.6f48ae07.webp" alt="Abaixo do botão Verificar domínio, a mensagem pedindo a prova de posse, o aviso sobre o campo Nome e a tabela com o CNAME app e o TXT _vercel." />
 
-5. Quando aparecer **Pronto: o domínio aponta para a soci.**, mande o novo endereço aos clientes. Quem abre o endereço vai direto para a tela de entrada da agência: logotipo, cor da marca, nome no texto, no rodapé e na aba do navegador, sem nada da soci. O botão de entrar com o Google funciona no próprio domínio da agência. A tela de carregamento e a confirmação de celular também mostram o seu logotipo.
+5. Quando aparecer **Pronto: o domínio aponta para a graao.**, mande o novo endereço aos clientes. Quem abre o endereço vai direto para a tela de entrada da agência: logotipo, cor da marca, nome no texto, no rodapé e na aba do navegador, sem nada da graao. O botão de entrar com o Google funciona no próprio domínio da agência. A tela de carregamento e a confirmação de celular também mostram o seu logotipo.
 
    Pelo domínio da agência só entra quem você liberou em **Usuários** (ou como usuário de uma subconta). Quem entra com um e-mail sem acesso vê **Acesso não liberado** e o botão **Entrar com outra conta**. Nenhuma conta nova é criada.
 
@@ -39,35 +39,35 @@ Com o domínio próprio, seus clientes entram na soci por um endereço da agênc
 
 </Steps>
 
-<Aside type="caution">Se a mensagem disser que a conexão automática com a hospedagem não está ativa, fale com o [suporte da soci](/suporte/como-pedir-ajuda/) e mande o domínio. A equipe adiciona o domínio à hospedagem por você.</Aside>
+<Aside type="caution">Se a mensagem disser que a conexão automática com a hospedagem não está ativa, fale com o [suporte da graao](/suporte/como-pedir-ajuda/) e mande o domínio. A equipe adiciona o domínio à hospedagem por você.</Aside>
 
 <Aside type="tip">Coloque o logotipo da agência em **White Label das subcontas** antes de divulgar o endereço. Assim a tela de entrada e o menu das subcontas já saem com a sua marca. Veja [como colocar a marca da agência](/agencia/white-label/).</Aside>
 
 ## Perguntas frequentes
 
-**A tela de entrada ainda mostra a soci. Por quê?**
+**A tela de entrada ainda mostra a graao. Por quê?**
 A marca vem de **Empresa e marca**: nome, logotipo e cor primária. Confira se o logotipo foi salvo e recarregue a página. O Google mostra a própria tela dele no meio do login, e essa não dá para mudar.
 
 **Um cliente entrou e viu "Acesso não liberado". O que fazer?**
 O e-mail com que ele entrou não está liberado na agência. Confira em **Usuários** se o e-mail é o mesmo da conta Google dele e se o acesso está ligado. Depois peça para ele clicar em **Entrar com outra conta** e entrar de novo.
 
-**Alguém pode criar uma conta nova da soci pelo meu domínio?**
-Não. No domínio da agência a soci não abre cadastro: só entram você, a sua equipe e os clientes que você liberou.
+**Alguém pode criar uma conta nova da graao pelo meu domínio?**
+Não. No domínio da agência a graao não abre cadastro: só entram você, a sua equipe e os clientes que você liberou.
 
 **Duas agências podem usar o mesmo domínio?**
-Não. Cada domínio fica com uma agência só. Se outra agência já usa o endereço, a soci avisa ao salvar.
+Não. Cada domínio fica com uma agência só. Se outra agência já usa o endereço, a graao avisa ao salvar.
 
-**O endereço antigo da soci continua funcionando?**
+**O endereço antigo da graao continua funcionando?**
 Sim. Os clientes podem entrar pelos dois endereços. No domínio da agência, a tela de entrada mostra a sua marca.
 
 **O endereço abre com erro 525. O que fazer?**
-O registro está passando pelo proxy da Cloudflare (nuvem laranja). Mude para **Somente DNS** (nuvem cinza) e clique em **Verificar domínio**. A soci avisa quando detecta o proxy.
+O registro está passando pelo proxy da Cloudflare (nuvem laranja). Mude para **Somente DNS** (nuvem cinza) e clique em **Verificar domínio**. A graao avisa quando detecta o proxy.
 
 **Troquei o domínio. O antigo continua ligado à agência?**
 Não. Ao trocar ou apagar o domínio em **Domínio para subcontas**, o endereço antigo sai da hospedagem e pode ser usado em outro lugar.
 
 **Posso usar o domínio principal do site, sem o "app."?**
-Não é recomendado. O domínio principal costuma apontar para o site da agência, e mudá-lo tiraria o site do ar. Use um subdomínio só para a soci. Se mesmo assim usar o domínio principal, a tabela pede um registro **A** com o nome `@` no lugar do CNAME, porque o domínio principal não aceita CNAME.
+Não é recomendado. O domínio principal costuma apontar para o site da agência, e mudá-lo tiraria o site do ar. Use um subdomínio só para a graao. Se mesmo assim usar o domínio principal, a tabela pede um registro **A** com o nome `@` no lugar do CNAME, porque o domínio principal não aceita CNAME.
 
 **Criei os registros e a verificação não passa. O que conferir?**
 Veja se o painel do domínio não juntou o nome duas vezes, como `_vercel.suaagencia.com.br.suaagencia.com.br`. Apague o registro e crie de novo só com o nome curto da tabela. Depois espere alguns minutos e clique em **Verificar domínio**.
@@ -75,7 +75,7 @@ Veja se o painel do domínio não juntou o nome duas vezes, como `_vercel.suaage
 ## Veja também
 
 <CardGrid>
-  <LinkCard title="Colocar a marca da agência na soci" href="/agencia/white-label/" description="Logotipo e cores da agência dentro das subcontas." />
+  <LinkCard title="Colocar a marca da agência na graao" href="/agencia/white-label/" description="Logotipo e cores da agência dentro das subcontas." />
   <LinkCard title="Enviar e-mails com o domínio da agência" href="/agencia/dominio-de-envio/" description="Faturas, campanhas e automações saindo com o endereço da agência." />
   <LinkCard title="Criar uma subconta para um cliente" href="/agencia/criar-subconta/" description="Cadastre o cliente que vai entrar pelo seu domínio." />
 </CardGrid>

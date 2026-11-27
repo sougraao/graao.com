@@ -18,22 +18,22 @@ const account = 'b'.repeat(32);
 function fakeBucket() {
   const objects = new Map();
   const request = async (url, init) => {
-    const key = decodeURIComponent(new URL(url).pathname.replace('/soci-arquivos/', ''));
+    const key = decodeURIComponent(new URL(url).pathname.replace('/graao-arquivos/', ''));
     if (init.method === 'PUT') { objects.set(key, { body: Buffer.from(init.body), type: init.headers['content-type'] }); return new Response('', { status: 200 }); }
     if (init.method === 'DELETE') { objects.delete(key); return new Response(null, { status: 204 }); }
     const found = objects.get(key);
     if (!found) return new Response(null, { status: 404 });
     return new Response(null, { status: 200, headers: { 'content-length': String(found.body.length), 'content-type': found.type } });
   };
-  return { objects, r2: createR2({ accountId: account, accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'soci-arquivos', request }) };
+  return { objects, r2: createR2({ accountId: account, accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'graao-arquivos', request }) };
 }
 
 async function boot(t, options = {}) {
-  const dir = mkdtempSync(join(tmpdir(), 'soci-message-media-'));
+  const dir = mkdtempSync(join(tmpdir(), 'graao-message-media-'));
   const store = createSqliteStore(join(dir, 'go.sqlite'));
   const evo = fakeEvolution();
   const { server } = makeServer({ store, auth: null, allowLocalAccess: true, port: 0, openAISecret: 'message-media-seal-secret-32-chars!', socialScheduler: false,
-    whatsappRequest: evo.request, evolutionBaseUrl: 'https://evo.soci.test', evolutionApiKey: API_KEY, r2: null, ...options });
+    whatsappRequest: evo.request, evolutionBaseUrl: 'https://evo.graao.test', evolutionApiKey: API_KEY, r2: null, ...options });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   t.after(async () => { await new Promise(resolve => server.close(resolve)); rmSync(dir, { recursive: true, force: true }); });
   const base = `http://127.0.0.1:${server.address().port}`;
@@ -42,14 +42,14 @@ async function boot(t, options = {}) {
     return { status: res.status, body: await res.json().catch(() => null) };
   };
   await call('/api/whatsapp/workspace/connect?workspace=demo', {});
-  evo.markOpen('soci_demo', '5531988887777', 'Demo');
+  evo.markOpen('graao_demo', '5531988887777', 'Demo');
   const live = await call('/api/whatsapp/workspace/status?workspace=demo');
   const hook = new URL(live.body.webhookUrl).pathname;
   let seq = 0;
   const receive = async (message, file) => {
     const id = `MEDIA${++seq}`;
     if (file) evo.media.set(id, file);
-    await call(hook, { event: 'messages.upsert', instance: 'soci_demo', data: { key: { fromMe: false, id, remoteJid: '5511977776666@s.whatsapp.net' }, pushName: 'Carlos', message } });
+    await call(hook, { event: 'messages.upsert', instance: 'graao_demo', data: { key: { fromMe: false, id, remoteJid: '5511977776666@s.whatsapp.net' }, pushName: 'Carlos', message } });
     return store.load('demo').messages.find(m => m.waId === id);
   };
   const open = (message, extra = '') => fetch(`${base}/api/whatsapp/workspace/media?workspace=demo&message=${message.id}${extra}`, { redirect: 'manual' });
@@ -90,7 +90,7 @@ test('sem R2, a mídia vem da Evolution a cada abertura, com cabeçalhos seguros
   assert.equal(res.headers.get('x-content-type-options'), 'nosniff');
   assert.match(res.headers.get('content-security-policy'), /default-src 'none'/);
   assert.deepEqual(Buffer.from(await res.arrayBuffer()), PNG);
-  const asked = evo.calls.find(c => c.path === '/chat/getBase64FromMediaMessage/soci_demo');
+  const asked = evo.calls.find(c => c.path === '/chat/getBase64FromMediaMessage/graao_demo');
   assert.deepEqual(asked.body, { message: { key: { id: photo.waId } }, convertToMp4: false });
 
   // Um HTML mandado como documento nunca abre na página: só baixa.
@@ -121,7 +121,7 @@ test('com R2, a mídia é guardada ao chegar, abre por link assinado e some com 
   const before = evo.calls.filter(c => c.path.includes('getBase64')).length;
   const res = await open(photo);
   assert.equal(res.status, 302);
-  assert.match(res.headers.get('location'), new RegExp(`/soci-arquivos/${key}\\?`));
+  assert.match(res.headers.get('location'), new RegExp(`/graao-arquivos/${key}\\?`));
   assert.match((await open(photo, '&download=1')).headers.get('location'), /response-content-disposition=attachment/);
   assert.equal(evo.calls.filter(c => c.path.includes('getBase64')).length, before, 'não baixa de novo');
 
@@ -164,12 +164,12 @@ test('buscar mídia lenta não derruba o envio de mensagens', async t => {
 test('links do texto: http, www, domínio solto e link de rastreamento; pontuação e e-mail ficam de fora', () => {
   const links = text => textPieces(text).filter(piece => piece.href).map(piece => piece.href);
   assert.deepEqual(links('veja https://exemplo.com/a?b=1&c=2, ok'), ['https://exemplo.com/a?b=1&c=2']);
-  assert.deepEqual(links('(https://pt.wikipedia.org/wiki/Soci_(app)).'), ['https://pt.wikipedia.org/wiki/Soci_(app)']);
-  assert.deepEqual(links('www.soci.app.br e instagram.com/p/abc'), ['https://www.soci.app.br', 'https://instagram.com/p/abc']);
+  assert.deepEqual(links('(https://pt.wikipedia.org/wiki/Graao_(app)).'), ['https://pt.wikipedia.org/wiki/Graao_(app)']);
+  assert.deepEqual(links('www.graao.com e instagram.com/p/abc'), ['https://www.graao.com', 'https://instagram.com/p/abc']);
   assert.deepEqual(links('fale com ana@gmail.com ou 1.5/2 e fim.Começo javascript:alert(1)'), []);
   const track = `/r/demo/${'a'.repeat(8)}-1111-1111-1111-${'b'.repeat(12)}`;
   assert.deepEqual(links(`clique ${track}`), [track]);
-  assert.deepEqual(links(`https://soci.app.br${track}`), [`https://soci.app.br${track}`], 'o link completo aparece uma vez só');
+  assert.deepEqual(links(`https://graao.com${track}`), [`https://graao.com${track}`], 'o link completo aparece uma vez só');
   assert.equal(textPieces('a https://x.com/y b').map(piece => piece.text).join(''), 'a https://x.com/y b');
 });
 

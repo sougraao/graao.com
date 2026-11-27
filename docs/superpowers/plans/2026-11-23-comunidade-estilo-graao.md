@@ -277,10 +277,10 @@
 ### Task 8: Mirror, browser verification, finish
 
 **Files:**
-- Create (if missing): `.claude/launch.json` with `{ "name": "soci", "runtimeExecutable": "npm", "runtimeArgs": ["start"], "port": 4317 }`
+- Create (if missing): `.claude/launch.json` with `{ "name": "graao", "runtimeExecutable": "npm", "runtimeArgs": ["start"], "port": 4317 }`
 - Modify: `public/*` via `node scripts/sync-public.mjs`
 
-- [ ] **Step 1: Start the dev server** with the preview tool (`preview_start {name:'soci'}`) and open the community of a test subaccount at `/portal/<workspace>?comunidade=<id>` (sign in as staff with "Entrar como equipe / administrador").
+- [ ] **Step 1: Start the dev server** with the preview tool (`preview_start {name:'graao'}`) and open the community of a test subaccount at `/portal/<workspace>?comunidade=<id>` (sign in as staff with "Entrar como equipe / administrador").
 - [ ] **Step 2: Check, desktop 1440 px:** visitor hero and join; after joining: feed with composer (expand on focus, publish without title), filters, like/comment/share, "⋯" menu, comments collapse; Academia (open course → back returns to Academia; locked/buy states); Events/Members/Ranking/About in the new style; widgets order follows settings; no console errors.
 - [ ] **Step 3: Check 375 px** (`resize_window` mobile) and a dark preset ("Noite neon"): nav scrolls horizontally, channels as chips, aside below feed, no horizontal page scroll, button text readable.
 - [ ] **Step 4: Mirror** — `node scripts/sync-public.mjs` then `node scripts/sync-public.mjs --check` → exit 0.

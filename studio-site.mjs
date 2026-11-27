@@ -290,7 +290,7 @@ const fillValues = (html, values) => html.replace(/\{\{\s*custom_values\.(\w+)\s
 export function renderPublic(page, { base, notice = '', workspace = '', link = '', values = {} }) {
   let html = fillValues(withSeo(workspace ? renderEmbeds(page.html, { workspace, link }) : page.html, page.seo), values)
     .replace(/(href\s*=\s*["'])page:([a-z0-9-]+)(#[\w-]*)?(["'])/gi, (_, a, slug, hash = '', b) => `${a}${slug === 'index' ? base : `${base}/${slug}`}${hash}${b}`)
-    .replace(/<form\b([^>]*)>/gi, (_, attrs) => `<form${attrs.replace(/\s(?:action|method|target|enctype)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '')} data-soci-lead action="${base}" method="post"><input type="hidden" name="_page" value="${esc(page.slug)}">`);
+    .replace(/<form\b([^>]*)>/gi, (_, attrs) => `<form${attrs.replace(/\s(?:action|method|target|enctype)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '')} data-graao-lead action="${base}" method="post"><input type="hidden" name="_page" value="${esc(page.slug)}">`);
   if (notice) {
     const banner = `<div role="status" style="position:sticky;top:0;z-index:9999;padding:14px 18px;font:600 15px system-ui,sans-serif;text-align:center;${notice.ok ? 'background:#ecfdf3;color:#067647' : 'background:#fef3f2;color:#b42318'}">${esc(notice.text)}</div>`;
     html = /<body\b[^>]*>/i.test(html) ? html.replace(/<body\b[^>]*>/i, m => m + banner) : banner + html;

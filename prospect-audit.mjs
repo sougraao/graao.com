@@ -18,7 +18,7 @@ const MAX_BYTES = 1_500_000;
 const MAX_REDIRECTS = 5;
 const PAGE_TIMEOUT = 12_000;
 const PSI_TIMEOUT = 45_000;
-const USER_AGENT = 'Mozilla/5.0 (compatible; SociAudit/1.0; +https://soci.app.br)';
+const USER_AGENT = 'Mozilla/5.0 (compatible; GraaoAudit/1.0; +https://graao.com)';
 const psiKey = process.env.PROSPECTING_PAGESPEED_KEY?.trim() || '';
 
 // ---------- Network safety ----------

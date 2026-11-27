@@ -5,7 +5,7 @@ Cópia do registry shadcn de https://www.beautifului.dev (licença MIT, Shane Le
 - `r/` guarda o JSON de cada item (27 no total) como o site serve em `/r/<nome>.json`.
 - `src/` guarda os fontes extraídos desses JSON (React/TSX + `foundation.css` com Tailwind v4).
 
-O soci.app não usa React nem Tailwind, então nada daqui é servido. A versão em uso foi portada para JS puro:
+O graao.app não usa React nem Tailwind, então nada daqui é servido. A versão em uso foi portada para JS puro:
 
 - `ui/beautiful-ui.js`: `loadingState`, `thinkingState`, `shimmer`, `streamText`, `streamCaret`, `toolChips`,
   `approvalCard`, `taskRows`, `recommendationCard`, `contextCards`, e os átomos `button`, `monogram`,
@@ -25,7 +25,7 @@ e as ações reaproveitam os handlers do app (`data-edit`, `data-go`, `data-task
 
 | Componente | Onde |
 | --- | --- |
-| LoadingState, ThinkingState, StreamText (cursor) | Pergunte à Soci; teste e construtor de agentes |
+| LoadingState, ThinkingState, StreamText (cursor) | Pergunte à Graao; teste e construtor de agentes |
 | PromptBar | Compositor do teste de agentes (`/` traz mensagens de teste prontas, ditado por voz) |
 | StreamingText | Resposta do agente no teste, com as bases consultadas como fontes |
 | ChatComposer (visual do fio) | Construtor de agentes por chat |
@@ -42,7 +42,7 @@ e as ações reaproveitam os handlers do app (`data-edit`, `data-go`, `data-task
 | Flowchart | "Ver fluxo" na lista de workflows |
 | CodeBlock | Código de rastreamento; documentação de API e apps da agência |
 | FineTuneCard | Editor de e-mail: blocos de imagem (largura, alinhamento) e espaçador (altura) |
-| SidebarNav | Só na vitrine. Os lugares que ela caberia (barra lateral do app, histórico da Soci) perderiam recursos que já existem. |
+| SidebarNav | Só na vitrine. Os lugares que ela caberia (barra lateral do app, histórico da Graao) perderiam recursos que já existem. |
 
 Diferenças em relação ao original:
 - InsightCards usa um gráfico SVG próprio (`lineChart`) no lugar da lib `liveline`.

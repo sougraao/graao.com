@@ -15,14 +15,14 @@ test('Settings require https links and the personal link variable in every messa
   assert.throws(() => run(s, 'reputation-settings', { ...base, googleUrl: 'http://g.page/x' }), /https/);
   assert.throws(() => run(s, 'reputation-settings', { ...base, whatsapp: 'Avalie a gente!' }), /review\.link/);
   assert.throws(() => run(s, 'reputation-settings', { ...base, otherUrl: 'https://trip.example' }), /Dê um nome/);
-  run(s, 'reputation-settings', { ...base, googleUrl: 'https://g.page/r/abc/review', origin: 'https://app.soci.test/qualquer' });
+  run(s, 'reputation-settings', { ...base, googleUrl: 'https://g.page/r/abc/review', origin: 'https://app.graao.test/qualquer' });
   assert.equal(s.reputation.googleUrl, 'https://g.page/r/abc/review');
-  assert.equal(s.reputation.origin, 'https://app.soci.test');
+  assert.equal(s.reputation.origin, 'https://app.graao.test');
 });
 
 test('Requests send a personal link per contact and skip who cannot or should not receive one', () => {
   const s = blank('Loja');
-  s.reputation.origin = 'https://app.soci.test';
+  s.reputation.origin = 'https://app.graao.test';
   const ana = save(s, 'contacts', { name: 'Ana Lima', email: 'ana@example.test', phone: '+5511999990000' });
   const bia = save(s, 'contacts', { name: 'Bia', email: 'bia@example.test' });
   const caio = save(s, 'contacts', { name: 'Caio', phone: '+5511999990001', dnd: true });
@@ -30,7 +30,7 @@ test('Requests send a personal link per contact and skip who cannot or should no
   assert.equal(result.sent, 1);
   assert.deepEqual(result.skipped, ['Bia: sem telefone', 'Caio: não perturbe']);
   const message = s.messages.find(row => row.contactId === ana && row.channel === 'WhatsApp');
-  assert.match(message.body, /^Oi, Ana! .*https:\/\/app\.soci\.test\/avaliar\/demo\/[0-9a-f]{48}$/);
+  assert.match(message.body, /^Oi, Ana! .*https:\/\/app\.graao\.test\/avaliar\/demo\/[0-9a-f]{48}$/);
   const item = s.workflowOutbox.find(row => row.kind === 'whatsapp');
   assert.equal(item.body, message.body);
   const [request] = s.reviewRequests;
@@ -67,7 +67,7 @@ test('A personal link opens, becomes a review tied to the contact and fires the 
 
 test('The workflow action sends the personal link with the channel message', () => {
   const s = blank('Loja');
-  s.reputation.origin = 'https://app.soci.test';
+  s.reputation.origin = 'https://app.graao.test';
   const flow = save(s, 'workflows', { name: 'Pós-venda', active: true, triggers: [{ type: 'contact_created', config: {} }], steps: [{ type: 'review_request', config: { channel: 'Email' } }] });
   save(s, 'contacts', { name: 'Dani', email: 'dani@example.test' });
   const [runRow] = s.runs.filter(row => row.workflowId === flow);
@@ -75,14 +75,14 @@ test('The workflow action sends the personal link with the channel message', () 
   assert.equal(s.reviewRequests[0].source, 'workflow');
   const email = s.workflowOutbox.find(row => row.kind === 'review-email');
   assert.match(email.subject, /Loja/);
-  assert.match(email.body, /https:\/\/app\.soci\.test\/avaliar\/demo\/[0-9a-f]{48}/);
+  assert.match(email.body, /https:\/\/app\.graao\.test\/avaliar\/demo\/[0-9a-f]{48}/);
   save(s, 'contacts', { name: 'Sem email' });
   assert.ok(s.runs.at(-1).results.some(line => /sem e-mail/.test(line)));
 });
 
 test('A QR code can point to the review page', () => {
   const s = blank('Loja');
-  assert.equal(qrTarget(s, { type: 'review' }, { base: 'https://app.soci.test', workspace: 'demo' }), 'https://app.soci.test/avaliar/demo');
+  assert.equal(qrTarget(s, { type: 'review' }, { base: 'https://app.graao.test', workspace: 'demo' }), 'https://app.graao.test/avaliar/demo');
 });
 
 test('Public page, review submission and AI reply suggestion over HTTP', async t => {

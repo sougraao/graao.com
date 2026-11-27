@@ -29,12 +29,12 @@ test('GET /api/versao responde a versão sem login e pode ficar em cache', async
 test('linha do rodapé: direitos com a marca exibida, protegida, e a versão quando já foi lida', async () => {
   const html = rodapeHtml('Agência <Teste>');
   assert.match(html, /© \d{4} Agência &lt;Teste&gt;\. Feita no Brasil com ☕, carinho e muita API\./);
-  assert.match(rodapeHtml(''), /© \d{4} soci\./);
+  assert.match(rodapeHtml(''), /© \d{4} graao\./);
   await carregarBuild(async () => ({ ok: true, json: async () => ({ build: '60c160a' }) }));
   assert.match(rodapeHtml(), /<span class="rodape-build" data-rodape-build>build 60c160a<\/span>/);
 });
 
-test('páginas da soci e painel carregam a linha do rodapé', () => {
+test('páginas da graao e painel carregam a linha do rodapé', () => {
   for (const page of ['index.html', 'login.html', 'privacidade.html', 'mcp-autorizar.html']) {
     const html = readFileSync(new URL(`../ui/${page}`, import.meta.url), 'utf8');
     assert.match(html, /Feita no Brasil com ☕, carinho e muita API\./, page);

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Beautiful UI · soci</title>
+  <title>Beautiful UI · graao</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preload" href="/fonts/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/style.css">
@@ -33,7 +33,7 @@
   <div class="gallery">
     <header class="gallery-head">
       <div>
-        <h1>Beautiful UI no soci</h1>
+        <h1>Beautiful UI no graao</h1>
         <p>Os 27 componentes de beautifului.dev (licença MIT) portados para JS puro, com os tokens do app. Os dados abaixo são de exemplo.</p>
       </div>
       <button type="button" class="secondary" id="theme">Alternar tema</button>
@@ -45,7 +45,7 @@
     import * as B from '/beautiful-ui-more.js';
 
     const html = document.documentElement;
-    try { if (localStorage.getItem('soci.theme') === 'dark') html.dataset.theme = 'dark'; } catch {}
+    try { if (localStorage.getItem('graao.theme') === 'dark') html.dataset.theme = 'dark'; } catch {}
     document.getElementById('theme').addEventListener('click', () => {
       if (html.dataset.theme === 'dark') delete html.dataset.theme; else html.dataset.theme = 'dark';
     });
@@ -89,8 +89,8 @@
       append(stage, B.streamingText({
         text: 'A receita recorrente da agência fechou o mês em R$ 48.200, alta de 6%. [1] As três maiores subcontas respondem por 41% do total. [2]',
         sources: [
-          { name: 'Painel da agência', domain: 'soci.app.br', href: '#' },
-          { name: 'Relatório de MRR', domain: 'relatorios.soci', href: '#' }
+          { name: 'Painel da agência', domain: 'graao.com', href: '#' },
+          { name: 'Relatório de MRR', domain: 'relatorios.graao', href: '#' }
         ],
         followUps: ['Quais subcontas cresceram mais?', 'Compare com o trimestre passado'],
         onFollowUp: q => say(`Continuar: ${q}`),
@@ -352,7 +352,7 @@
         chunks: [
           { title: 'Histórico da Clínica Ipê', chars: '2.184 caracteres', body: 'A última resposta chegou há 18 dias. O contato pediu uma proposta com prazo de implantação.', source: 'Base de contatos', badge: 'CRM', tone: 'var(--bui-accent)' }
         ],
-        prompt: { sources: [{ key: 'crm', name: 'Contatos', desc: 'CRM da agência', glyph: 'user' }], commands: [{ key: 'follow', name: '/follow-up', desc: 'Montar uma sequência' }], models: [{ key: 'pro', name: 'Pro', tag: 'Soci' }] },
+        prompt: { sources: [{ key: 'crm', name: 'Contatos', desc: 'CRM da agência', glyph: 'user' }], commands: [{ key: 'follow', name: '/follow-up', desc: 'Montar uma sequência' }], models: [{ key: 'pro', name: 'Pro', tag: 'Graao' }] },
         onSend: value => say(typeof value === 'string' ? `Pergunta: ${value}` : `Enviado: ${value.text || 'anexo'}`)
       });
       stage.append(screen.el);

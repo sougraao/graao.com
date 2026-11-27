@@ -113,7 +113,7 @@ export const triggerCatalog = [
     { type: 'email_event', label: 'Evento de e-mail', icon: 'mail', fields: [f('event', 'Quando o contato', 'select', { options: [any('Abrir, clicar ou sair da lista'), ['opened', 'Abrir o e-mail'], ['clicked', 'Clicar em um link'], ['unsubscribed', 'Cancelar a inscrição']] }),
       f('campaignId', 'Campanha', 'ref', { source: 'emailCampaigns', empty: 'Qualquer campanha' })] },
     { type: 'trigger_link_clicked', label: 'Link de rastreamento clicado', icon: 'link', fields: [f('linkId', 'Link', 'ref', { source: 'links', empty: 'Qualquer link' })] },
-    { type: 'site_page_viewed', label: 'Página do site ou funil visitada', icon: 'site', description: 'Quando um contato conhecido abre uma página de um site ou funil publicado na Soci. O navegador passa a ser reconhecido depois que a pessoa envia um formulário do site ou funil; visitas anônimas não disparam. Recarregar a mesma página em 30 minutos não conta de novo. Use {{trigger.page}} e {{trigger.site}}.', fields: [
+    { type: 'site_page_viewed', label: 'Página do site ou funil visitada', icon: 'site', description: 'Quando um contato conhecido abre uma página de um site ou funil publicado na Graao. O navegador passa a ser reconhecido depois que a pessoa envia um formulário do site ou funil; visitas anônimas não disparam. Recarregar a mesma página em 30 minutos não conta de novo. Use {{trigger.page}} e {{trigger.site}}.', fields: [
       f('projectId', 'Site ou funil', 'ref', { source: 'sites', empty: 'Qualquer site ou funil' }),
       f('page', 'Página (endereço depois do site)', 'text', { placeholder: 'Ex.: obrigado (vazio = qualquer página; a inicial é index)' })
     ] },
@@ -203,7 +203,7 @@ export const triggerCatalog = [
     { type: 'video_testimonial', label: 'Depoimento em vídeo recebido', icon: 'play', fields: [f('collectorId', 'Coletor', 'ref', { source: 'videoCollectors', empty: 'Qualquer coletor' })] }
   ] },
   { group: 'Telefonia', items: [
-    { type: 'call_details', label: 'Ligação terminou', icon: 'phone', description: 'Quando termina uma ligação feita ou recebida por um número da Soci (Configurações → Telefonia). Use {{trigger.status}}, {{trigger.direction}}, {{trigger.duration}} (segundos) e {{trigger.recording}}.', fields: [
+    { type: 'call_details', label: 'Ligação terminou', icon: 'phone', description: 'Quando termina uma ligação feita ou recebida por um número da Graao (Configurações → Telefonia). Use {{trigger.status}}, {{trigger.direction}}, {{trigger.duration}} (segundos) e {{trigger.recording}}.', fields: [
       f('direction', 'Direção', 'select', { options: [any('Recebida ou feita'), ['inbound', 'Recebida'], ['outbound', 'Feita']] }),
       f('status', 'Resultado', 'select', { options: [any('Qualquer resultado'), ['answered', 'Atendida'], ['missed', 'Não atendida'], ['voicemail', 'Caixa postal (recado)'], ['busy', 'Ocupado'], ['failed', 'Falhou']] }),
       f('numberId', 'Número', 'ref', { source: 'phoneNumbers', empty: 'Qualquer número' })
@@ -242,7 +242,7 @@ export const triggerCatalog = [
       f('campaign', 'Campanha contém', 'text', { placeholder: 'Ex.: black-friday' }),
       f('test', 'Leads de teste', 'select', { options: [any('Reais e de teste'), ['no', 'Só leads reais'], ['yes', 'Só leads de teste']] })
     ] },
-    { type: 'google_lead_form', label: 'Formulário de lead do Google Ads', icon: 'meg', description: 'Quando alguém envia o formulário de lead de um anúncio do Google Ads com o webhook da Soci (URL e chave em Marketing → Rastreamento → Formulários). O contato é criado ou atualizado, o clique (gclid) fica na atribuição e as respostas viram nota. Use {{trigger.form}} e {{trigger.campaign}}.', fields: [
+    { type: 'google_lead_form', label: 'Formulário de lead do Google Ads', icon: 'meg', description: 'Quando alguém envia o formulário de lead de um anúncio do Google Ads com o webhook da Graao (URL e chave em Marketing → Rastreamento → Formulários). O contato é criado ou atualizado, o clique (gclid) fica na atribuição e as respostas viram nota. Use {{trigger.form}} e {{trigger.campaign}}.', fields: [
       f('formId', 'ID do formulário', 'text', { placeholder: 'Vazio = qualquer formulário' }),
       f('campaign', 'ID da campanha', 'text', { placeholder: 'Vazio = qualquer campanha' }),
       f('test', 'Leads de teste', 'select', { options: [any('Reais e de teste'), ['no', 'Só leads reais'], ['yes', 'Só leads de teste']] })
@@ -486,7 +486,7 @@ export const actionCatalog = [
       f('body', 'Mensagem', 'textarea', { required: true }),
       f('buttons', 'Botões de resposta (um por linha, até 6; opcional)', 'textarea', { placeholder: 'Quero um orçamento\nFalar com atendente' })
     ] },
-    { type: 'log_call', label: 'Registrar ligação', icon: 'phone', description: 'Registra uma ligação feita ou recebida fora da Soci (no celular, por exemplo) no histórico de ligações e em Conversas.', fields: [
+    { type: 'log_call', label: 'Registrar ligação', icon: 'phone', description: 'Registra uma ligação feita ou recebida fora da Graao (no celular, por exemplo) no histórico de ligações e em Conversas.', fields: [
       f('direction', 'Ligação', 'select', { options: [['outbound', 'Feita para o contato'], ['inbound', 'Recebida do contato']] }),
       f('status', 'Resultado', 'select', { options: [['answered', 'Atendida'], ['missed', 'Não atendida'], ['voicemail', 'Caixa postal'], ['busy', 'Ocupado']] }),
       f('duration', 'Duração (minutos)', 'number', { min: 0, max: 600, value: 0 }),
@@ -505,7 +505,7 @@ export const actionCatalog = [
     { type: 'manual_call', label: 'Ação manual: ligação', icon: 'phone', fields: [f('body', 'Instruções', 'textarea', { required: true }), f('assignee', 'Responsável', 'text')] }
   ] },
   { group: 'Telefonia', items: [
-    { type: 'call', label: 'Ligar para o contato', icon: 'phone', description: 'Liga primeiro para o telefone da equipe e, quando alguém atende, completa a ligação com o contato, mostrando o número da Soci. A ligação aparece em Conversas e no relatório de ligações e dispara Ligação terminou.', fields: [
+    { type: 'call', label: 'Ligar para o contato', icon: 'phone', description: 'Liga primeiro para o telefone da equipe e, quando alguém atende, completa a ligação com o contato, mostrando o número da Graao. A ligação aparece em Conversas e no relatório de ligações e dispara Ligação terminou.', fields: [
       f('numberId', 'Ligar pelo número', 'ref', { source: 'phoneNumbers', required: true, empty: 'Escolha o número' }),
       f('agentPhone', 'Telefone da equipe (vazio: o encaminhamento do número)', 'text', { placeholder: '(11) 99999-0000' })
     ] },
@@ -607,7 +607,7 @@ export const actionCatalog = [
       f('currency', 'Moeda', 'select', { options: [['BRL', 'Real (BRL)'], ['USD', 'Dólar (USD)'], ['EUR', 'Euro (EUR)']] }),
       f('testCode', 'Código de teste do Gerenciador de Eventos (opcional)', 'text', { placeholder: 'TEST12345' })
     ] },
-    { type: 'ga4_event', label: 'Enviar evento para o Google Analytics', icon: 'chart', description: 'Manda um evento do contato para a sua propriedade do GA4 (Measurement Protocol), como lead gerado ou compra, com valor opcional. O contato vai só com um identificador da Soci (nada de e-mail ou telefone). Precisa do ID de medição e do segredo da API em Marketing → Rastreamento.', fields: [
+    { type: 'ga4_event', label: 'Enviar evento para o Google Analytics', icon: 'chart', description: 'Manda um evento do contato para a sua propriedade do GA4 (Measurement Protocol), como lead gerado ou compra, com valor opcional. O contato vai só com um identificador da Graao (nada de e-mail ou telefone). Precisa do ID de medição e do segredo da API em Marketing → Rastreamento.', fields: [
       f('event', 'Evento', 'select', { options: [['generate_lead', 'Lead gerado (generate_lead)'], ['qualify_lead', 'Lead qualificado (qualify_lead)'], ['close_convert_lead', 'Lead convertido (close_convert_lead)'], ['purchase', 'Compra (purchase)'], ['sign_up', 'Cadastro (sign_up)'], ['custom', 'Personalizado']] }),
       f('customEvent', 'Nome do evento personalizado', 'text', { placeholder: 'ex.: proposta_enviada', when: { event: 'custom' } }),
       f('value', 'Valor (opcional, aceita variáveis)', 'text', { placeholder: 'ex.: 150,00 ou {{vars.total}}' }),
@@ -632,7 +632,7 @@ export const actionCatalog = [
       f('serviceId', 'Marcar horários do serviço (opcional)', 'ref', { source: 'services', empty: 'Não marcar horários' }),
       f('variable', 'Guardar a resposta na variável', 'text', { required: true, value: 'resposta_bot' })
     ] },
-    { type: 'conversation_ai_status', label: 'Ligar ou desligar o bot de IA', icon: 'spark', description: 'Liga o bot de IA na conversa do contato: cada mensagem nova do cliente recebe a resposta do agente, até ele passar a conversa para a equipe, encerrar o atendimento ou ser desligado. As respostas usam a OpenAI de quem salvou este fluxo ou, sem a chave, a IA gratuita da soci, quando liberada. Desligar também tira o bot da conversa.', fields: [
+    { type: 'conversation_ai_status', label: 'Ligar ou desligar o bot de IA', icon: 'spark', description: 'Liga o bot de IA na conversa do contato: cada mensagem nova do cliente recebe a resposta do agente, até ele passar a conversa para a equipe, encerrar o atendimento ou ser desligado. As respostas usam a OpenAI de quem salvou este fluxo ou, sem a chave, a IA gratuita da graao, quando liberada. Desligar também tira o bot da conversa.', fields: [
       f('state', 'Bot', 'select', { options: [['on', 'Ligar'], ['off', 'Desligar']] }),
       f('agentId', 'Agente (publicado)', 'ref', { source: 'agents', empty: 'Escolha o agente', when: { state: 'on' } }),
       f('mode', 'Modo', 'select', { options: [['auto', 'Responder sozinho'], ['suggest', 'Sugerir à equipe (nota em Conversas)']], when: { state: 'on' } }),
@@ -731,7 +731,7 @@ export const actionCatalog = [
     { type: 'remove_from_all_workflows', label: 'Remover de todos os fluxos', icon: 'close', description: 'Tira o contato de todos os fluxos em que ele está rodando ou esperando.', fields: [
       f('scope', 'Incluindo este fluxo?', 'select', { options: [['others', 'Não: este fluxo continua'], ['all', 'Sim: este fluxo também termina aqui']] })
     ] },
-    { type: 'custom_code', label: 'Código personalizado', icon: 'code', description: 'Calcula valores com a linguagem de expressões da Soci, uma linha por variável: nome = expressão. Cada linha pode usar as anteriores pelo nome, o contato (contact), o gatilho (trigger), as variáveis (vars) e as etapas (steps); as próximas etapas leem o resultado em {{vars.nome}}. Roda isolado, sem rede e sem disco. Ex.: total = number(trigger.total) * 0.9', fields: [
+    { type: 'custom_code', label: 'Código personalizado', icon: 'code', description: 'Calcula valores com a linguagem de expressões da Graao, uma linha por variável: nome = expressão. Cada linha pode usar as anteriores pelo nome, o contato (contact), o gatilho (trigger), as variáveis (vars) e as etapas (steps); as próximas etapas leem o resultado em {{vars.nome}}. Roda isolado, sem rede e sem disco. Ex.: total = number(trigger.total) * 0.9', fields: [
       f('code', 'Código (uma linha por variável: nome = expressão; // para comentar)', 'textarea', { required: true, placeholder: '// Desconto de 10% e primeiro nome em maiúsculas\ntotal = number(trigger.total) * 0.9\nnome = upper(contact.first_name)\nvip = total > 1000 ? "sim" : "não"' })
     ] },
     { type: 'math', label: 'Operação matemática', icon: 'sort', fields: [f('field', 'Campo numérico', 'ref', { source: 'numberFields', required: true }), f('op', 'Operação', 'select', { options: [['add', 'Somar'], ['subtract', 'Subtrair'], ['multiply', 'Multiplicar'], ['divide', 'Dividir'], ['set', 'Definir como']] }), f('number', 'Valor', 'number', { required: true, value: 1 })] },

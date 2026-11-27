@@ -1,11 +1,11 @@
 # Project Status
 
 ## Projeto
-- Nome: Smartsite soci — site institucional
+- Nome: Smartsite graao — site institucional
 - Mercado: Brasil (pt-BR), oferta digital nacional
-- Serviço: assinatura da plataforma soci (Marketing 360)
+- Serviço: assinatura da plataforma graao (Marketing 360)
 - Código: `Smartsite/site/` (Astro 7, estático) · branch `feat/smartsite`
-- Design: `docs/superpowers/specs/2026-11-23-smartsite-soci-design.md` · Plano: `docs/superpowers/plans/2026-11-23-smartsite-soci.md`
+- Design: `docs/superpowers/specs/2026-11-23-smartsite-graao-design.md` · Plano: `docs/superpowers/plans/2026-11-23-smartsite-graao.md`
 - Última atualização: 2026-11-23
 
 ## Task List
@@ -20,6 +20,6 @@
 | 06 — Design System | PASS | `07-design-system.md` | aprovar laranja e tipografia |
 | 07 — Website Development | PASS | `npm run check` 17/17 | — |
 | 08 — SEO, GEO & AEO | PASS | canonical, sitemap, robots, JSON-LD (Organization, SoftwareApplication, BreadcrumbList, FAQPage) | — |
-| 09 — Conversion Engineering | PASS | CTA `soci.app.br/login` com `data-cta`; sem analytics instalado | definir ferramenta de analytics |
+| 09 — Conversion Engineering | PASS | CTA `graao.com/login` com `data-cta`; sem analytics instalado | definir ferramenta de analytics |
 | 10 — Quality Assurance | PASS | `11-qa-report.md` | — |
-| 11 — Delivery & Documentation | PARTIAL | `14-final-report.md`; publicação não autorizada | autorizar deploy e DNS de `www.soci.app.br` |
+| 11 — Delivery & Documentation | PARTIAL | `14-final-report.md`; publicação não autorizada | autorizar deploy e DNS de `www.graao.com` |

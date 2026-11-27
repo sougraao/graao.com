@@ -108,7 +108,7 @@ test('CSV reader handles quotes, semicolons and the template columns', () => {
 test('CSV preview does not import posts and confirmation revalidates the batch', async t => {
   const local = await start(); t.after(local.close);
   const preview = data => local.call(local.q('/api/social/csv-preview'), data);
-  const rows = parseCsv('postAtSpecificTime,content,imageUrls,tags,followUpComment\n,"Rascunho",https://example.com/foto.jpg,"novidade,soci",Olá\n2030-02-31 12:00,Data inválida,,,');
+  const rows = parseCsv('postAtSpecificTime,content,imageUrls,tags,followUpComment\n,"Rascunho",https://example.com/foto.jpg,"novidade,graao",Olá\n2030-02-31 12:00,Data inválida,,,');
   const data = { rows, file: 'lote.csv', accountIds: [], asDraft: true, requireValid: true };
   const result = await preview(data);
   assert.deepEqual(result.body.rows[0], { index: 0, status: 'draft', date: '', accounts: 0 });
@@ -120,7 +120,7 @@ test('CSV preview does not import posts and confirmation revalidates the batch',
   assert.equal(imported.body.id.created, 1);
   const { socialPosts: [post], socialImports: [log] } = await local.state();
   assert.equal(post.firstComment, 'Olá');
-  assert.deepEqual(post.tags, ['novidade', 'soci']);
+  assert.deepEqual(post.tags, ['novidade', 'graao']);
   assert.equal(post.media[0].url, 'https://example.com/foto.jpg');
   assert.equal(log.count, 1);
   assert.equal(log.total, 2);
@@ -326,7 +326,7 @@ test('Bluesky connects with an app password and publishes with link facets', asy
   assert.equal(ok.status, 200);
   const account = ok.body.state.socialAccounts[0];
   assert.equal(account.name, 'Eu no Bluesky');
-  await local.act({ type: 'social-post', data: { summary: 'Novo post https://soci.com #marketing', accountIds: [account.id], mode: 'now' } });
+  await local.act({ type: 'social-post', data: { summary: 'Novo post https://graao.com #marketing', accountIds: [account.id], mode: 'now' } });
   const run = await local.call(local.q('/api/social/run'), {});
   const post = run.body.state.socialPosts[0];
   assert.equal(post.status, 'published', post.error);
@@ -558,7 +558,7 @@ test('Competitor benchmarking records and post location/userTags metadata persis
       data: {
         summary: 'Inauguração do novo escritório em BH!',
         location: 'Belo Horizonte, MG',
-        userTags: '@caramelo.designer, @soci.app',
+        userTags: '@caramelo.designer, @graao.app',
         mode: 'draft'
       }
     })
@@ -576,5 +576,5 @@ test('Competitor benchmarking records and post location/userTags metadata persis
 
   const post = state.socialPosts.find(p => p.id === postJson.id);
   assert.equal(post.location, 'Belo Horizonte, MG');
-  assert.equal(post.userTags, '@caramelo.designer, @soci.app');
+  assert.equal(post.userTags, '@caramelo.designer, @graao.app');
 });

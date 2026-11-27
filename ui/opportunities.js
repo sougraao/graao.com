@@ -25,7 +25,7 @@ const btn = (label, attrs, ico = '', cls = 'secondary') => `<button type="button
 const store = (key, update) => {
   try { if (update !== undefined) localStorage.setItem(key, JSON.stringify(update)); return JSON.parse(localStorage.getItem(key) || 'null'); } catch { return update ?? null; }
 };
-const riskKey = c => `soci.forecast-risk.${c.workspace}`;
+const riskKey = c => `graao.forecast-risk.${c.workspace}`;
 
 // ---- Rule builder --------------------------------------------------------------------------------
 function choiceOptions(field) {

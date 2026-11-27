@@ -1,4 +1,4 @@
-// Catálogo de provedores do soci AI Gateway. Só fatos estáveis de integração (endpoint, formato, variável da chave,
+// Catálogo de provedores do graao AI Gateway. Só fatos estáveis de integração (endpoint, formato, variável da chave,
 // documentação oficial). Modelos, preços e limites NÃO ficam aqui: vêm da sincronização com a API do provedor
 // e da revisão do administrador (registry.mjs). Endpoints conferidos na documentação oficial em 26/11/2026.
 //
@@ -10,7 +10,7 @@ export const PROVIDERS = Object.freeze([
     sync: 'openai-list', rateLimitHeaders: 'groq', docs: 'https://console.groq.com/docs/rate-limits', pricing: 'https://groq.com/pricing',
     note: 'Plano gratuito com limites por modelo (RPM, RPD, TPM, TPD). Cabeçalhos x-ratelimit-* em toda resposta.' },
   { id: 'openrouter', name: 'OpenRouter', group: 'A', adapter: 'openai-compatible', baseUrl: 'https://openrouter.ai/api/v1', keyEnv: 'OPENROUTER_API_KEY',
-    sync: 'openrouter', headers: { 'X-Title': 'soci' }, docs: 'https://openrouter.ai/docs/api/reference/limits', pricing: 'https://openrouter.ai/models',
+    sync: 'openrouter', headers: { 'X-Title': 'graao' }, docs: 'https://openrouter.ai/docs/api/reference/limits', pricing: 'https://openrouter.ai/models',
     note: 'Preço por token vem da API (/models). Modelos gratuitos têm cota diária de requisições por conta (GET /key).' },
   { id: 'cloudflare', name: 'Cloudflare Workers AI', group: 'A', adapter: 'openai-compatible',
     baseUrl: env => env.CLOUDFLARE_ACCOUNT_ID ? `https://api.cloudflare.com/client/v4/accounts/${encodeURIComponent(env.CLOUDFLARE_ACCOUNT_ID)}/ai/v1` : '',
@@ -39,8 +39,8 @@ export const PROVIDERS = Object.freeze([
     docs: 'https://inference-docs.cerebras.ai/', pricing: 'https://www.cerebras.ai/pricing' },
 
   // Ollama, vLLM ou qualquer servidor compatível com a OpenAI. A URL passa pela validação contra SSRF a cada uso.
-  { id: 'compat', name: 'Servidor próprio (OpenAI-compatível)', group: 'C', adapter: 'openai-compatible', baseUrl: env => env.SOCI_AI_COMPAT_BASE_URL || '',
-    keyEnv: 'SOCI_AI_COMPAT_API_KEY', keyOptional: true, customUrl: true, sync: 'openai-list',
+  { id: 'compat', name: 'Servidor próprio (OpenAI-compatível)', group: 'C', adapter: 'openai-compatible', baseUrl: env => env.GRAAO_AI_COMPAT_BASE_URL || '',
+    keyEnv: 'GRAAO_AI_COMPAT_API_KEY', keyOptional: true, customUrl: true, sync: 'openai-list',
     docs: 'https://github.com/ollama/ollama/blob/main/docs/openai.md', note: 'Ollama, vLLM ou servidor próprio. Custo por token definido pelo administrador.' }
 ]);
 
@@ -51,7 +51,7 @@ export function globalCredential(provider, env) {
   const baseUrl = typeof provider.baseUrl === 'function' ? provider.baseUrl(env) : provider.baseUrl;
   const apiKey = String(env[provider.keyEnv] || '').trim();
   const missing = [];
-  if (!baseUrl) missing.push(...(provider.extraEnv || ['SOCI_AI_COMPAT_BASE_URL']));
+  if (!baseUrl) missing.push(...(provider.extraEnv || ['GRAAO_AI_COMPAT_BASE_URL']));
   if (!apiKey && !provider.keyOptional) missing.push(provider.keyEnv);
   return { baseUrl: baseUrl ? baseUrl.replace(/\/+$/, '') : '', apiKey, configured: missing.length === 0, missing, last4: apiKey ? apiKey.slice(-4) : '' };
 }

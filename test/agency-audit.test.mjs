@@ -217,7 +217,7 @@ test('The daily sweep drops entries past the retention, once per day, and never 
 });
 
 test('migrate:sqlite copies the log of each agency, and accepts a database older than the table', async t => {
-  const dir = mkdtempSync(join(tmpdir(), 'soci-audit-'));
+  const dir = mkdtempSync(join(tmpdir(), 'graao-audit-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
   const store = createSqliteStore(join(dir, 'a.sqlite'));
   store.audit.append('agency', [row(1), row(2)]); store.audit.append('agency-2', [row(3)]);

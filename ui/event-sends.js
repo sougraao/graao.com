@@ -34,7 +34,7 @@ export function deliveryView(c, event, item) {
     actions = failures + button(`data-ep-cancel-send="${h(item.id)}"`, 'clock', 'Cancelar envio');
   } else if (delivery?.state === 'done') { text = progress(delivery); actions = failures + (delivery.sent ? '' : schedule); }
   else if (delivery?.state === 'canceled') text = `Envio cancelado${delivery.sent ? ` · ${delivery.sent} já ${delivery.sent === 1 ? 'tinha' : 'tinham'} saído` : ''}`;
-  else if (item.status === 'agendado') text = 'Sem envio programado. Agende para a mensagem sair pela Soci.';
+  else if (item.status === 'agendado') text = 'Sem envio programado. Agende para a mensagem sair pela Graao.';
   return `<div class="ep-delivery">${text ? `<span>${h(text)}</span>` : ''}<span class="spacer"></span>${actions}</div>`;
 }
 

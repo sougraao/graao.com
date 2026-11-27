@@ -12,7 +12,7 @@ test('The domain is cleaned up and checked', () => {
   assert.equal(whiteLabelHost('app.agencia.com.br:443'), 'app.agencia.com.br');
   assert.equal(whiteLabelHost(''), '');
   assert.throws(() => whiteLabelHost('agencia'), /app\.suaagencia/);
-  assert.throws(() => whiteLabelHost('app.soci.app.br'), /plataforma/);
+  assert.throws(() => whiteLabelHost('app.graao.com'), /plataforma/);
   assert.throws(() => whiteLabelHost('x.vercel.app'), /plataforma/);
 });
 
@@ -33,7 +33,7 @@ test('A domain belongs to one agency', async () => {
 test('The login on the agency domain gets its name, logo and color; the platform address gets nothing', async () => {
   const store = agencies([{ id: 'agency-a', state: { company: { domain: 'app.a.com.br', name: 'Agência A', logo: 'data:image/png;base64,AAA', primary: '#FF0000' } } }]);
   assert.deepEqual(await whiteLabelBrand(store, 'app.a.com.br'), { name: 'Agência A', logo: 'data:image/png;base64,AAA', primary: '#FF0000' });
-  assert.deepEqual(await whiteLabelBrand(store, 'soci.app.br'), {});
+  assert.deepEqual(await whiteLabelBrand(store, 'graao.com'), {});
   assert.deepEqual(await whiteLabelBrand(store, 'outro.com.br'), {});
   assert.equal(requestHost({ headers: { 'x-forwarded-host': 'App.A.com.br:443', host: 'interno' } }), 'app.a.com.br');
 });
@@ -119,8 +119,8 @@ test('Saving another domain adds the new one and takes the old one off the hosti
   assert.deepEqual(log, [['add', 'umcaracaramelo.com.br'], ['add', 'app.umcaracaramelo.com.br'], ['remove', 'umcaracaramelo.com.br'], ['remove', 'app.umcaracaramelo.com.br']]);
 });
 
-// Desde o PR 188 a raiz é a página inicial da soci; no domínio da agência ela abria a marca da plataforma.
-test('The root of an agency domain opens its branded login; soci.app.br keeps the home page', async t => {
+// Desde o PR 188 a raiz é a página inicial da graao; no domínio da agência ela abria a marca da plataforma.
+test('The root of an agency domain opens its branded login; graao.com keeps the home page', async t => {
   const http = await import('node:http');
   const { makeServer } = await import('../server.mjs');
   const { createSqliteStore } = await import('../storage.mjs');
@@ -133,8 +133,8 @@ test('The root of an agency domain opens its branded login; soci.app.br keeps th
     body: JSON.stringify({ type: 'company', data: { name: 'Agência Um', timezone: 'America/Sao_Paulo', primary: '#ff4f9a', secondary: '#c4a7ff', domain: 'app.agencia.com.br' } }) });
   assert.equal(saved.status, 200);
   assert.deepEqual(await get('/?utm_source=x', 'app.agencia.com.br'), [303, '/login?utm_source=x']);
-  assert.deepEqual(await get('/', 'soci.app.br'), [200, '']);
-  assert.deepEqual(await get('/', 'outro.com.br'), [200, ''], 'um domínio que não é de agência segue com a página da soci');
+  assert.deepEqual(await get('/', 'graao.com'), [200, '']);
+  assert.deepEqual(await get('/', 'outro.com.br'), [200, ''], 'um domínio que não é de agência segue com a página da graao');
 });
 
 // Produção, 26/11: graao.com (sem subdomínio, DNS na Squarespace). A tela pedia um CNAME em "graao.com" e um TXT

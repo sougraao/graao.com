@@ -113,7 +113,7 @@ export function createAdsRoutes(deps) {
         return reply({});
       }
       if (op === 'create') {
-        if (net !== 'meta') throw error('A criação de anúncios pelo Soci está disponível para o Meta Ads.', 400);
+        if (net !== 'meta') throw error('A criação de anúncios pelo Graao está disponível para o Meta Ads.', 400);
         const { ad, image } = metaAdInput(await store.load(id), body);
         const { secret, account, page } = await adsAccess(id, 'meta');
         if (!page) throw error('Escolha a Página do Facebook que vai assinar o anúncio.', 409);

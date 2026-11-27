@@ -2,7 +2,7 @@
 // Nominatim geocodes the region and finds businesses by category; Photon finds them by name;
 // a Nominatim lookup adds phone, website and e-mail. OSM data is ODbL: it may be stored
 // with attribution ("© colaboradores do OpenStreetMap").
-const USER_AGENT = 'soci.app.br-prospecting/1.0 (+https://soci.app.br)';
+const USER_AGENT = 'graao.com-prospecting/1.0 (+https://graao.com)';
 const NOMINATIM = process.env.PROSPECTING_NOMINATIM_URL?.trim() || 'https://nominatim.openstreetmap.org';
 const PHOTON = process.env.PROSPECTING_PHOTON_URL?.trim() || 'https://photon.komoot.io';
 

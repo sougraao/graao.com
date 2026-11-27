@@ -45,7 +45,7 @@ test('Workflows generate an image (public file and link) and a video (job checke
     status: async () => ({ status: videoState, progress: videoState === 'completed' ? 100 : 40, error: '' }),
     content: async () => Buffer.alloc(800 * 1024, 7)
   };
-  const documentMail = { linkOf: item => item.path ? `https://app.soci.test${item.path}` : '', email: async () => ({ id: 'x' }) };
+  const documentMail = { linkOf: item => item.path ? `https://app.graao.test${item.path}` : '', email: async () => ({ id: 'x' }) };
   const store = createSqliteStore(':memory:');
   const { server, host } = makeServer({ store, auth: null, allowLocalAccess: true, port: 0, socialScheduler: false, agentModel: 'gpt-4.1-mini',
     workflowAI: async () => ({ vars: {} }), mediaAI, documentMail });
@@ -67,7 +67,7 @@ test('Workflows generate an image (public file and link) and a video (job checke
   assert.equal(file.public, true);
   assert.deepEqual(seen[0], ['image', 'Cartão de boas-vindas para Ana', '1024x1024']);
   const run = s.runs.find(row => row.name === 'Mídia');
-  assert.equal(run.vars.cartao, `https://app.soci.test/m/demo/${file.id}`);
+  assert.equal(run.vars.cartao, `https://app.graao.test/m/demo/${file.id}`);
   assert.equal(run.status, 'Waiting', 'the run waits for the video');
   assert.equal((await fetch(`${base}/m/demo/${file.id}`)).headers.get('content-type'), 'image/webp');
 
@@ -81,8 +81,8 @@ test('Workflows generate an image (public file and link) and a video (job checke
   const [video] = s.aiVideos;
   assert.deepEqual([video.chunks, video.bytes, video.mime], [2, 800 * 1024, 'video/mp4']);
   const done = s.runs.find(row => row.name === 'Mídia');
-  assert.equal(done.vars.video, `https://app.soci.test/m/demo/video/${video.id}`);
-  assert.ok(s.messages.some(row => row.channel === 'Note' && row.body === `Imagem https://app.soci.test/m/demo/${file.id} e vídeo https://app.soci.test/m/demo/video/${video.id}`));
+  assert.equal(done.vars.video, `https://app.graao.test/m/demo/video/${video.id}`);
+  assert.ok(s.messages.some(row => row.channel === 'Note' && row.body === `Imagem https://app.graao.test/m/demo/${file.id} e vídeo https://app.graao.test/m/demo/video/${video.id}`));
   const mp4 = await fetch(`${base}/m/demo/video/${video.id}`);
   assert.equal(mp4.headers.get('content-type'), 'video/mp4');
   assert.equal((await mp4.arrayBuffer()).byteLength, 800 * 1024);

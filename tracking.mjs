@@ -1,5 +1,5 @@
 // Rastreamento externo: (1) pixels of the sub-account (Google Analytics 4, Google Tag Manager and Meta
-// Pixel) loaded on the Soci public pages through /t/<workspace>/pixels.js, and (2) a tracking script the
+// Pixel) loaded on the Graao public pages through /t/<workspace>/pixels.js, and (2) a tracking script the
 // business installs on its own website (/t/<workspace>.js): it records page views and turns HTML form
 // submissions into contacts, with the visit's source (UTM, click ids, referrer).
 import { randomUUID } from 'node:crypto';
@@ -43,7 +43,7 @@ export function originAllowed(t, origin) {
   return t.domains.some(d => d.startsWith('*.') ? host === d.slice(2) || host.endsWith(d.slice(1)) : host === d);
 }
 
-// ---- Pixels on the Soci public pages -------------------------------------------------------------
+// ---- Pixels on the Graao public pages -------------------------------------------------------------
 export const hasPixels = t => Boolean(t?.ga4 || t?.gtm || t?.metaPixel);
 const vendors = {
   script: ['https://www.googletagmanager.com', 'https://connect.facebook.net'],
@@ -74,8 +74,8 @@ export function injectPixels(html, workspace) {
 }
 
 /**
- * pixels.js: GA4, Tag Manager and Meta Pixel. Forms decided by the server (data-soci-lead) and bookings count through a
- * marker the server puts on the next page (?soci_ev=lead.<id> or <meta name="soci-event">), so a disqualified lead never
+ * pixels.js: GA4, Tag Manager and Meta Pixel. Forms decided by the server (data-graao-lead) and bookings count through a
+ * marker the server puts on the next page (?graao_ev=lead.<id> or <meta name="graao-event">), so a disqualified lead never
  * counts and a reload never counts twice. Other public forms keep sending Lead on submit. Inside a frame of the same
  * site the page view was already counted by the page around it.
  */
@@ -89,42 +89,42 @@ if(c.gtm){w.dataLayer.push({'gtm.start':Date.now(),event:'gtm.js'});load('https:
 if(c.ga4){w.gtag=w.gtag||function(){w.dataLayer.push(arguments);};w.gtag('js',new Date());w.gtag('config',c.ga4,inner?{send_page_view:false}:{});load('https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(c.ga4));}
 if(c.meta){var f=w.fbq=w.fbq||function(){f.callMethod?f.callMethod.apply(f,arguments):f.queue.push(arguments);};if(!w._fbq)w._fbq=f;f.push=f;f.loaded=true;f.version='2.0';f.queue=f.queue||[];
 w.fbq('init',c.meta);if(!inner)w.fbq('track','PageView');load('https://connect.facebook.net/en_US/fbevents.js');}
-var q=new URLSearchParams(location.search),m=d.querySelector('meta[name="soci-event"]'),ev=q.get('soci_ev')||(m&&m.getAttribute('content'))||'',kind=ev.split('.')[0],
+var q=new URLSearchParams(location.search),m=d.querySelector('meta[name="graao-event"]'),ev=q.get('graao_ev')||(m&&m.getAttribute('content'))||'',kind=ev.split('.')[0],
 fb={lead:'Lead',schedule:'Schedule'}[kind],ga={lead:'generate_lead',schedule:'schedule'}[kind];
-if(fb){var seen=null;try{seen=w.sessionStorage.getItem('soci_ev_'+ev);w.sessionStorage.setItem('soci_ev_'+ev,'1');}catch(e){}
-if(!seen){if(w.fbq&&c.meta)w.fbq('track',fb,{},{eventID:ev});if(w.gtag&&c.ga4)w.gtag('event',ga);if(c.gtm)w.dataLayer.push({event:'soci_'+kind});}}
-if(q.has('soci_ev')){q.delete('soci_ev');var rest=q.toString();try{w.history.replaceState(null,'',location.pathname+(rest?'?'+rest:'')+location.hash);}catch(e){}}
-d.addEventListener('submit',function(e){var t=e&&e.target;if(t&&t.hasAttribute&&t.hasAttribute('data-soci-lead'))return;if(w.gtag&&c.ga4)w.gtag('event','generate_lead');if(w.fbq&&c.meta)w.fbq('track','Lead');if(c.gtm)w.dataLayer.push({event:'soci_lead'});},true);
+if(fb){var seen=null;try{seen=w.sessionStorage.getItem('graao_ev_'+ev);w.sessionStorage.setItem('graao_ev_'+ev,'1');}catch(e){}
+if(!seen){if(w.fbq&&c.meta)w.fbq('track',fb,{},{eventID:ev});if(w.gtag&&c.ga4)w.gtag('event',ga);if(c.gtm)w.dataLayer.push({event:'graao_'+kind});}}
+if(q.has('graao_ev')){q.delete('graao_ev');var rest=q.toString();try{w.history.replaceState(null,'',location.pathname+(rest?'?'+rest:'')+location.hash);}catch(e){}}
+d.addEventListener('submit',function(e){var t=e&&e.target;if(t&&t.hasAttribute&&t.hasAttribute('data-graao-lead'))return;if(w.gtag&&c.ga4)w.gtag('event','generate_lead');if(w.fbq&&c.meta)w.fbq('track','Lead');if(c.gtm)w.dataLayer.push({event:'graao_lead'});},true);
 })();`;
 }
 
 // ---- The script for the business's own website ---------------------------------------------------
 /**
  * /t/<workspace>.js: keeps an anonymous visitor id and the first/last touch in localStorage, sends a
- * page view, and sends HTML forms that have an e-mail or phone field (forms marked data-soci-ignore and
+ * page view, and sends HTML forms that have an e-mail or phone field (forms marked data-graao-ignore and
  * password, card or document fields are never read). Events go with navigator.sendBeacon.
  */
 export function trackerScript(workspace, origin, t) {
   const cfg = JSON.stringify({ endpoint: `${origin}/t/${workspace}/e`, pageviews: t.pageviews !== false, forms: t.forms !== false, videos: t.videos !== false });
-  return `(function(){if(window.__sociTracker)return;window.__sociTracker=1;var c=${cfg},w=window,d=document,ls;
-try{ls=w.localStorage;ls.setItem('soci_t','1');}catch(e){ls=null;}
+  return `(function(){if(window.__graaoTracker)return;window.__graaoTracker=1;var c=${cfg},w=window,d=document,ls;
+try{ls=w.localStorage;ls.setItem('graao_t','1');}catch(e){ls=null;}
 function get(k){try{return ls&&JSON.parse(ls.getItem(k)||'null');}catch(e){return null;}}function set(k,v){try{ls&&ls.setItem(k,JSON.stringify(v));}catch(e){}}
-var vid=get('soci_vid');if(!vid){vid=(Date.now().toString(36)+Math.random().toString(36).slice(2,12));set('soci_vid',vid);}
+var vid=get('graao_vid');if(!vid){vid=(Date.now().toString(36)+Math.random().toString(36).slice(2,12));set('graao_vid',vid);}
 var q=new URLSearchParams(location.search),ref='';try{ref=d.referrer?new URL(d.referrer).hostname.replace(/^www\\./,''):'';}catch(e){}
 if(ref===location.hostname.replace(/^www\\./,''))ref='';
 var t={source:q.get('utm_source')||'',medium:q.get('utm_medium')||'',campaign:q.get('utm_campaign')||'',content:q.get('utm_content')||'',term:q.get('utm_term')||'',utmId:q.get('utm_id')||'',gclid:q.get('gclid')||q.get('gbraid')||q.get('wbraid')||'',fbclid:q.get('fbclid')||'',referrer:ref,landing:location.pathname.slice(0,200),at:new Date().toISOString()};
-if(t.source||t.medium||t.campaign||t.utmId||t.gclid||t.fbclid||t.referrer){if(!get('soci_ft'))set('soci_ft',t);set('soci_lt',t);}
-function send(body){body.vid=vid;body.url=location.href.slice(0,500);body.title=(d.title||'').slice(0,200);body.touches={first:get('soci_ft'),last:get('soci_lt')};
+if(t.source||t.medium||t.campaign||t.utmId||t.gclid||t.fbclid||t.referrer){if(!get('graao_ft'))set('graao_ft',t);set('graao_lt',t);}
+function send(body){body.vid=vid;body.url=location.href.slice(0,500);body.title=(d.title||'').slice(0,200);body.touches={first:get('graao_ft'),last:get('graao_lt')};
 var data=JSON.stringify(body);if(navigator.sendBeacon&&navigator.sendBeacon(c.endpoint,new Blob([data],{type:'text/plain'})))return;
 try{fetch(c.endpoint,{method:'POST',body:data,keepalive:true,mode:'no-cors',headers:{'Content-Type':'text/plain'}});}catch(e){}}
 if(c.pageviews)send({type:'pageview'});
 var skip=/pass|senha|card|cartao|cvv|cvc|cpf|cnpj|rg|ssn|token|secret/i;
-d.addEventListener('submit',function(ev){if(!c.forms)return;var f=ev.target;if(!f||!f.elements||f.hasAttribute('data-soci-ignore'))return;var out={},n=0;
+d.addEventListener('submit',function(ev){if(!c.forms)return;var f=ev.target;if(!f||!f.elements||f.hasAttribute('data-graao-ignore'))return;var out={},n=0;
 for(var i=0;i<f.elements.length&&n<40;i++){var el=f.elements[i],k=el.name||el.id;if(!k||el.disabled||skip.test(k)||/^(password|file|submit|button|hidden)$/.test(el.type))continue;
 if((el.type==='checkbox'||el.type==='radio')&&!el.checked)continue;out[k.slice(0,60)]=String(el.value||'').slice(0,500);n++;}
 send({type:'form',form:(f.getAttribute('name')||f.id||f.getAttribute('action')||'').slice(0,120),fields:out});},true);
-w.soci={track:function(name){send({type:'pageview',event:String(name||'').slice(0,60)});}};
-var marks=[25,50,75,100];function watch(v){if(v.__soci)return;v.__soci={};var mark=function(m){if(v.__soci[m])return;v.__soci[m]=1;send({type:'video',event:String(m),video:String(v.currentSrc||v.src||'').slice(0,300),name:String(v.getAttribute('title')||v.getAttribute('aria-label')||'').slice(0,120)});};
+w.graao={track:function(name){send({type:'pageview',event:String(name||'').slice(0,60)});}};
+var marks=[25,50,75,100];function watch(v){if(v.__graao)return;v.__graao={};var mark=function(m){if(v.__graao[m])return;v.__graao[m]=1;send({type:'video',event:String(m),video:String(v.currentSrc||v.src||'').slice(0,300),name:String(v.getAttribute('title')||v.getAttribute('aria-label')||'').slice(0,120)});};
 v.addEventListener('timeupdate',function(){if(!v.duration||!isFinite(v.duration))return;var p=v.currentTime/v.duration*100;for(var i=0;i<marks.length;i++)if(p>=marks[i]-0.5)mark(marks[i]);});v.addEventListener('ended',function(){mark(25);mark(50);mark(75);mark(100);});}
 function scan(){var l=d.getElementsByTagName('video');for(var i=0;i<l.length;i++)watch(l[i]);}if(c.videos){scan();setInterval(scan,3000);}
 })();`;
@@ -212,10 +212,10 @@ export function newTrackingEvent(s, d, now = () => new Date().toISOString()) {
   return { row, contact };
 }
 
-// ---- Sites and funnels published on the Soci ----------------------------------------------------------
+// ---- Sites and funnels published on the Graao ----------------------------------------------------------
 const visitorId = value => /^[a-z0-9]{6,40}$/i.test(String(value || '')) ? String(value) : '';
 
-/** A form sent from a Soci site: that browser (its visitor cookie) is now this contact. */
+/** A form sent from a Graao site: that browser (its visitor cookie) is now this contact. */
 export function linkVisitor(s, vid, contactId) {
   const id = visitorId(vid);
   if (!id || !contactId) return;

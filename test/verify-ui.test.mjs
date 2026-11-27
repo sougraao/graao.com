@@ -11,7 +11,7 @@ test('A tela começa pedindo o celular, com o Brasil por padrão', () => {
 });
 
 test('Com o código, mostra o botão para o WhatsApp, o QR do mesmo link e o código', () => {
-  const link = 'https://wa.me/5500000000000?text=Confirmar%20soci%20AB3K9Z';
+  const link = 'https://wa.me/5500000000000?text=Confirmar%20graao%20AB3K9Z';
   const html = verifyView({ step: 'waiting', link, code: 'AB3K9Z', phone: '(31) 98123-4567' });
   assert.match(html, new RegExp(`<a[^>]+href="${link.replace(/[?.]/g, '\\$&')}"[^>]+target="_blank"[^>]+rel="noopener"`));
   assert.match(html, /<svg[^>]+QR/);

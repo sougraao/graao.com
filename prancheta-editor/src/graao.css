@@ -1,4 +1,4 @@
-/* Casca da Prancheta dentro da soci: tema da plataforma, estados de carregamento, salvamento e avisos. */
+/* Casca da Prancheta dentro da graao: tema da plataforma, estados de carregamento, salvamento e avisos. */
 @font-face {
   font-family: "Plus Jakarta Sans";
   src: url(/fonts/plus-jakarta-sans.woff2) format("woff2");
@@ -7,7 +7,7 @@
   font-display: swap;
 }
 
-/* Valores padrão da soci (graao.css) para quando o editor abre sozinho, sem o app por trás. */
+/* Valores padrão da graao (graao.css) para quando o editor abre sozinho, sem o app por trás. */
 :root {
   --g-ink: #0f131a; --g-dim: #5d6673; --g-faint: #98a0ac;
   --g-line: #e2e5ea; --g-line-2: #d2d7de; --g-line-strong: #b4bbc5;
@@ -56,7 +56,7 @@
 body { background: var(--bg); color: var(--text); }
 ::selection { background: color-mix(in srgb, var(--blue) 22%, transparent); }
 
-/* Formas no padrão da soci: cantos mais redondos, menus com respiro e foco na cor da marca. */
+/* Formas no padrão da graao: cantos mais redondos, menus com respiro e foco na cor da marca. */
 .menu { border-radius: var(--g-r); padding: 6px; backdrop-filter: blur(14px); box-shadow: var(--g-shadow-lift); }
 .menu-item { border-radius: var(--g-r-sm); }
 .menu-item.open:not(.disabled), .menu-item:hover:not(.disabled) { background: var(--menu-hover); }

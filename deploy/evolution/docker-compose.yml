@@ -1,4 +1,4 @@
-# Evolution API v2 para o WhatsApp do soci.app — pensado para ficar no ar sozinho.
+# Evolution API v2 para o WhatsApp do graao.app — pensado para ficar no ar sozinho.
 #
 #   evolution  API do WhatsApp (Baileys). Sessões salvas no Postgres: reiniciar não pede QR de novo.
 #   postgres   banco das instâncias e das mensagens recentes (o WhatsApp pede reenvio de mensagens).

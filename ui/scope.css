@@ -1,5 +1,5 @@
 /* Scope signature: tells the agency panel apart from a sub-account at a glance.
-   Agency  = aurora backdrop built only from the Soci pink, lilac and blue palette under a
+   Agency  = aurora backdrop built only from the Graao pink, lilac and blue palette under a
              the shared Liquid Glass sidebar and toolbar (liquid-glass.css); the agency entry in the switchers carries the same gradient.
    Sub-account = the plain, quiet surface it always had; sub-accounts in the switchers are neutral tiles.
    Hand-written (not part of scripts/build-dark.mjs); the dark rules live after the light ones. */
@@ -70,7 +70,7 @@
 div.ws-choice{cursor:default}
 div.ws-choice:hover,div.ws-choice:active{transform:none}
 
-/* the agency entry wears the soci gradient */
+/* the agency entry wears the graao gradient */
 .ws-agency{
   border-color:transparent;
   background:

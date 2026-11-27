@@ -1,4 +1,4 @@
-// soci motion layer: vanilla ports of microkit.co interactions (MIT).
+// graao motion layer: vanilla ports of microkit.co interactions (MIT).
 // The app re-renders whole regions with innerHTML, so every enhancement is re-applied
 // after each render. Indicators remember their last spot by key and slide from there,
 // which makes a full re-render read as one continuous motion.
@@ -537,7 +537,7 @@ function underline(nav) {
   slide(u, `under:${nav.closest('[class]')?.className}`, { x: on.offsetLeft, y: 0, w: on.offsetWidth, h: 0 }, (n, p) => { n.style.transform = `translateX(${p.x}px)`; n.style.width = `${p.w}px`; });
 }
 
-/* ───────── Count Up Number (Microkit × Soci) ─────────
+/* ───────── Count Up Number (Microkit × Graao) ─────────
    Faithful vanilla port of microkit.co/components/count-up-number:
    - Phantom-box inline-grid reserves the final settled width from frame 0 (zero layout shift)
    - Screen readers & clipboard read the settled value; the animated ticker is aria-hidden & right-aligned
@@ -1117,7 +1117,7 @@ function enhance(root) {
   });
   fresh('.inbox-nav', n => spotlight(n, { key: 'inbox-nav', activeSelector: '.inbox-box.selected, .inbox-box[aria-current="true"]' }));
   fresh('.contact-rail', n => spotlight(n, { key: 'inbox-contact-rail', activeSelector: '.icon-btn.selected, .icon-btn[aria-pressed="true"]', left: 2 }));
-  fresh('.sc-history', n => spotlight(n, { key: 'soci-chat-history', activeSelector: '.sc-history-item.active' }));
+  fresh('.sc-history', n => spotlight(n, { key: 'graao-chat-history', activeSelector: '.sc-history-item.active' }));
   fresh('.ags-items', n => spotlight(n, { key: 'agents-list', activeSelector: '.ags-item[aria-current]' }));
   fresh('.site-step-list > ol', n => spotlight(n, { key: 'site-steps', activeSelector: '.site-step-item[aria-current="true"]', left: 0 }));
   fresh('.sx-pages ul', n => spotlight(n, { key: 'studio-pages', activeSelector: 'li.current, .sx-page[aria-current="true"]', left: 0 }));
@@ -1150,28 +1150,28 @@ const ICON_SWAP_BTN_SELECTOR = [
 const ICON_SWAP_EXCLUDED = '.icon-btn, .side-toggle, .theme-toggle, .tool-btn, .top-menu, .lang-btn, .dash-tool.dash-square, .bui-icon-btn, .bui-prompt-btn, .bui-chat-send, .bui-search-clear, .bui-selection-toggle, .bui-selection-retry, .bui-sidebar-collapse, .bui-sidebar-expand, .bui-sidebar-search-btn, .bui-sidebar-search-close';
 
 function enhanceIconSwapButton(btn) {
-  if (!(btn instanceof HTMLElement) || btn.matches(ICON_SWAP_EXCLUDED) || btn.classList.contains('soci-icon-swap')) return;
-  if (btn.dataset.sociIconSwap === '1') return;
+  if (!(btn instanceof HTMLElement) || btn.matches(ICON_SWAP_EXCLUDED) || btn.classList.contains('graao-icon-swap')) return;
+  if (btn.dataset.graaoIconSwap === '1') return;
   const original = [...btn.childNodes];
   if (!original.some(n => n.nodeType === Node.TEXT_NODE && n.textContent.trim()) && !btn.querySelector('svg, .sr-only')) return;
 
   const iconWrap = document.createElement('span');
-  iconWrap.className = 'soci-icon-swap-icon';
+  iconWrap.className = 'graao-icon-swap-icon';
   const existingIcon = original.find(n => n.nodeType === Node.ELEMENT_NODE && n.nodeName.toLowerCase() === 'svg');
   if (existingIcon) iconWrap.append(existingIcon);
   else iconWrap.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>';
 
   const label = document.createElement('span');
-  label.className = 'soci-icon-swap-label';
+  label.className = 'graao-icon-swap-label';
   original.filter(n => n !== existingIcon).forEach(n => label.append(n));
   const content = document.createElement('span');
-  content.className = 'soci-icon-swap-content';
+  content.className = 'graao-icon-swap-content';
   content.append(iconWrap, label);
   const arrow = document.createElement('span');
-  arrow.className = 'soci-icon-swap-arrow';
+  arrow.className = 'graao-icon-swap-arrow';
   arrow.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
-  btn.classList.add('soci-icon-swap');
-  btn.dataset.sociIconSwap = '1';
+  btn.classList.add('graao-icon-swap');
+  btn.dataset.graaoIconSwap = '1';
   btn.replaceChildren(content, arrow);
 }
 
@@ -1237,10 +1237,10 @@ function applyTheme(theme) {
   const html = document.documentElement;
   if (theme === 'dark') html.setAttribute('data-theme', 'dark');
   else html.removeAttribute('data-theme');
-  window.dispatchEvent(new CustomEvent('soci:theme-change'));
+  window.dispatchEvent(new CustomEvent('graao:theme-change'));
 }
 
-// Official Soci triad: pink primary, lilac secondary, electric-blue accent.
+// Official Graao triad: pink primary, lilac secondary, electric-blue accent.
 // Older orange/yellow and legacy purple records are treated as defaults until migrated.
 const DEFAULT_BRAND_PRIMARY = '#ff4f9a';
 const DEFAULT_BRAND_SECONDARY = '#c4a7ff';
@@ -1275,7 +1275,7 @@ export function applyBrandColor(primaryValue, secondaryValue, accentValue) {
       '--g-brand-2-on', '--g-brand-2-depth',
       '--g-grad-on'
     ]) root.style.removeProperty(prop);
-    window.dispatchEvent(new CustomEvent('soci:theme-change'));
+    window.dispatchEvent(new CustomEvent('graao:theme-change'));
     return;
   }
 
@@ -1294,11 +1294,11 @@ export function applyBrandColor(primaryValue, secondaryValue, accentValue) {
   root.style.setProperty('--g-brand-2-on', light2 ? '#0f131a' : '#fff');
   root.style.setProperty('--g-brand-2-depth', lum2 > 0.08 ? '#000' : '#fff');
   root.style.setProperty('--g-grad-on', gradLight ? '#0f131a' : '#fff');
-  window.dispatchEvent(new CustomEvent('soci:theme-change'));
+  window.dispatchEvent(new CustomEvent('graao:theme-change'));
 }
 
 export function setThemeAccount(accountId) {
-  const key = accountId ? `soci.theme:${accountId}` : 'soci.theme';
+  const key = accountId ? `graao.theme:${accountId}` : 'graao.theme';
   if (themeStorageKey === key) return;
   themeStorageKey = key;
   let savedTheme;
@@ -1313,7 +1313,7 @@ export function setThemeAccount(accountId) {
 export function setThemeFallback(theme) {
   themeFallback = theme === 'dark' ? 'dark' : 'light';
   let savedTheme;
-  try { savedTheme = localStorage.getItem(themeStorageKey || 'soci.theme'); } catch {}
+  try { savedTheme = localStorage.getItem(themeStorageKey || 'graao.theme'); } catch {}
   if (!savedTheme) applyTheme(themeFallback);
 }
 

@@ -26,11 +26,11 @@ export function createPhoneHandler({ store, change, flushLater = () => {}, reque
     return Object.fromEntries(new URLSearchParams(Buffer.concat(chunks).toString('utf8')));
   }
 
-  /** Places an outbound call: Twilio rings `agent` first; on answer, /bridge dials the contact from the Soci number. */
+  /** Places an outbound call: Twilio rings `agent` first; on answer, /bridge dials the contact from the Graao number. */
   async function placeCall(workspace, origin, { contactId, numberId, agent, to, workflowId = '', userId = '' }) {
     const state = await store.load(workspace);
     const number = phoneOf(state).numbers.find(row => row.id === numberId);
-    if (!number) fail('Número da Soci não encontrado.', 404);
+    if (!number) fail('Número da Graao não encontrado.', 404);
     requireCredit(state, 'phone');
     const callId = (await change(workspace, { type: 'phone-call-start', data: { direction: 'outbound', contactId, numberId, from: number.number, to, workflowId, userId } })).id;
     try {
@@ -46,7 +46,7 @@ export function createPhoneHandler({ store, change, flushLater = () => {}, reque
   async function dropVoicemail(workspace, origin, { contactId, numberId, to, message, url, workflowId = '' }) {
     const state = await store.load(workspace);
     const number = phoneOf(state).numbers.find(row => row.id === numberId);
-    if (!number) fail('Número da Soci não encontrado.', 404);
+    if (!number) fail('Número da Graao não encontrado.', 404);
     requireCredit(state, 'phone');
     const callId = (await change(workspace, { type: 'phone-call-start', data: { direction: 'outbound', kind: 'voicemail-drop', contactId, numberId, from: number.number, to, workflowId, notes: message, dropUrl: url } })).id;
     try {
@@ -61,7 +61,7 @@ export function createPhoneHandler({ store, change, flushLater = () => {}, reque
   async function voiceCall(workspace, origin, { contactId, numberId, to, voice, workflowId = '' }) {
     const state = await store.load(workspace);
     const number = phoneOf(state).numbers.find(row => row.id === numberId);
-    if (!number) fail('Número da Soci não encontrado.', 404);
+    if (!number) fail('Número da Graao não encontrado.', 404);
     requireCredit(state, 'phone');
     const callId = (await change(workspace, { type: 'phone-call-start', data: { direction: 'outbound', kind: 'voice-ai', contactId, numberId, from: number.number, to, workflowId, voice: voiceSettings(voice) } })).id;
     try {
@@ -206,7 +206,7 @@ export function createPhoneHandler({ store, change, flushLater = () => {}, reque
       if (!session || session.status === 'ended') return xmlReply(res, twiml.response(twiml.say('O discador foi encerrado.'), twiml.hangup()));
       await change(workspace, { type: 'dialer-session-update', data: { id: session.id, status: 'active', agentCallSid: form.CallSid } });
       done();
-      return xmlReply(res, twiml.response(twiml.say('Discador pronto. Chame o próximo contato pela Soci.'), twiml.conference(`soci-dialer-${session.id}`, { endOnExit: true, waitUrl: '' })));
+      return xmlReply(res, twiml.response(twiml.say('Discador pronto. Chame o próximo contato pela Graao.'), twiml.conference(`graao-dialer-${session.id}`, { endOnExit: true, waitUrl: '' })));
     }
     if (kind === 'dialerend') {
       await change(workspace, { type: 'dialer-session-update', data: { id: query.get('session'), status: 'ended' } });
@@ -226,7 +226,7 @@ export function createPhoneHandler({ store, change, flushLater = () => {}, reque
       if (!session || session.status === 'ended') return xmlReply(res, twiml.response(twiml.hangup()));
       await change(workspace, { type: 'phone-call-update', data: { callId: call.id, status: 'answered' } });
       done();
-      return xmlReply(res, twiml.response(twiml.conference(`soci-dialer-${session.id}`, { endOnExit: false })));
+      return xmlReply(res, twiml.response(twiml.conference(`graao-dialer-${session.id}`, { endOnExit: false })));
     }
     if (kind === 'ivr') {
       const step = query.get('kind');
@@ -250,7 +250,7 @@ export function createPhoneHandler({ store, change, flushLater = () => {}, reque
       return xmlReply(res, twiml.response(twiml.say('Recado recebido. Obrigado!'), twiml.hangup()));
     }
     if (kind === 'bridge') {
-      // The team answered an outbound call: now the contact's phone rings, showing the Soci number.
+      // The team answered an outbound call: now the contact's phone rings, showing the Graao number.
       const contact = state.contacts.find(row => row.id === call.contactId);
       return xmlReply(res, twiml.response(twiml.say(`Ligando para ${contact?.name || 'o contato'}.`), twiml.dial(call.phone, { action: hook(origin, 'dial', workspace, { call: call.id }), callerId: number?.number, timeout: 30, record: Boolean(number?.record) })));
     }
@@ -307,7 +307,7 @@ export function createPhoneHandler({ store, change, flushLater = () => {}, reque
       const numbers = phoneOf(state).numbers, number = numbers.find(row => row.id === body.numberId) || numbers[0];
       if (!number) fail('Compre um número em Configurações → Telefonia.', 409);
       const agent = e164(body.agentPhone) || number.forward?.[0];
-      if (!agent) fail('Informe o seu telefone: a Soci liga primeiro para você e depois para o contato.');
+      if (!agent) fail('Informe o seu telefone: a Graao liga primeiro para você e depois para o contato.');
       const callId = await placeCall(workspace, origin, { contactId: contact.id, numberId: number.id, agent, to, userId: who?.userId || '' });
       flushLater(workspace);
       return json({ id: callId, agent, to });
@@ -341,7 +341,7 @@ export function createPhoneHandler({ store, change, flushLater = () => {}, reque
         for (let i = 0; i < 20; i++) { next = (await change(workspace, { type: 'dialer-next', data: { id: mine.id, contactId: body.contactId || '' } })).id; if (!next?.skip) break; }
         if (!next || next.skip) return json({ done: true });
         const number = phoneOf(await store.load(workspace)).numbers.find(row => row.id === mine.numberId);
-        if (!number) fail('Número da Soci não encontrado.', 404);
+        if (!number) fail('Número da Graao não encontrado.', 404);
         const callId = (await change(workspace, { type: 'phone-call-start', data: { direction: 'outbound', kind: 'dialer', dialerId: mine.id, contactId: next.contactId, numberId: number.id, from: number.number, to: next.to, userId } })).id;
         try {
           const made = await client().dial({ to: next.to, from: number.number, url: hook(origin, 'join', workspace, { call: callId }), status: hook(origin, 'status', workspace, { call: callId }), timeout: 25 });

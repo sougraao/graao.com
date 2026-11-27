@@ -1,4 +1,4 @@
-// soci AI Gateway: proteção contra SSRF para URLs de provedores configuráveis (OpenAI-compatível, Ollama, vLLM).
+// graao AI Gateway: proteção contra SSRF para URLs de provedores configuráveis (OpenAI-compatível, Ollama, vLLM).
 // Regras: só HTTPS (HTTP apenas para localhost em desenvolvimento, quando permitido), sem usuário/senha na URL,
 // e nenhum endereço resolvido pode cair em rede privada, loopback, link-local ou metadados de nuvem.
 import { lookup } from 'node:dns/promises';

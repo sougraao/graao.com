@@ -45,7 +45,7 @@ function masterChrome() {
 
 export const THEMES = {
   proposta: {
-    id: 'proposta', name: 'Proposta soci', background: '@lt1',
+    id: 'proposta', name: 'Proposta graao', background: '@lt1',
     colors: { dk1: '#0b315c', lt1: '#ffffff', dk2: '#08284d', lt2: '#f3f9f9', accent1: '#f65b00', accent2: '#eff5f7', accent3: '#2563eb', accent4: '#16a34a', accent5: '#facc15', accent6: '#9333ea', link: '#2563eb', muted: '#45617d' },
     fonts: { heading: 'Arial', body: 'Arial' },
     master: masterChrome()

@@ -51,12 +51,12 @@ test('Templates hold items without optional lines and create numbered invoices f
 test('An invoice is sent with a personal link that shows only it and leads to payment', () => {
   const { s, contactId, templateId } = setup();
   const { id } = act(s, 'invoice-from-template', templateId, { contactId });
-  const { path, sent } = act(s, 'invoice-send', id, { origin: 'https://app.soci.test' });
+  const { path, sent } = act(s, 'invoice-send', id, { origin: 'https://app.graao.test' });
   assert.match(path, /^\/fatura\/demo#[0-9a-f]{48}$/);
   assert.equal(sent, true);
   const mail = s.workflowOutbox.find(item => item.what === 'invoice');
   assert.deepEqual([mail.email, mail.title, mail.value], ['ana@exemplo.com.br', 'FAT-0001 · Gestão de redes sociais', 1000]);
-  assert.match(documentMessage(mail, `https://app.soci.test${path}`).text, /R\$\s1\.000,00.*\n[\s\S]*\/fatura\/demo#/);
+  assert.match(documentMessage(mail, `https://app.graao.test${path}`).text, /R\$\s1\.000,00.*\n[\s\S]*\/fatura\/demo#/);
   const view = act(s, 'invoice-open', '', { tokenHash: hashOf(path) });
   assert.deepEqual([view.number, view.value, view.payable], ['FAT-0001', 1000, true]);
   assert.match(view.html, /Gestão/);

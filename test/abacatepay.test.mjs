@@ -72,7 +72,7 @@ test('A sub-account connects AbacatePay, charges an invoice and the webhook book
   const charged = await send('/api/abacatepay/workspace/charge?workspace=demo', { invoiceId: invoice.id });
   assert.equal(charged.status, 200);
   assert.match(charged.body.payment.url, /^https:\/\/app\.abacatepay\.com\/pay\/bill_/);
-  assert.equal(gateway.products.get(`soci-inv-${invoice.id}-25000`).price, 25000, 'amounts go in cents');
+  assert.equal(gateway.products.get(`graao-inv-${invoice.id}-25000`).price, 25000, 'amounts go in cents');
   const again = await send('/api/abacatepay/workspace/charge?workspace=demo', { invoiceId: invoice.id });
   assert.equal(again.body.payment.checkoutId, charged.body.payment.checkoutId, 'a pending link is reused');
   let s = await state();
@@ -135,7 +135,7 @@ test('The agency bills a SaaS plan as an AbacatePay subscription and follows its
   const billing = subscribed.body.agency.accounts.demo.billing;
   assert.equal(billing.status, 'Pending');
   assert.match(billing.url, /^https:\/\/app\.abacatepay\.com\/pay\//);
-  const product = gateway.products.get(`soci-plan-${plan}-29700-t7`);
+  const product = gateway.products.get(`graao-plan-${plan}-29700-t7`);
   assert.deepEqual([product.cycle, product.trialDays, product.price], ['MONTHLY', 7, 29700]);
   assert.equal(subscribed.body.agency.abacatepay.connected, true);
 

@@ -1,4 +1,4 @@
-// White Label das subcontas: o domínio da agência (app.suaagencia.com.br) abre a soci com a marca dela.
+// White Label das subcontas: o domínio da agência (app.suaagencia.com.br) abre a graao com a marca dela.
 // Três partes: o endereço salvo é validado e só pode ser de uma agência; o login, aberto nesse endereço,
 // mostra o nome, o logotipo e a cor da agência; e, com um token da hospedagem (Vercel), o domínio é
 // registrado no projeto sozinho, faltando à agência só o CNAME no DNS dela.
@@ -6,9 +6,9 @@ const fail = (message, status = 400) => { throw Object.assign(new Error(message)
 
 /** Para onde o CNAME do domínio da agência aponta. */
 export const whiteLabelCname = 'cname.vercel-dns.com';
-const platformHosts = ['soci.app.br', 'vercel.app', 'localhost'];
+const platformHosts = ['graao.com', 'vercel.app', 'localhost'];
 
-/** soci.app.br, its subdomains, the Vercel preview addresses and localhost: never an agency's address. */
+/** graao.com, its subdomains, the Vercel preview addresses and localhost: never an agency's address. */
 export const isPlatformHost = host => !host || platformHosts.some(platform => host === platform || host.endsWith(`.${platform}`)) || /^(\d{1,3}\.){3}\d{1,3}$|^\[?::1\]?$/.test(host);
 
 /** "app.agencia.com.br" from what the agency typed (scheme, path and port go away); '' clears it. */
@@ -122,7 +122,7 @@ const escapeHtml = text => String(text ?? '').replace(/[&<>"']/g, ch => ({ '&': 
 const safeLogo = value => typeof value === 'string' && (/^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/]+=*$/.test(value) || /^\/asset\/[0-9a-f]{64}\.(png|jpg|webp|gif)$/.test(value)) ? value : '';
 
 /**
- * login.html or app.html already in the agency's brand, so the page never shows soci first: name, logo, tab icon,
+ * login.html or app.html already in the agency's brand, so the page never shows graao first: name, logo, tab icon,
  * theme color, the line under the title and the footer. `data-marca` tells login.js not to brand it again.
  */
 export function brandedPage(html, brand = {}) {
@@ -133,13 +133,13 @@ export function brandedPage(html, brand = {}) {
   const mark = logo ? `<img class="boot-logo" src="${escapeHtml(logo)}" alt="">` : '';
   let page = html
     .replace('<html lang="pt-BR">', `<html lang="pt-BR" data-marca="agencia" data-marca-nome="${name}"${logo ? ` data-marca-logo="${escapeHtml(logo)}"` : ''}>`)
-    .replace('<strong class="boot-title">Abrindo a soci…</strong>', `${mark}<strong class="boot-title">Abrindo ${name}…</strong>`)
-    .replace(/<title>Entrar · soci<\/title>/, `<title>Entrar · ${name}</title>`)
-    .replace(/<title>soci<\/title>/, `<title>${name}</title>`)
+    .replace('<strong class="boot-title">Abrindo a graao…</strong>', `${mark}<strong class="boot-title">Abrindo ${name}…</strong>`)
+    .replace(/<title>Entrar · graao<\/title>/, `<title>Entrar · ${name}</title>`)
+    .replace(/<title>graao<\/title>/, `<title>${name}</title>`)
     .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="Acesse ${name}.">`)
-    .replace(/<div class="brand" aria-label="soci">[\s\S]*?<\/div>/, `<div class="brand" aria-label="${name}">${logo ? `<img class="brand-logo" src="${escapeHtml(logo)}" alt="${name}">` : name}</div>`)
-    .replace('Acesse a plataforma soci com a sua conta Google.', `Acesse a plataforma ${name} com a sua conta Google.`)
-    .replace(/© \d{4} soci\. Feita no Brasil com ☕, carinho e muita API\./, `© ${new Date().getFullYear()} ${name}.`);
+    .replace(/<div class="brand" aria-label="graao">[\s\S]*?<\/div>/, `<div class="brand" aria-label="${name}">${logo ? `<img class="brand-logo" src="${escapeHtml(logo)}" alt="${name}">` : name}</div>`)
+    .replace('Acesse a plataforma graao com a sua conta Google.', `Acesse a plataforma ${name} com a sua conta Google.`)
+    .replace(/© \d{4} graao\. Feita no Brasil com ☕, carinho e muita API\./, `© ${new Date().getFullYear()} ${name}.`);
   if (logo) page = page.replace(/<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/, `<link rel="icon" href="${escapeHtml(logo)}">`);
   if (color) {
     page = page.replace(/<meta name="theme-color" content="[^"]*">/, `<meta name="theme-color" content="${color}">`)

@@ -47,7 +47,7 @@ test('availability e authUrl: só redes com as duas chaves; Bluesky sempre', t =
   assert.throws(() => authUrl('pinterest', { redirectUri: 'https://x/cb', state: 's' }), err => err.status === 409);
   assert.throws(() => authUrl('bluesky', { redirectUri: 'https://x/cb', state: 's' }), err => err.status === 400);
 
-  const urls = Object.fromEntries(['facebook', 'threads', 'linkedin', 'tiktok', 'youtube', 'gbp'].map(p => [p, new URL(authUrl(p, { redirectUri: 'https://soci.app.br/cb', state: 'st' }))]));
+  const urls = Object.fromEntries(['facebook', 'threads', 'linkedin', 'tiktok', 'youtube', 'gbp'].map(p => [p, new URL(authUrl(p, { redirectUri: 'https://graao.com/cb', state: 'st' }))]));
   assert.equal(urls.facebook.searchParams.get('client_id'), 'meta-id');
   assert.match(urls.facebook.searchParams.get('scope'), /instagram_content_publish/);
   assert.equal(urls.threads.searchParams.get('client_id'), 'th-id');

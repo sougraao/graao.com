@@ -251,7 +251,7 @@ label.ag-sw{position:relative;display:inline-flex;width:38px;height:22px;flex:no
 .ag-tpl-toolbar>.inline-gap>*{flex:0 0 auto;width:auto}
 .ag-tpl-toolbar .ag-tpl-filter select{width:auto}
 
-/* Soci brand palette showcase and live component mockups. */
+/* Graao brand palette showcase and live component mockups. */
 .ag-brand-showcase{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
 .ag-brand-mockup-tabs{display:flex;flex-wrap:wrap;gap:6px;padding:4px;border:1px solid var(--g-line,var(--line));border-radius:var(--r-group);background:color-mix(in srgb,var(--g-surface-2) 78%,transparent)}
 .ag-brand-mockup-tab{min-height:36px;padding:0 12px;border-radius:var(--r-control);color:var(--g-dim,var(--dim));font-weight:700;transition:background .16s ease,color .16s ease,transform .16s ease}

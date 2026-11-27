@@ -1,6 +1,6 @@
-# Catálogo de Traduções / Locales do Soci
+# Catálogo de Traduções / Locales do Graao
 
-Este diretório contém os catálogos completos de tradução de toda a plataforma Soci.
+Este diretório contém os catálogos completos de tradução de toda a plataforma Graao.
 
 ## Idiomas Disponíveis
 - **Português (Brasil)**: `pt.js` (idioma canônico; as chaves de todos os catálogos são os textos em português)

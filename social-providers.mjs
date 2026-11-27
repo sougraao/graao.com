@@ -18,7 +18,7 @@ const keySecret = () => {
   if (!secret && hosted()) fail('Configure SOCIAL_TOKEN_KEY ou GO_STORAGE_KEY no servidor para guardar os acessos às redes.', 500);
   return secret;
 };
-const key = (legacy = false) => createHash('sha256').update(keySecret() || (legacy ? 'graao-local-social-key' : 'soci-local-social-key')).digest();
+const key = (legacy = false) => createHash('sha256').update(keySecret() || (legacy ? 'graao-local-social-key' : 'graao-local-social-key')).digest();
 export function seal(value) {
   const iv = randomBytes(12), c = createCipheriv('aes-256-gcm', key(), iv);
   const data = Buffer.concat([c.update(JSON.stringify(value), 'utf8'), c.final()]);

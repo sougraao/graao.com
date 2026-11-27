@@ -130,14 +130,14 @@ export function createMobileCreator({ getApp, agencyId, origin, head, act, flash
   const drawStore = () => {
     const field = (name, label, attrs = '') => `<label>${t(label)}<input name="${name}" data-store value="${h(draft.store[name])}" ${attrs}></label>`;
     return `<div class="field-grid">${field('developer', 'Desenvolvedor (como aparece nas lojas)', 'maxlength="80"')}${field('supportEmail', 'E-mail de suporte', 'type="email" maxlength="120"')}${field('supportUrl', 'Site de suporte', 'type="url" placeholder="https://"')}${field('privacyUrl', 'Política de privacidade', 'type="url" placeholder="https://"')}
-      ${field('androidPackage', 'Pacote Android', 'placeholder="br.com.suaagencia.app"')}${field('iosBundle', 'Bundle ID do iOS', 'placeholder="br.com.suaagencia.app"')}${field('domain', 'Domínio do app (opcional, apontado para a soci)', 'placeholder="app.suaagencia.com.br"')}</div>
+      ${field('androidPackage', 'Pacote Android', 'placeholder="br.com.suaagencia.app"')}${field('iosBundle', 'Bundle ID do iOS', 'placeholder="br.com.suaagencia.app"')}${field('domain', 'Domínio do app (opcional, apontado para a graao)', 'placeholder="app.suaagencia.com.br"')}</div>
       <label>${t('Impressões SHA-256 da chave de assinatura Android (Play Console → Integridade do app), uma por linha')}<textarea name="fingerprints" data-store rows="2" placeholder="AB:CD:…">${h(draft.store.fingerprints)}</textarea></label>
       <button type="button" class="secondary" data-mc="package">${i('download', 15)}${t('Baixar pacote das lojas')}</button>
       <details><summary>${t('Como publicar nas lojas')}</summary><ol>
         <li>Google Play: instale o Bubblewrap (<code>npm i -g @bubblewrap/cli</code>), coloque o <code>twa-manifest.json</code> do pacote numa pasta e rode <code>bubblewrap build</code>. Envie o arquivo .aab no Play Console da agência.</li>
-        <li>Cole aqui a impressão SHA-256 da chave de assinatura; a soci passa a servir <code>/.well-known/assetlinks.json</code> no domínio do app e ele abre em tela cheia.</li>
+        <li>Cole aqui a impressão SHA-256 da chave de assinatura; a graao passa a servir <code>/.well-known/assetlinks.json</code> no domínio do app e ele abre em tela cheia.</li>
         <li>App Store: em pwabuilder.com, abra o link de instalação, baixe o pacote iOS com o Bundle ID acima, assine no Xcode com a conta Apple Developer da agência e envie pelo App Store Connect.</li>
-        <li>${t('Cada nova publicação na soci atualiza o app instalado, sem novo envio às lojas.')}</li></ol></details>`;
+        <li>${t('Cada nova publicação na graao atualiza o app instalado, sem novo envio às lojas.')}</li></ol></details>`;
   };
 
   // ---- Columns
@@ -304,8 +304,8 @@ export function createMobileCreator({ getApp, agencyId, origin, head, act, flash
       const response = await fetch('/api/mobile-app/package'), pack = await response.json();
       if (!response.ok) throw new Error(pack.error || tr('Não foi possível gerar o pacote.'));
       download('twa-manifest.json', JSON.stringify(pack.twaManifest, null, 2), 'application/json');
-      download('soci-app-lojas.json', JSON.stringify(pack, null, 2), 'application/json');
-      flash(pack.ready ? tr('Pacote baixado: twa-manifest.json e soci-app-lojas.json.') : `${tr('Pacote baixado. Ainda falta:')} ${pack.missing.join(', ')}.`, !pack.ready);
+      download('graao-app-lojas.json', JSON.stringify(pack, null, 2), 'application/json');
+      flash(pack.ready ? tr('Pacote baixado: twa-manifest.json e graao-app-lojas.json.') : `${tr('Pacote baixado. Ainda falta:')} ${pack.missing.join(', ')}.`, !pack.ready);
     });
   }
 

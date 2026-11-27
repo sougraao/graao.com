@@ -1,4 +1,4 @@
-// soci Intelligent Router. Duas etapas:
+// graao Intelligent Router. Duas etapas:
 // A) filtros obrigatórios: qualquer motivo tira o modelo da rota (e o motivo aparece na simulação do painel);
 // B) pontuação dos elegíveis com pesos configuráveis (custo, qualidade, disponibilidade, velocidade, capacidade).
 // Free-first: nos modos de uso geral, modelos gratuitos vêm antes, na ordem de provedores do administrador;

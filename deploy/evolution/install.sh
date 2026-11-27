@@ -199,7 +199,7 @@ cat <<EOF
   Painel (manager):   https://${DOMAIN}/manager
   API Key global:     ${KEY}
 
-  No Vercel (projeto soci.app), em Settings -> Environment Variables:
+  No Vercel (projeto graao.app), em Settings -> Environment Variables:
     EVOLUTION_BASE_URL = https://${DOMAIN}
     EVOLUTION_API_KEY  = ${KEY}
   Depois faça um novo deploy. Guarde a chave num cofre de senhas.

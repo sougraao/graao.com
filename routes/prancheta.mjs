@@ -65,8 +65,8 @@ export function createPranchetaRoutes(deps) {
         const found = raw.find(f => f.id === fileId);
         if (method === 'GET') {
           if (!found) throw error('Arquivo da prancheta não encontrado.', 404);
-          const { sociToDocument } = await import('../prancheta-model.mjs');
-          const document = found.document || sociToDocument(found);
+          const { graaoToDocument } = await import('../prancheta-model.mjs');
+          const document = found.document || graaoToDocument(found);
           return json({
             ...formatPranchetaMeta(found),
             document

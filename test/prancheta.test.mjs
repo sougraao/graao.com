@@ -437,9 +437,9 @@ test('Prancheta: gravação com versão antiga é recusada com 409', () => {
 });
 
 test('Prancheta: arquivos antigos e modelos abrem no editor com um frame por lâmina', async () => {
-  const { sociToDocument } = await import('../prancheta-model.mjs');
+  const { graaoToDocument } = await import('../prancheta-model.mjs');
   const tpl = createCanonicalTemplates().find(t => t.id === 'template-head-carousel');
-  const doc = sociToDocument({ name: tpl.name, width: tpl.width, height: tpl.height, pages: tpl.pages });
+  const doc = graaoToDocument({ name: tpl.name, width: tpl.width, height: tpl.height, pages: tpl.pages });
   assert.equal(doc.pages.length, 1);
   const frames = doc.pages[0].children.map(id => doc.nodes[id]);
   assert.equal(frames.length, tpl.pages.length);
@@ -454,7 +454,7 @@ test('Prancheta: arquivos antigos e modelos abrem no editor com um frame por lâ
   assert.ok(Object.values(doc.nodes).every(n => n.fills.every(p => p.visible === true && p.opacity === 1)));
 });
 
-test('Prancheta: página do editor e pacote são servidos, com iframe só da própria soci', async (t) => {
+test('Prancheta: página do editor e pacote são servidos, com iframe só da própria graao', async (t) => {
   const { makeServer } = await import('../server.mjs');
   const { server, host } = makeServer({ allowLocalAccess: true, auth: null, dbPath: ':memory:', port: 0, socialScheduler: false });
   await new Promise((resolve, reject) => { server.on('error', reject); server.listen(0, host, resolve); });

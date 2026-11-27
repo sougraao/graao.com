@@ -18,7 +18,7 @@ function workspace() {
 test('Text blocks keep only formatting tags and safe links', () => {
   assert.equal(cleanHtml('<p onclick="x()">Oi <b>Ana</b><script>alert(1)</script></p>'), '<p>Oi <b>Ana</b>alert(1)</p>');
   assert.equal(cleanHtml('<a href="javascript:alert(1)">x</a>'), '<a>x</a>');
-  assert.equal(cleanHtml('<a href="https://soci.app.br/?a=1&b=2">site</a>'), '<a href="https://soci.app.br/?a=1&amp;b=2" target="_blank" rel="noopener noreferrer">site</a>');
+  assert.equal(cleanHtml('<a href="https://graao.com/?a=1&b=2">site</a>'), '<a href="https://graao.com/?a=1&amp;b=2" target="_blank" rel="noopener noreferrer">site</a>');
   assert.equal(cleanHtml('<img src=x onerror=alert(1)>Texto'), 'Texto');
   assert.equal(cleanHtml('<div>Linha</div>'), '<p>Linha</p>');
   assert.equal(cleanHtml('5 < 6 & "aspas" &amp; {{contact.name}}'), '5 &lt; 6 &amp; &quot;aspas&quot; &amp; {{contact.name}}');
@@ -86,7 +86,7 @@ test('A sent document is frozen: saving only changes the archive flag', () => {
   assert.throws(() => execute(s, { type: 'delete', key: 'documents', id }), /Anule/);
 });
 
-test('Templates and library items save; the Soci starters are valid documents', () => {
+test('Templates and library items save; the Graao starters are valid documents', () => {
   const { s } = workspace();
   for (const tpl of socTemplates) {
     const id = save(s, 'documentTemplates', { ...tpl, blocks: cloneBlocks(tpl.blocks) });

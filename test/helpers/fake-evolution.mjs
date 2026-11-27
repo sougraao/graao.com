@@ -2,7 +2,7 @@ export const API_KEY = 'evo-global-key-super-secret';
 export const QR = 'data:image/png;base64,' + Buffer.from('fake-evolution-qr').toString('base64');
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json' } });
 
-// Evolution API v2 falsa: só o que o soci usa.
+// Evolution API v2 falsa: só o que o graao usa.
 export function fakeEvolution() {
   const calls = [];
   const media = new Map(); // id da mensagem -> { mimetype, base64 }, para /chat/getBase64FromMediaMessage

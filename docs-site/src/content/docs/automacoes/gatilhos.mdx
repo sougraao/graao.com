@@ -1,6 +1,6 @@
 ---
 title: "Gatilhos"
-description: "Todos os eventos que podem iniciar um workflow na soci, agrupados como no editor."
+description: "Todos os eventos que podem iniciar um workflow na graao, agrupados como no editor."
 sidebar:
   order: 2
 ---
@@ -46,7 +46,7 @@ O gatilho é o evento que inicia o workflow. A lista abaixo segue os grupos do e
 | **Questionário enviado** |  |
 | **Evento de e-mail** |  |
 | **Link de rastreamento clicado** |  |
-| **Página do site ou funil visitada** | Quando um contato conhecido abre uma página de um site ou funil publicado na Soci. O navegador passa a ser reconhecido depois que a pessoa envia um formulário do site ou funil; visitas anônimas não disparam. Recarregar a mesma página em 30 minutos não conta de novo. Use `{{trigger.page}}` e `{{trigger.site}}`. |
+| **Página do site ou funil visitada** | Quando um contato conhecido abre uma página de um site ou funil publicado na Graao. O navegador passa a ser reconhecido depois que a pessoa envia um formulário do site ou funil; visitas anônimas não disparam. Recarregar a mesma página em 30 minutos não conta de novo. Use `{{trigger.page}}` e `{{trigger.site}}`. |
 | **Chat do site iniciado** |  |
 | **Inscrição em webinar** |  |
 | **Preferências de comunicação mudaram** | Quando o contato muda canais ou assuntos na central de preferências. |
@@ -94,7 +94,7 @@ O gatilho é o evento que inicia o workflow. A lista abaixo segue os grupos do e
 
 | Gatilho | Para que serve |
 | --- | --- |
-| **Ligação terminou** | Quando termina uma ligação feita ou recebida por um número da Soci (Configurações → Telefonia). Use `{{trigger.status}}`, `{{trigger.direction}}`, `{{trigger.duration}}` (segundos) e `{{trigger.recording}}`. |
+| **Ligação terminou** | Quando termina uma ligação feita ou recebida por um número da Graao (Configurações → Telefonia). Use `{{trigger.status}}`, `{{trigger.direction}}`, `{{trigger.duration}}` (segundos) e `{{trigger.recording}}`. |
 | **Resultado do discador** | Quando a equipe marca o resultado de uma ligação do discador (Conversas → Discador). Use `{{trigger.disposition}}` e `{{trigger.note}}`. |
 | **Ligação do Voice AI terminou** | Quando termina uma ligação atendida ou feita pelo Voice AI. Use `{{trigger.transcript}}` (a conversa inteira), `{{trigger.outcome}}` (end, transfer, book, timeout) e `{{trigger.duration}}`: por exemplo, resuma com IA, extraia dados para o contato ou avise a equipe. |
 | **Telefone validado** | Quando a ação Validar telefone consulta o número do contato. Use `{{trigger.valid}}` (sim ou não), `{{trigger.lineType}}` e `{{trigger.carrier}}`. |
@@ -108,7 +108,7 @@ O gatilho é o evento que inicia o workflow. A lista abaixo segue os grupos do e
 | **Mensagem direta / DM recebida** |  |
 | **Mensagem de anúncio no WhatsApp** | Quando alguém manda mensagem pelo botão de um anúncio "Clique para o WhatsApp" do Facebook ou do Instagram. O anúncio vai para a atribuição do contato. Use `{{trigger.title}}` (título do anúncio), `{{trigger.adId}}` e `{{trigger.body}}`. |
 | **Formulário de cadastro do Facebook** | Quando alguém envia um formulário de cadastro (Lead Ads) no Facebook ou no Instagram, de uma página conectada no Social Planner. O contato é criado ou atualizado e as respostas viram nota. Use `{{trigger.form}}` e `{{trigger.campaign}}`. |
-| **Formulário de lead do Google Ads** | Quando alguém envia o formulário de lead de um anúncio do Google Ads com o webhook da Soci (URL e chave em Marketing → Rastreamento → Formulários). O contato é criado ou atualizado, o clique (gclid) fica na atribuição e as respostas viram nota. Use `{{trigger.form}}` e `{{trigger.campaign}}`. |
+| **Formulário de lead do Google Ads** | Quando alguém envia o formulário de lead de um anúncio do Google Ads com o webhook da Graao (URL e chave em Marketing → Rastreamento → Formulários). O contato é criado ou atualizado, o clique (gclid) fica na atribuição e as respostas viram nota. Use `{{trigger.form}}` e `{{trigger.campaign}}`. |
 | **Lead de anúncio** | Quando um contato chega de um anúncio (Google Ads, Meta Ads ou outra mídia paga), por um formulário, site, loja ou webinar. Use `{{trigger.campaign}}` e `{{trigger.source}}`. |
 | **Vídeo assistido** | Quando um contato conhecido assiste a um vídeo HTML5 do seu site (com o script de rastreamento) até 25, 50, 75 ou 100%. Vídeos do YouTube e de outros players em iframe não são lidos. Use `{{trigger.percent}}`, `{{trigger.video}}` e `{{trigger.url}}`. |
 | **Evento do rastreamento externo** | Quando um contato conhecido visita uma página ou envia um formulário no seu site com o script de rastreamento instalado. |

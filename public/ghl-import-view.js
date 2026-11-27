@@ -4,8 +4,8 @@ import { icon } from './icons.js';
 const h = x => String(x ?? '').replace(/[&<>"']/g, v => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[v]);
 
 /** Onde instalar a extensão (até a aprovação na Chrome Web Store, o artigo da central de ajuda explica como carregar). */
-export const GHL_EXTENSION_URL = 'https://doc.soci.app.br/agencia/importar-do-ghl/';
-/** Fases em que a janela da soci avança a conversão. */
+export const GHL_EXTENSION_URL = 'https://doc.graao.com/agencia/importar-do-ghl/';
+/** Fases em que a janela da graao avança a conversão. */
 export const GHL_RUNNING = ['received', 'pages', 'converting', 'images', 'saving'];
 
 const ratio = (done, total) => total ? Math.min(1, done / total) : 0;
@@ -50,11 +50,11 @@ export function ghlImportBody({ code, expiresAt, now = Date.now(), job = { statu
   const minutes = Math.max(1, Math.round((expiresAt - now) / 60000));
   return `<ol class="ag-ghl-steps">
       <li>No GHL, abra a subconta onde o snapshot está carregado.</li>
-      <li>Clique na extensão <b>soci: Importar do GHL</b> e cole o código abaixo.</li>
+      <li>Clique na extensão <b>graao: Importar do GHL</b> e cole o código abaixo.</li>
       <li>Deixe esta janela aberta: a conversão começa sozinha quando os dados chegarem.</li>
     </ol>
     <p class="inline-gap"><a class="secondary ag-ghl-link" href="${h(GHL_EXTENSION_URL)}" target="_blank" rel="noopener">${icon('download', 15)}Instalar no Chrome</a></p>
     <div class="ag-ghl-code"><span class="ag-ghl-value" aria-label="Código de importação">${h(code)}</span><button type="button" class="secondary" data-ag="copy" data-text="${h(code)}">${icon('copy', 15)}Copiar</button></div>
-    <p class="dim">O código vale ${minutes} min e serve uma vez. A soci nunca recebe sua senha do GHL.</p>
+    <p class="dim">O código vale ${minutes} min e serve uma vez. A graao nunca recebe sua senha do GHL.</p>
     <div data-ghl-state>${ghlImportState(job)}</div>`;
 }

@@ -1,4 +1,4 @@
-// Envia prints e vídeos da documentação para o bucket público do R2 (midia.soci.app.br).
+// Envia prints e vídeos da documentação para o bucket público do R2 (midia.graao.com).
 // Uso:
 //   npm run docs:midia -- enviar <pasta> <grupo> <artigo>   envia a pasta e imprime as chaves
 //   npm run docs:midia -- local <pasta> <grupo> <artigo>    copia para a prévia local (DOCS_MIDIA_BASE=/midia-local)

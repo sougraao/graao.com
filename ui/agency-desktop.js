@@ -5,7 +5,7 @@ import { icon } from './icons.js';
 
 const h = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 export const desktopPresets = [
-  ['rosa', 'Rosa Soci', '#fff5fa', '#1e1821', '#b71889', '#ffffff'], ['oceano', 'Oceano', '#f0f7fc', '#0f2230', '#0e6ba8', '#ffffff'],
+  ['rosa', 'Rosa Graao', '#fff5fa', '#1e1821', '#b71889', '#ffffff'], ['oceano', 'Oceano', '#f0f7fc', '#0f2230', '#0e6ba8', '#ffffff'],
   ['esmeralda', 'Esmeralda', '#f0f9f4', '#14261b', '#1f7a4d', '#ffffff'], ['ardosia', 'Ardósia', '#f4f6f8', '#1f2933', '#334e68', '#ffffff'],
   ['rose', 'Rosé', '#fff4f5', '#2a1215', '#c2415c', '#ffffff'], ['ambar', 'Âmbar', '#fffaf0', '#2b1d07', '#b45309', '#ffffff'],
   ['violeta', 'Violeta', '#f7f4ff', '#1f1633', '#6d28d9', '#ffffff'], ['minimal', 'Minimalista', '#ffffff', '#111111', '#111111', '#ffffff']

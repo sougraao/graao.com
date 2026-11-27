@@ -31,9 +31,9 @@ const page = (title, body) => `<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title}</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&family=Schibsted+Grotesk:wght@700&display=swap">
 <style>${css}</style></head><body>${body}<footer><div class="wrap">Seus dados são usados só para falar com você sobre este atendimento.</div></footer></body></html>`;
-const video = label => `<div class="video"><div data-soci-embed="video" class="ph"><span>${label}</span></div></div>`;
-const form = (id, label) => `<div data-soci-embed="form" data-id="${id}" class="slot"><span>${label}</span></div>`;
-const booking = `<div data-soci-embed="booking" data-id="${SERVICE}" class="slot"><span>Agenda: Reunião de diagnóstico</span></div>`;
+const video = label => `<div class="video"><div data-graao-embed="video" class="ph"><span>${label}</span></div></div>`;
+const form = (id, label) => `<div data-graao-embed="form" data-id="${id}" class="slot"><span>${label}</span></div>`;
+const booking = `<div data-graao-embed="booking" data-id="${SERVICE}" class="slot"><span>Agenda: Reunião de diagnóstico</span></div>`;
 
 const answers = [
   ['Como funciona o trabalho', 'O passo a passo, do primeiro dia até a entrega.'],

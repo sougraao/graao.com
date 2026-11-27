@@ -1,5 +1,5 @@
 -- P2.5: o que pesa nos documentos. SÓ LEITURA: devolve tamanhos e contagens, nunca nomes, textos ou ids.
--- Rodar no SQL Editor do projeto Supabase da soci (zlkhoucdqfxgiorujifj).
+-- Rodar no SQL Editor do projeto Supabase da graao (zlkhoucdqfxgiorujifj).
 with partes as (
   select case when w.id = 'agency' or w.id like 'agency-%' then 'agência'
               when w.id ~ '^[a-z]+-' and w.id !~ '^[0-9a-f]{8}-' then 'outros documentos'

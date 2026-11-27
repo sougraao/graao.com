@@ -1,4 +1,4 @@
-# 07 · Prancheta da Steam: como funciona (análise para a soci)
+# 07 · Prancheta da Steam: como funciona (análise para a graao)
 
 Fonte analisada: `D:\meus documentos\Steam\src\tools\prancheta` (LAB Um Cara Caramelo).
 Data: 2026-11-23.
@@ -12,18 +12,18 @@ do Google, em `googleFontsList.ts`). A única dependência de execução fora do
 React é o MediaPipe, carregado por CDN só quando alguém remove o fundo de uma
 imagem.
 
-A Prancheta atual da soci (`ui/prancheta.js`, 1.254 linhas) é outra coisa: um
+A Prancheta atual da graao (`ui/prancheta.js`, 1.254 linhas) é outra coisa: um
 editor em DOM, com lâminas, formas simples (retângulo, círculo, texto, linha,
 seta) e um inspetor básico.
 
 As duas já conversam em parte:
 
-- `Steam/src/tools/prancheta/sociRepo.ts` fala com `/api/prancheta/*` do
-  `server.mjs` da soci (porta padrão 4317), com `?workspace=<subconta>`.
-- `prancheta-model.mjs` da soci guarda o documento da Steam (`DocumentData`)
-  no campo `document` de cada arquivo, e `sociToDocument`/`documentToSoci`
+- `Steam/src/tools/prancheta/graaoRepo.ts` fala com `/api/prancheta/*` do
+  `server.mjs` da graao (porta padrão 4317), com `?workspace=<subconta>`.
+- `prancheta-model.mjs` da graao guarda o documento da Steam (`DocumentData`)
+  no campo `document` de cada arquivo, e `graaoToDocument`/`documentToGraao`
   convertem entre os dois formatos.
-- `PranchetaApp.tsx` troca de repositório sozinho: com `workspace` usa a soci,
+- `PranchetaApp.tsx` troca de repositório sozinho: com `workspace` usa a graao,
   sem ele usa o Supabase do LAB.
 
 ## 2. Arquitetura em camadas
@@ -31,7 +31,7 @@ As duas já conversam em parte:
 | Camada | Arquivos | Linhas | O que faz |
 |---|---|---|---|
 | Casca / galeria | `PranchetaApp.tsx`, `prancheta.css` | 385 | "Meus arquivos": busca, criar, usar exemplo, renomear, excluir, abrir editor por `?file=` |
-| Persistência remota | `repo.ts`, `sociRepo.ts`, `session.ts` | 440 | Repositório (Supabase ou soci) e sessão de salvamento |
+| Persistência remota | `repo.ts`, `graaoRepo.ts`, `session.ts` | 440 | Repositório (Supabase ou graao) e sessão de salvamento |
 | Modelo | `model/types.ts`, `document.ts`, `defaults.ts`, `sample.ts` | 925 | Árvore de nós, matrizes, operações de árvore |
 | Estado | `store/store.ts` | 342 | Store único com histórico, seleção, câmera, ferramenta |
 | Ações | `actions.ts` | 1.247 | Toda mutação do documento (agrupar, alinhar, componentes…) |
@@ -142,18 +142,18 @@ distribuir, imagem (inserir, conta-gotas, remover fundo, "efeito revista").
 
 - `PranchetaSession`: um escritor por documento, salvamento 700 ms depois da
   última mudança, salvamento ao esconder a aba e aviso no `beforeunload`.
-- **Concorrência otimista:** cada gravação envia `expectedUpdatedAt`; a soci
+- **Concorrência otimista:** cada gravação envia `expectedUpdatedAt`; a graao
   devolve 409 e o editor mostra "salvar cópia / recarregar".
 - Limite de 25 MB por documento (imagens ficam embutidas como data URL).
 - No LAB, tabela `prancheta_files` (id, user_id, name, document jsonb,
   size_bytes, thumbnail, timestamps).
 
-## 9. O que a soci já tem para recebê-la
+## 9. O que a graao já tem para recebê-la
 
 | Rota | Faz |
 |---|---|
 | `GET /api/prancheta/files` | lista metadados |
-| `GET /api/prancheta/file?id=` | devolve o arquivo já convertido com `sociToDocument` |
+| `GET /api/prancheta/file?id=` | devolve o arquivo já convertido com `graaoToDocument` |
 | `POST /api/prancheta/save` | cria ou atualiza (documento, miniatura) |
 | `POST /api/prancheta/delete`, `/duplicate` | exclui, duplica |
 | `GET /api/prancheta/templates`, `POST /template-use` | modelos canônicos e presets |
@@ -168,33 +168,33 @@ Lacunas encontradas (corrigidas, ver §11):
 - `save` não confere `expectedUpdatedAt`, então o 409 da sessão nunca chega.
 - A miniatura e as imagens vão inteiras no estado (`state.pranchetaFiles`),
   sem limite de tamanho no servidor.
-- `sociRepo.ts` aponta para `http://127.0.0.1:4317` por padrão.
+- `graaoRepo.ts` aponta para `http://127.0.0.1:4317` por padrão.
 
 ## 10. Diferença que decide o caminho
 
-A soci não tem etapa de build nem dependências no `package.json`: o front é
+A graao não tem etapa de build nem dependências no `package.json`: o front é
 JavaScript puro em `ui/`, servido como está. A Prancheta da Steam depende de
-React, TypeScript e Vite. Trazer o editor para dentro da soci passa por uma
+React, TypeScript e Vite. Trazer o editor para dentro da graao passa por uma
 destas portas:
 
 1. **Pacote pronto:** compilar o editor da Steam num único módulo JS e servir
-   em `ui/`, montado na rota `#agency/prancheta` com o `sociRepo`.
+   em `ui/`, montado na rota `#agency/prancheta` com o `graaoRepo`.
 2. **Reescrita em JS puro:** portar o modelo, o canvas e os painéis para
-   módulos de `ui/`, no mesmo estilo do resto da soci.
-3. **Iframe:** abrir a Prancheta hospedada na Steam dentro da soci.
+   módulos de `ui/`, no mesmo estilo do resto da graao.
+3. **Iframe:** abrir a Prancheta hospedada na Steam dentro da graao.
 
 O plano das Apresentações (`06-apresentacoes-google-slides.md`, item 5) já
 prevê extrair o núcleo da Prancheta (seleção, arraste, alças, inspetor) para
-reaproveitar nos slides, o que pesa a favor de um núcleo que viva na soci.
+reaproveitar nos slides, o que pesa a favor de um núcleo que viva na graao.
 
-## 11. Como ficou na soci (2026-11-23)
+## 11. Como ficou na graao (2026-11-23)
 
-Caminho escolhido: **pacote pronto, com o código-fonte dentro da soci**.
+Caminho escolhido: **pacote pronto, com o código-fonte dentro da graao**.
 
 | Parte | Onde |
 |---|---|
 | Código do editor (cópia da Steam, adaptada) | `prancheta-editor/src/editor/` |
-| Entrada da soci: abrir, salvar, voltar, Mídia Drive, Social Planner | `prancheta-editor/src/main.tsx`, `repo.ts`, `session.ts`, `soci.css` |
+| Entrada da graao: abrir, salvar, voltar, Mídia Drive, Social Planner | `prancheta-editor/src/main.tsx`, `repo.ts`, `session.ts`, `graao.css` |
 | Build (esbuild, dependências só nesta pasta) | `prancheta-editor/package.json`, `build.mjs` → `npm run build:prancheta` |
 | Pacote servido (vai para o git) | `ui/vendor/prancheta-editor.js` e `.css`, espelhados em `public/vendor/` |
 | Página do editor | `ui/prancheta-editor.html` (`/prancheta-editor.html?workspace=&file=`) |
@@ -202,7 +202,7 @@ Caminho escolhido: **pacote pronto, com o código-fonte dentro da soci**.
 
 Decisões:
 
-- **Iframe da própria soci.** O editor tem CSS e atalhos globais (Ctrl+Z,
+- **Iframe da própria graao.** O editor tem CSS e atalhos globais (Ctrl+Z,
   Delete, Ctrl+D…). Dentro de um iframe ele não briga com o app e funciona
   igual ao da Steam. A página tem CSP própria: `frame-ancestors 'self'`,
   `'wasm-unsafe-eval'` e `connect-src` para o MediaPipe (jsDelivr, unpkg,
@@ -211,7 +211,7 @@ Decisões:
   `prancheta-editor/package.json`; a raiz continua sem `node_modules` e a
   Vercel não instala nada. A pasta `prancheta-editor` fica fora do deploy
   (`.vercelignore`).
-- **Arquivos antigos abrem.** `sociToDocument` converte cada lâmina antiga
+- **Arquivos antigos abrem.** `graaoToDocument` converte cada lâmina antiga
   (e os modelos e presets da galeria) num frame do tamanho da arte, lado a
   lado, com a altura de linha convertida de multiplicador para px.
 - **Gravação segura.** `checkPranchetaSave` recusa versão antiga com 409 (o
@@ -225,8 +225,8 @@ Decisões:
 - **Visual da plataforma.** O editor não tem tema próprio: `main.tsx` copia
   do app os tokens `--g-*` já calculados (superfícies, linhas, textos, cor da
   marca da agência, raios, sombras) e o `data-theme`, e acompanha
-  `soci:theme-change`. Os tokens do editor (`--surface`, `--blue`…) apontam
-  para eles em `soci.css`; seleção, alças e rótulos do canvas usam a cor da
+  `graao:theme-change`. Os tokens do editor (`--surface`, `--blue`…) apontam
+  para eles em `graao.css`; seleção, alças e rótulos do canvas usam a cor da
   marca; a fonte é a Plus Jakarta Sans. A galeria (`ui/prancheta.css`) usa só
   tokens `--g-*`; as prévias de arte continuam escuras porque mostram a arte.
 - **Mídia Drive e post.** Na subconta, o cabeçalho do editor ganha "Mídia

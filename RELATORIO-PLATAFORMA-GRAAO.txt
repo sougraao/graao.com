@@ -1,9 +1,9 @@
 ================================================================================
-RELATÓRIO TÉCNICO E FUNCIONAL COMPLETO — PLATAFORMA SOCI (soci.app)
+RELATÓRIO TÉCNICO E FUNCIONAL COMPLETO — PLATAFORMA GRAAO (graao.app)
 Arquitetura de Contas, Ferramentas, Controles, Permissões e Mapa de Maturidade
 ================================================================================
 Data da análise: 18/11/2026
-Repositório analisado: d:\meus documentos\soci.app
+Repositório analisado: d:\meus documentos\graao.app
 Base da auditoria: leitura integral do código-fonte (backend Node.js, frontend
 UI, modelos de domínio, storage SQLite/Supabase, autenticação e integrações).
 
@@ -11,7 +11,7 @@ UI, modelos de domínio, storage SQLite/Supabase, autenticação e integrações
 1. VISÃO GERAL E ARQUITETURA DE CONTAS DA PLATAFORMA
 ================================================================================
 
-A plataforma Soci opera com uma arquitetura multi-tenant hierárquica inspirada
+A plataforma Graao opera com uma arquitetura multi-tenant hierárquica inspirada
 no modelo Agência -> Subcontas, armazenada em documentos JSONB (tabela
 `public.go_workspaces` no Supabase ou `workspaces` no SQLite local).
 
@@ -43,9 +43,9 @@ Na prática, o sistema possui DOIS níveis principais de conta operacional
            na auditoria da agência.
       b) Conta de Cliente Final no Portal (`/portal/<workspace>`):
          - Acesso exclusivo para alunos/clientes consumirem cursos da subconta.
-         - Autenticação própria por link único (cookie `soci_portal` /
-           `__Secure-soci_portal`, sessão de 8 horas), totalmente separada do
-           login Google da Soci.
+         - Autenticação própria por link único (cookie `graao_portal` /
+           `__Secure-graao_portal`, sessão de 8 horas), totalmente separada do
+           login Google da Graao.
       c) Acesso Externo Temporário (Convite Social `/social-connect/<ws>#<token>`):
          - Permite que um cliente conecte novas redes sociais no Planejador
            Social da subconta sem ter login na plataforma.
@@ -67,7 +67,7 @@ de concorrência por `revision` + RLS via `X-Go-Storage-Key`) ou SQLite local:
                                  |                        | planos, snapshots, prospects, usuários,
                                  |                        | afiliados, templates, parceiros, ideias,
                                  |                        | auditoria (até 1.000 logs), etc.
-  `chat-<agencyId>`              | Conta Principal        | Histórico do "Pergunte à Soci" (até 200
+  `chat-<agencyId>`              | Conta Principal        | Histórico do "Pergunte à Graao" (até 200
                                  |                        | conversas) e instruções personalizadas.
   `whatsapp-<agencyId>`          | Conta Principal +      | Servidor Evolution (URL + chave cifrada) e
                                  | instâncias por Subconta| tokens/status/webhooks de cada subconta.
@@ -102,7 +102,7 @@ grupos + atalhos customizados + rodapé (Comunidade WhatsApp + Configurações).
 3.1. GRUPO: VISÃO GERAL
 --------------------------------------------------------------------------------
 
-1) PERGUNTE À SOCI (`#agency/ask` | Backend: `soci-chat.mjs`, `/api/ask/*`)
+1) PERGUNTE À GRAAO (`#agency/ask` | Backend: `graao-chat.mjs`, `/api/ask/*`)
    - Assistente executivo de IA com acesso em tempo real aos dados consolidados
      da agência (MRR, subcontas, status, planos, contatos, oportunidades,
      execuções, saldo da carteira, setups, equipe e prospects).
@@ -129,7 +129,7 @@ grupos + atalhos customizados + rodapé (Comunidade WhatsApp + Configurações).
      * Funcionário de IA (disponível nas subcontas);
      * AI Studio (atalho para abrir em uma subconta);
      * Agentes de IA (atalho direto para `#ai-agents` de uma subconta);
-     * Pergunte à Soci (atalho direto para `#agency/ask`).
+     * Pergunte à Graao (atalho direto para `#agency/ask`).
 
 3) PAINEL DA AGÊNCIA (`#agency/dashboard`)
    - KPIs consolidados em tempo real de todas as subcontas da agência:
@@ -191,7 +191,7 @@ grupos + atalhos customizados + rodapé (Comunidade WhatsApp + Configurações).
      * Widgets: até 30 formulários públicos incorporáveis (`/prospecting/widget/<id>`)
        com anti-spam (honeypot `fax`), dedup automática e geração opcional de
        auditoria imediata. (Criar/editar widget exige `who.settings`).
-     * Editor de relatórios: personalização de tema visual (Azul, Pink soci,
+     * Editor de relatórios: personalização de tema visual (Azul, Pink graao,
        Verde, Grafite), título, introdução, rodapé e ordem/visibilidade das 7
        seções do relatório. (Exige `who.settings`).
      * Analytics: métricas de volume, origens, visualizações de relatórios e
@@ -232,7 +232,7 @@ grupos + atalhos customizados + rodapé (Comunidade WhatsApp + Configurações).
    - Segurança de dados: contatos, conversas, pagamentos e estatísticas NUNCA
      são copiados; páginas, sites e workflows chegam sempre como rascunho.
    - 4 abas:
-     * Marketplace: catálogo gratuito com 6 Setups Oficiais da Soci (destaque
+     * Marketplace: catálogo gratuito com 6 Setups Oficiais da Graao (destaque
        para "Agência Completa 360° — Da Prospecção à Retenção", além de
        Clínica de Estética, Imobiliária, Agência de Marketing, Infoprodutos e
        Negócios Locais) + setups publicados por outras agências da comunidade
@@ -340,7 +340,7 @@ Atenção: alterações em configurações da agência exigem `who.settings` (ap
   12. OpenAI (`openai` | `/api/openai`): conexão/substituição/desconexão da
       chave `sk-...` validada em tempo real na OpenAI e salva cifrada por
       usuário (`openai-<session.id>`). Alimenta AI Studio, Agentes de IA e
-      Pergunte à Soci.
+      Pergunte à Graao.
   13. Integrações privadas (`private-integrations`): até 20 tokens `pit_...`
       exibidos uma única vez (salvos só em hash SHA-256) com escopos granulares
       (`subaccounts.read`, `contacts.read`, `contacts.write`) e data de último
@@ -796,7 +796,7 @@ servidor (HTTP 403) em:
   - Alterar Marca, Seções do relatório e Widgets de Prospecção.
 
 Em contrapartida, `Agency User` PODE:
-  - Ver o Painel da Agência e usar o Pergunte à Soci;
+  - Ver o Painel da Agência e usar o Pergunte à Graao;
   - Criar/gerenciar Subcontas, Setups/Snapshots, Templates, Parceiros, Ideias,
     Afiliados (operacional), Prospecção (buscar, auditar, enviar ao CRM) e
     acessar todas as subcontas conforme seus módulos permitidos.
@@ -905,7 +905,7 @@ forma independente e isolada:
      agendador/cron para Facebook, Instagram, LinkedIn, TikTok, YouTube,
      Pinterest, Threads, Google Business e Bluesky + feeds RSS reais + convite
      externo de cliente.
-  4. IA generativa real via OpenAI (e Gemini via env no Chat): Pergunte à Soci
+  4. IA generativa real via OpenAI (e Gemini via env no Chat): Pergunte à Graao
      (streaming SSE + contexto vivo + anexos), AI Studio (descoberta visual,
      planejamento, geração/revisão de páginas, SEO), Estúdio de Agentes
      (construtor por chat, testes com web search e memória).

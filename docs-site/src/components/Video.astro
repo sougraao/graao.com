@@ -5,7 +5,7 @@ import { midiaBase } from '../../scripts/midia-base.mjs';
 interface Props { src: string; poster: string; legenda?: string }
 const { src, poster, legenda } = Astro.props;
 ---
-<figure class="soci-video">
+<figure class="graao-video">
   <video controls preload="none" playsinline poster={`${midiaBase()}/${poster}`}>
     <source src={`${midiaBase()}/${src}`} type="video/mp4" />
   </video>
@@ -13,7 +13,7 @@ const { src, poster, legenda } = Astro.props;
 </figure>
 
 <style>
-  .soci-video { margin: 1rem 0; }
-  .soci-video video { display: block; width: 100%; height: auto; border-radius: 0.5rem; background: var(--sl-color-black); }
-  .soci-video figcaption { margin-top: 0.4rem; font-size: var(--sl-text-sm); color: var(--sl-color-gray-3); }
+  .graao-video { margin: 1rem 0; }
+  .graao-video video { display: block; width: 100%; height: auto; border-radius: 0.5rem; background: var(--sl-color-black); }
+  .graao-video figcaption { margin-top: 0.4rem; font-size: var(--sl-text-sm); color: var(--sl-color-gray-3); }
 </style>

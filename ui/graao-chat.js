@@ -1,18 +1,18 @@
-// Pergunte à Soci — componente de chat completo inspirado na referência do ChatGPT,
-// integrado ao design system, autenticação e contexto vivo da agência na Soci.
+// Pergunte à Graao — componente de chat completo inspirado na referência do ChatGPT,
+// integrado ao design system, autenticação e contexto vivo da agência na Graao.
 import { Marked } from '/vendor/marked.js';
 import DOMPurify from '/vendor/purify.js';
 import { highlight } from '/highlight.js';
-import { icon as baseIcon, logo as sociLogo } from './icons.js';
+import { icon as baseIcon, logo as graaoLogo } from './icons.js';
 import { loadingState, thinkingState } from './beautiful-ui.js';
 
 const MAX_ATTACHMENTS = 10;
 const MAX_TEXT_FILE = 512 * 1024;
 const MAX_IMAGE_SIDE = 2048;
 const DEFAULT_TITLE = 'Novo chat';
-const STORAGE_KEY = 'soci.ask.settings';
-const COLLAPSED_KEY = 'soci.ask.sidebarCollapsed';
-const MODEL_KEY = 'soci.ask.model';
+const STORAGE_KEY = 'graao.ask.settings';
+const COLLAPSED_KEY = 'graao.ask.sidebarCollapsed';
+const MODEL_KEY = 'graao.ask.model';
 const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const QUICK_PROMPTS = [
@@ -133,7 +133,7 @@ async function* readEvents(body) {
   }
 }
 
-export function createSociChat({ api, flash, onOpenOpenAISettings, getHeaders }) {
+export function createGraaoChat({ api, flash, onOpenOpenAISettings, getHeaders }) {
   const settings = { instructions: '', ...readStorage(STORAGE_KEY, {}) };
   const state = {
     loaded: false,
@@ -185,7 +185,7 @@ export function createSociChat({ api, flash, onOpenOpenAISettings, getHeaders })
         <div class="sc-history">
           <h2 class="sc-history-title">Recentes</h2>
           <ol class="sc-history-list" data-sc="history-list"></ol>
-          <p class="sc-history-empty" data-sc="history-empty" hidden>Suas conversas com a Soci aparecem aqui.</p>
+          <p class="sc-history-empty" data-sc="history-empty" hidden>Suas conversas com a Graao aparecem aqui.</p>
         </div>
         <div class="sc-side-foot">
           <button type="button" class="sc-nav-item" data-sc-action="open-settings">${icon('settings', 17)}<span>Configurações do chat</span></button>
@@ -200,7 +200,7 @@ export function createSociChat({ api, flash, onOpenOpenAISettings, getHeaders })
           <button type="button" class="sc-icon-btn sc-mobile-only" data-sc-action="toggle-sidebar" aria-label="Abrir histórico">${icon('menu', 19)}</button>
           <div class="sc-model-picker">
             <button type="button" class="sc-model-btn" data-sc="model-btn" aria-haspopup="dialog" aria-expanded="false">
-              <span>Soci</span>
+              <span>Graao</span>
               <span class="sc-model-badge" data-sc="model-name">Assistente local</span>
               ${icon('chevronDown', 15)}
             </button>
@@ -218,12 +218,12 @@ export function createSociChat({ api, flash, onOpenOpenAISettings, getHeaders })
 
       <div class="sc-content" data-sc="content">
         <div class="sc-scroller" data-sc="scroller">
-          <div class="sc-thread" data-sc="thread" role="region" aria-label="Conversa com a Soci"></div>
+          <div class="sc-thread" data-sc="thread" role="region" aria-label="Conversa com a Graao"></div>
         </div>
         <button type="button" class="sc-scroll-down" data-sc="scroll-down" aria-label="Rolar até o fim" hidden>${icon('arrowDown', 17)}</button>
 
         <section class="sc-home">
-          <div class="sc-home-badge" aria-hidden="true">${sociLogo}</div>
+          <div class="sc-home-badge" aria-hidden="true">${graaoLogo}</div>
           <h1 data-sc="home-title">Por onde começamos?</h1>
           <p class="sc-home-sub" data-sc="home-sub" hidden>Este chat não vai aparecer no histórico nem ser salvo.</p>
         </section>
@@ -238,8 +238,8 @@ export function createSociChat({ api, flash, onOpenOpenAISettings, getHeaders })
                   <button type="button" class="sc-menu-item" data-sc-action="attach">${icon('paperclip', 17)}<span>Adicionar fotos e arquivos</span></button>
                 </div>
               </div>
-              <label class="sr-only" for="sc-prompt">Pergunte à Soci</label>
-              <textarea id="sc-prompt" class="sc-text" data-sc="prompt" rows="1" placeholder="Pergunte à Soci sobre subcontas, receita, setups, equipe…" aria-label="Pergunte à Soci"></textarea>
+              <label class="sr-only" for="sc-prompt">Pergunte à Graao</label>
+              <textarea id="sc-prompt" class="sc-text" data-sc="prompt" rows="1" placeholder="Pergunte à Graao sobre subcontas, receita, setups, equipe…" aria-label="Pergunte à Graao"></textarea>
               <button type="button" class="sc-icon-btn sc-mic" data-sc="dictate-btn" aria-label="Iniciar ditado" title="Ditar">${icon('mic', 18)}</button>
               <button type="submit" class="sc-send" data-sc="send-btn" aria-label="Enviar mensagem"></button>
             </div>
@@ -248,7 +248,7 @@ export function createSociChat({ api, flash, onOpenOpenAISettings, getHeaders })
           <div class="sc-suggestions" data-sc="suggestions">
             ${QUICK_PROMPTS.map(p => `<button type="button" class="sc-suggestion" data-sc-action="quick-prompt" data-q="${escapeHtml(p)}">${escapeHtml(p)}</button>`).join('')}
           </div>
-          <p class="sc-disclaimer">A Soci pode cometer erros. Confira informações importantes nos relatórios da agência.</p>
+          <p class="sc-disclaimer">A Graao pode cometer erros. Confira informações importantes nos relatórios da agência.</p>
         </div>
 
         <div class="sc-drop-overlay" data-sc="drop-overlay" hidden><div>Solte os arquivos aqui para anexar à conversa</div></div>
@@ -289,7 +289,7 @@ export function createSociChat({ api, flash, onOpenOpenAISettings, getHeaders })
         <div class="sc-tab-pane active" data-sc-pane="general">
           <div class="sc-setting-block">
             <label class="sc-setting-label" for="sc-instructions">Instruções personalizadas</label>
-            <p class="sc-setting-hint">Como a Soci deve responder ou o que deve considerar sobre a sua agência?</p>
+            <p class="sc-setting-hint">Como a Graao deve responder ou o que deve considerar sobre a sua agência?</p>
             <textarea id="sc-instructions" data-sc="instructions" rows="4" placeholder="Ex.: Responda de forma objetiva, sempre destacando oportunidades de aumento de MRR."></textarea>
             <div class="sc-setting-actions">
               <button type="button" class="primary" data-sc-action="save-instructions">Salvar instruções</button>
@@ -312,7 +312,7 @@ export function createSociChat({ api, flash, onOpenOpenAISettings, getHeaders })
           </div>
           <div class="sc-setting-row">
             <div class="sc-setting-label">Exportar conversas</div>
-            <a class="secondary" href="/api/ask/export" download="soci-conversas.json">Exportar JSON</a>
+            <a class="secondary" href="/api/ask/export" download="graao-conversas.json">Exportar JSON</a>
           </div>
           <div class="sc-setting-row">
             <div class="sc-setting-label">Excluir todos os chats</div>
@@ -671,7 +671,7 @@ export function createSociChat({ api, flash, onOpenOpenAISettings, getHeaders })
     const row = el('div', 'sc-assistant-row');
     const av = el('div', 'sc-avatar');
     av.setAttribute('aria-hidden', 'true');
-    av.innerHTML = sociLogo;
+    av.innerHTML = graaoLogo;
     const body = el('div', 'sc-assistant-body');
     if (meta.reasoning) body.append(reasoningBlock(meta.reasoning, meta.reasoning_ms));
     const md = el('div', 'sc-markdown');
@@ -859,7 +859,7 @@ export function createSociChat({ api, flash, onOpenOpenAISettings, getHeaders })
     const row = el('div', 'sc-assistant-row');
     const av = el('div', 'sc-avatar');
     av.setAttribute('aria-hidden', 'true');
-    av.innerHTML = sociLogo;
+    av.innerHTML = graaoLogo;
     const body = el('div', 'sc-assistant-body');
     const loader = loadingState({ label: 'Pensando' });
     loader.el.classList.add('sc-loading');
@@ -1375,7 +1375,7 @@ export function createSociChat({ api, flash, onOpenOpenAISettings, getHeaders })
       empty.innerHTML = `
         <div class="sc-empty-icon">🎯</div>
         <h4>Nenhuma habilidade adicionada</h4>
-        <p>Habilidades permitem que a Soci execute tarefas avançadas sob demanda com prompts especializados ou arquivos <code>SKILL.md</code>.</p>
+        <p>Habilidades permitem que a Graao execute tarefas avançadas sob demanda com prompts especializados ou arquivos <code>SKILL.md</code>.</p>
         <button type="button" class="primary" data-sc-action="open-skill-form">+ Adicionar primeira habilidade</button>
       `;
       els.skillsList.append(empty);
@@ -1898,7 +1898,7 @@ export function createSociChat({ api, flash, onOpenOpenAISettings, getHeaders })
         await openConversation(targetConvId, { updateHash: false });
       }
     } catch (err) {
-      flash(err.message || 'Não foi possível carregar o chat da Soci.', true);
+      flash(err.message || 'Não foi possível carregar o chat da Graao.', true);
     }
   }
 

@@ -1,4 +1,4 @@
-# Plano de ação de melhoria: soci.app
+# Plano de ação de melhoria: graao.app
 
 Data: 23/11/2026 · Branch analisada: `feat/smartsite-awwwards` · Ferramentas: gstack `/health`, Supabase (somente leitura), Vercel (erros de produção), leitura do código.
 
@@ -10,7 +10,7 @@ Data: 23/11/2026 · Branch analisada: `feat/smartsite-awwwards` · Ferramentas: 
 | Back-end | 112 módulos `.mjs` na raiz, ~30 mil linhas. `server.mjs` sozinho tem 4.902 linhas |
 | Front-end | 148 módulos ES em `ui/` (~42 mil linhas, 3,4 MB de JS, 860 KB de CSS), sem bundler |
 | Dependências do app | Zero (`package.json` sem `dependencies`). Só o Smartsite usa Astro |
-| Banco | Supabase `soci.app.br` (us-east-2, Postgres 17): 1 tabela de app, `go_workspaces`, 51 linhas, 1,2 MB, 6 usuários |
+| Banco | Supabase `graao.com` (us-east-2, Postgres 17): 1 tabela de app, `go_workspaces`, 51 linhas, 1,2 MB, 6 usuários |
 | Hospedagem | Vercel, região `gru1` (São Paulo), uma função `api/index.mjs` atende tudo |
 | Agendador | `pg_cron` chama `/api/social/cron` a cada minuto via `pg_net`: 1.440 execuções nas últimas 24 h, 358 respostas 200 guardadas, 2 timeouts de DNS |
 | Integrações | Supabase Auth (Google), OpenAI, Gemini, AbacatePay, Resend, Twilio, Meta, LinkedIn, Evolution/WAHA (WhatsApp), Google (Places, Ads, GBP, PageSpeed), Web Push, Treg |
@@ -30,7 +30,7 @@ NOTA COMPOSTA: 7.0 / 10 (cobertura parcial: 1 de 6 categorias)
 
 Os 3 testes que falham hoje vêm do trabalho não commitado, não da `main`:
 
-1. `test/landing.test.mjs`: `ui/landing.html` foi trocado por um modelo em inglês chamado "Tidewell — Tides in Motion" (+1.863 linhas). A landing da soci virou `ui/landing.soci.bak.html`.
+1. `test/landing.test.mjs`: `ui/landing.html` foi trocado por um modelo em inglês chamado "Tidewell — Tides in Motion" (+1.863 linhas). A landing da graao virou `ui/landing.graao.bak.html`.
 2. `test/public-mirror.test.mjs`: `ui/i18n.js` mudou e `public/` não foi sincronizado (`node scripts/sync-public.mjs`).
 3. `Smartsite/site/tests/output.test.mjs`: a pasta `dist/.taste-skill/` (sobra de uma skill de design) entra na varredura de páginas e quebra o teste de canonical.
 
@@ -53,7 +53,7 @@ Prioridade: **P0** = risco ativo ou bloqueia entrega. **P1** = próximo mês. **
 
 **P0.1 Não commitar a landing "Tidewell" por acidente.**
 Evidência: `git diff --stat` mostra `ui/landing.html` e `public/landing.html` com +1.863 linhas, `<title>Tidewell — Tides in Motion</title>`, `lang="en"`.
-Ação: decidir se é experimento. Se for, mover para outro arquivo (ex.: `ui/landing-tidewell.html`) e restaurar `ui/landing.html` da `main`. Apagar `ui/landing.soci.bak.html`.
+Ação: decidir se é experimento. Se for, mover para outro arquivo (ex.: `ui/landing-tidewell.html`) e restaurar `ui/landing.html` da `main`. Apagar `ui/landing.graao.bak.html`.
 Esforço: 10 min.
 
 **P0.2 Deixar a suíte verde de novo.**
@@ -89,7 +89,7 @@ Ação: passar essas promessas para `waitUntil` (pacote `@vercel/functions` ou `
 Esforço: 2 h.
 
 **P1.4 Cron aponta para um alias de deploy.**
-Evidência: o job `soci-social-cron` chama `soci-app-br-soci3.vercel.app`, não o domínio de produção. Houve 2 timeouts de DNS de 30 s.
+Evidência: o job `graao-social-cron` chama `graao-app-br-soci3.vercel.app`, não o domínio de produção. Houve 2 timeouts de DNS de 30 s.
 Ação: apontar para o domínio de produção, guardar o `CRON_SECRET` no Supabase Vault (confirmar se já está) e trocar a comparação em `server.mjs:2443` por `timingSafeEqual`.
 Esforço: 30 min.
 
@@ -109,12 +109,12 @@ Ação: `tsconfig.json` com `checkJs` + `noEmit` (só JSDoc, nada muda no runtim
 Esforço: meio dia para configurar; a limpeza pode ser gradual.
 
 **P1.8 Token do Treg cifrado e fora do navegador.** (achado em 23/11/2026, ao testar o chat)
-Evidência: `soci-chat.mjs` guarda `connectors.treg.token` em texto puro no armazenamento do chat e o devolve inteiro em `GET/POST /api/ask/connectors`; `ui/soci-chat.js` preenche o campo da tela com ele. O token pode gastar crédito no Treg.
+Evidência: `graao-chat.mjs` guarda `connectors.treg.token` em texto puro no armazenamento do chat e o devolve inteiro em `GET/POST /api/ask/connectors`; `ui/graao-chat.js` preenche o campo da tela com ele. O token pode gastar crédito no Treg.
 Ação: cifrar com `GO_STORAGE_KEY` (AES-256-GCM, como OpenAI e AbacatePay), devolver só "configurado" e os últimos 4 caracteres, e ajustar a tela para não reexibir o token.
 Esforço: 2 h.
 
 **P1.9 Tokens das redes sociais sem chave fixa em produção.** (achado em 24/11/2026)
-Evidência: `social-providers.mjs:13` deriva a chave de `SOCIAL_TOKEN_KEY || GO_STORAGE_KEY || 'soci-local-social-key'`. Sem as duas variáveis, os tokens das redes são cifrados com uma chave que está no código. Em produção o `GO_STORAGE_KEY` existe; o risco é um deploy novo sem ela.
+Evidência: `social-providers.mjs:13` deriva a chave de `SOCIAL_TOKEN_KEY || GO_STORAGE_KEY || 'graao-local-social-key'`. Sem as duas variáveis, os tokens das redes são cifrados com uma chave que está no código. Em produção o `GO_STORAGE_KEY` existe; o risco é um deploy novo sem ela.
 Ação: na Vercel (ou fora do modo local), falhar ao iniciar em vez de usar a chave fixa.
 Esforço: 30 min.
 
@@ -124,8 +124,8 @@ Esforço: 30 min.
 Hoje o roteamento são dezenas de `if (p === '/api/...')` dentro de uma função. Separar por domínio (`routes/payments.mjs`, `routes/social.mjs`, `routes/public-pages.mjs`...) com uma tabela de rotas. Fazer por fatias, uma por PR, com os testes atuais como rede.
 
 **P2.2 Testes dedicados para os módulos grandes sem arquivo de teste próprio.**
-`soci-chat.mjs` (1.344 linhas), `whatsapp.mjs` (991), `setup-agencia-360.mjs` (473), `expressions.mjs` (432), `waha.mjs` (397), `phone-server.mjs` (383), `mcp-server.mjs` (323). Podem estar cobertos indiretamente pelos testes do servidor; vale medir com `node --test --experimental-test-coverage` antes de escrever testes novos.
-Medição (23/11/2026): cobertura geral de 67% das linhas, `server.mjs` 91%. `whatsapp.mjs` 89%, `waha.mjs` 86% e `mcp-server.mjs` 84% já são bem cobertos pela integração. As lacunas reais são `treg.mjs` 23%, `prospecting-osm.mjs` 52%, `content-ai.mjs` 64%, `soci-chat.mjs` 67% (~450 linhas), `connectors.mjs` 68% e `social-providers.mjs` 69%.
+`graao-chat.mjs` (1.344 linhas), `whatsapp.mjs` (991), `setup-agencia-360.mjs` (473), `expressions.mjs` (432), `waha.mjs` (397), `phone-server.mjs` (383), `mcp-server.mjs` (323). Podem estar cobertos indiretamente pelos testes do servidor; vale medir com `node --test --experimental-test-coverage` antes de escrever testes novos.
+Medição (23/11/2026): cobertura geral de 67% das linhas, `server.mjs` 91%. `whatsapp.mjs` 89%, `waha.mjs` 86% e `mcp-server.mjs` 84% já são bem cobertos pela integração. As lacunas reais são `treg.mjs` 23%, `prospecting-osm.mjs` 52%, `content-ai.mjs` 64%, `graao-chat.mjs` 67% (~450 linhas), `connectors.mjs` 68% e `social-providers.mjs` 69%.
 
 **P2.3 Acabar com a cópia `ui/` → `public/`.** (testado em 23/11/2026, ver PR #85)
 Resultado: não compensa. O preset de Node da Vercel só publica o `public/` versionado, e sem ele cada `.js`/`.css` vira chamada à função, sem CDN. `public/` continua versionado. Os previews acharam a causa do incidente de 21/11: o `includeFiles: "ui/**"` estava em `api/index.mjs`, mas o entrypoint real é `server.mjs`; com `ui/**` também em `server.mjs`, um arquivo faltando em `public/` é servido pela função em vez de dar 500.

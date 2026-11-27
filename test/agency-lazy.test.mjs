@@ -16,7 +16,7 @@ test('app.js só carrega agency.js por import() ao abrir #agency', () => {
 test('módulos exclusivos do painel da agência não são importados pelo app da subconta', () => {
   // Cada um destes só é usado a partir de agency.js; se outro módulo do app passar a importá-lo de forma fixa,
   // ele volta para a abertura de todo mundo. Atualize a lista se um deles virar compartilhado de propósito.
-  const agencyOnly = ['agency-data.js', 'agency-desktop.js', 'agency-mobile.js', 'soci-chat.js', 'presentations.js', 'prospecting.js', 'brand-group-data.js', 'color-picker.js', 'setup-art.js'];
+  const agencyOnly = ['agency-data.js', 'agency-desktop.js', 'agency-mobile.js', 'graao-chat.js', 'presentations.js', 'prospecting.js', 'brand-group-data.js', 'color-picker.js', 'setup-art.js'];
   const app = read('app.js');
   const appImports = staticImports(app);
   for (const file of agencyOnly) assert.ok(!appImports.includes(file), `${file} importado direto pelo app.js`);

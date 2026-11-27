@@ -1,6 +1,6 @@
 ---
 title: Conectar o WhatsApp das subcontas
-description: Teste o servidor da Evolution API, conecte o número de cada subconta por QR Code e veja o que a soci faz sozinha quando o WhatsApp cai.
+description: Teste o servidor da Evolution API, conecte o número de cada subconta por QR Code e veja o que a graao faz sozinha quando o WhatsApp cai.
 modulo: agencia
 sidebar:
   badge: { text: Novo, variant: tip }
@@ -51,28 +51,28 @@ Se a página mostra **Servidor gerenciado ativo**, não há nada para configurar
 
 ## O que acontece quando o WhatsApp cai
 
-A soci confere cada número conectado a cada 2 minutos. Não há nada para ligar.
+A graao confere cada número conectado a cada 2 minutos. Não há nada para ligar.
 
-| Problema | O que a soci faz |
+| Problema | O que a graao faz |
 | --- | --- |
 | O número cai por mais de 5 minutos | Mostra **WhatsApp fora do ar** em Conversas, com o link da conexão, e a hora da queda na lista de subcontas da agência. O aviso some quando o número volta. |
-| Mensagem chegou ao servidor, mas não à soci | Busca a mensagem e coloca em Conversas no horário em que foi escrita, sem repetir. Alcança as últimas 24 horas. |
+| Mensagem chegou ao servidor, mas não à graao | Busca a mensagem e coloca em Conversas no horário em que foi escrita, sem repetir. Alcança as últimas 24 horas. |
 | Resposta não saiu durante a queda | Envia de novo quando o número volta, até 30 minutos depois, só se tiver certeza de que ela não saiu. |
 | O número aparece conectado, mas não responde | Reinicia a conexão sem pedir outro QR Code: uma vez por hora, até 3 vezes seguidas. |
 | O endereço de recebimento foi apagado ou trocado no servidor | Confere a cada 10 minutos e registra de novo. |
 | O QR Code não aparece num número novo | Recria a instância. Um número que já conectou nunca é apagado sozinho. |
 
-Na lista de subcontas em **Configurações → WhatsApp** da agência, a coluna **Status** mostra desde quando o número está fora do ar e quantas mensagens foram recuperadas, quantos reinícios e quantos consertos a soci já fez.
+Na lista de subcontas em **Configurações → WhatsApp** da agência, a coluna **Status** mostra desde quando o número está fora do ar e quantas mensagens foram recuperadas, quantos reinícios e quantos consertos a graao já fez.
 
 <Aside type="note">
 Se a subconta tem um fluxo ativo com o gatilho de falha no envio, o reenvio automático não age. Assim o contato não recebe a mesma mensagem por dois caminhos.
 </Aside>
 
-A soci não consegue recuperar o que o servidor nunca recebeu. Se o número for desconectado no celular, é preciso ler o QR Code de novo.
+A graao não consegue recuperar o que o servidor nunca recebeu. Se o número for desconectado no celular, é preciso ler o QR Code de novo.
 
 ## Excluir uma instância
 
-**Desconectar** tira o número do ar e mantém a instância no servidor. **Excluir instância** desconecta o número e também apaga a instância. Use quando a subconta não vai mais usar o WhatsApp. As conversas continuam no Soci, e basta ler o QR Code de novo para voltar a usar.
+**Desconectar** tira o número do ar e mantém a instância no servidor. **Excluir instância** desconecta o número e também apaga a instância. Use quando a subconta não vai mais usar o WhatsApp. As conversas continuam no Graao, e basta ler o QR Code de novo para voltar a usar.
 
 <Aside type="caution">
 A Evolution API usa o WhatsApp Web, não a API oficial da Meta. O WhatsApp pode banir números que mandam muitas mensagens para quem não os conhece. Aqueça números novos e evite listas frias.

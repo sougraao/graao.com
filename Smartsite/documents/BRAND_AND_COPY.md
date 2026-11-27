@@ -1,4 +1,4 @@
-# soci — Brand & Copy Direction
+# graao — Brand & Copy Direction
 
 ## Hierarquia verbal
 - Posicionamento oficial: A plataforma brasileira para Marketing 360.
@@ -14,7 +14,7 @@
 H1: A plataforma brasileira para Marketing 360.
 Headline de campanha: Tudo que seu marketing precisa. Inclusive bom gosto.
 Sub: CRM, sites, vendas, atendimento, automações e IA. Tudo em uma plataforma bonita, fácil de usar e brasileira. (Publicar somente recursos confirmados.)
-CTA: Conhecer os planos / Começar com a soci, conforme destino comprovado.
+CTA: Conhecer os planos / Começar com a graao, conforme destino comprovado.
 Microcopy: Suporte brasileiro. Calls todos os dias. Comunidade ativa. Receba via Pix (último item condicionado à validação).
 
 ## Banco de copy (propostas, não assinatura)

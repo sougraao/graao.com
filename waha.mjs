@@ -34,7 +34,7 @@ const toChatId = phone => {
 function sealKey(secret, id, plaintext) {
   if (!plaintext) return '';
   if (!secret) return `plain:${Buffer.from(plaintext, 'utf8').toString('base64url')}`;
-  const key = createHmac('sha256', secret).update('soci:waha:v1').digest();
+  const key = createHmac('sha256', secret).update('graao:waha:v1').digest();
   const iv = randomBytes(12);
   const cipher = createCipheriv('aes-256-gcm', key, iv);
   cipher.setAAD(Buffer.from(id));
@@ -47,7 +47,7 @@ function unsealKey(secret, id, token) {
   if (token.startsWith('plain:')) return Buffer.from(token.slice(6), 'base64url').toString('utf8');
   if (!secret) return '';
   try {
-    const key = createHmac('sha256', secret).update('soci:waha:v1').digest();
+    const key = createHmac('sha256', secret).update('graao:waha:v1').digest();
     const [iv, tag, ct] = token.split('.').map(p => Buffer.from(p, 'base64url'));
     const decipher = createDecipheriv('aes-256-gcm', key, iv);
     decipher.setAAD(Buffer.from(id));

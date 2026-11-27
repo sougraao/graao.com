@@ -96,7 +96,7 @@ for (const spec of setupTemplateSpecs) {
       for (const page of doc.pages) {
         const html = page.html ?? (await local.call(`/api/studio/doc?workspace=${ws}&id=${installed.id}&page=${page.id}`)).body.doc.pages.find(p => p.id === page.id).html;
         assert.equal(typeof html, 'string', `${project.name}/${page.slug} has html`);
-        for (const [, kind, id] of html.matchAll(/data-soci-embed="(form|booking)" data-id="([^"]*)"/g))
+        for (const [, kind, id] of html.matchAll(/data-graao-embed="(form|booking)" data-id="([^"]*)"/g))
           assert.ok((kind === 'form' ? state.forms : state.services).some(row => row.id === id), `${project.name}/${page.slug}: ${kind} ${id} points at this account`);
         assert.doesNotMatch(html, /<script\b/i);
       }

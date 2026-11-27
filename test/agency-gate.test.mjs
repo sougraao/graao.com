@@ -8,12 +8,12 @@ import { publicBilling } from '../agency-billing-model.mjs';
 const WS = '11111111-2222-4333-8444-555555555555';
 const PAGE = '66666666-7777-4888-9999-aaaaaaaaaaaa';
 const people = {
-  root: { id: 'root-owner', email: 'dona@soci.test' },
+  root: { id: 'root-owner', email: 'dona@graao.test' },
   nova: { id: 'u1', email: 'nova@agencia.test' },
   convidado: { id: 'u2', email: 'convidado@agencia.test' }
 };
 
-const LINE = { number: '5500000000000', instance: 'soci-verify', secret: 'segredo-de-teste' };
+const LINE = { number: '5500000000000', instance: 'graao-verify', secret: 'segredo-de-teste' };
 
 async function boot(t, options = {}) {
   const store = createSqliteStore(':memory:');
@@ -46,7 +46,7 @@ test('Agência nova fica fechada até confirmar o celular, mas vê a própria te
   assert.equal(blocked.body.billing.status, 'Unverified');
 });
 
-test('A agência da soci é isenta e segue aberta', async t => {
+test('A agência da graao é isenta e segue aberta', async t => {
   const { get } = await boot(t);
   const workspaces = await get('/api/workspaces', 'root');
   assert.equal(workspaces.status, 200, JSON.stringify(workspaces.body));
@@ -92,7 +92,7 @@ test('Sem a linha de confirmação no ar, o cadastro de agência nova fica fecha
   assert.equal(closed.body.code, 'SIGNUP_CLOSED');
   await assert.rejects(async () => store.load('agency-u1'), /not found/i, 'nenhuma agência foi criada');
   const root = await get('/api/agency', 'root');
-  assert.equal(root.status, 200, 'a agência da soci continua entrando');
+  assert.equal(root.status, 200, 'a agência da graao continua entrando');
 });
 
 test('A cobrança pública não mostra o celular inteiro', () => {

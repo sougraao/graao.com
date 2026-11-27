@@ -1,4 +1,4 @@
-// soci AI Gateway: erros normalizados. Todo adapter converte a falha do provedor numa destas classes;
+// graao AI Gateway: erros normalizados. Todo adapter converte a falha do provedor numa destas classes;
 // o roteador decide pela classe (e nunca pelo texto do provedor) se tenta de novo, troca de modelo ou para.
 
 export const ERROR_KINDS = Object.freeze([
@@ -12,7 +12,7 @@ export const ERROR_KINDS = Object.freeze([
   'context_exceeded',  // entrada maior que a janela do modelo
   'invalid_request',   // a requisição está errada: outro provedor não resolve
   'policy',            // bloqueio de conteúdo ou segurança: nunca contornar com fallback
-  'budget',            // orçamento ou créditos da soci/organização insuficientes
+  'budget',            // orçamento ou créditos da graao/organização insuficientes
   'structured_output', // a resposta não obedeceu ao schema pedido
   'cancelled',         // quem chamou cancelou
   'disabled',          // kill switch, provedor desligado ou nenhum modelo elegível
@@ -30,7 +30,7 @@ export const canFallback = kind => FALLBACK_KINDS.has(kind);
 export const canRetrySame = kind => RETRY_SAME_KINDS.has(kind);
 export const countsForBreaker = kind => BREAKER_KINDS.has(kind);
 
-// Mensagens para quem usa a soci. Nada de detalhe interno, nome de provedor ou stack.
+// Mensagens para quem usa a graao. Nada de detalhe interno, nome de provedor ou stack.
 const USER_MESSAGES = {
   quota_exhausted: 'O limite gratuito de inteligência artificial foi atingido. Você poderá continuar quando sua cota for renovada.',
   budget: 'Seus créditos de IA acabaram. Adicione novos créditos para continuar.',

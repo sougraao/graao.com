@@ -26,7 +26,7 @@ export default {
       await page.locator('form.sch-settings').getByRole('button', { name: 'Salvar' }).click();
       await page.locator('.sch-link code').waitFor();
       // O app local mostra 127.0.0.1; no print vai o endereço que a agência vê na produção.
-      await page.locator('.sch-link code').evaluate(no => { no.dataset.url = no.textContent; no.textContent = no.textContent.replace(/^https?:\/\/[^/]+/, 'https://soci.app.br'); });
+      await page.locator('.sch-link code').evaluate(no => { no.dataset.url = no.textContent; no.textContent = no.textContent.replace(/^https?:\/\/[^/]+/, 'https://graao.com'); });
     }, destacar: '.sch-link' },
     { nome: 'pagina-publica', acao: async page => {
       const url = await page.locator('.sch-link code').getAttribute('data-url');

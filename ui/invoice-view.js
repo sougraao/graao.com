@@ -10,7 +10,7 @@ const day = value => /^\d{4}-\d{2}-\d{2}/.test(value || '') ? value.slice(0, 10)
 const say = (pt, es) => getLanguage() === 'es' ? es : pt;
 let view = null;
 
-try { if (!localStorage.getItem('soci_lang') && /^es/i.test(navigator.language || '')) await setLanguage('es'); } catch {}
+try { if (!localStorage.getItem('graao_lang') && /^es/i.test(navigator.language || '')) await setLanguage('es'); } catch {}
 
 async function api(action) {
   const response = await fetch(`/api/fatura/${encodeURIComponent(workspace)}`, {
@@ -48,7 +48,7 @@ function renderPay(v) {
 
 function render() {
   const v = view;
-  document.title = `${v.number || say('Fatura', 'Factura')} · ${v.sender || 'Soci'}`;
+  document.title = `${v.number || say('Fatura', 'Factura')} · ${v.sender || 'Graao'}`;
   $('title').textContent = v.title;
   $('sender').textContent = v.receipt ? `${v.receipt.title} ${v.receipt.number} · ${v.sender}` : v.number ? say(`Fatura ${v.number} de ${v.sender}`, `Factura ${v.number} de ${v.sender}`) : say(`Fatura de ${v.sender}`, `Factura de ${v.sender}`);
   $('doc').innerHTML = v.html;

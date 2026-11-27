@@ -1,8 +1,8 @@
-// Tira os prints de um artigo a partir do app soci LOCAL (Agência Demo), seguindo o roteiro do artigo.
+// Tira os prints de um artigo a partir do app graao LOCAL (Agência Demo), seguindo o roteiro do artigo.
 //
 //   npm --prefix docs-site run capturar -- roteiros/criar-pipeline.mjs [roteiros/outro.mjs ...]
 //
-// Cada roteiro roda num app soci próprio, em memória, semeado do zero (Agência Demo): o resultado não
+// Cada roteiro roda num app graao próprio, em memória, semeado do zero (Agência Demo): o resultado não
 // depende da ordem dos roteiros nem do que foi feito antes. Para navegar na demo à mão, use `npm run demo`.
 // Saída: docs-site/.midia/<grupo>/<artigo>/<nn>-<passo>.webp (1440 px de largura). Depois envie com
 // `npm run docs:midia -- enviar docs-site/.midia/<grupo>/<artigo> <grupo> <artigo>`.
@@ -15,7 +15,7 @@ import sharp from 'sharp';
 import { makeServer } from '../../server.mjs';
 import { semear } from './semear-demo.mjs';
 
-// App soci em memória, sem login, com a Agência Demo semeada. Devolve a base e a função que o desliga.
+// App graao em memória, sem login, com a Agência Demo semeada. Devolve a base e a função que o desliga.
 // `servidor` são opções extras do makeServer que um roteiro precisa, como um serviço externo simulado.
 export async function demoEmMemoria(servidor = {}) {
   const { server, host } = makeServer({ allowLocalAccess: true, auth: null, dbPath: ':memory:', port: 0, socialScheduler: false, ...servidor });
@@ -40,13 +40,13 @@ async function comDestaque(page, seletor, tirar) {
   if (!seletor) return tirar();
   const alvo = page.locator(seletor).first();
   await alvo.evaluate((no, cor) => {
-    no.dataset.sociAntes = JSON.stringify([no.style.outline, no.style.outlineOffset]);
+    no.dataset.graaoAntes = JSON.stringify([no.style.outline, no.style.outlineOffset]);
     no.style.outline = `3px solid ${cor}`;
     no.style.outlineOffset = '3px';
   }, COR_DESTAQUE);
   try { return await tirar(); }
   finally {
-    await alvo.evaluate(no => { const [o, off] = JSON.parse(no.dataset.sociAntes || '["",""]'); no.style.outline = o; no.style.outlineOffset = off; delete no.dataset.sociAntes; }).catch(() => {});
+    await alvo.evaluate(no => { const [o, off] = JSON.parse(no.dataset.graaoAntes || '["",""]'); no.style.outline = o; no.style.outlineOffset = off; delete no.dataset.graaoAntes; }).catch(() => {});
   }
 }
 

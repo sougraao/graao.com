@@ -1,6 +1,6 @@
 ---
 title: "Ações"
-description: "Todas as ações que um workflow da soci pode executar, agrupadas como no editor."
+description: "Todas as ações que um workflow da graao pode executar, agrupadas como no editor."
 sidebar:
   order: 3
 ---
@@ -73,7 +73,7 @@ A ação é o que o workflow faz depois do gatilho: enviar uma mensagem, mudar u
 | **Criar post social** | Cria um post no Social Planner como rascunho ou agendado. Sem conta escolhida, usa as contas da fila da categoria ou todas as conectadas. |
 | **Responder comentário público** |  |
 | **Enviar mensagem no chat do site** | Responde no chat do site em que o contato está conversando. Os botões aparecem embaixo da mensagem e, quando o visitante toca num, ele vai como resposta dele. |
-| **Registrar ligação** | Registra uma ligação feita ou recebida fora da Soci (no celular, por exemplo) no histórico de ligações e em Conversas. |
+| **Registrar ligação** | Registra uma ligação feita ou recebida fora da Graao (no celular, por exemplo) no histórico de ligações e em Conversas. |
 | **Notificação interna** |  |
 | **Pedir consentimento (opt-in)** | Manda o link da página de preferências do contato, onde ele escolhe os canais e os assuntos que quer receber. Quando ele salva, dispara Preferências de comunicação mudaram. Use `{{link_preferencias}}` para pôr o link no meio do texto (sem ele, o link vai no fim). |
 | **Pedir avaliação** | Envia o link de avaliação pessoal do contato com a mensagem do canal definida em Reputação → Configurações. |
@@ -85,7 +85,7 @@ A ação é o que o workflow faz depois do gatilho: enviar uma mensagem, mudar u
 
 | Ação | Para que serve |
 | --- | --- |
-| **Ligar para o contato** | Liga primeiro para o telefone da equipe e, quando alguém atende, completa a ligação com o contato, mostrando o número da Soci. A ligação aparece em Conversas e no relatório de ligações e dispara Ligação terminou. |
+| **Ligar para o contato** | Liga primeiro para o telefone da equipe e, quando alguém atende, completa a ligação com o contato, mostrando o número da Graao. A ligação aparece em Conversas e no relatório de ligações e dispara Ligação terminou. |
 | **Deixar recado por ligação** | Liga para o contato e, quando cai na caixa postal (ou alguém atende), fala o texto ou toca o áudio e desliga. |
 | **Adicionar ao discador** | Coloca o contato na fila do discador (Conversas → Discador), para a equipe ligar em sequência. Contatos sem telefone ou em não perturbe ficam de fora. |
 | **Ligação do Voice AI** | Um agente de IA publicado liga para o contato e conversa por voz, com a base de conhecimento dele e o objetivo desta etapa. Pode transferir para a equipe, encerrar ou marcar um horário do serviço escolhido. A transcrição vai para Conversas e dispara Ligação do Voice AI terminou. Usa a OpenAI de quem salvou o fluxo. |
@@ -124,7 +124,7 @@ A ação é o que o workflow faz depois do gatilho: enviar uma mensagem, mudar u
 | Ação | Para que serve |
 | --- | --- |
 | **Enviar conversão para a Meta** | Manda um evento do contato para o seu Pixel da Meta pela API de Conversões (como Lead ou Compra), para os anúncios otimizarem com dados do CRM. E-mail, telefone e nome vão com hash (SHA-256). Precisa do Pixel em Marketing → Rastreamento e do Meta Ads conectado em Marketing → Anúncios. |
-| **Enviar evento para o Google Analytics** | Manda um evento do contato para a sua propriedade do GA4 (Measurement Protocol), como lead gerado ou compra, com valor opcional. O contato vai só com um identificador da Soci (nada de e-mail ou telefone). Precisa do ID de medição e do segredo da API em Marketing → Rastreamento. |
+| **Enviar evento para o Google Analytics** | Manda um evento do contato para a sua propriedade do GA4 (Measurement Protocol), como lead gerado ou compra, com valor opcional. O contato vai só com um identificador da Graao (nada de e-mail ou telefone). Precisa do ID de medição e do segredo da API em Marketing → Rastreamento. |
 | **Enviar conversão para o Google Ads** | Registra uma conversão offline do contato numa ação de conversão da conta conectada em Marketing → Anúncios, pelo clique que trouxe o lead (gclid guardado na atribuição). Opcionalmente manda e-mail e telefone com hash (conversões otimizadas para leads), o que vale também para quem não veio de um clique. |
 | **Público personalizado da Meta** | Inclui ou tira o contato (e-mail e telefone com hash SHA-256) de um público personalizado da Meta, para anunciar para ele ou excluí-lo dos anúncios. O ID do público fica no Gerenciador de Públicos. Precisa do Meta Ads conectado em Marketing → Anúncios. |
 
@@ -133,7 +133,7 @@ A ação é o que o workflow faz depois do gatilho: enviar uma mensagem, mudar u
 | Ação | Para que serve |
 | --- | --- |
 | **Bot de IA na conversa** | Um agente de IA publicado lê a conversa com o contato e responde à última mensagem dele, com a base de conhecimento do agente. Ele passa a conversa para a equipe quando o cliente pede uma pessoa ou quando não sabe responder, encerra quando o cliente se despede e, com um serviço escolhido, oferece horários livres e marca o escolhido. A resposta fica em `{{vars.nome}}`. |
-| **Ligar ou desligar o bot de IA** | Liga o bot de IA na conversa do contato: cada mensagem nova do cliente recebe a resposta do agente, até ele passar a conversa para a equipe, encerrar o atendimento ou ser desligado. As respostas usam a OpenAI de quem salvou este fluxo ou, sem a chave, a IA gratuita da soci, quando liberada. Desligar também tira o bot da conversa. |
+| **Ligar ou desligar o bot de IA** | Liga o bot de IA na conversa do contato: cada mensagem nova do cliente recebe a resposta do agente, até ele passar a conversa para a equipe, encerrar o atendimento ou ser desligado. As respostas usam a OpenAI de quem salvou este fluxo ou, sem a chave, a IA gratuita da graao, quando liberada. Desligar também tira o bot da conversa. |
 | **Rodar agente de IA** | Manda uma mensagem para a versão publicada de um agente de IA desta subconta (com a base de conhecimento e a memória dele) e guarda a resposta em `{{vars.nome}}`. A execução aparece no histórico do agente. |
 | **Perguntar à IA** | Pede qualquer tarefa à IA com as suas palavras (escrever, reescrever, classificar, responder) e guarda o resultado em `{{vars.nome}}`. O texto de apoio vai como dado para a IA analisar, nunca como instrução. |
 | **Gerar imagem com IA** | Cria uma imagem a partir de uma descrição (OpenAI gpt-image-1) e guarda em Arquivos, com um link público em `{{vars.nome}}` para mandar por WhatsApp, e-mail ou post. Usa a OpenAI de quem salvou o fluxo. |
@@ -164,7 +164,7 @@ A ação é o que o workflow faz depois do gatilho: enviar uma mensagem, mudar u
 | **Adicionar a outro fluxo** |  |
 | **Remover de um fluxo** |  |
 | **Remover de todos os fluxos** | Tira o contato de todos os fluxos em que ele está rodando ou esperando. |
-| **Código personalizado** | Calcula valores com a linguagem de expressões da Soci, uma linha por variável: nome = expressão. Cada linha pode usar as anteriores pelo nome, o contato (contact), o gatilho (trigger), as variáveis (vars) e as etapas (steps); as próximas etapas leem o resultado em `{{vars.nome}}`. Roda isolado, sem rede e sem disco. Ex.: total = number(trigger.total) * 0.9 |
+| **Código personalizado** | Calcula valores com a linguagem de expressões da Graao, uma linha por variável: nome = expressão. Cada linha pode usar as anteriores pelo nome, o contato (contact), o gatilho (trigger), as variáveis (vars) e as etapas (steps); as próximas etapas leem o resultado em `{{vars.nome}}`. Roda isolado, sem rede e sem disco. Ex.: total = number(trigger.total) * 0.9 |
 | **Operação matemática** |  |
 | **Formatar texto** |  |
 | **Formatar data** | Guarda uma data formatada em `{{vars.nome}}`. Aceita AAAA-MM-DD, data com hora ou a palavra hoje. |

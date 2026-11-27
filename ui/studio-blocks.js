@@ -29,7 +29,7 @@ function form({ accent = '#111111', onAccent = '#ffffff' } = {}) {
 }
 
 // Vídeo, formulário e agenda: aqui só um marcador; o quadro é montado ao servir a página (site-embeds.mjs).
-const embed = (kind, text, ratio = '') => `<div data-soci-embed="${kind}" style="display:grid;place-items:center;width:100%;min-height:220px;${ratio}padding:24px;border-radius:16px;text-align:center;${line};${soft}"><span style="opacity:.75">${text}</span></div>`;
+const embed = (kind, text, ratio = '') => `<div data-graao-embed="${kind}" style="display:grid;place-items:center;width:100%;min-height:220px;${ratio}padding:24px;border-radius:16px;text-align:center;${line};${soft}"><span style="opacity:.75">${text}</span></div>`;
 
 // [id, nome, gerador]. Elementos entram junto do que está selecionado; seções entram entre as seções da página.
 export const blockGroups = [
@@ -40,7 +40,7 @@ export const blockGroups = [
     ['image', 'Imagem', () => photo('3/2')],
     ['video', 'Vídeo', () => embed('video', 'Vídeo: cole o link no painel Design', 'aspect-ratio:16/9;')],
     ['form', 'Formulário simples', look => form(look)],
-    ['soci-form', 'Formulário com perguntas', () => embed('form', 'Formulário: escolha no painel Design')],
+    ['graao-form', 'Formulário com perguntas', () => embed('form', 'Formulário: escolha no painel Design')],
     ['booking', 'Agenda', () => embed('booking', 'Agenda: escolha o serviço no painel Design')],
     ['divider', 'Divisor', () => '<hr style="width:100%;border:0;border-top:1px solid currentColor;opacity:.2;margin:24px 0">']
   ]],

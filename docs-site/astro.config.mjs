@@ -5,16 +5,16 @@ import starlightLlmsTxt from 'starlight-llms-txt';
 import starlightLinksValidator from 'starlight-links-validator';
 
 export default defineConfig({
-  site: 'https://doc.soci.app.br',
+  site: 'https://doc.graao.com',
   integrations: [
     starlight({
-      title: 'Central de ajuda da Soci',
-      description: 'Documentação da soci para agências: como usar cada ferramenta da plataforma, passo a passo.',
-      logo: { src: './src/assets/logo-soci.svg', alt: 'Soci' },
+      title: 'Central de ajuda da Graao',
+      description: 'Documentação da graao para agências: como usar cada ferramenta da plataforma, passo a passo.',
+      logo: { src: './src/assets/logo-graao.svg', alt: 'Graao' },
       favicon: '/favicon.svg',
       defaultLocale: 'root',
       locales: { root: { label: 'Português', lang: 'pt-BR' } },
-      customCss: ['./src/styles/soci.css'],
+      customCss: ['./src/styles/graao.css'],
       components: { Footer: './src/components/Rodape.astro' },
       lastUpdated: true,
       social: [],

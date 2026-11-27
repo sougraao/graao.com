@@ -5,7 +5,7 @@ export const prospectSections = {
   health:'Saúde do site', stack:'Tecnologias e redes sociais',
   listings:'Perfil no Google e presença local', reputation:'Avaliações e reputação', next:'Próximos passos'
 };
-export const prospectThemes = { blue:'Azul', pink:'Pink soci', teal:'Verde', graphite:'Grafite' };
+export const prospectThemes = { blue:'Azul', pink:'Pink graao', teal:'Verde', graphite:'Grafite' };
 export const normalizeProspectTheme = theme => theme === 'violet' ? 'pink' : theme;
 
 export function blankProspecting() {

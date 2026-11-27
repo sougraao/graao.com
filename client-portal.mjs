@@ -22,10 +22,10 @@ const blankPortal = () => ({
   members: [], links: [], sessions: []
 });
 
-// `staff`: a equipe entrou pelo app. O cookie leva a conta soci que entrou e só vale enquanto ela está aberta: trocar de
+// `staff`: a equipe entrou pelo app. O cookie leva a conta graao que entrou e só vale enquanto ela está aberta: trocar de
 // conta (ou sair) não deixa a próxima agir no portal como a anterior.
 export function portalCookie(req, res, workspace, token, secure, { staff = false } = {}) {
-  const name = secure ? '__Secure-soci_portal' : 'soci_portal';
+  const name = secure ? '__Secure-graao_portal' : 'graao_portal';
   if (token !== undefined) {
     const owner = staff && token ? activeAccountId(req) : '';
     res.appendHeader('Set-Cookie', `${name}=${token}${owner && '~' + owner}; Path=/api/client-portal/${workspace}/; HttpOnly; SameSite=Lax; Max-Age=${token ? sessionSeconds : 0}${secure ? '; Secure' : ''}`);
@@ -177,7 +177,7 @@ export function makeClientPortal({
     }
 
     if (action === 'staff-enter') {
-      const email = emailOf(input.email || state.profile?.email || 'admin@soci.app.br');
+      const email = emailOf(input.email || state.profile?.email || 'admin@graao.com');
       const name = text(input.name || state.profile?.name || 'Administrador', 120);
       // The team account photo (Google sign-in), https only; a bad value never replaces a good one.
       const photo = typeof input.photo === 'string' && /^https:\/\/[^\s"'<>]+$/i.test(input.photo) ? input.photo.slice(0, 1024) : '';

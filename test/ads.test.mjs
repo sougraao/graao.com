@@ -22,8 +22,8 @@ test('Visits are classified into channels from UTM tags, click ids and the refer
   assert.equal(classify({ referrer: 'l.instagram.com' }), 'social');
   assert.equal(classify({ referrer: 'blog.parceiro.com' }), 'referral');
   assert.equal(classify({}), 'direct');
-  assert.equal(touchFromVisit('/s/demo/x?ref=1', 'https://soci.app/p', 'soci.app'), null, 'an internal visit without tags is not a new source');
-  const t = touchFromVisit('/form/demo/f?utm_source=google&utm_medium=cpc&utm_campaign=Inverno&gclid=G1', 'https://www.google.com/', 'soci.app', Date.parse('2026-11-20T10:00:00Z'));
+  assert.equal(touchFromVisit('/s/demo/x?ref=1', 'https://graao.app/p', 'graao.app'), null, 'an internal visit without tags is not a new source');
+  const t = touchFromVisit('/form/demo/f?utm_source=google&utm_medium=cpc&utm_campaign=Inverno&gclid=G1', 'https://www.google.com/', 'graao.app', Date.parse('2026-11-20T10:00:00Z'));
   assert.deepEqual([t.channel, t.campaign, t.gclid, t.referrer, t.landing, t.at], ['google_ads', 'Inverno', 'G1', 'google.com', '/form/demo/f', '2026-11-20T10:00:00.000Z']);
 });
 
@@ -56,7 +56,7 @@ test('Public forms keep the first and last touch of the visitor and fire the ad 
 
   const visit = await fetch(`${base}/form/demo/${form.id}?utm_source=google&utm_medium=cpc&utm_campaign=Inverno&utm_id=111&gclid=G1`, { headers: { Referer: 'https://www.google.com/' } });
   const cookie = visit.headers.get('set-cookie').split(';')[0];
-  assert.match(cookie, /^soci_at_demo=/);
+  assert.match(cookie, /^graao_at_demo=/);
   const later = await fetch(`${base}/form/demo/${form.id}`, { headers: { Referer: 'https://www.bing.com/', Cookie: cookie } });
   const both = later.headers.get('set-cookie').split(';')[0];
 
@@ -198,7 +198,7 @@ test('Connecting Meta Ads by OAuth, choosing the account, syncing, pausing, crea
   const auth = new URL(go.headers.get('location'));
   assert.match(auth.searchParams.get('scope'), /ads_management/);
   const popup = await (await fetch(`${base}/api/ads/callback?state=${auth.searchParams.get('state')}&code=abc`)).text();
-  assert.match(popup, /soci-ads/); assert.doesNotMatch(popup, /"error"/);
+  assert.match(popup, /graao-ads/); assert.doesNotMatch(popup, /"error"/);
   assert.match(await (await fetch(`${base}/api/ads/callback?state=${auth.searchParams.get('state')}&code=abc`)).text(), /expirou/, 'a state works once');
 
   const status = (await ads('status')).body.meta;

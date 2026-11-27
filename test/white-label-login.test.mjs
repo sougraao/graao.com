@@ -1,6 +1,6 @@
 // White Label: entrar com Google no domínio da agência (app.agencia.com.br). O Supabase só devolve o login para a
-// soci.app.br (a única origem na lista dele), então antes o Google voltava para lá sem o verificador PKCE, que mora
-// no cookie do domínio da agência, e a entrada falhava. Agora a soci.app.br só repassa o código para a agência.
+// graao.com (a única origem na lista dele), então antes o Google voltava para lá sem o verificador PKCE, que mora
+// no cookie do domínio da agência, e a entrada falhava. Agora a graao.com só repassa o código para a agência.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createSupabaseAuth } from '../auth.mjs';
@@ -23,13 +23,13 @@ function setup() {
   } });
   const store = { findAgency: async filter => filter.company.domain === 'app.agencia.com.br' ? { id: 'ag-1', state: { company: { domain: 'app.agencia.com.br', name: 'Agência Um' } } } : null };
   const route = createAuthRoutes({
-    auth, ready: Promise.resolve(), store, platformOrigin: 'https://soci.app.br',
+    auth, ready: Promise.resolve(), store, platformOrigin: 'https://graao.com',
     error: (message, status) => Object.assign(new Error(message), { status }),
     payload: async req => req.body || {},
     accessContext: async () => ({ agency: { company: { name: 'Agência Um' } }, who: { owner: false } })
   });
   // Um navegador por domínio: cada um guarda só os próprios cookies, como no navegador de verdade.
-  const jars = { 'app.agencia.com.br': new Map(), 'soci.app.br': new Map() };
+  const jars = { 'app.agencia.com.br': new Map(), 'graao.com': new Map() };
   async function visit(host, method, path, body) {
     const jar = jars[host];
     const req = { headers: { host, cookie: [...jar].map(([k, v]) => `${k}=${v}`).join('; ') }, body };
@@ -49,26 +49,26 @@ function setup() {
   return { visit, jars, exchanged };
 }
 
-test('Google login on the agency domain goes through soci.app.br and ends on the agency domain', async () => {
+test('Google login on the agency domain goes through graao.com and ends on the agency domain', async () => {
   const { visit, jars, exchanged } = setup();
   const started = await visit('app.agencia.com.br', 'POST', '/api/auth/google', { next: '/app' });
   const relay = new URL(started.json.url);
-  assert.equal(relay.origin, 'https://soci.app.br');
+  assert.equal(relay.origin, 'https://graao.com');
   assert.equal(relay.pathname, '/api/auth/relay');
   assert.equal(relay.searchParams.get('host'), 'app.agencia.com.br');
   const authorize = new URL(relay.searchParams.get('to'));
   assert.equal(authorize.origin, 'https://test.supabase.co');
-  assert.equal(authorize.searchParams.get('redirect_to'), 'https://soci.app.br/api/auth/callback/google', 'o Supabase volta para a origem que ele aceita');
+  assert.equal(authorize.searchParams.get('redirect_to'), 'https://graao.com/api/auth/callback/google', 'o Supabase volta para a origem que ele aceita');
   assert.ok(jars['app.agencia.com.br'].get('go_google_flow'), 'o verificador PKCE fica no domínio da agência');
 
-  const toGoogle = await visit('soci.app.br', 'GET', relay.pathname + relay.search);
+  const toGoogle = await visit('graao.com', 'GET', relay.pathname + relay.search);
   assert.equal(toGoogle.location, authorize.href);
-  assert.equal(jars['soci.app.br'].get('go_google_relay'), 'app.agencia.com.br');
+  assert.equal(jars['graao.com'].get('go_google_relay'), 'app.agencia.com.br');
 
-  const back = await visit('soci.app.br', 'GET', '/api/auth/callback/google?code=code-ana');
+  const back = await visit('graao.com', 'GET', '/api/auth/callback/google?code=code-ana');
   assert.equal(back.location, 'https://app.agencia.com.br/api/auth/callback/google?code=code-ana');
-  assert.equal(exchanged.length, 0, 'a soci.app.br não troca o código: ela não tem o verificador');
-  assert.equal(jars['soci.app.br'].has('go_google_relay'), false, 'o repasse vale uma vez só');
+  assert.equal(exchanged.length, 0, 'a graao.com não troca o código: ela não tem o verificador');
+  assert.equal(jars['graao.com'].has('go_google_relay'), false, 'o repasse vale uma vez só');
 
   const done = await visit('app.agencia.com.br', 'GET', '/api/auth/callback/google?code=code-ana');
   assert.equal(done.location, '/app');
@@ -79,18 +79,18 @@ test('Google login on the agency domain goes through soci.app.br and ends on the
 test('The relay only sends codes to an agency domain and only to the Supabase login', async () => {
   const { visit, jars } = setup();
   const supabase = 'https://test.supabase.co/auth/v1/authorize?provider=google';
-  assert.equal((await visit('soci.app.br', 'GET', `/api/auth/relay?host=atacante.com&to=${encodeURIComponent(supabase)}`)).status, 400);
-  assert.equal((await visit('soci.app.br', 'GET', `/api/auth/relay?host=app.agencia.com.br&to=${encodeURIComponent('https://atacante.com/auth/v1/authorize')}`)).status, 400);
-  assert.equal(jars['soci.app.br'].size, 0);
+  assert.equal((await visit('graao.com', 'GET', `/api/auth/relay?host=atacante.com&to=${encodeURIComponent(supabase)}`)).status, 400);
+  assert.equal((await visit('graao.com', 'GET', `/api/auth/relay?host=app.agencia.com.br&to=${encodeURIComponent('https://atacante.com/auth/v1/authorize')}`)).status, 400);
+  assert.equal(jars['graao.com'].size, 0);
 });
 
-test('Logging in on soci.app.br itself keeps the old flow and drops a half-done relay', async () => {
+test('Logging in on graao.com itself keeps the old flow and drops a half-done relay', async () => {
   const { visit, jars } = setup();
-  await visit('soci.app.br', 'GET', `/api/auth/relay?host=app.agencia.com.br&to=${encodeURIComponent('https://test.supabase.co/auth/v1/authorize?provider=google')}`);
-  assert.ok(jars['soci.app.br'].get('go_google_relay'));
-  const started = await visit('soci.app.br', 'POST', '/api/auth/google', { next: '/app' });
-  assert.equal(new URL(started.json.url).searchParams.get('redirect_to'), 'https://soci.app.br/api/auth/callback/google');
-  assert.equal(jars['soci.app.br'].has('go_google_relay'), false);
-  const done = await visit('soci.app.br', 'GET', '/api/auth/callback/google?code=code-ana');
+  await visit('graao.com', 'GET', `/api/auth/relay?host=app.agencia.com.br&to=${encodeURIComponent('https://test.supabase.co/auth/v1/authorize?provider=google')}`);
+  assert.ok(jars['graao.com'].get('go_google_relay'));
+  const started = await visit('graao.com', 'POST', '/api/auth/google', { next: '/app' });
+  assert.equal(new URL(started.json.url).searchParams.get('redirect_to'), 'https://graao.com/api/auth/callback/google');
+  assert.equal(jars['graao.com'].has('go_google_relay'), false);
+  const done = await visit('graao.com', 'GET', '/api/auth/callback/google?code=code-ana');
   assert.equal(done.location, '/app');
 });

@@ -31,7 +31,7 @@ test('Client portal invites, single-use login and course permissions persist in 
   });
   const { server, host } = makeServer({
     store, auth: null, allowLocalAccess: true, port: 0, socialScheduler: false,
-    portalOptions: { publicOrigin: 'https://soci.example', from: 'portal@soci.example', mailKey: 'example-key', async request(url, options) {
+    portalOptions: { publicOrigin: 'https://graao.example', from: 'portal@graao.example', mailKey: 'example-key', async request(url, options) {
       assert.equal(url, 'https://api.resend.com/emails');
       assert.match(options.headers['Idempotency-Key'], /^portal-[a-f\d]{64}$/);
       deliveries.push(JSON.parse(options.body));

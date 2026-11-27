@@ -68,7 +68,7 @@ function cleanAddress(hash = '') {
  */
 export function installAccounts({ session, beforeLeave = async () => {} }) {
   let menu = null, list = null, closedAt = 0, seenId = '', notice = null, working = false;
-  const channel = 'BroadcastChannel' in window ? new BroadcastChannel('soci-account') : null;
+  const channel = 'BroadcastChannel' in window ? new BroadcastChannel('graao-account') : null;
   const announce = account => channel?.postMessage({ id: account?.id || '', name: account?.name || '' });
 
   // ---- Trocar, adicionar, sair --------------------------------------------
@@ -250,8 +250,8 @@ export function installAccounts({ session, beforeLeave = async () => {} }) {
     dismiss();
     if (data?.id) void changedElsewhere(data); else location.assign('/login');
   });
-  window.addEventListener('soci:account-changed', () => void changedElsewhere());
-  window.addEventListener('soci:languagechange', () => draw());
+  window.addEventListener('graao:account-changed', () => void changedElsewhere());
+  window.addEventListener('graao:languagechange', () => draw());
 
   // ---- Voltas do Google ----------------------------------------------------
   const returned = /^\/(app|painel)\/?$/.test(location.pathname) && new URLSearchParams(location.search).get('conta');

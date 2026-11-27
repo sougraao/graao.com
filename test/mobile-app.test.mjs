@@ -41,11 +41,11 @@ test('Web Push: the payload decrypts on the device and the VAPID token verifies 
   const message = JSON.stringify({ title: 'Nova mensagem', body: 'Ana: oi!' });
   assert.equal(decrypt(encryptPayload(message, sub), phone), message);
 
-  const header = vapidHeader(sub.endpoint, { ...keys, subject: 'mailto:teste@soci.test', now: Date.UTC(2026, 10, 22) });
+  const header = vapidHeader(sub.endpoint, { ...keys, subject: 'mailto:teste@graao.test', now: Date.UTC(2026, 10, 22) });
   const [, token, k] = header.match(/^vapid t=([^,]+), k=(.+)$/);
   assert.equal(k, keys.publicKey);
   const [head, claims, signature] = token.split('.');
-  assert.deepEqual(JSON.parse(Buffer.from(claims, 'base64url')), { aud: 'https://push.example.test', exp: Date.UTC(2026, 10, 22) / 1000 + 12 * 3600, sub: 'mailto:teste@soci.test' });
+  assert.deepEqual(JSON.parse(Buffer.from(claims, 'base64url')), { aud: 'https://push.example.test', exp: Date.UTC(2026, 10, 22) / 1000 + 12 * 3600, sub: 'mailto:teste@graao.test' });
   const pub = Buffer.from(keys.publicKey, 'base64url');
   const key = createPublicKey({ key: { kty: 'EC', crv: 'P-256', x: b64u(pub.subarray(1, 33)), y: b64u(pub.subarray(33)) }, format: 'jwk' });
   assert.equal(verify('sha256', Buffer.from(`${head}.${claims}`), { key, dsaEncoding: 'ieee-p1363' }, Buffer.from(signature, 'base64url')), true);
@@ -75,12 +75,12 @@ test('Push in the sub-account: subscriptions, new-message alerts for the team an
 
 test('Store package: what is missing, the Bubblewrap manifest and the Digital Asset Links', () => {
   const agency = { mobileApp: { appName: 'Agência Sol', primary: '#ff6600', accent: '#222222', loginTitle: 'Bem-vindo', hidden: [], order: ['conversations'], custom: [] } };
-  const draft = storePackage(mobileOf(agency), 'agency', 'https://app.soci.test');
+  const draft = storePackage(mobileOf(agency), 'agency', 'https://app.graao.test');
   assert.equal(draft.ready, false);
   assert.ok(draft.missing.includes('publicar o app'));
   Object.assign(agency.mobileApp, { icon: PNG, status: 'published', version: 3, store: { developer: 'Sol Ltda', supportEmail: 'oi@sol.test', supportUrl: '', privacyUrl: 'https://sol.test/privacidade',
     androidPackage: 'br.com.sol.app', iosBundle: 'br.com.sol.app', fingerprints: ['AA:'.repeat(31) + 'AA'], domain: 'app.sol.test' } });
-  const pack = storePackage(mobileOf(agency), 'agency', 'https://app.soci.test');
+  const pack = storePackage(mobileOf(agency), 'agency', 'https://app.graao.test');
   assert.deepEqual([pack.ready, pack.host, pack.twaManifest.packageId, pack.twaManifest.appVersionCode, pack.twaManifest.startUrl], [true, 'app.sol.test', 'br.com.sol.app', 3, '/mobile/agency/?source=app']);
   assert.deepEqual(pack.assetlinks[0].target.sha256_cert_fingerprints, ['AA:'.repeat(31) + 'AA']);
 });

@@ -1,8 +1,8 @@
-# Cobrança soci → agência: plano de implementação
+# Cobrança graao → agência: plano de implementação
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** a soci passa a exigir celular confirmado pelo WhatsApp, dar 15 + 15 dias de teste, cobrar os planos de R$ 97/297/497 pelo AbacatePay da soci, aplicar os limites do GHL e pagar afiliados pelo link.
+**Goal:** a graao passa a exigir celular confirmado pelo WhatsApp, dar 15 + 15 dias de teste, cobrar os planos de R$ 97/297/497 pelo AbacatePay da graao, aplicar os limites do GHL e pagar afiliados pelo link.
 
 **Architecture:** um modelo puro (`agency-billing-model.mjs`) decide estado, acesso e limites a partir de `agency.billing` e de um relógio injetado; o servidor só lê o veredito. A confirmação do celular é um webhook próprio da Evolution que nunca guarda mensagens. A cobrança usa a conexão de agência da agência raiz (`AGENCY_ID`) no AbacatePay e o webhook que já existe.
 
@@ -16,15 +16,15 @@
 - Planos: `Starter` R$ 97, `Unlimited` R$ 297, `Agency Pro` R$ 497, mensais. Sem cupom, sem anual.
 - `retryPolicy` da assinatura da agência: `{ maxRetry: 8, retryEvery: 3 }`.
 - Um celular por agência; trava atômica `store.insert('phone-' + sha256(e164), …)`.
-- Código de confirmação: 6 caracteres do alfabeto `ABCDEFGHJKLMNPQRSTUVWXYZ23456789`, válido 15 min, guardado como hash; mensagem `Confirmar soci XXXXXX`.
+- Código de confirmação: 6 caracteres do alfabeto `ABCDEFGHJKLMNPQRSTUVWXYZ23456789`, válido 15 min, guardado como hash; mensagem `Confirmar graao XXXXXX`.
 - Limites de envio de código: 5 por hora por agência, 20 por hora por IP.
-- Variáveis: `SOCI_VERIFY_WHATSAPP`, `SOCI_VERIFY_INSTANCE`, `SOCI_VERIFY_SECRET`. O número nunca entra no código, nos testes nem na documentação.
+- Variáveis: `GRAAO_VERIFY_WHATSAPP`, `GRAAO_VERIFY_INSTANCE`, `GRAAO_VERIFY_SECRET`. O número nunca entra no código, nos testes nem na documentação.
 - A agência raiz (`AGENCY_ID = 'agency'`) é `Exempt`: nunca é bloqueada nem cobrada.
 - Bloqueio fecha só o painel (agência e subcontas). Páginas públicas, webhooks, cron e automações continuam.
 - Webhook de confirmação nunca grava mensagem, contato ou mídia.
 - Textos em pt e es (`ui/locales`), sem `confirm/alert/prompt` (usar `ui/ask.js`), telas com `.set-form` e tokens de `ui/tokens.css`.
 - Cada PR leva artigo na doc (`docs-site/`), linha em `novidades.mdx`, `cobertura.json`, prints só da Agência Demo local.
-- Comissão de afiliado: 40% (`affiliateRate`), 30 dias de carência, cookie `soci_ref` de 90 dias, vale o primeiro link.
+- Comissão de afiliado: 40% (`affiliateRate`), 30 dias de carência, cookie `graao_ref` de 90 dias, vale o primeiro link.
 
 ## Review Focus
 
@@ -61,7 +61,7 @@ test('Fixo, curto ou estrangeiro curto é inválido; estrangeiro válido fica co
   assert.equal(normalizePhone('+351 912 345 678'), '351912345678');
 });
 test('O código sai do texto em qualquer caixa e com espaços', () => {
-  assert.equal(codeFromText('confirmar SOCI  ab3k9z'), 'AB3K9Z');
+  assert.equal(codeFromText('confirmar GRAAO  ab3k9z'), 'AB3K9Z');
   assert.equal(codeFromText('oi'), '');
 });
 test('Código usa só o alfabeto sem ambiguidade e o hash não é o código', () => {
@@ -71,7 +71,7 @@ test('Código usa só o alfabeto sem ambiguidade e o hash não é o código', ()
   assert.notEqual(hash, code);
 });
 test('O link abre o WhatsApp com a mensagem pronta', () => {
-  assert.equal(verifyLink('5500000000000', 'AB3K9Z'), 'https://wa.me/5500000000000?text=Confirmar%20soci%20AB3K9Z');
+  assert.equal(verifyLink('5500000000000', 'AB3K9Z'), 'https://wa.me/5500000000000?text=Confirmar%20graao%20AB3K9Z');
 });
 ```
 
@@ -137,7 +137,7 @@ test('Sem celular ou bloqueada não usa; teste vencido ainda usa até a varredur
 
 **Files:**
 - Create: `routes/verify.mjs`
-- Modify: `whatsapp.mjs` (exportar `inboundTexts(payload): { phone, lid, text }[]` reaproveitando `evolutionInbound`; no handler, `verifyLine: { provision(webhookUrl), status(), sendText(number, text) }` usando `SOCI_VERIFY_INSTANCE` e as credenciais globais)
+- Modify: `whatsapp.mjs` (exportar `inboundTexts(payload): { phone, lid, text }[]` reaproveitando `evolutionInbound`; no handler, `verifyLine: { provision(webhookUrl), status(), sendText(number, text) }` usando `GRAAO_VERIFY_INSTANCE` e as credenciais globais)
 - Modify: `server.mjs` (montar a rota, passar `store`, `whatsapp`, `changeAgency`, `allowSign`)
 - Test: `test/verify-route.test.mjs` (usa `test/helpers/fake-evolution.mjs`)
 
@@ -146,8 +146,8 @@ test('Sem celular ou bloqueada não usa; teste vencido ainda usa até a varredur
 - Produces:
   - `POST /api/verify/start` `{ phone }` → `{ link, code, expiresAt, number }`; grava `billing.verify = { phone, hash, expiresAt, refused: '' }`; 429 acima dos limites; 503 `VERIFY_OFF` sem as variáveis; 409 `PHONE_TAKEN` se `phoneKey` já existe.
   - `GET /api/verify/status` → `{ status: 'waiting'|'verified'|'refused'|'expired', reason }`.
-  - `POST /api/verify/whatsapp/<SOCI_VERIFY_SECRET>` — webhook da Evolution. Para cada texto com código: acha a agência por `store.findAgency({ billing: { verify: { hash } } })` (ou índice `verify-<hash>` gravado no start; o construtor escolhe o que `findAgency` suporta), confere que `normalizePhone(remetente) === verify.phone`, faz a trava, `startTrial`, grava `phone`/`phoneVerifiedAt`, responde pelo `verifyLine.sendText`. Sempre devolve 200.
-  - Respostas fixas: "Pronto, sua conta da soci está confirmada.", "Este número já tem uma conta na soci.", "Abra o WhatsApp no celular deste número e envie a mensagem de novo.", "Este código venceu. Gere outro na soci."
+  - `POST /api/verify/whatsapp/<GRAAO_VERIFY_SECRET>` — webhook da Evolution. Para cada texto com código: acha a agência por `store.findAgency({ billing: { verify: { hash } } })` (ou índice `verify-<hash>` gravado no start; o construtor escolhe o que `findAgency` suporta), confere que `normalizePhone(remetente) === verify.phone`, faz a trava, `startTrial`, grava `phone`/`phoneVerifiedAt`, responde pelo `verifyLine.sendText`. Sempre devolve 200.
+  - Respostas fixas: "Pronto, sua conta da graao está confirmada.", "Este número já tem uma conta na graao.", "Abra o WhatsApp no celular deste número e envie a mensagem de novo.", "Este código venceu. Gere outro na graao."
 
 - [ ] **Step 1: testes**
 
@@ -210,7 +210,7 @@ Comportamento: campo do celular (Brasil por padrão), botão **Confirmar pelo Wh
 - [ ] Testes para cada evento, eventos fora de ordem (`renewed` depois de `cancelled` não reativa), `canExtend` nos dias 11, 12 e 16, e `sweepDue` com assinatura em teste (não bloqueia).
 - [ ] Commit `feat(cobranca): planos e transições da agência`.
 
-### Task 8: AbacatePay da soci
+### Task 8: AbacatePay da graao
 
 **Files:**
 - Modify: `abacatepay.mjs`
@@ -218,12 +218,12 @@ Comportamento: campo do celular (Brasil por padrão), botão **Confirmar pelo Wh
 
 **Interfaces:**
 - Produces:
-  - `subscribeAgency(targetAgencyId, plan: 'Starter'|'Unlimited'|'Agency Pro', { extend: boolean, publicOrigin }): Promise<{ checkoutId, url, planId, amount, status: 'Pending' }>` — chave da conexão `AGENCY_SCOPE` de `AGENCY_ID`; produto `soci-agency-<plano-slug>` ou `-t15`; `methods` `['CARD','PIX']` sem teste e `['CARD']` com teste; `retryPolicy { maxRetry: 8, retryEvery: 3 }`; `metadata: { agency: targetAgencyId, plan }`.
+  - `subscribeAgency(targetAgencyId, plan: 'Starter'|'Unlimited'|'Agency Pro', { extend: boolean, publicOrigin }): Promise<{ checkoutId, url, planId, amount, status: 'Pending' }>` — chave da conexão `AGENCY_SCOPE` de `AGENCY_ID`; produto `graao-agency-<plano-slug>` ou `-t15`; `methods` `['CARD','PIX']` sem teste e `['CARD']` com teste; `retryPolicy { maxRetry: 8, retryEvery: 3 }`; `metadata: { agency: targetAgencyId, plan }`.
   - `getSubscription(subscriptionId)`, `cancelAgencySubscription(subscriptionId)`, `changeAgencyPlan(subscriptionId, plan)`.
   - No `receive`: quando `agencyId === AGENCY_ID`, `scope === AGENCY_SCOPE` e `data.checkout?.metadata?.agency` existe, chama `onPlatformSubscription(targetAgencyId, event, data, devMode)` em vez de `subscriptionEvent`.
 
-- [ ] Testes: produto criado uma vez; extensão usa `-t15` e só cartão; evento com `metadata.agency` chega ao callback e não mexe em `accounts`; sem conexão na raiz → erro "A soci ainda não ligou o AbacatePay".
-- [ ] Commit `feat(cobranca): assinatura da agência no AbacatePay da soci`.
+- [ ] Testes: produto criado uma vez; extensão usa `-t15` e só cartão; evento com `metadata.agency` chega ao callback e não mexe em `accounts`; sem conexão na raiz → erro "A graao ainda não ligou o AbacatePay".
+- [ ] Commit `feat(cobranca): assinatura da agência no AbacatePay da graao`.
 
 ### Task 9: rotas, webhook, livro e varredura
 
@@ -251,7 +251,7 @@ Comportamento: campo do celular (Brasil por padrão), botão **Confirmar pelo Wh
 
 ### Task 11: documentação do PR 2
 
-`docs-site/src/content/docs/agencia/plano-da-soci.mdx` + roteiro + novidades + cobertura + secoes + prints. Commit e PR.
+`docs-site/src/content/docs/agencia/plano-da-graao.mdx` + roteiro + novidades + cobertura + secoes + prints. Commit e PR.
 
 ---
 
@@ -275,24 +275,24 @@ Comportamento: campo do celular (Brasil por padrão), botão **Confirmar pelo Wh
 
 ### Task 13: documentação do PR 3
 
-Atualizar os artigos das telas com selo (white-label/app desktop, configurador SaaS) e o `plano-da-soci.mdx` com a tabela. Commit e PR.
+Atualizar os artigos das telas com selo (white-label/app desktop, configurador SaaS) e o `plano-da-graao.mdx` com a tabela. Commit e PR.
 
 ---
 
-## PR 4 · Afiliados da soci (branch `feat/cobranca-agencia-afiliados`, base PR 3)
+## PR 4 · Afiliados da graao (branch `feat/cobranca-agencia-afiliados`, base PR 3)
 
 ### Task 14: link, indicação e comissão
 
 **Files:**
-- Modify: `server.mjs` (GET `/` e `/login`: `?ref=` válido grava `soci_ref=<código>.<timestamp>` por 90 dias se não houver), `routes/verify.mjs` (na confirmação: `referredBy` e indicação automática na agência que indicou), `agency-billing-model.mjs` (`referralFor`, `commissionFor`), `agency-model.mjs` (remover `referrals` da criação manual e `affiliate-pay`; `affiliate-payout` passa a aceitar só Pix: `{ method: 'Pix', key }`; novo `affiliate-commission-paid` só para a raiz), `ui/agency.js` (indicações e comissões só leitura; Pix), `routes/agency-plan.mjs` (no pagamento: comissão)
-- Test: `test/soci-affiliates.test.mjs`
+- Modify: `server.mjs` (GET `/` e `/login`: `?ref=` válido grava `graao_ref=<código>.<timestamp>` por 90 dias se não houver), `routes/verify.mjs` (na confirmação: `referredBy` e indicação automática na agência que indicou), `agency-billing-model.mjs` (`referralFor`, `commissionFor`), `agency-model.mjs` (remover `referrals` da criação manual e `affiliate-pay`; `affiliate-payout` passa a aceitar só Pix: `{ method: 'Pix', key }`; novo `affiliate-commission-paid` só para a raiz), `ui/agency.js` (indicações e comissões só leitura; Pix), `routes/agency-plan.mjs` (no pagamento: comissão)
+- Test: `test/graao-affiliates.test.mjs`
 
 **Interfaces:**
 - Produces: `referralFor(cookieValue, { selfCode, selfPhoneKey, referrerPhoneKey }): string|''` · `commissionFor(paymentCents): number` (40%) · indicação `{ id, agencyId, name, plan, status: 'Trial'|'Active'|'Inactive', since }` · comissão `{ id, referralId, paymentId, cents, availableAt (pagamento + 30 dias), status: 'pending'|'available'|'paid'|'reversed', paidAt }`.
 
 - [ ] Testes: cookie só no primeiro link; autoindicação (mesmo código ou mesmo celular) ignorada; confirmação cria a indicação Em teste; pagamento gera comissão de 40% disponível em 30 dias; reembolso antes disso estorna; agência não consegue mais criar indicação nem marcar pagamento; a raiz marca **Pago** e o livro registra.
-- [ ] Commit `feat(afiliados): link da soci, indicação e comissão automáticas`.
+- [ ] Commit `feat(afiliados): link da graao, indicação e comissão automáticas`.
 
 ### Task 15: documentação do PR 4 e revisão final
 
-`docs-site/src/content/docs/agencia/afiliados-da-soci.mdx` + roteiro + novidades + cobertura + prints. Atualizar `docs/implementation/08-cobrancas-ghl-e-fiscal.md` (camada 1) e o painel `docs/implementation/painel/progresso.js`. Revisão do branch inteiro por um revisor novo. Commit e PR.
+`docs-site/src/content/docs/agencia/afiliados-da-graao.mdx` + roteiro + novidades + cobertura + prints. Atualizar `docs/implementation/08-cobrancas-ghl-e-fiscal.md` (camada 1) e o painel `docs/implementation/painel/progresso.js`. Revisão do branch inteiro por um revisor novo. Commit e PR.

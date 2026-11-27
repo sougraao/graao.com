@@ -28,7 +28,7 @@ const cents = value => Math.round(Number(value || 0) * 100);
 const clean = (value, limit = 200) => String(value ?? '').replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}]/gu, '').trim().slice(0, limit);
 
 function deriveKey(secret) {
-  const material = typeof secret === 'string' && secret.trim() ? secret.trim() : 'soci-local-dev-abacatepay-seal-key-do-not-use-without-env';
+  const material = typeof secret === 'string' && secret.trim() ? secret.trim() : 'graao-local-dev-abacatepay-seal-key-do-not-use-without-env';
   return createHash('sha256').update(material).digest();
 }
 function seal(secret, aad, plain) {
@@ -151,7 +151,7 @@ export function createAbacatePayHandler({ store, secret = process.env.GO_STORAGE
   }
 
   async function createWebhook(apiKey, scope, endpoint, webhookSecret) {
-    const create = events => call(apiKey, '/webhooks/create', { method: 'POST', body: { name: `soci · ${scope === AGENCY_SCOPE ? 'agência' : 'subconta'}`, endpoint, secret: webhookSecret, events } });
+    const create = events => call(apiKey, '/webhooks/create', { method: 'POST', body: { name: `graao · ${scope === AGENCY_SCOPE ? 'agência' : 'subconta'}`, endpoint, secret: webhookSecret, events } });
     try { await create(webhookEvents); return { webhookEvents, webhookMissing: [] }; }
     catch (err) {
       if (!/event/i.test(err.gateway || '')) throw err;
@@ -213,7 +213,7 @@ export function createAbacatePayHandler({ store, secret = process.env.GO_STORAGE
     const apiKey = keyOf(row, agencyId, scope);
     const price = cents(amount);
     if (price < 100) throw fail('O AbacatePay cobra a partir de R$ 1,00.');
-    const productId = await ensureProduct(apiKey, { externalId: `soci-${reference}-${price}`, name: clean(name, 120) || 'Cobrança', price });
+    const productId = await ensureProduct(apiKey, { externalId: `graao-${reference}-${price}`, name: clean(name, 120) || 'Cobrança', price });
     const body = { items: [{ id: productId, quantity: 1 }], externalId: `${reference}-${Date.now().toString(36)}`, methods: ['PIX', 'CARD'], metadata };
     if (/^https?:\/\//.test(returnUrl || '')) body.returnUrl = returnUrl;
     if (/^https?:\/\//.test(completionUrl || '')) body.completionUrl = completionUrl;
@@ -256,7 +256,7 @@ export function createAbacatePayHandler({ store, secret = process.env.GO_STORAGE
     if (!plan) throw fail('Atribua um plano SaaS a esta subconta antes de gerar a assinatura.');
     const price = cents(plan.price);
     if (price < 100) throw fail('O plano precisa custar pelo menos R$ 1,00.');
-    const product = { externalId: `soci-plan-${plan.id}-${price}`, name: clean(plan.name, 120) || 'Plano', price, cycle: 'MONTHLY' };
+    const product = { externalId: `graao-plan-${plan.id}-${price}`, name: clean(plan.name, 120) || 'Plano', price, cycle: 'MONTHLY' };
     const trial = withTrial ? Math.round(Number(plan.trialDays) || 0) : 0;
     if (trial >= 1 && trial <= 90) { product.trialDays = trial; product.externalId += `-t${trial}`; }
     const productId = await ensureProduct(apiKey, product);
@@ -278,7 +278,7 @@ export function createAbacatePayHandler({ store, secret = process.env.GO_STORAGE
     const apiKey = keyOf(row, agencyId, scope);
     const price = cents(amount);
     if (price < 100) throw fail('O AbacatePay cobra a partir de R$ 1,00.');
-    const productId = await ensureProduct(apiKey, { externalId: `soci-${reference}-${price}-mensal`, name: clean(name, 120) || 'Assinatura', price, cycle: 'MONTHLY' });
+    const productId = await ensureProduct(apiKey, { externalId: `graao-${reference}-${price}-mensal`, name: clean(name, 120) || 'Assinatura', price, cycle: 'MONTHLY' });
     const body = { items: [{ id: productId, quantity: 1 }], externalId: `${reference}-${Date.now().toString(36)}`, methods: ['PIX', 'CARD'], metadata };
     if (/^https?:\/\//.test(returnUrl || '')) body.returnUrl = returnUrl;
     if (/^https?:\/\//.test(completionUrl || '')) body.completionUrl = completionUrl;

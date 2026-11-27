@@ -65,8 +65,8 @@ c.querySelector('[data-d]').textContent=Math.floor(left/864e5);c.querySelector('
 const icsDate = iso => new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 const icsText = value => String(value ?? '').replace(/[\\;,]/g, ch => `\\${ch}`).replace(/\r?\n/g, '\\n');
 export function calendarFile(webinar, session, link) {
-  return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//soci//webinar//PT', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
-    `UID:${session.id}-${webinar.id}@soci`, `DTSTAMP:${icsDate(new Date().toISOString())}`, `DTSTART:${icsDate(session.start)}`, `DTEND:${icsDate(new Date(sessionEnd(session)).toISOString())}`,
+  return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//graao//webinar//PT', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
+    `UID:${session.id}-${webinar.id}@graao`, `DTSTAMP:${icsDate(new Date().toISOString())}`, `DTSTART:${icsDate(session.start)}`, `DTEND:${icsDate(new Date(sessionEnd(session)).toISOString())}`,
     `SUMMARY:${icsText(webinar.name)}`, `DESCRIPTION:${icsText(`${webinar.description ? `${webinar.description}\n\n` : ''}Entre por: ${link}`)}`, `URL:${link}`,
     'BEGIN:VALARM', 'TRIGGER:-PT15M', 'ACTION:DISPLAY', `DESCRIPTION:${icsText(webinar.name)}`, 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR', ''].join('\r\n');
 }

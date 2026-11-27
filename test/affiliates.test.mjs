@@ -94,7 +94,7 @@ test('Referral link, cookie attribution on public sign-ups, sign-up and private 
   assert.equal(click.status, 302);
   assert.match(click.headers.get('location'), /\/avaliar\/demo$/);
   const cookie = click.headers.get('set-cookie').split(';')[0];
-  assert.match(cookie, /^soci_af_demo=/);
+  assert.match(cookie, /^graao_af_demo=/);
   assert.equal((await fetch(`${base}/r/demo/ninguem`, { redirect: 'manual' })).status, 404);
 
   // A public review page sign-up creates no contact; the store/form flows do. Use the chat widget, which creates a contact.

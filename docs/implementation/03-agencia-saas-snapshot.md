@@ -75,7 +75,7 @@ Atualizar agendamento para `noshow`; esperar 1 h; mensagem:
 Esperar mais 2 h; Email “Te esperei hoje na reunião, {{contact.first_name}}”;
 esperar 1 dia; mensagem “{{contact.first_name}}?”; esperar mais 1 dia;
 Email “Reagendamento?”. Os nomes “WhatsApp” são rótulos: o tipo técnico das
-ações originais é `sms`, aspecto que exige adaptação explícita ao provedor da Soci.
+ações originais é `sms`, aspecto que exige adaptação explícita ao provedor da Graao.
 
 ### 04. Campanha de Nutrição de Leads (Semanal)
 
@@ -85,7 +85,7 @@ Nome e estado confirmados. Conteúdo e gatilho ainda pendentes de inspeção.
 
 Nome e estado confirmados. Conteúdo e gatilho ainda pendentes de inspeção.
 
-## Limites encontrados na Soci
+## Limites encontrados na Graao
 
 `applySnapshot` transporta pipelines, etapas, forms, pages, workflows, snippets,
 links, courses, agents e Studio. Não transporta customFields/customValues,
@@ -110,7 +110,7 @@ Não converter estes fluxos em mensagens imediatas nem apresentar notas como env
 - [ ] Conteúdo, lógica de desqualificação e redirecionamentos da pesquisa
 - [ ] Textos/design e embeds das seis páginas
 - [ ] Comparação do dashboard importado com dashboard padrão
-- [ ] Implementação e validação da reconstrução na Soci
+- [ ] Implementação e validação da reconstrução na Graao
 
 Durante a coleta, a aba interna do GoHighLevel sofreu crash; nova aba também
 falhou. A sessão já autenticada do Chrome foi tentada como recuperação.

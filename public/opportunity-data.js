@@ -16,7 +16,7 @@ const initialFields = ['smartTags','contact','owner','source','value','status','
 const known = (map, values) => [...new Set(values)].filter(value => Object.hasOwn(map, value));
 /** Card layout, the shown fields in the user's order, and the quick actions. Kept per workspace and user. */
 export function opportunityPreferences(workspace, user, update) {
-  const key = `soci.opportunities.${workspace}.${user || 'local'}`;
+  const key = `graao.opportunities.${workspace}.${user || 'local'}`;
   const shape = saved => ({
     layout:Object.hasOwn(cardLayouts,saved.layout) ? saved.layout : 'default',
     fields:Array.isArray(saved.fields) ? known(cardFields,saved.fields) : initialFields,
@@ -30,7 +30,7 @@ export function opportunityPreferences(workspace, user, update) {
 
 /** Saved lists ("smart lists"): a name, a view and the filters and sort in force when it was saved. */
 export function opportunityLists(workspace, user, update) {
-  const key = `soci.opportunity-lists.${workspace}.${user || 'local'}`;
+  const key = `graao.opportunity-lists.${workspace}.${user || 'local'}`;
   const clean = rows => (Array.isArray(rows) ? rows : []).slice(0, 20).filter(row => row?.id && row.name).map(row => ({
     id:String(row.id).slice(0,40), name:String(row.name).slice(0,60), view:row.view === 'list' ? 'list' : 'pipeline',
     filters:{ status:typeof row.filters?.status === 'string' ? row.filters.status : '', rules:cleanRules(row.filters?.rules) },

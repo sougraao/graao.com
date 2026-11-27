@@ -71,7 +71,7 @@ export function chatPanel(widget, { preview = false } = {}) {
 }
 
 // Runs in the iframe: starts the conversation, keeps the visitor's token, sends and polls messages.
-const panelScript = (api, widgetId, live, thanks, agentName) => `(()=>{const api=${JSON.stringify(api)},key='soci-chat:'+${JSON.stringify(widgetId)},live=${live ? 'true' : 'false'};
+const panelScript = (api, widgetId, live, thanks, agentName) => `(()=>{const api=${JSON.stringify(api)},key='graao-chat:'+${JSON.stringify(widgetId)},live=${live ? 'true' : 'false'};
 const log=document.querySelector('[data-cw-log]'),start=document.querySelector('[data-cw-start]'),compose=document.querySelector('[data-cw-compose]'),error=document.querySelector('[data-cw-error]');
 let token='';try{token=localStorage.getItem(key)||''}catch{}
 let seen=new Set(),timer=0;
@@ -87,7 +87,7 @@ start.addEventListener('submit',async e=>{e.preventDefault();error.hidden=true;f
 const b=start.querySelector('button');b.disabled=true;try{const data=await call('/start',Object.fromEntries(new FormData(start)));token=data.token;try{localStorage.setItem(key,token)}catch{}data.messages.forEach(add);if(live)open();else done()}catch(err){error.textContent=err.message;error.hidden=false}finally{b.disabled=false}});
 compose.addEventListener('submit',async e=>{e.preventDefault();const t=compose.elements.body,body=t.value.trim();if(!body)return;t.value='';try{(await call('/send',{body})).messages.forEach(add)}catch(err){t.value=body;error.textContent=err.message;error.hidden=false;start.hidden=true}});
 compose.elements.body.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();compose.requestSubmit()}});
-document.querySelector('[data-cw-close]').addEventListener('click',()=>parent.postMessage({sociChat:${JSON.stringify(widgetId)},close:true},'*'));
+document.querySelector('[data-cw-close]').addEventListener('click',()=>parent.postMessage({graaoChat:${JSON.stringify(widgetId)},close:true},'*'));
 document.addEventListener('visibilitychange',poll);
 if(token&&live)open();})()`;
 
@@ -104,16 +104,16 @@ export function chatPage(widget, { workspace }) {
 export function loaderScript(widget, { workspace }) {
   const w = { ...chatDefaults(), ...widget };
   const cfg = { id: w.id, path: `/chat/${workspace}/${w.id}`, color: hex(w.color), side: w.position === 'left' ? 'left' : 'right', prompt: w.prompt || '', delay: Math.max(0, Number(w.promptDelay) || 0), label: w.heading };
-  return `(()=>{const cfg=${JSON.stringify(cfg).replace(/</g, '\\u003c')};if(window['__sociChat'+cfg.id])return;window['__sociChat'+cfg.id]=1;
+  return `(()=>{const cfg=${JSON.stringify(cfg).replace(/</g, '\\u003c')};if(window['__graaoChat'+cfg.id])return;window['__graaoChat'+cfg.id]=1;
 const me=document.currentScript,origin=me?new URL(me.src).origin:location.origin;
-const host=document.createElement('div');host.setAttribute('data-soci-chat',cfg.id);const root=host.attachShadow({mode:'open'});
+const host=document.createElement('div');host.setAttribute('data-graao-chat',cfg.id);const root=host.attachShadow({mode:'open'});
 root.innerHTML='<style>:host{all:initial}.b{position:fixed;bottom:20px;'+cfg.side+':20px;z-index:2147483646;width:60px;height:60px;border:0;border-radius:50%;background:'+cfg.color+';color:#fff;box-shadow:0 8px 24px rgba(16,24,40,.24);cursor:pointer;display:grid;place-items:center}.b:focus-visible{outline:3px solid #fff;outline-offset:2px}.b svg{width:28px;height:28px}.p{position:fixed;bottom:92px;'+cfg.side+':20px;z-index:2147483646;max-width:260px;padding:12px 14px;border-radius:14px;background:#fff;color:#101828;font:14px/1.4 system-ui,sans-serif;box-shadow:0 8px 24px rgba(16,24,40,.18);cursor:pointer}.p[hidden],.f[hidden]{display:none}.x{float:right;margin:-4px -6px 0 6px;border:0;background:none;color:#667085;font-size:16px;cursor:pointer}.f{position:fixed;bottom:92px;'+cfg.side+':20px;z-index:2147483647;width:380px;height:min(600px,calc(100vh - 112px));border:0;border-radius:16px;box-shadow:0 16px 48px rgba(16,24,40,.28);background:#fff}@media (max-width:480px){.f{inset:0;width:100%;height:100%;border-radius:0}}@media (prefers-reduced-motion:no-preference){.p,.f{animation:in .18s ease-out}@keyframes in{from{opacity:0;transform:translateY(8px)}}}</style>'
 +'<div class="p" part="prompt" hidden role="status"><button class="x" aria-label="Fechar aviso">×</button><span></span></div><iframe class="f" hidden title="'+cfg.label.replace(/"/g,'')+'"></iframe>'
 +'<button class="b" aria-label="Abrir chat" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg></button>';
 const b=root.querySelector('.b'),p=root.querySelector('.p'),f=root.querySelector('.f');p.querySelector('span').textContent=cfg.prompt;
 const toggle=show=>{if(show&&!f.src)f.src=origin+cfg.path;f.hidden=!show;p.hidden=true;b.setAttribute('aria-expanded',String(show));b.setAttribute('aria-label',show?'Fechar chat':'Abrir chat')};
 b.addEventListener('click',()=>toggle(f.hidden));p.addEventListener('click',e=>{if(e.target.closest('.x')){p.hidden=true;return}toggle(true)});
-addEventListener('message',e=>{if(e.origin===origin&&e.data&&e.data.sociChat===cfg.id&&e.data.close){toggle(false);b.focus()}});
+addEventListener('message',e=>{if(e.origin===origin&&e.data&&e.data.graaoChat===cfg.id&&e.data.close){toggle(false);b.focus()}});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!f.hidden)toggle(false)});
 if(cfg.prompt&&cfg.delay)setTimeout(()=>{if(f.hidden)p.hidden=false},cfg.delay*1000);
 (document.body||document.documentElement).append(host)})();`;

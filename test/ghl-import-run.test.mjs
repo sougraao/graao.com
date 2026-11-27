@@ -22,7 +22,7 @@ function memoryIo(source, imagesPerPage) {
   const log = { parts: 0, reads: [], writes: [], inflight: 0, maxInflight: 0, step: '' };
   const page = id => `<!doctype html><html><body><h1>${id}</h1>${Array.from({ length: imagesPerPage }, (_, i) => `<img src="https://assets.cdn.filesafe.space/${id}/${i}.png">`).join('')}</body></html>`;
   const io = {
-    origin: 'https://soci.app.br',
+    origin: 'https://graao.com',
     resolve: async () => [{ address: '93.184.216.34' }],
     fetch: async url => {
       const id = String(url).match(/\/preview\/([^/?#]+)/)?.[1];

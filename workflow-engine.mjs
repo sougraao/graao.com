@@ -558,7 +558,7 @@ export function createEngine({ add, now, preferencePath = null, makeAffiliate = 
       case 'voice_ai_call': {
         // "Ligação do Voice AI": the server dials the contact and the agent talks (voice-ai.mjs), with this flow's OpenAI.
         const number = (s.phone?.numbers || []).find(row => row.id === c.numberId);
-        if (!number) return 'erro: número da Soci não encontrado (Configurações → Telefonia)';
+        if (!number) return 'erro: número da Graao não encontrado (Configurações → Telefonia)';
         const agent = (s.agents || []).find(row => row.id === c.agentId);
         if (!agent) return 'erro: agente não encontrado';
         if (!agent.published) return 'erro: o agente não está publicado';
@@ -571,7 +571,7 @@ export function createEngine({ add, now, preferencePath = null, makeAffiliate = 
       }
       case 'call': case 'voicemail_drop': {
         const number = (s.phone?.numbers || []).find(row => row.id === c.numberId);
-        if (!number) return 'erro: número da Soci não encontrado (Configurações → Telefonia)';
+        if (!number) return 'erro: número da Graao não encontrado (Configurações → Telefonia)';
         if (contact.dnd) return 'contato em não perturbe';
         const to = e164(contact.phone);
         if (!to) return 'erro: contato sem telefone válido';
@@ -600,7 +600,7 @@ export function createEngine({ add, now, preferencePath = null, makeAffiliate = 
         return `bot ligado com ${agent.name}`;
       }
       case 'custom_code': {
-        // "Código personalizado": lines "nome = expressão" in the Soci expression language — parsed, never eval'd, with
+        // "Código personalizado": lines "nome = expressão" in the Graao expression language — parsed, never eval'd, with
         // no network or disk. Each result is a flow variable; the next lines use it by name and later steps as {{vars.nome}}.
         const lines = customCodeLines(c.code);
         if (lines.error) return `erro: ${lines.error}`;
@@ -616,7 +616,7 @@ export function createEngine({ add, now, preferencePath = null, makeAffiliate = 
         return Object.entries(out).map(([name, value]) => `${name} = ${value.slice(0, 40)}`).join(', ').slice(0, 200);
       }
       case 'log_call': {
-        // "Registrar ligação": a call made or received outside the Soci, in the call log and in Conversas.
+        // "Registrar ligação": a call made or received outside the Graao, in the call log and in Conversas.
         const direction = c.direction === 'inbound' ? 'inbound' : 'outbound';
         const status = ['answered', 'missed', 'voicemail', 'busy'].includes(c.status) ? c.status : 'answered';
         const minutes = Math.max(0, Math.min(600, Number(text(c.duration)) || 0));
@@ -824,7 +824,7 @@ export function createEngine({ add, now, preferencePath = null, makeAffiliate = 
         const name = c.event === 'custom' ? text(c.customEvent).trim().replace(/[^\w]/g, '_').replace(/^[^a-zA-Z]+/, '').slice(0, 40) : String(c.event || 'generate_lead');
         if (!name) return 'erro: informe o nome do evento personalizado';
         const amount = Number(text(c.value).replace(/[^\d,.-]/g, '').replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.'));
-        const params = { source: 'soci_workflow', workflow: String(run.name || '').slice(0, 100), engagement_time_msec: 1,
+        const params = { source: 'graao_workflow', workflow: String(run.name || '').slice(0, 100), engagement_time_msec: 1,
           ...(Number.isFinite(amount) && amount > 0 ? { value: Math.round(amount * 100) / 100, currency: /^[A-Z]{3}$/.test(String(c.currency || '')) ? c.currency : 'BRL' } : {}) };
         const clientId = `${parseInt(sha256(contact.id).slice(0, 8), 16)}.${parseInt(sha256(contact.id).slice(8, 16), 16)}`;
         outbox(s, { kind: 'ga4-event', runId: run.id, measurementId, clientId, userId: contact.id, event: { name, params } });

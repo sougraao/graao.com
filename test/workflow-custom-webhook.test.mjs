@@ -29,8 +29,8 @@ test('T.1 custom webhook: fills URL, headers and JSON body with escaped variable
 });
 
 test('T.1 custom webhook: the answer becomes variables and the flow resumes; errors keep status and body', () => {
-  const { s, ana, run, item } = setup({ method: 'POST', url: 'https://api.exemplo.com/x', contentType: 'form', body: 'nome={{contact.name}}\norigem=soci' });
-  assert.equal(item.body, 'nome=Ana+%22Aspas%22+Lima&origem=soci');
+  const { s, ana, run, item } = setup({ method: 'POST', url: 'https://api.exemplo.com/x', contentType: 'form', body: 'nome={{contact.name}}\norigem=graao' });
+  assert.equal(item.body, 'nome=Ana+%22Aspas%22+Lima&origem=graao');
   execute(s, { type: 'workflow-ai-result', data: { results: [{ runId: run.id, stepId: item.stepId, vars: { api: '{"id":7}', api_status: '201', api_id: '7' } }] } });
   assert.equal(run.status, 'Completed');
   assert.equal(run.vars.api_id, '7');

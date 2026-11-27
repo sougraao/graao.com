@@ -9,7 +9,7 @@ import { isPlatformHost, requestHost, whiteLabelBrand } from '../white-label.mjs
 export function createAuthRoutes(deps) {
   const { auth, ready, error, payload, accessContext, store, platformOrigin = '' } = deps;
   // White Label: o domínio salvo por uma agência (app.suaagencia.com.br). O Supabase só devolve o login para a
-  // soci.app.br, então ali o código do Google é repassado para o domínio da agência, que conclui a entrada.
+  // graao.com, então ali o código do Google é repassado para o domínio da agência, que conclui a entrada.
   const platformHost = (() => { try { return new URL(platformOrigin).host; } catch { return ''; } })();
   const isAgencyHost = async host => Boolean(platformHost) && host !== platformHost && !isPlatformHost(host)
     && (await ready, (await whiteLabelBrand(store, host)).name !== undefined);

@@ -36,8 +36,8 @@ test('Pixels: the loader goes in the head and the CSP allows only the vendors', 
   const js = pixelsScript({ ga4: 'G-ABC1234', gtm: '', metaPixel: '123456789012' });
   assert.match(js, /G-ABC1234/);
   assert.match(js, /123456789012/);
-  const tracker = trackerScript('demo', 'https://app.soci.app.br', { pageviews: true, forms: false });
-  assert.match(tracker, /"endpoint":"https:\/\/app\.soci\.app\.br\/t\/demo\/e"/);
+  const tracker = trackerScript('demo', 'https://app.graao.com', { pageviews: true, forms: false });
+  assert.match(tracker, /"endpoint":"https:\/\/app\.graao\.com\/t\/demo\/e"/);
   assert.match(tracker, /"forms":false/);
   assert.match(tracker, /pass\|senha\|card/, 'sensitive field names are never sent');
 });

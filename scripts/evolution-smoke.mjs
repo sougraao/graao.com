@@ -44,7 +44,7 @@ try {
   check('instância criada', calls.some(c => c.path === '/instance/create' && c.status === 201));
   check('webhook aceito', calls.some(c => c.path.startsWith('/webhook/set/') && c.status < 300));
   // O endereço que a Evolution guardou tem de ser o que o app aceita (segredo da subconta incluído).
-  const hook = await fetch(`${baseUrl.replace(/\/+$/, '')}/webhook/find/soci_${workspace}`, { headers: { apikey: apiKey } }).then(res => res.json()).catch(() => ({}));
+  const hook = await fetch(`${baseUrl.replace(/\/+$/, '')}/webhook/find/graao_${workspace}`, { headers: { apikey: apiKey } }).then(res => res.json()).catch(() => ({}));
   check('webhook registrado é o que o app aceita', Boolean(hook?.url) && hook.url === live.webhookUrl);
   // O primeiro QR depende do servidor do WhatsApp: dá até 30 s.
   for (let i = 0; i < 10 && !live.qrcode; i++) {
@@ -59,7 +59,7 @@ try {
   const found = await handler.guardOps.findMessages(target, { from: Date.now() - 3600_000, until: Date.now(), page: 1, size: 100 });
   check('vigia: busca mensagens', Array.isArray(found.records));
   check('vigia: webhook certo não é mexido', await handler.guardOps.repairWebhook(target, common.publicOrigin) === false);
-  await fetch(`${baseUrl.replace(/\/+$/, '')}/webhook/set/soci_${workspace}`, { method: 'POST', headers: { apikey: apiKey, 'Content-Type': 'application/json' }, body: JSON.stringify({ webhook: { enabled: true, url: 'https://errado.invalid/x', byEvents: false, base64: false, events: ['MESSAGES_UPSERT'] } }) });
+  await fetch(`${baseUrl.replace(/\/+$/, '')}/webhook/set/graao_${workspace}`, { method: 'POST', headers: { apikey: apiKey, 'Content-Type': 'application/json' }, body: JSON.stringify({ webhook: { enabled: true, url: 'https://errado.invalid/x', byEvents: false, base64: false, events: ['MESSAGES_UPSERT'] } }) });
   check('vigia: webhook trocado é consertado', await handler.guardOps.repairWebhook(target, common.publicOrigin) === true && await handler.guardOps.repairWebhook(target, common.publicOrigin) === false);
   const now = await agency('server');
   check('instância aparece no servidor', now.instances === 1);
@@ -71,7 +71,7 @@ try {
     const after = await agency('server');
     check('instância de teste excluída', !view.subaccounts[workspace].hasInstance && after.instances === 0);
   } catch (err) {
-    check('instância de teste excluída', false, `${err.message} Apague soci_${workspace} no painel /manager.`);
+    check('instância de teste excluída', false, `${err.message} Apague graao_${workspace} no painel /manager.`);
   }
 }
 process.exit(failed ? 1 : 0);

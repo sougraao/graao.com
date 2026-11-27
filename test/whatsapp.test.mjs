@@ -9,15 +9,15 @@ import { createWhatsAppHandler } from '../whatsapp.mjs';
 import { API_KEY, QR, fakeEvolution } from './helpers/fake-evolution.mjs';
 
 const SECRET = 'whatsapp-test-seal-secret-32-chars!';
-const MANAGED = { evolutionBaseUrl: 'https://evo.soci.test', evolutionApiKey: API_KEY };
+const MANAGED = { evolutionBaseUrl: 'https://evo.graao.test', evolutionApiKey: API_KEY };
 let messageSeq = 0;
 const upsert = (phone, text, pushName) => ({
-  event: 'messages.upsert', instance: 'soci_demo',
+  event: 'messages.upsert', instance: 'graao_demo',
   data: { key: { remoteJid: `${phone}@s.whatsapp.net`, fromMe: false, id: `IN${++messageSeq}` }, pushName, message: { conversation: text }, messageType: 'conversation' }
 });
 
 async function boot(t, options = {}) {
-  const dir = mkdtempSync(join(tmpdir(), 'soci-whatsapp-'));
+  const dir = mkdtempSync(join(tmpdir(), 'graao-whatsapp-'));
   const store = options.store || createSqliteStore(join(dir, 'go.sqlite'));
   const { server } = makeServer({
     store,
@@ -67,7 +67,7 @@ test('Managed 1-click QR isolates sub-accounts, routes inbound webhooks and disp
   assert.equal(conn1.status, 200);
   assert.equal(conn1.body.status, 'connecting');
   assert.equal(conn1.body.qrcode, QR);
-  assert.equal(JSON.stringify(conn1.body).includes('hash-soci_demo'), false);
+  assert.equal(JSON.stringify(conn1.body).includes('hash-graao_demo'), false);
   assert.equal(JSON.stringify(conn1.body).includes(API_KEY), false);
 
   // Sub-account 2 connects independently via pairing code -> gets its OWN separate instance
@@ -75,15 +75,15 @@ test('Managed 1-click QR isolates sub-accounts, routes inbound webhooks and disp
   assert.equal(conn2.status, 200);
   assert.equal(conn2.body.status, 'connecting');
   assert.equal(conn2.body.paircode, 'WZYX-1234');
-  assert.deepEqual([...evo.instances.keys()].sort(), ['soci_demo', `soci_${sub2}`.slice(0, 37)].sort(), 'Each sub-account must provision its own isolated instance');
+  assert.deepEqual([...evo.instances.keys()].sort(), ['graao_demo', `graao_${sub2}`.slice(0, 37)].sort(), 'Each sub-account must provision its own isolated instance');
 
   // Verify tokens are sealed in DB (no plaintext token stored)
   const rawDoc = await local.store.load('whatsapp-agency');
   assert.equal(rawDoc.profile.name, 'WhatsApp (Evolution API)');
-  assert.equal(JSON.stringify(rawDoc).includes('hash-soci_'), false);
+  assert.equal(JSON.stringify(rawDoc).includes('hash-graao_'), false);
 
   // Simulate user scanning QR code on demo's phone
-  evo.markOpen('soci_demo', '5531988887777', 'Atendimento Demo');
+  evo.markOpen('graao_demo', '5531988887777', 'Atendimento Demo');
 
   const polled = await local.call('/api/whatsapp/workspace/status?workspace=demo');
   assert.equal(polled.status, 200);
@@ -115,7 +115,7 @@ test('Managed 1-click QR isolates sub-accounts, routes inbound webhooks and disp
   });
   assert.equal(reply.status, 200);
   assert.equal(reply.body.delivery?.sent, true);
-  const sendCall = evo.calls.find(c => c.path === '/message/sendText/soci_demo');
+  const sendCall = evo.calls.find(c => c.path === '/message/sendText/graao_demo');
   assert.equal(sendCall?.body?.number, '5511977776666');
   assert.equal(sendCall?.body?.text, 'Claro, qual melhor horário?');
   assert.equal(sendCall?.headers?.apikey, API_KEY);
@@ -244,7 +244,7 @@ test('An event message is never repeated inside the call', async t => {
   };
   const local = await boot(t, { whatsappRequest: request, ...MANAGED });
   await local.call('/api/whatsapp/workspace/connect?workspace=demo', {});
-  evo.markOpen('soci_demo', '5531988887777', 'Demo');
+  evo.markOpen('graao_demo', '5531988887777', 'Demo');
   await local.call('/api/whatsapp/workspace/status?workspace=demo');
   const handler = createWhatsAppHandler({ store: local.store, secret: SECRET, request, ...MANAGED });
   const send = () => handler.sendEventMessage('agency', 'demo', { to: '5511977776666', part: { kind: 'text', text: 'Oi' } }, async () => true);

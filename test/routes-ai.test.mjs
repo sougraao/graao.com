@@ -1,4 +1,4 @@
-// Contrato dos módulos de rota (P2.1): o que não é do Pergunte à Soci, da IA de conteúdo, das notas de reunião,
+// Contrato dos módulos de rota (P2.1): o que não é do Pergunte à Graao, da IA de conteúdo, das notas de reunião,
 // do SEO ou da Visibilidade na IA volta como NEXT_ROUTE sem tocar em nada.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -12,7 +12,7 @@ const ctx = (p, method = 'GET') => ({ req: { headers: {}, socket: {} }, res: {},
   json: () => assert.fail(`json chamado em ${p}`) });
 const spy = touched => new Proxy({}, { get: (_, name) => (...args) => { touched.push(name); return args; } });
 
-test('IA, SEO e Pergunte à Soci devolvem NEXT_ROUTE para caminhos de outros domínios', async () => {
+test('IA, SEO e Pergunte à Graao devolvem NEXT_ROUTE para caminhos de outros domínios', async () => {
   const touched = [];
   const cases = [
     [createAskRoutes, [['/api/ask'], ['/api/asking/x', 'POST']]],

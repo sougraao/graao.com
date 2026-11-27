@@ -50,7 +50,7 @@ test('Server: the member joins a conference, the dialer brings each contact in a
     if (/\/Calls\/CA\d+\.json$/.test(url)) return ok({});
     return { ok: false, status: 404, json: async () => ({}) };
   };
-  const phoneEnv = { TWILIO_ACCOUNT_SID: 'AC1', TWILIO_AUTH_TOKEN: TOKEN, PHONE_PUBLIC_ORIGIN: 'https://soci.test' };
+  const phoneEnv = { TWILIO_ACCOUNT_SID: 'AC1', TWILIO_AUTH_TOKEN: TOKEN, PHONE_PUBLIC_ORIGIN: 'https://graao.test' };
   const { server, host } = makeServer({ dbPath: ':memory:', port: 0, auth: null, allowLocalAccess: true, socialScheduler: false, twilioRequest, phoneEnv });
   await new Promise(resolve => server.listen(0, host, resolve));
   t.after(() => new Promise(resolve => server.close(resolve)));
@@ -60,7 +60,7 @@ test('Server: the member joins a conference, the dialer brings each contact in a
     return { status: r.status, body: await r.json() };
   };
   const action = async body => { const r = await call('/api/action?workspace=demo', body); assert.equal(r.status, 200, JSON.stringify(r.body)); return r.body.id; };
-  const twilio = async (path, params) => (await fetch(base + path, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Twilio-Signature': twilioSignature(`https://soci.test${path}`, params, TOKEN) }, body: new URLSearchParams(params).toString() })).text();
+  const twilio = async (path, params) => (await fetch(base + path, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Twilio-Signature': twilioSignature(`https://graao.test${path}`, params, TOKEN) }, body: new URLSearchParams(params).toString() })).text();
   const state = async () => (await call('/api/state?workspace=demo')).body.state;
 
   await call('/api/phone/buy?workspace=demo', { number: '+551140001000' });
@@ -74,9 +74,9 @@ test('Server: the member joins a conference, the dialer brings each contact in a
   const agentLeg = twilioCalls.at(-1).form;
   assert.equal(agentLeg.To, '+5511977770000');
   const session = started.body.session;
-  assert.equal(agentLeg.Url, `https://soci.test/api/phone/twilio/dialer/demo?session=${session}`);
+  assert.equal(agentLeg.Url, `https://graao.test/api/phone/twilio/dialer/demo?session=${session}`);
   let xml = await twilio(`/api/phone/twilio/dialer/demo?session=${session}`, { CallSid: 'CAagent' });
-  assert.match(xml, new RegExp(`<Conference startConferenceOnEnter="true" endConferenceOnExit="true" beep="false">soci-dialer-${session}</Conference>`));
+  assert.match(xml, new RegExp(`<Conference startConferenceOnEnter="true" endConferenceOnExit="true" beep="false">graao-dialer-${session}</Conference>`));
   assert.equal((await state()).dialer.sessions.find(row => row.id === session).status, 'active');
 
   const first = (await call('/api/phone/dialer/next?workspace=demo', {})).body;
@@ -84,7 +84,7 @@ test('Server: the member joins a conference, the dialer brings each contact in a
   assert.equal(twilioCalls.at(-1).form.To, '+5511955551111');
   assert.equal((await call('/api/phone/dialer/next?workspace=demo', {})).status, 409, 'one call at a time');
   xml = await twilio(`/api/phone/twilio/join/demo?call=${first.callId}`, { CallSid: 'CAc1' });
-  assert.match(xml, new RegExp(`endConferenceOnExit="false" beep="false">soci-dialer-${session}<`));
+  assert.match(xml, new RegExp(`endConferenceOnExit="false" beep="false">graao-dialer-${session}<`));
   await twilio(`/api/phone/twilio/status/demo?call=${first.callId}`, { CallSid: 'CAc1', CallStatus: 'completed', CallDuration: '48' });
   await action({ type: 'dialer-disposition', data: { callId: first.callId, disposition: 'callback', note: 'Ligar amanhã' } });
 

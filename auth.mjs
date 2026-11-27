@@ -4,7 +4,7 @@ const failure = (message, status) => Object.assign(new Error(message), { status 
 const ACCESS = 'go_access';
 const REFRESH = 'go_refresh';
 const GOOGLE_FLOW = 'go_google_flow';
-// White Label: o domínio da agência para onde a soci.app.br devolve o código do Google (o Supabase só volta para ela).
+// White Label: o domínio da agência para onde a graao.com devolve o código do Google (o Supabase só volta para ela).
 const RELAY = 'go_google_relay';
 const RELAY_HOST = /^(?=.{4,200}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/;
 const ACCOUNT = 'go_account_';
@@ -269,12 +269,12 @@ export function createSupabaseAuth({ projectUrl, publishableKey, request = fetch
     hasSession,
     user,
     /**
-     * `callbackOrigin` é para onde o Supabase devolve o código. No domínio de uma agência é a soci.app.br, a única
+     * `callbackOrigin` é para onde o Supabase devolve o código. No domínio de uma agência é a graao.com, a única
      * origem na lista do Supabase; ela repassa o código (relayStart/relayTarget) e a troca acontece aqui, onde está o
      * verificador PKCE. O código sozinho não abre conta nenhuma.
      */
     async google(req,res,origin,next,{ add = false, account = '', callbackOrigin = origin } = {}) {
-      // Entrar na própria soci.app.br desfaz um repasse que ficou pela metade.
+      // Entrar na própria graao.com desfaz um repasse que ficou pela metade.
       if (callbackOrigin === origin) dropCookie(req, res, RELAY);
       const entry = readEntry(req, account);
       if (add && !entry && listEntries(req).filter(usable).length >= MAX_ACCOUNTS) {
@@ -294,7 +294,7 @@ export function createSupabaseAuth({ projectUrl, publishableKey, request = fetch
         ...(entry ? { login_hint: entry.email } : { prompt: 'select_account' })
       }).href;
     },
-    /** Na soci.app.br: guarda para qual domínio de agência o código vai e segue para o Google. Só aceita o Supabase. */
+    /** Na graao.com: guarda para qual domínio de agência o código vai e segue para o Google. Só aceita o Supabase. */
     relayStart(req,res,host,to) {
       let target;
       try { target = new URL(to); } catch { target = null; }
@@ -304,7 +304,7 @@ export function createSupabaseAuth({ projectUrl, publishableKey, request = fetch
       writeCookie(req,res,RELAY,host,600);
       return target.href;
     },
-    /** Na volta do Google à soci.app.br: o domínio da agência que espera o código, uma vez só; '' sem repasse. */
+    /** Na volta do Google à graao.com: o domínio da agência que espera o código, uma vez só; '' sem repasse. */
     relayTarget(req,res) {
       const host = readCookie(req,RELAY);
       if (host) writeCookie(req,res,RELAY,'',0);

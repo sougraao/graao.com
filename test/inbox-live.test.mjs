@@ -12,11 +12,11 @@ import { blank, execute } from '../model.mjs';
 import { API_KEY, fakeEvolution } from './helpers/fake-evolution.mjs';
 
 async function boot(t) {
-  const dir = mkdtempSync(join(tmpdir(), 'soci-inbox-live-'));
+  const dir = mkdtempSync(join(tmpdir(), 'graao-inbox-live-'));
   const store = createSqliteStore(join(dir, 'go.sqlite'));
   const evo = fakeEvolution();
   const { server } = makeServer({ store, auth: null, allowLocalAccess: true, port: 0, openAISecret: 'inbox-live-seal-secret-of-32-chars!', socialScheduler: false,
-    whatsappRequest: evo.request, evolutionBaseUrl: 'https://evo.soci.test', evolutionApiKey: API_KEY, r2: null });
+    whatsappRequest: evo.request, evolutionBaseUrl: 'https://evo.graao.test', evolutionApiKey: API_KEY, r2: null });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   t.after(async () => { await new Promise(resolve => server.close(resolve)); rmSync(dir, { recursive: true, force: true }); });
   const base = `http://127.0.0.1:${server.address().port}`;
@@ -25,11 +25,11 @@ async function boot(t) {
     return { status: res.status, body: await res.json().catch(() => null) };
   };
   await call('/api/whatsapp/workspace/connect?workspace=demo', {});
-  evo.markOpen('soci_demo', '5531988887777', 'Demo');
+  evo.markOpen('graao_demo', '5531988887777', 'Demo');
   const hook = new URL((await call('/api/whatsapp/workspace/status?workspace=demo')).body.webhookUrl).pathname;
   let seq = 0;
-  const receive = message => call(hook, { event: 'messages.upsert', instance: 'soci_demo', data: { key: { fromMe: false, id: `LIVE${++seq}`, remoteJid: '5531977776666@s.whatsapp.net' }, pushName: 'Carlos', message } });
-  const ring = (id, status, extra = {}) => call(hook, { event: 'call', instance: 'soci_demo', data: { id, status, chatId: '5531977776666@s.whatsapp.net', from: '5531977776666@s.whatsapp.net', date: '2026-11-25T17:20:00.000Z', offline: false, ...extra } });
+  const receive = message => call(hook, { event: 'messages.upsert', instance: 'graao_demo', data: { key: { fromMe: false, id: `LIVE${++seq}`, remoteJid: '5531977776666@s.whatsapp.net' }, pushName: 'Carlos', message } });
+  const ring = (id, status, extra = {}) => call(hook, { event: 'call', instance: 'graao_demo', data: { id, status, chatId: '5531977776666@s.whatsapp.net', from: '5531977776666@s.whatsapp.net', date: '2026-11-25T17:20:00.000Z', offline: false, ...extra } });
   const live = (mark = '') => call(`/api/conversations/live?workspace=demo&mark=${encodeURIComponent(mark)}`);
   return { store, evo, call, receive, ring, live };
 }

@@ -53,8 +53,8 @@ export function createCanonicalTemplates() {
             { id: 'title-3', type: 'TEXT', x: 80, y: 280, text: 'Gostou deste conteúdo?', fontSize: 62, fontWeight: 800, lineHeight: 1.2, fills: [{ type: 'SOLID', color: '#FFFFFF' }] },
             { id: 'desc-3', type: 'TEXT', x: 80, y: 460, text: 'Salve para consultar na hora de criar sua próxima campanha e compartilhe com sua equipe.', fontSize: 34, fontWeight: 500, lineHeight: 1.5, fills: [{ type: 'SOLID', color: '#B3B3C2' }] },
             { id: 'cta-btn-3', type: 'RECTANGLE', x: 80, y: 720, width: 560, height: 80, cornerRadius: 40, fills: [{ type: 'SOLID', color: '#FF00BB' }] },
-            { id: 'cta-text-3', type: 'TEXT', x: 140, y: 748, text: 'COMENTE “SOCI” NO DIRECT', fontSize: 24, fontWeight: 800, fills: [{ type: 'SOLID', color: '#FFFFFF' }] },
-            { id: 'brand-3', type: 'TEXT', x: 80, y: 1200, text: 'soci · laboratório de interação', fontSize: 22, fontWeight: 700, fills: [{ type: 'SOLID', color: '#707080' }] }
+            { id: 'cta-text-3', type: 'TEXT', x: 140, y: 748, text: 'COMENTE “GRAAO” NO DIRECT', fontSize: 24, fontWeight: 800, fills: [{ type: 'SOLID', color: '#FFFFFF' }] },
+            { id: 'brand-3', type: 'TEXT', x: 80, y: 1200, text: 'graao · laboratório de interação', fontSize: 22, fontWeight: 700, fills: [{ type: 'SOLID', color: '#707080' }] }
           ]
         }
       ]
@@ -122,7 +122,7 @@ const paintsOf = list => (Array.isArray(list) ? list : []).map(paintOf).filter(B
  * pelo editor já trazem `document`; os antigos (lâminas com nós soltos, presets
  * e modelos canônicos) viram uma página com um frame do tamanho da arte por lâmina.
  */
-export function sociToDocument(file) {
+export function graaoToDocument(file) {
   if (file && file.document && file.document.nodes && file.document.pages) {
     return {
       ...file.document,
@@ -244,7 +244,7 @@ export function checkPranchetaSave(existing, d, fail) {
   }
 }
 
-export function documentToSoci(doc, meta = {}) {
+export function documentToGraao(doc, meta = {}) {
   const name = typeof doc?.name === 'string' && doc.name.trim() ? doc.name.trim() : (meta.name || 'Sem título');
   const pages = (doc?.pages || []).map((p, idx) => ({
     id: p.id || `page-${idx + 1}`,

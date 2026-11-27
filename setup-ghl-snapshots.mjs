@@ -1,6 +1,6 @@
 // Setups convertidos dos snapshots GHL da agência (agente IA IMOB, cold email, site inteligente e crewsystems pt-br).
 // Cada snapshot foi lido na subconta de origem (pipelines, workflows, agentes, campos, valores e tags) e reescrito em ativos nativos:
-// workflows no formato v2 do motor da Soci, campos/valores com as mesmas chaves usadas nas mensagens e dados de empresas reais trocados por campos a preencher.
+// workflows no formato v2 do motor da Graao, campos/valores com as mesmas chaves usadas nas mensagens e dados de empresas reais trocados por campos a preencher.
 import { randomUUID } from 'node:crypto';
 import { agentTemplate } from './agent-model.mjs';
 import { slug } from './ui/crm-data.js';

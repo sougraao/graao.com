@@ -128,7 +128,7 @@ export function createSqliteStore(path) {
   return {
     kind: 'SQLite',
     tracking: sqliteTracking(db),
-    // soci AI Gateway: log de requisições (só metadados).
+    // graao AI Gateway: log de requisições (só metadados).
     aiRequests: sqliteRequestLog(db),
     audit: sqliteAudit(db),
     load,

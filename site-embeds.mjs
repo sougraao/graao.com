@@ -1,5 +1,5 @@
 // Vídeo, formulário e agenda dentro das páginas publicadas. O HTML guardado só tem marcadores
-// (<div data-soci-embed="video|form|booking">); o quadro é montado na hora de servir, com endereços conferidos,
+// (<div data-graao-embed="video|form|booking">); o quadro é montado na hora de servir, com endereços conferidos,
 // e a CSP da página libera só os players usados nela.
 import { createHash } from 'node:crypto';
 import { videoEmbed } from './course-model.mjs';
@@ -24,10 +24,10 @@ export function videoSource(address) {
 const attr = (tag, name) => unesc(tag.match(new RegExp(`\\s${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)')`, 'i'))?.slice(1).find(v => v !== undefined) || '').trim();
 const frame = (src, title, extra) => `<iframe src="${esc(src)}" title="${title}" ${extra}></iframe>`;
 const videoBox = 'style="display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:inherit"';
-const fitBox = 'data-soci-fit style="display:block;width:100%;min-height:420px;border:0"';
+const fitBox = 'data-graao-fit style="display:block;width:100%;min-height:420px;border:0"';
 
 function framed(tag, { workspace, link, lazy }) {
-  const kind = attr(tag, 'data-soci-embed').toLowerCase(), id = attr(tag, 'data-id');
+  const kind = attr(tag, 'data-graao-embed').toLowerCase(), id = attr(tag, 'data-id');
   if (kind === 'video') {
     const video = videoSource(attr(tag, 'data-src'));
     if (!video) return '';
@@ -42,20 +42,20 @@ function framed(tag, { workspace, link, lazy }) {
 
 /** Fills the markers of a page. `link` is the booking link the visit brought (32 hex digits). */
 export function renderEmbeds(html, { workspace, link = '' }) {
-  if (!/data-soci-embed/i.test(html)) return html;
+  if (!/data-graao-embed/i.test(html)) return html;
   const token = /^[0-9a-f]{32}$/.test(link) ? link : '';
   let videos = 0; // O primeiro vídeo e os formulários carregam com a página; os outros vídeos, ao chegar perto.
-  const body = html.replace(/<div\b(?=[^>]*\sdata-soci-embed\s*=)(?:[^>"']|"[^"]*"|'[^']*')*>/gi, tag => {
-    const lazy = attr(tag, 'data-soci-embed').toLowerCase() === 'video' && videos++ > 0;
+  const body = html.replace(/<div\b(?=[^>]*\sdata-graao-embed\s*=)(?:[^>"']|"[^"]*"|'[^']*')*>/gi, tag => {
+    const lazy = attr(tag, 'data-graao-embed').toLowerCase() === 'video' && videos++ > 0;
     const inner = framed(tag, { workspace, link: token, lazy });
-    return inner ? tag + inner : tag.replace(/>$/, ' data-soci-empty>');
+    return inner ? tag + inner : tag.replace(/>$/, ' data-graao-empty>');
   });
-  const style = '<style>[data-soci-embed]>:not(iframe):not(video),[data-soci-empty]{display:none!important}[data-soci-embed]{border:0!important;background:none!important;min-height:0!important;padding:0!important}</style>';
+  const style = '<style>[data-graao-embed]>:not(iframe):not(video),[data-graao-empty]{display:none!important}[data-graao-embed]{border:0!important;background:none!important;min-height:0!important;padding:0!important}</style>';
   return /<\/head>/i.test(body) ? body.replace(/<\/head>/i, `${style}</head>`) : style + body;
 }
 
 // Ajusta a altura dos quadros de formulário e agenda. Cada quadro só fala da própria altura.
-const fitSource = `(()=>{addEventListener('message',e=>{const h=Number(e.data&&(e.data.sociHeight||e.data.height));if(!(h>0&&h<20000)||e.origin!==location.origin)return;for(const f of document.querySelectorAll('iframe[data-soci-fit]'))if(f.contentWindow===e.source)f.style.height=Math.ceil(h)+'px'})})()`;
+const fitSource = `(()=>{addEventListener('message',e=>{const h=Number(e.data&&(e.data.graaoHeight||e.data.height));if(!(h>0&&h<20000)||e.origin!==location.origin)return;for(const f of document.querySelectorAll('iframe[data-graao-fit]'))if(f.contentWindow===e.source)f.style.height=Math.ceil(h)+'px'})})()`;
 const fitHash = `'sha256-${createHash('sha256').update(fitSource).digest('base64')}'`;
 
 /** Adds a script hash to a policy that may already have a script-src. */

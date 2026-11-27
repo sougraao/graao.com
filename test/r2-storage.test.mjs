@@ -30,7 +30,7 @@ const fake = () => {
     if (init.method === 'HEAD') return new Response(null, { status: url.includes('missing') ? 404 : 200, headers: { 'content-length': '1234', 'content-type': 'image/png' } });
     return new Response('', { status: 200 });
   };
-  return { calls, r2: createR2({ accountId: account, accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'soci-arquivos', request }) };
+  return { calls, r2: createR2({ accountId: account, accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'graao-arquivos', request }) };
 };
 
 test('talks to the bucket on the account endpoint', async () => {
@@ -40,10 +40,10 @@ test('talks to the bucket on the account endpoint', async () => {
   assert.equal(await r2.head('ws/one/files/missing'), null);
   await r2.remove('ws/one/files/x');
   assert.deepEqual(calls.map(call => `${call.method} ${call.url}`), [
-    `PUT https://${account}.r2.cloudflarestorage.com/soci-arquivos/ws/one/files/x`,
-    `HEAD https://${account}.r2.cloudflarestorage.com/soci-arquivos/ws/one/files/x`,
-    `HEAD https://${account}.r2.cloudflarestorage.com/soci-arquivos/ws/one/files/missing`,
-    `DELETE https://${account}.r2.cloudflarestorage.com/soci-arquivos/ws/one/files/x`]);
+    `PUT https://${account}.r2.cloudflarestorage.com/graao-arquivos/ws/one/files/x`,
+    `HEAD https://${account}.r2.cloudflarestorage.com/graao-arquivos/ws/one/files/x`,
+    `HEAD https://${account}.r2.cloudflarestorage.com/graao-arquivos/ws/one/files/missing`,
+    `DELETE https://${account}.r2.cloudflarestorage.com/graao-arquivos/ws/one/files/x`]);
   assert.match(calls[0].headers.Authorization, /SignedHeaders=content-type;host;x-amz-content-sha256;x-amz-date/);
 });
 
@@ -69,8 +69,8 @@ test('upload tickets are tamper-proof and expire', () => {
 
 test('configuration comes from the environment and fails loudly when partial', () => {
   assert.equal(r2FromEnv({}), null);
-  assert.throws(() => r2FromEnv({ R2_BUCKET: 'soci-arquivos' }), /R2_ACCOUNT_ID/);
-  assert.equal(r2FromEnv({ R2_ACCOUNT_ID: account, R2_ACCESS_KEY_ID: 'k', R2_SECRET_ACCESS_KEY: 's', R2_BUCKET: 'soci-arquivos' }).bucket, 'soci-arquivos');
+  assert.throws(() => r2FromEnv({ R2_BUCKET: 'graao-arquivos' }), /R2_ACCOUNT_ID/);
+  assert.equal(r2FromEnv({ R2_ACCOUNT_ID: account, R2_ACCESS_KEY_ID: 'k', R2_SECRET_ACCESS_KEY: 's', R2_BUCKET: 'graao-arquivos' }).bucket, 'graao-arquivos');
 });
 
 test('lista uma pasta, decodifica as chaves e nunca apaga o bucket inteiro', async () => {
@@ -80,9 +80,9 @@ test('lista uma pasta, decodifica as chaves e nunca apaga o bucket inteiro', asy
     seen.push(`${init.method} ${address.pathname}${address.search}`);
     return new Response('<ListBucketResult><Contents><Key>ws/a/files/x&amp;y</Key></Contents><IsTruncated>true</IsTruncated><NextContinuationToken>t&amp;1</NextContinuationToken></ListBucketResult>');
   };
-  const r2 = createR2({ accountId: 'd'.repeat(32), accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'soci-arquivos', request });
+  const r2 = createR2({ accountId: 'd'.repeat(32), accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'graao-arquivos', request });
   assert.deepEqual(await r2.list('ws/a/'), { keys: ['ws/a/files/x&y'], next: 't&1' });
-  assert.match(seen[0], /^GET \/soci-arquivos\?list-type=2&prefix=ws%2Fa%2F$/);
+  assert.match(seen[0], /^GET \/graao-arquivos\?list-type=2&prefix=ws%2Fa%2F$/);
   for (const prefix of ['', 'ws', '/ws/a/', 'ws/a']) await assert.rejects(r2.removePrefix(prefix), { status: 400 }, prefix);
   assert.equal(seen.length, 1);
 });

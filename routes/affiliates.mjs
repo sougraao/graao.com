@@ -7,7 +7,7 @@ import { affiliatePortal, portalTokenHash } from '../affiliate-model.mjs';
 import { affiliatePageCsp, renderPortal, renderSignup } from '../affiliate-page.mjs';
 import { NEXT_ROUTE } from './next-route.mjs';
 
-const affiliateCookie = workspace => `soci_af_${workspace.replace(/[^\w-]/g, '')}`;
+const affiliateCookie = workspace => `graao_af_${workspace.replace(/[^\w-]/g, '')}`;
 
 export function createAffiliateRoutes(deps) {
   const { store, ready, error, workspaceSegment, allowSign, change, flushLater, payload, publicAccountPolicy, publicBase, referralsOf } = deps;

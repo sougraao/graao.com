@@ -86,7 +86,7 @@ $$;
 revoke all on function public.go_platform_usage() from public, anon, authenticated;
 grant execute on function public.go_platform_usage() to anon;
 
--- soci AI Gateway: log de requisições de IA (migração 20261126150000_go_ai_requests.sql). Só metadados, só inclusão.
+-- graao AI Gateway: log de requisições de IA (migração 20261126150000_go_ai_requests.sql). Só metadados, só inclusão.
 grant select, insert, delete on table public.go_ai_requests to anon;
 grant execute on function public.go_ai_requests_summary(timestamptz) to anon;
 drop policy if exists go_ai_requests_read on public.go_ai_requests;

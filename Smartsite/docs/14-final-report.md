@@ -1,4 +1,4 @@
-# Final Report — Smartsite soci (2026-11-23)
+# Final Report — Smartsite graao (2026-11-23)
 
 **Status geral: PARTIAL** — site completo e testado (20/20), mas **não está pronto para publicar**: faltam os dados do responsável e as capturas listadas em 13-pending-information.md, além da autorização de publicação.
 
@@ -6,8 +6,8 @@
 - 36 páginas estáticas em `Smartsite/site/` (Astro 7): home, 9 core, hub + 17 funcionalidades, hub + 8 soluções.
 - Conteúdo baseado só no que o código da plataforma faz (`documents/PRODUCT_EVIDENCE_REGISTER.md`); limites ditos com clareza (sem SMS, sem sincronização com Google Agenda, sem domínio próprio para sites, comissões de afiliados só calculadas).
 - Capturas reais da plataforma (workspace de demonstração local, dados fictícios); 10 telas pendentes.
-- SEO: canonical em `https://www.soci.app.br`, sitemap sem páginas noindex, robots, JSON-LD.
-- Conversão: "Começar com a soci" → `https://soci.app.br/login` (login Google cria a agência).
+- SEO: canonical em `https://www.graao.com`, sitemap sem páginas noindex, robots, JSON-LD.
+- Conversão: "Começar com a graao" → `https://graao.com/login` (login Google cria a agência).
 
 ## Como rodar
 ```

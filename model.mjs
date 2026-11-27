@@ -751,7 +751,7 @@ function executeCommand(s, command, { workspace = 'demo', trackClick = true } = 
     });
     // A draft in the Social Planner's own shape, ready to pick accounts and schedule.
     const post = add(s, 'socialPosts', {
-      type: 'post', summary: str(d.body || existing?.name || 'Arte criada na Prancheta soci', 2000), overrides: {}, accountIds: [],
+      type: 'post', summary: str(d.body || existing?.name || 'Arte criada na Prancheta graao', 2000), overrides: {}, accountIds: [],
       media: [{ fileId: file.id, name: file.name, type: 'image' }], link: '', firstComment: '', location: '', userTags: '', categoryId: '', tags: [],
       needsApproval: false, source: 'post', scheduleDate: '', recurrence: null, status: 'draft', approval: '', results: [], createdBy: 'Prancheta', error: ''
     });

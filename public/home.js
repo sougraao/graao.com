@@ -1,4 +1,4 @@
-// soci — página inicial pública: menu do celular e abas da jornada.
+// graao — página inicial pública: menu do celular e abas da jornada.
 (() => {
   const menuBtn = document.getElementById('menu-btn');
   const links = document.getElementById('nav-links');

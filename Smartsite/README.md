@@ -1,6 +1,6 @@
-# Smartsite soci — Antigravity Starter V3.0
+# Smartsite graao — Antigravity Starter V3.0
 
-Workspace específico para soci, adaptado do starter V2.1. Ainda não é o website implementado.
+Workspace específico para graao, adaptado do starter V2.1. Ainda não é o website implementado.
 
 ## Início
 1. Extraia o ZIP e abra a pasta inteira no Google Antigravity.
@@ -11,7 +11,7 @@ Workspace específico para soci, adaptado do starter V2.1. Ainda não é o websi
 
 ## Arquivos
 - `SMARTSITE_MASTER_PROMPT.md` — 33 seções de execução, do diagnóstico à entrega; arquitetura SaaS nacional, design e interatividade.
-- `BUSINESS_BRIEF.md` — dados da soci e lacunas.
+- `BUSINESS_BRIEF.md` — dados da graao e lacunas.
 - `START_HERE.md` — comando de ativação.
 - `documents/` — marca/copy, contrato de experiência e registro de evidências.
 - `references/` — blueprint adaptado e original histórico.

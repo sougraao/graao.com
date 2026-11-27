@@ -15,7 +15,7 @@ const kindIcon = { photo: 'upload', video: 'play', audio: 'mic', doc: 'note', ot
 const accept = Object.keys(kinds).join(',');
 
 let layout = 'grid';
-try { layout = localStorage.getItem('soci.media.layout') === 'list' ? 'list' : 'grid'; } catch { /* default grid */ }
+try { layout = localStorage.getItem('graao.media.layout') === 'list' ? 'list' : 'grid'; } catch { /* default grid */ }
 const mv = { sort: 'modified-desc', kind: 'all', selected: new Set() };
 
 // A file kept in Cloudflare R2 has no inline data: its type and size are stored, and `src` serves it.
@@ -245,7 +245,7 @@ export function installMedia({ c, api, url, mutate, flash, dialog, close, render
     const { md: action, id } = control.dataset;
     if (control.closest('.md-menu')) control.closest('.md-menu').open = false;
     try {
-      if (action === 'layout') { layout = id; try { localStorage.setItem('soci.media.layout', id); } catch { /* per-viewer only */ } render(); }
+      if (action === 'layout') { layout = id; try { localStorage.setItem('graao.media.layout', id); } catch { /* per-viewer only */ } render(); }
       if (action === 'pick-files') document.querySelector('[data-md-input]')?.click();
       if (action === 'pick-folder') document.querySelector('[data-md-dir]')?.click();
       if (action === 'new-folder') form('Criar pasta','folder','<label>Nome da pasta<input name="name" maxlength="100" required placeholder="Digite o nome da pasta" autocomplete="off"></label>','Salvar');

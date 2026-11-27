@@ -258,21 +258,21 @@ export function toolChips({ header, steps = [], open = true } = {}) {
 /* ── Átomos: Button, Monogram, EntityChip, ValuePill ─────── */
 
 function mountIconSwap(buttonEl, label, iconMarkup = SPARK) {
-  buttonEl.classList.add('soci-icon-swap');
-  const content = node('span', 'soci-icon-swap-content');
-  const iconEl = node('span', 'soci-icon-swap-icon');
+  buttonEl.classList.add('graao-icon-swap');
+  const content = node('span', 'graao-icon-swap-content');
+  const iconEl = node('span', 'graao-icon-swap-icon');
   iconEl.append(svg(`<path d="${iconMarkup}"/>`, { size: 14, width: 1.9 }));
-  const labelEl = node('span', 'soci-icon-swap-label', label);
-  const arrowEl = node('span', 'soci-icon-swap-arrow');
+  const labelEl = node('span', 'graao-icon-swap-label', label);
+  const arrowEl = node('span', 'graao-icon-swap-arrow');
   arrowEl.append(svg(SWAP_ARROW, { size: 15, width: 2.1 }));
   content.append(iconEl, labelEl);
   buttonEl.replaceChildren(content, arrowEl);
-  buttonEl._sociIconSwapLabel = labelEl;
+  buttonEl._graaoIconSwapLabel = labelEl;
   return buttonEl;
 }
 
 export function setIconSwapLabel(buttonEl, label) {
-  const labelEl = buttonEl?._sociIconSwapLabel || buttonEl?.querySelector('.soci-icon-swap-label');
+  const labelEl = buttonEl?._graaoIconSwapLabel || buttonEl?.querySelector('.graao-icon-swap-label');
   if (labelEl) labelEl.textContent = label;
   else if (buttonEl) buttonEl.textContent = label;
   return buttonEl;
@@ -287,7 +287,7 @@ export function iconSwapButton(label, { variant = 'secondary', size = 'sm', type
   return b;
 }
 
-/** Todos os botões de ação do Beautiful UI usam o mesmo contrato Icon Swap da soci. */
+/** Todos os botões de ação do Beautiful UI usam o mesmo contrato Icon Swap da graao. */
 export function button(label, options = {}) {
   return iconSwapButton(label, options);
 }
@@ -629,7 +629,7 @@ export function recommendationCard({ title, options = [], labels = {}, onAccept 
     void body.offsetWidth;
     body.style.animation = '';
     status.replaceChildren(meter(o.signal, o.tone), node('span', null, o.label));
-    cta.className = `bui-btn soci-icon-swap is-${accepted ? 'success' : o.ctaVariant || 'accent'} is-sm`;
+    cta.className = `bui-btn graao-icon-swap is-${accepted ? 'success' : o.ctaVariant || 'accent'} is-sm`;
     setIconSwapLabel(cta, accepted ? t.accepted : o.cta);
     dlist.replaceChildren(node('p', 'bui-reco-other', t.other), ...options.map((opt, i) => {
       if (i === selected) return null;

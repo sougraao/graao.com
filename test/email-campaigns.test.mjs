@@ -54,7 +54,7 @@ test('Scheduling checks the campaign, and the audience skips DND, unsubscribed a
   save(s, 'emailCampaigns', { name: 'Promo', subject: 'Oi', blocks: [], audience: { mode: 'tags', tags: ['VIP'] } }, id);
   assert.throws(() => act(s, 'email-campaign-schedule', id), /vazio/);
   save(s, 'emailCampaigns', { name: 'Promo', subject: 'Oi', blocks, audience: { mode: 'tags', tags: ['VIP'] } }, id);
-  const scheduled = act(s, 'email-campaign-schedule', id, { at: new Date(Date.now() + 3600e3).toISOString(), origin: 'https://app.soci.test' });
+  const scheduled = act(s, 'email-campaign-schedule', id, { at: new Date(Date.now() + 3600e3).toISOString(), origin: 'https://app.graao.test' });
   assert.equal(scheduled.reach, 3, 'vip contacts, one per address, without DND');
   assert.throws(() => save(s, 'emailCampaigns', { name: 'Outra' }, id), /Só rascunhos/);
   assert.equal(act(s, 'email-tick', '', { at: new Date().toISOString() }), 0, 'not due yet');
@@ -100,7 +100,7 @@ test('An A/B test sends A and B to a test group, then the winner to the rest', (
 test('Campaigns go out in Resend batches with tracking links; opens, clicks and unsubscribes are recorded', async t => {
   const batches = [];
   const request = async (input, options) => { batches.push({ url: String(input), body: JSON.parse(options.body), idem: options.headers['Idempotency-Key'] }); return new Response(JSON.stringify({ data: [] }), { status: 200 }); };
-  const campaignMail = campaignMailer({ key: 're_test', from: 'Soci <no-reply@soci.app.br>', publicOrigin: '', request });
+  const campaignMail = campaignMailer({ key: 're_test', from: 'Graao <no-reply@graao.com>', publicOrigin: '', request });
   const { server, host } = makeServer({ allowLocalAccess: true, auth: null, store: createSqliteStore(':memory:'), port: 0, campaignMail });
   await new Promise((resolve, reject) => { server.on('error', reject); server.listen(0, host, resolve); });
   t.after(() => new Promise(resolve => server.close(resolve)));
@@ -119,7 +119,7 @@ test('Campaigns go out in Resend batches with tracking links; opens, clicks and 
   assert.ok(total >= 2 && batch.body.every(m => m.to.length === 1 && m.to[0].includes('@')), 'one message per contact with e-mail (the demo workspace has seeded contacts too)');
   assert.ok(batch.body.some(m => m.to[0] === 'bruno@exemplo.com'));
   const ana = batch.body.find(m => m.to[0] === 'ana@exemplo.com');
-  assert.deepEqual([ana.from, ana.subject, ana.reply_to], ['Loja Demo <no-reply@soci.app.br>', 'Oi, Ana', 'contato@loja.com']);
+  assert.deepEqual([ana.from, ana.subject, ana.reply_to], ['Loja Demo <no-reply@graao.com>', 'Oi, Ana', 'contato@loja.com']);
   const unsubscribe = /<(.+)>/.exec(ana.headers['List-Unsubscribe'])[1];
   assert.equal(ana.headers['List-Unsubscribe-Post'], 'List-Unsubscribe=One-Click');
   assert.ok(unsubscribe.startsWith(`${base}/e/u/demo/`), 'links use the origin of the request that scheduled the campaign');
@@ -145,7 +145,7 @@ test('Campaigns go out in Resend batches with tracking links; opens, clicks and 
 
 test('A test e-mail goes to the given address without tracking, and the endpoint checks its input', async t => {
   const sent = [];
-  const campaignMail = campaignMailer({ key: 're_test', from: 'Soci <no-reply@soci.app.br>', request: async (input, options) => { sent.push(JSON.parse(options.body)[0]); return new Response('{}', { status: 200 }); } });
+  const campaignMail = campaignMailer({ key: 're_test', from: 'Graao <no-reply@graao.com>', request: async (input, options) => { sent.push(JSON.parse(options.body)[0]); return new Response('{}', { status: 200 }); } });
   const { server, host } = makeServer({ allowLocalAccess: true, auth: null, store: createSqliteStore(':memory:'), port: 0, campaignMail });
   await new Promise((resolve, reject) => { server.on('error', reject); server.listen(0, host, resolve); });
   t.after(() => new Promise(resolve => server.close(resolve)));

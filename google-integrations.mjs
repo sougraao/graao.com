@@ -224,7 +224,7 @@ export async function locationDetails(token, location) {
   return call(`https://mybusinessbusinessinformation.googleapis.com/v1/${locationId(location)}?` + form({ readMask: detailMask }), { token });
 }
 
-// Only the fields the team edits in soci; Google rejects unknown or empty masks.
+// Only the fields the team edits in graao; Google rejects unknown or empty masks.
 export async function updateLocation(token, location, patch) {
   const fields = Object.keys(patch);
   if (!fields.length) fail('Nada para atualizar.');

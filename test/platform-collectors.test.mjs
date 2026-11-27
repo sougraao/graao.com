@@ -228,7 +228,7 @@ test('Hostinger: se a assinatura falhar, os números da VPS continuam', async ()
 });
 
 test('Cloudflare: sem conta na variável, descobre a conta pelo token', async () => {
-  const request = fakeRequest([['/accounts', { result: [{ id: 'acc-do-token', name: 'soci' }] }], ['/graphql', { data: { viewer: { accounts: [{ storage: [], operations: [] }] } } }]]);
+  const request = fakeRequest([['/accounts', { result: [{ id: 'acc-do-token', name: 'graao' }] }], ['/graphql', { data: { viewer: { accounts: [{ storage: [], operations: [] }] } } }]]);
   const reading = await collectCloudflare({ env: { CLOUDFLARE_API_TOKEN: 'cf' }, request, store: {}, settings, now: NOW });
   assert.equal(reading.status, 'ok');
   assert.equal(JSON.parse(request.calls[1].options.body).variables.account, 'acc-do-token');
@@ -267,29 +267,29 @@ test('OpenAI: chave recusada vira erro curto', async () => {
 });
 
 test('Resend: o domínio do remetente verificado fica OK; pendente pede atenção', async () => {
-  const domains = status => ({ data: [{ name: 'outro.com', status: 'verified' }, { name: 'soci.app.br', status }] });
-  const env = { RESEND_API_KEY: 're', PORTAL_EMAIL_FROM: 'soci <avisos@soci.app.br>' };
+  const domains = status => ({ data: [{ name: 'outro.com', status: 'verified' }, { name: 'graao.com', status }] });
+  const env = { RESEND_API_KEY: 're', PORTAL_EMAIL_FROM: 'graao <avisos@graao.com>' };
   const ok = await collectResend({ env, request: fakeRequest([['/domains', domains('verified')]]), store: {}, settings, now: NOW });
-  assert.deepEqual([metric(ok, 'domain').used, metric(ok, 'domain').note], [1, 'soci.app.br verificado']);
+  assert.deepEqual([metric(ok, 'domain').used, metric(ok, 'domain').note], [1, 'graao.com verificado']);
   const pending = await collectResend({ env, request: fakeRequest([['/domains', domains('pending')]]), store: {}, settings, now: NOW });
-  assert.deepEqual([metric(pending, 'domain').used, metric(pending, 'domain').note], [0, 'soci.app.br: pending']);
+  assert.deepEqual([metric(pending, 'domain').used, metric(pending, 'domain').note], [0, 'graao.com: pending']);
   const missing = await collectResend({ env: { ...env, PORTAL_EMAIL_FROM: 'x@novo.com' }, request: fakeRequest([['/domains', domains('verified')]]), store: {}, settings, now: NOW });
   assert.equal(metric(missing, 'domain').note, 'novo.com não está cadastrado no Resend');
 });
 
 test('Meta: lê o uso do limite por hora no X-App-Usage, com o token no cabeçalho', async () => {
   const usage = JSON.stringify({ call_count: 12, total_time: 40, total_cputime: 7 });
-  const request = fakeRequest([['graph.facebook.com', new Response('{"name":"soci","id":"123"}', { headers: { 'content-type': 'application/json', 'x-app-usage': usage } })]]);
+  const request = fakeRequest([['graph.facebook.com', new Response('{"name":"graao","id":"123"}', { headers: { 'content-type': 'application/json', 'x-app-usage': usage } })]]);
   const reading = await collectMeta({ env: { META_APP_ID: '123', META_APP_SECRET: 'sec' }, request, store: {}, settings, now: NOW });
   assert.equal(reading.status, 'ok');
-  assert.equal(reading.plan, 'soci');
+  assert.equal(reading.plan, 'graao');
   assert.deepEqual([metric(reading, 'appRate').used, metric(reading, 'appRate').limit], [40, 100]);
   assert.ok(!request.calls[0].url.includes('sec'));
   assert.equal(request.calls[0].options.headers.Authorization, 'OAuth 123|sec');
 });
 
 test('Meta: sem o cabeçalho de uso, a métrica fica sem valor', async () => {
-  const request = fakeRequest([['graph.facebook.com', { name: 'soci' }]]);
+  const request = fakeRequest([['graph.facebook.com', { name: 'graao' }]]);
   const reading = await collectMeta({ env: { META_APP_ID: '123', META_APP_SECRET: 'sec' }, request, store: {}, settings, now: NOW });
   assert.equal(metric(reading, 'appRate').used, null);
 });

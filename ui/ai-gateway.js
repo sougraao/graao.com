@@ -5,7 +5,7 @@ import { ask } from './ask.js';
 
 const TABS = [['overview', 'Visão geral'], ['providers', 'Provedores'], ['models', 'Modelos'], ['routing', 'Roteamento'], ['costs', 'Custos e planos'],
   ['prompts', 'Prompts'], ['playground', 'Playground'], ['logs', 'Logs']];
-const MODES = [['auto', 'soci Auto'], ['free', 'soci Free'], ['fast', 'soci Fast'], ['pro', 'soci Pro'], ['reason', 'soci Reason'], ['vision', 'soci Vision'], ['agent', 'soci Agent'], ['embeddings', 'soci Embeddings']];
+const MODES = [['auto', 'graao Auto'], ['free', 'graao Free'], ['fast', 'graao Fast'], ['pro', 'graao Pro'], ['reason', 'graao Reason'], ['vision', 'graao Vision'], ['agent', 'graao Agent'], ['embeddings', 'graao Embeddings']];
 const CLASSES = [['public', 'Público'], ['internal', 'Interno'], ['confidential', 'Confidencial'], ['personal', 'Pessoal'], ['sensitive', 'Pessoal sensível'], ['restricted', 'Restrito']];
 const FAILURES = [['', 'Nenhuma (chamada real)'], ['rate_limit', 'Rate limit'], ['quota_exhausted', 'Cota esgotada'], ['timeout', 'Timeout'], ['unavailable', 'Provedor fora do ar'],
   ['auth', 'Chave recusada'], ['model_gone', 'Modelo descontinuado'], ['context_exceeded', 'Contexto excedido'], ['policy', 'Bloqueio de política'], ['structured_output', 'JSON inválido']];
@@ -96,8 +96,8 @@ export function createAiGatewayPanel({ api, h, tr, flash, rerender, utabs }) {
       <details><summary>${t('Regras deste provedor')}</summary>
         <form class="settings-form aig-form" data-aig-form="provider" data-id="${h(p.id)}">
           ${check('enabled', s.enabled, 'Ligado')}
-          ${check('freeTier', s.freeTier, 'Confirmei que a conta da soci aqui está no plano gratuito (sem cobrança)')}
-          ${check('commercialUse', s.commercialUse, 'Os termos permitem o uso comercial da soci')}
+          ${check('freeTier', s.freeTier, 'Confirmei que a conta da graao aqui está no plano gratuito (sem cobrança)')}
+          ${check('commercialUse', s.commercialUse, 'Os termos permitem o uso comercial da graao')}
           ${check('paidAllowed', s.paidAllowed, 'Permitir uso pago (dentro do orçamento)')}
           <div class="field-grid">${field('Prioridade', input('priority', s.priority, 'type="number" min="0" max="99"'))}${field('Orçamento mensal (US$)', input('monthlyBudget', (s.monthlyBudgetMicros || 0) / 1e6, 'inputmode="decimal"'))}</div>
           <p class="dim">${t('Limites da conta (0 = não sei; o gateway usa contadores conservadores)')}</p>
@@ -155,8 +155,8 @@ export function createAiGatewayPanel({ api, h, tr, flash, rerender, utabs }) {
         `<div class="field-grid">${field('Máximo de tentativas', input('maxAttempts', s.routing.maxAttempts, 'type="number" min="1" max="6"'))}${field('Prazo por tentativa (ms)', input('attemptTimeoutMs', s.routing.attemptTimeoutMs, 'type="number" min="5000"'))}
          ${field('Prazo total (ms)', input('totalTimeoutMs', s.routing.totalTimeoutMs, 'type="number" min="5000"'))}${field('Falhas para pausar provedor', input('breakerFailures', s.routing.breaker.failures, 'type="number" min="1"'))}
          ${field('Pausa (ms)', input('breakerCooldownMs', s.routing.breaker.cooldownMs, 'type="number" min="5000"'))}</div>`)
-      + section('Agências sem chave da OpenAI', 'Hoje cada agência usa a própria chave. Ligado, quem não tem chave usa só modelos gratuitos da soci (texto; transcrição e busca na web continuam pedindo chave).',
-        field('Comportamento', select('agenciesWithoutKey', [['off', 'Pedir a chave (como hoje)'], ['free', 'Usar a IA gratuita da soci']], s.agenciesWithoutKey))), 'Salvar roteamento')}
+      + section('Agências sem chave da OpenAI', 'Hoje cada agência usa a própria chave. Ligado, quem não tem chave usa só modelos gratuitos da graao (texto; transcrição e busca na web continuam pedindo chave).',
+        field('Comportamento', select('agenciesWithoutKey', [['off', 'Pedir a chave (como hoje)'], ['free', 'Usar a IA gratuita da graao']], s.agenciesWithoutKey))), 'Salvar roteamento')}
       <div class="surface padded"><h2>${t('Ordem do free-first')}</h2><p class="dim">${t('Modelos gratuitos são tentados nesta ordem de provedor.')}</p>
         <ol class="aig-order">${order.map((id, index) => `<li><span>${h(S.overview.providers.find(p => p.id === id)?.name || id)}</span>${index ? button('Subir', 'order', `data-id="${h(id)}" data-dir="-1" aria-label="${t('Subir')}"`) : ''}${index < order.length - 1 ? button('Descer', 'order', `data-id="${h(id)}" data-dir="1"`) : ''}</li>`).join('')}</ol></div>
       <div class="surface padded"><h2>${t('Regras por funcionalidade')}</h2><div class="aig-table-wrap"><table class="aig-table"><thead><tr><th>${t('Funcionalidade')}</th><th>${t('Modo')}</th><th>${t('Classe de dado')}</th><th>${t('Pago')}</th><th>${t('Ligada')}</th><th></th></tr></thead><tbody>
@@ -183,7 +183,7 @@ export function createAiGatewayPanel({ api, h, tr, flash, rerender, utabs }) {
         ${id === 'byok' ? '' : check(`${id}_allowPaid`, plan(id).allowPaid, 'Permitir fallback pago (dentro do orçamento)')}
         ${field('Requisições por dia (0 = sem limite)', input(`${id}_dailyRequests`, plan(id).dailyRequests, 'type="number" min="0"'))}${field('Máximo de tokens de entrada', input(`${id}_maxInputTokens`, plan(id).maxInputTokens, 'type="number" min="0"'))}
         ${field('Máximo de tokens de saída', input(`${id}_maxOutputTokens`, plan(id).maxOutputTokens, 'type="number" min="0"'))}${field('Concorrência por organização', input(`${id}_concurrency`, plan(id).concurrency, 'type="number" min="0"'))}</div>`);
-    return `${form('budgets', section('Orçamento pago da soci', 'Sem orçamento mensal e diário, nenhuma chamada paga acontece (padrão). Valores em dólar.',
+    return `${form('budgets', section('Orçamento pago da graao', 'Sem orçamento mensal e diário, nenhuma chamada paga acontece (padrão). Valores em dólar.',
         `<div class="field-grid">${field('Mensal (US$)', input('monthly', s.budgets.monthlyMicros / 1e6, 'inputmode="decimal"'))}${field('Diário (US$)', input('daily', s.budgets.dailyMicros / 1e6, 'inputmode="decimal"'))}
          ${field('Por organização no mês (US$, 0 = sem limite extra)', input('perOrgMonthly', s.budgets.perOrgMonthlyMicros / 1e6, 'inputmode="decimal"'))}${field('Alerta em (% do mensal)', input('alertAt', Math.round(s.budgets.alertAt * 100), 'type="number" min="10" max="100"'))}</div>`)
       + section('Cache', 'Só pedidos determinísticos e sem efeito externo. Nunca compartilhado entre organizações.', `${check('cacheEnabled', s.cache.enabled, 'Cache ligado')}${field('Validade (minutos)', input('cacheMinutes', Math.round(s.cache.ttlMs / 60000), 'type="number" min="0"'))}`), 'Salvar orçamento')}
@@ -231,14 +231,14 @@ export function createAiGatewayPanel({ api, h, tr, flash, rerender, utabs }) {
         <td>${r.status === 'ok' ? badge('ok', 'green') : badge(r.error_kind || 'erro', 'red')}</td><td>${num(r.attempts)}</td><td>${num(r.input_tokens)} / ${num(r.output_tokens)}</td><td>${r.cost_source === 'free' ? t('grátis') : r.cost_source === 'byok' ? t('chave própria') : usd(r.cost_micros)}</td><td>${r.latency_ms ? `${num(r.latency_ms)} ms` : '—'}</td></tr>`).join('')}</tbody></table></div>`
       : `<p class="pf-empty">${t(S.logs?.error || 'Nenhuma requisição registrada com esses filtros.')}</p>`;
     return `<form class="surface padded aig-filter" data-aig-form="log-filter">${field('Status', select('status', [['', 'Todos'], ['ok', 'Ok'], ['error', 'Erro']], f.status))}
-        ${field('Provedor', select('provider', [['', 'Todos'], ...S.overview.providers.map(p => [p.id, p.name])], f.provider))}${field('Funcionalidade', input('feature', f.feature, 'placeholder="soci.chat"'))}
+        ${field('Provedor', select('provider', [['', 'Todos'], ...S.overview.providers.map(p => [p.id, p.name])], f.provider))}${field('Funcionalidade', input('feature', f.feature, 'placeholder="graao.chat"'))}
         ${field('Tipo', select('tier', [['', 'Todos'], ['free', 'Gratuito'], ['paid', 'Pago'], ['byok', 'Chave própria']], f.tier))}<button class="secondary">${t('Filtrar')}</button></form>
       <div class="surface padded">${table}${S.logs?.next ? button('Carregar mais', 'more-logs') : ''}</div>`;
   }
 
   function render() {
     if (!S.overview && !S.error) { if (!S.loading) queueMicrotask(() => load('overview')); }
-    const head = `<header class="page-head"><div><h1>${t('AI Gateway')}</h1><p>${t('Provedores, modelos, roteamento, custos e testes da IA da soci.')}</p></div><div class="head-actions"><a class="secondary button" href="#agency/plataforma">${t('Voltar para Plataforma')}</a>${button('Atualizar', 'reload')}</div></header>`;
+    const head = `<header class="page-head"><div><h1>${t('AI Gateway')}</h1><p>${t('Provedores, modelos, roteamento, custos e testes da IA da graao.')}</p></div><div class="head-actions"><a class="secondary button" href="#agency/plataforma">${t('Voltar para Plataforma')}</a>${button('Atualizar', 'reload')}</div></header>`;
     if (S.error && !S.overview) return `<div class="page" data-aig-root>${head}<div class="surface padded"><p class="form-status">${h(S.error)}</p>${button('Tentar de novo', 'reload')}</div></div>`;
     if (!S.overview || (!S.settings && S.tab !== 'overview' && S.tab !== 'providers')) return `<div class="page" data-aig-root>${head}<div class="pf-grid aig-tiles">${'<article class="surface pf-card aig-tile aig-skeleton"></article>'.repeat(6)}</div></div>`;
     const views = { overview: overviewTab, providers: providersTab, models: modelsTab, routing: routingTab, costs: costsTab, prompts: promptsTab, playground: playgroundTab, logs: logsTab };

@@ -20,7 +20,7 @@ export function createWorkspaceRoutes(deps) {
       const [state, workspaces, aiStatus] = await Promise.all([
         store.load(id), visibleWorkspaces(who), !who.support && (studio || agents || marketing || reputation) ? openAI.status(who.session) : null
       ]);
-      // Sem chave, as ações de texto dos fluxos usam a IA gratuita da soci quando o dono da plataforma a liberou.
+      // Sem chave, as ações de texto dos fluxos usam a IA gratuita da graao quando o dono da plataforma a liberou.
       const freeAI = Boolean(aiStatus && !aiStatus.configured && await openAI.platformAvailable?.());
       if (who.support) await writeAudit(who, 'Sub-account support viewed', id, who.account.status);
       return json({ ...workspaceView(who, state), workspaces,

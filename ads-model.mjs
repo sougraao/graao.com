@@ -1,5 +1,5 @@
 // Anúncios e atribuição of a sub-account. Public commands (forms, sites, store, webinars) run with the
-// visitor's first and last touch (see the soci_at_ cookie in server.mjs): new contacts keep both, and each
+// visitor's first and last touch (see the graao_at_ cookie in server.mjs): new contacts keep both, and each
 // form, booking, order or webinar sign-up becomes a session event. Campaigns and daily numbers synced
 // from Meta Ads and Google Ads live here too; their tokens stay in the separate `ads-<workspace>` row.
 import { randomUUID } from 'node:crypto';

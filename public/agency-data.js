@@ -7,7 +7,7 @@ export const agencyLevel = role => role.startsWith('Agency');
 // Menu lateral da agência: [chave, rótulo, ícone, grupo]. O grupo decide a seção do menu (agencyNavGroups);
 // a ordem dentro da seção é a desta lista. 'rodape' fica embaixo, fora das seções.
 export const agencyNav = [
-  ['dashboard', 'Painel da agência', 'grid', 'inicio'], ['ask', 'Pergunte à Soci', 'spark', 'inicio'], ['ai-suite', 'Central de IA', 'studio', 'inicio'],
+  ['dashboard', 'Painel da agência', 'grid', 'inicio'], ['ask', 'Pergunte à Graao', 'spark', 'inicio'], ['ai-suite', 'Central de IA', 'studio', 'inicio'],
   ['accounts', 'Subcontas', 'users', 'clientes'], ['brand-groups', 'Grupos de marcas', 'tag', 'clientes'], ['snapshots', 'Setups de conta', 'box', 'clientes'], ['saas', 'Configurador SaaS', 'sliders', 'clientes'],
   ['prospecting', 'Prospecção', 'search', 'vendas'], ['presentations', 'Apresentações', 'play', 'vendas'], ['prancheta', 'Prancheta', 'palette', 'vendas'], ['affiliate', 'Portal de afiliados', 'link', 'vendas'], ['partners', 'Parceiros', 'award', 'vendas'],
   ['mobile-app', 'Aplicativo móvel', 'mobile', 'apps'], ['desktop-app', 'Aplicativo desktop', 'monitor', 'apps'],
@@ -18,7 +18,7 @@ export const agencyNav = [
 export const agencyNavGroups = [['inicio', 'Início'], ['clientes', 'Clientes'], ['vendas', 'Vendas'], ['apps', 'Apps'], ['ajuda', 'Ajuda']];
 
 // Central de ajuda (docs-site/): o menu da agência leva para cá no lugar da antiga Universidade.
-export const helpCenterUrl = 'https://doc.soci.app.br/';
+export const helpCenterUrl = 'https://doc.graao.com/';
 
 export const subAccountModules = [
   ['dashboard', 'Painel'], ['conversations', 'Conversas'], ['calendars', 'Calendários'], ['contacts', 'Contatos'],

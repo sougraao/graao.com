@@ -95,7 +95,7 @@ Write-Host @"
   Painel (manager):   https://$domain/manager
   API Key global:     $key
 
-  Na Vercel (projeto soci.app), em Settings -> Environment Variables:
+  Na Vercel (projeto graao.app), em Settings -> Environment Variables:
     EVOLUTION_BASE_URL = https://$domain
     EVOLUTION_API_KEY  = $key
   Depois faça um novo deploy. Guarde a chave num cofre de senhas.

@@ -14,7 +14,7 @@ import { phoneField } from './phone-input.js';
 import { fiscalForm, fiscalMissing, readFiscal } from './fiscal.js';
 import { installLedger, ledgerPanel } from './ledger.js';
 import { createProspecting, prospectRoutes } from './prospecting.js';
-import { createSociChat } from './soci-chat.js';
+import { createGraaoChat } from './graao-chat.js';
 import { enhanceCode } from './bui-mounts.js';
 import { brandGroupCsv, brandGroupHtml, groupPeriods } from './brand-group-data.js';
 import { presentationsHtml, attachPresentationListeners, closePresentationEditor } from './presentations.js';
@@ -101,7 +101,7 @@ export function startAgency(env) {
   const confirmBox = (title, text, form, id, submit) => dialog(title, `<p>${h(text)}</p>`, { form, id, submit });
 
   // ---- Importar do GHL ---------------------------------------------------
-  // A janela mostra o código; a extensão do Chrome envia a leitura; daqui a soci consulta o andamento a cada 2 s e,
+  // A janela mostra o código; a extensão do Chrome envia a leitura; daqui a graao consulta o andamento a cada 2 s e,
   // quando os dados chegam, avança a conversão passo a passo (cada passo leva menos de 20 s no servidor).
   let ghlJob = '', ghlTimer = null;
   const stopGhl = () => { clearTimeout(ghlTimer); ghlTimer = null; ghlJob = ''; };
@@ -136,7 +136,7 @@ export function startAgency(env) {
   async function openGhlImport() {
     stopGhl();
     const issued = await api('/api/agency/ghl-import-code', {});
-    dialog('Importar do GHL', ghlImportBody({ code: issued.code, expiresAt: issued.expiresAt }), { wide: true, description: 'Traga o snapshot da sua agência no GHL como um setup da soci.' });
+    dialog('Importar do GHL', ghlImportBody({ code: issued.code, expiresAt: issued.expiresAt }), { wide: true, description: 'Traga o snapshot da sua agência no GHL como um setup da graao.' });
     for (const el of G('#dialog').querySelectorAll('[data-w]')) el.style.width = `${el.dataset.w}%`;
     ghlJob = issued.jobId;
     ghlTimer = setTimeout(() => watchGhl(issued.jobId), 2000);
@@ -253,7 +253,7 @@ export function startAgency(env) {
   // ---- Pages -------------------------------------------------------------
   const pages = {};
 
-  pages.ask = () => `<div class="sc-host" data-soci-chat-host></div>`;
+  pages.ask = () => `<div class="sc-host" data-graao-chat-host></div>`;
 
   // ---- Brand groups: one report over several sub-accounts ----------------
   const groups = () => D().brandGroups || [];
@@ -557,7 +557,7 @@ export function startAgency(env) {
       <tbody>${rows.map(s => {
         const linked = linkedAccounts(s.id).size;
         const badges = [s.official || s.kind === 'marketplace' ? verified : '', s.shared ? '<span class="badge green">Compartilhado</span>' : '', s.protected ? '<span class="badge blue">Protegido</span>' : '', publishedIds.has(s.id) ? '<span class="badge">No marketplace</span>' : ''].join('');
-        const origin = s.kind === 'marketplace' ? `${s.official ? 'Soci' : h(s.marketplaceAuthor || 'Marketplace')}${s.marketplaceCategory ? ` · ${h(s.marketplaceCategory)}` : ''}` : s.kind === 'imported' ? (s.origin === 'ghl' ? 'Importado do GHL' : 'Importado por código') : (s.workspace ? h(accountName(s.workspace)) : 'Setup da agência');
+        const origin = s.kind === 'marketplace' ? `${s.official ? 'Graao' : h(s.marketplaceAuthor || 'Marketplace')}${s.marketplaceCategory ? ` · ${h(s.marketplaceCategory)}` : ''}` : s.kind === 'imported' ? (s.origin === 'ghl' ? 'Importado do GHL' : 'Importado por código') : (s.workspace ? h(accountName(s.workspace)) : 'Setup da agência');
         return `<tr><td><div class="ag-lib-name"><b>${h(s.name)}</b>${badges}</div><small class="dim">${origin} · ${linked ? `${linked} subconta(s) vinculada(s)` : 'nenhuma subconta vinculada'} · ${h(assetSummary(s.counts))}</small></td>
           <td><span class="ag-ver">v${s.version || 1}</span></td><td>${day(dateOf(s), true)}</td>
           <td class="right"><div class="ag-lib-actions">${icon('snapshot-account', 'plus', 'Criar subconta com este setup', s)}${icon('snapshot-rename', 'edit', 'Renomear', s)}${icon('snapshot-load', 'upload', 'Carregar em subcontas', s)}${kebab(s)}</div></td></tr>`;
@@ -719,7 +719,7 @@ export function startAgency(env) {
   pages.partners = () => `<div class="page">${head('Parceiros', 'Diretório centralizado de freelancers, agências parceiras e fornecedores da sua operação.', primary('Adicionar parceiro', 'new-record', 'data-key="partners"'))}<div class="toolbar">${search('Buscar parceiros…')}</div>
     ${table(['Parceiro', 'Serviço prestado', 'Contato', 'Site oficial', ''], D().partners.filter(p => match(p.name, p.service, p.contact)).map(p => `<tr><td><b>${h(p.name)}</b></td><td>${h(tr(p.service))}</td><td>${h(p.contact || '—')}<br><small class="dim">${h(p.email)}</small></td><td>${p.website ? `<a class="text-link" href="${h(p.website)}" target="_blank" rel="noopener">${h(new URL(p.website).hostname)}</a>` : '—'}</td><td class="right">${btn('Editar', 'edit-record', `data-key="partners" data-id="${p.id}"`)}</td></tr>`), empty('Nenhum parceiro cadastrado', 'Adicione parceiros para manter contatos e serviços centralizados.'))}</div>`;
 
-  // A Universidade e a SaaS Education saíram: o aprendizado agora mora na central de ajuda (doc.soci.app.br,
+  // A Universidade e a SaaS Education saíram: o aprendizado agora mora na central de ajuda (doc.graao.com,
   // link no menu). Endereços antigos voltam para o painel.
   pages.university = pages['saas-education'] = () => {
     location.replace('#agency/dashboard');
@@ -840,7 +840,7 @@ export function startAgency(env) {
       <p class="dim">Crie uma chave de API v2 com permissão de leitura e escrita em <a class="text-link" href="https://app.abacatepay.com/api-keys" target="_blank" rel="noopener">app.abacatepay.com</a>. Use a chave do modo teste para experimentar sem dinheiro real. Cada subconta conecta a própria conta em Configurações → AbacatePay para receber as suas faturas.</p><label>Chave de API v2<input name="apiKey" required autocomplete="off" spellcheck="false" maxlength="400"></label></div></section><footer class="set-foot"><p class="form-status" role="alert"></p><button class="primary">Conectar</button></footer></form>`;
     const hook = g.webhookStatus === 'registered' ? `<p>${badge('Webhook cadastrado automaticamente', 'green')}</p>`
       : `<p class="surface padded ag-warn">${h(g.webhookError || 'Cadastre o webhook no painel do AbacatePay.')} Use os dados abaixo em app.abacatepay.com/webhooks.</p>`;
-    const update = g.webhookOutdated ? `<div class="surface padded ag-notice">${i('pay', 20)}<div><b>Há avisos novos do AbacatePay</b><p>Atualize para a soci saber de plano recusado, contestação e devolução.</p></div>${btn('Atualizar avisos', 'abacate-hooks', '', 'primary')}</div>` : '';
+    const update = g.webhookOutdated ? `<div class="surface padded ag-notice">${i('pay', 20)}<div><b>Há avisos novos do AbacatePay</b><p>Atualize para a graao saber de plano recusado, contestação e devolução.</p></div>${btn('Atualizar avisos', 'abacate-hooks', '', 'primary')}</div>` : '';
     const missing = g.missingEvents?.length ? `<p class="dim"><small>O AbacatePay não aceitou: ${h(g.missingEvents.join(', '))}</small></p>` : '';
     return (D().fiscal ? '' : fiscalMissing('#agency/settings/fiscal')) + update + card(`${head(g.storeName || 'AbacatePay')}<p>${badge('Conectado', 'green')} ${g.devMode ? badge('Modo teste', 'gold') : ''}</p><p class="dim">Chave terminada em <b>${h(g.last4)}</b>, conectada em ${day(g.connectedAt)}. Gere as assinaturas em <a class="text-link" href="#agency/saas/accounts">Configurador SaaS → Subcontas SaaS</a>.</p><div class="inline-gap">${btn('Desconectar', 'abacate-disconnect')}</div>`, true)
       + `<section class="surface set-card"><div class="set-section"><header class="set-head"><h2>Webhook de assinaturas</h2></header><div class="set-body">${hook}<label>URL<input readonly value="${h(g.webhookUrl)}"></label><label>Secret<input readonly value="${h(g.webhookSecret || '')}"></label><p class="dim"><small>Eventos: ${h(g.events.join(', '))}</small></p>${missing}</div></div></section>`;
@@ -885,7 +885,7 @@ export function startAgency(env) {
     if (status === 'hibernated') return badge('Hibernado', 'gold');
     return badge('Desconectado', '');
   }
-  // Linha da soci que recebe o "Confirmar soci XXXXXX" de quem cria uma agência. Só o dono da plataforma vê.
+  // Linha da graao que recebe o "Confirmar graao XXXXXX" de quem cria uma agência. Só o dono da plataforma vê.
   async function refreshVerifyLine() {
     if (!isPlatformOwner()) return;
     A.vl = await api('/api/verify/line').catch(e => ({ error: e.message }));
@@ -912,13 +912,13 @@ export function startAgency(env) {
       : !vl.server ? '<p class="form-status">O servidor gerenciado da Evolution (EVOLUTION_BASE_URL e EVOLUTION_API_KEY) não está configurado.</p>'
       : `<div class="inline-gap">${vl.missing ? badge('Instância ainda não criada') : waStatusBadge(vl.status)}<span class="dim">+${h(vl.number)} · instância ${h(vl.instance)}</span></div>
          ${vl.status === 'connected' ? '' : vl.qrcode
-           ? `<div class="ag-waha-qr ag-gap"><div class="ag-waha-qr-frame"><img src="${h(vl.qrcode)}" alt="QR Code do WhatsApp de confirmação"></div><b>Leia com o WhatsApp do número da soci</b><small class="dim">Aparelhos conectados → Conectar aparelho. ${vlPollTimer ? 'Verificando sozinho…' : 'Depois de ler, clique em <b>Atualizar</b>.'}</small></div>`
+           ? `<div class="ag-waha-qr ag-gap"><div class="ag-waha-qr-frame"><img src="${h(vl.qrcode)}" alt="QR Code do WhatsApp de confirmação"></div><b>Leia com o WhatsApp do número da graao</b><small class="dim">Aparelhos conectados → Conectar aparelho. ${vlPollTimer ? 'Verificando sozinho…' : 'Depois de ler, clique em <b>Atualizar</b>.'}</small></div>`
            : vl.paircode ? `<p>Código de pareamento: <b class="ag-waha-code">${h(vl.paircode)}</b></p>` : ''}
          <div class="inline-gap ag-gap">${vl.status === 'connected' ? '' : btn('Conectar', 'vl-connect', 'type="button"', 'primary')}${btn('Atualizar', 'vl-refresh', 'type="button"', 'secondary', 'refresh')}</div>`;
     return `
       <form class="surface settings-form set-form ag-gap" data-ag-form="vl-release">
         <section class="set-section"><header class="set-head"><h2>WhatsApp de confirmação</h2>
-          <p class="dim">Número da soci que recebe a mensagem de quem cria uma agência e confirma o celular. Nada do que chega nele é guardado.</p></header>
+          <p class="dim">Número da graao que recebe a mensagem de quem cria uma agência e confirma o celular. Nada do que chega nele é guardado.</p></header>
           <div class="set-body">${body}</div></section>
         <section class="set-section"><header class="set-head"><h3>Liberar um número</h3>
           <p class="dim">Para o suporte trocar o celular de uma agência: o número volta a poder confirmar outra conta.</p></header>
@@ -981,7 +981,7 @@ export function startAgency(env) {
             <form class="settings-form" data-ag-form="wa-sub-test" data-id="${focus.workspace}">
               <h3>Enviar mensagem de teste</h3>
               <label>Número destino (com DDI)<input name="phone" required inputmode="numeric" placeholder="5511999999999"></label>
-              <label>Mensagem<textarea name="text" required maxlength="2000" placeholder="Olá! WhatsApp conectado na Soci via ${h(pl)}."></textarea></label>
+              <label>Mensagem<textarea name="text" required maxlength="2000" placeholder="Olá! WhatsApp conectado na Graao via ${h(pl)}."></textarea></label>
               <button class="primary">Enviar teste</button>
               <p class="form-status" role="alert"></p>
             </form>
@@ -1113,7 +1113,7 @@ export function startAgency(env) {
             <div class="ag-brand-mockup-panel is-active" data-ag-brand-mockup-panel="overview" role="tabpanel" aria-label="Prévia: visão geral">
               <div class="ag-brand-mockup-window" inert>
                 <aside class="ag-brand-mockup-sidebar">
-                  <div class="ag-brand-mockup-logo"><span>s</span><b>soci</b></div>
+                  <div class="ag-brand-mockup-logo"><span>s</span><b>graao</b></div>
                   <div class="ag-brand-mockup-nav" aria-label="Navegação simulada">
                     <span class="is-active">Visão geral</span><span>Contatos</span><span>Campanhas</span><span>Relatórios</span>
                   </div>
@@ -1122,7 +1122,7 @@ export function startAgency(env) {
                   <button type="button" class="ag-brand-mockup-side-cta">Nova ação</button>
                 </aside>
                 <div class="ag-brand-mockup-main">
-                  <div class="ag-brand-mockup-topbar"><div><span>WORKSPACE</span><b>Olá, equipe Soci</b></div><span class="ag-brand-mockup-avatar">LG</span></div>
+                  <div class="ag-brand-mockup-topbar"><div><span>WORKSPACE</span><b>Olá, equipe Graao</b></div><span class="ag-brand-mockup-avatar">LG</span></div>
                   <div class="ag-brand-mockup-metrics">
                     <div><span>Leads em movimento</span><b>1.284</b><em>+18,4%</em></div>
                     <div><span>Fluxos ativos</span><b>32</b><em class="is-blue">+6 hoje</em></div>
@@ -1134,7 +1134,7 @@ export function startAgency(env) {
                       <label>Nome da automação<input readonly value="Nutrir leads quentes"></label>
                       <div class="ag-brand-mockup-actions"><button type="button" class="ag-brand-mockup-primary">Salvar fluxo</button><a href="#agency/settings/company" class="ag-brand-mockup-link">Ver detalhes</a></div>
                     </div>
-                    <div class="ag-brand-mockup-card ag-brand-mockup-highlight"><span class="ag-brand-mockup-eyebrow">ACENTO</span><b>Clareza em cada toque</b><p>Links, foco e estados ativos usam o azul Soci.</p><a href="#agency/settings/company" class="ag-brand-mockup-link">Explorar interface</a></div>
+                    <div class="ag-brand-mockup-card ag-brand-mockup-highlight"><span class="ag-brand-mockup-eyebrow">ACENTO</span><b>Clareza em cada toque</b><p>Links, foco e estados ativos usam o azul Graao.</p><a href="#agency/settings/company" class="ag-brand-mockup-link">Explorar interface</a></div>
                   </div>
                 </div>
               </div>
@@ -1148,9 +1148,9 @@ export function startAgency(env) {
             </div>
             <div class="ag-brand-mockup-panel" data-ag-brand-mockup-panel="surfaces" role="tabpanel" aria-label="Prévia: fundos e estados" hidden>
               <div class="ag-brand-surfaces-demo" inert>
-                <div class="ag-brand-surface-tile ag-brand-surface-pink"><span>Primária</span><b>Ações que pedem decisão</b><small>Rosa Soci · var(--g-brand)</small></div>
-                <div class="ag-brand-surface-tile ag-brand-surface-lilac"><span>Secundária</span><b>Camadas e agrupamentos</b><small>Lilás Soci · var(--g-brand-2)</small></div>
-                <div class="ag-brand-surface-tile ag-brand-surface-blue"><span>Acento</span><b>Feedback e descoberta</b><small>Azul Soci · var(--g-brand-accent)</small></div>
+                <div class="ag-brand-surface-tile ag-brand-surface-pink"><span>Primária</span><b>Ações que pedem decisão</b><small>Rosa Graao · var(--g-brand)</small></div>
+                <div class="ag-brand-surface-tile ag-brand-surface-lilac"><span>Secundária</span><b>Camadas e agrupamentos</b><small>Lilás Graao · var(--g-brand-2)</small></div>
+                <div class="ag-brand-surface-tile ag-brand-surface-blue"><span>Acento</span><b>Feedback e descoberta</b><small>Azul Graao · var(--g-brand-accent)</small></div>
               </div>
             </div>
           </div>
@@ -1252,7 +1252,7 @@ Authorization: Bearer &lt;sua-chave&gt;</pre></div>`,
     }
     const prev = document.querySelector('#screen')?.scrollTop || 0;
     const page = pages[A.page] || pages.dashboard;
-    document.title = domainBrand()?.name || 'soci';
+    document.title = domainBrand()?.name || 'graao';
     applyBrandColor(D().company.primary, D().company.secondary, D().company.accent);
     // The menu stays put while the page redraws: same markup keeps the very same element (no flash, no
     // replayed indicator); a changed one at least keeps where it was scrolled.
@@ -1266,9 +1266,9 @@ Authorization: Bearer &lt;sua-chave&gt;</pre></div>`,
     for (const picker of app.querySelectorAll('[data-color-picker]')) mountColorPicker(picker);
     const creator = app.querySelector('[data-mobile-creator]');
     if (creator) mobileCreator.mount(creator);
-    const chatHost = app.querySelector('[data-soci-chat-host]');
-    if (chatHost) sociChat.mount(chatHost, { conversationId: A.sub });
-    else sociChat.unmount();
+    const chatHost = app.querySelector('[data-graao-chat-host]');
+    if (chatHost) graaoChat.mount(chatHost, { conversationId: A.sub });
+    else graaoChat.unmount();
     for (const el of app.querySelectorAll('[data-w]')) el.style.width = `${el.dataset.w}%`;
     for (const el of app.querySelectorAll('[data-h]')) el.style.height = `${Math.max(3, Number(el.dataset.h))}%`;
     for (const el of app.querySelectorAll('[data-bg]')) el.style.background = el.dataset.bg;
@@ -1345,7 +1345,7 @@ Authorization: Bearer &lt;sua-chave&gt;</pre></div>`,
     A.wa = null;
     A.waFocus = null;
     A.waPairOpen = false;
-    sociChat.reset();
+    graaoChat.reset();
     closePresentationEditor();
   }
 
@@ -1373,9 +1373,9 @@ Authorization: Bearer &lt;sua-chave&gt;</pre></div>`,
         const { result: s } = await api('/api/agency/domain-status', {});
         const proof = s.verification || [];
         const ready = s.pointing && s.verified && !s.proxied;
-        const message = !s.hosting ? 'A conexão automática com a hospedagem não está ativa: peça ao suporte da soci para adicionar o domínio.'
+        const message = !s.hosting ? 'A conexão automática com a hospedagem não está ativa: peça ao suporte da graao para adicionar o domínio.'
           : !s.added ? 'O domínio ainda não foi adicionado à hospedagem. Salve de novo em alguns minutos.'
-          : ready ? 'Pronto: o domínio aponta para a soci.'
+          : ready ? 'Pronto: o domínio aponta para a graao.'
           : proof.length ? 'Falta provar que o domínio é seu: crie no DNS os registros abaixo e clique em Verificar domínio de novo.'
           : s.proxied ? 'O registro está passando pelo proxy da Cloudflare (nuvem laranja). Mude para “Somente DNS” (nuvem cinza): com o proxy, o endereço mostra erro 525.'
           : 'Aguardando o CNAME: a mudança de DNS pode levar algumas horas.';
@@ -1399,7 +1399,7 @@ Authorization: Bearer &lt;sua-chave&gt;</pre></div>`,
         D().company[name] = value.toLowerCase();
       }
       applyBrandColor(D().company.primary, D().company.secondary, D().company.accent);
-      flash('Paleta oficial Soci restaurada. Salve para aplicar.');
+      flash('Paleta oficial Graao restaurada. Salve para aplicar.');
       return;
     }
 
@@ -1464,7 +1464,7 @@ Authorization: Bearer &lt;sua-chave&gt;</pre></div>`,
         case 'abacate-cancel': confirmBox(`Cancelar a assinatura de ${accountName(id)}?`, 'A cobrança recorrente é cancelada no AbacatePay. A subconta continua ativa até você mudar o status.', 'abacate-cancel', id, 'Cancelar assinatura'); break;
         case 'wa-disconnect-server': confirmBox('Remover servidor de WhatsApp próprio?', 'A URL e a chave de acesso cadastradas pela agência serão removidas.', 'wa-disconnect-server', '', 'Remover'); break;
         case 'wa-server-check': A.waServer = await api('/api/whatsapp/agency/server'); render(); break;
-        case 'wa-sub-remove': confirmBox(`Excluir a instância de ${accountName(id)}?`, 'O número é desconectado e a instância sai do servidor. As conversas continuam no Soci. Para voltar a usar, é só conectar de novo com o QR Code.', 'wa-sub-remove', id, 'Excluir instância'); break;
+        case 'wa-sub-remove': confirmBox(`Excluir a instância de ${accountName(id)}?`, 'O número é desconectado e a instância sai do servidor. As conversas continuam no Graao. Para voltar a usar, é só conectar de novo com o QR Code.', 'wa-sub-remove', id, 'Excluir instância'); break;
         case 'wa-focus-close': stopWaPoll(); A.waFocus = null; render(); break;
         case 'wa-sub-open': {
           stopWaPoll();
@@ -1638,7 +1638,7 @@ Authorization: Bearer &lt;sua-chave&gt;</pre></div>`,
             : btn(installed ? 'Adicionar outra cópia à biblioteca' : 'Usar este setup gratuitamente', 'marketplace-install', `data-id="${item.id}"`, 'primary');
           dialog(item.title, `<div class="ag-mkt-detail">
             <div class="ag-mkt-art">${setupArt(item.segment || categorySegments[item.category] || 'other', item.id, item.title)}</div>
-            <div class="inline-gap"><span class="badge">${h(item.category)}</span>${item.official ? '<span class="badge blue">Soci Oficial</span>' : '<span class="badge">Comunidade</span>'}<span class="badge green">Gratuito</span><span class="dim">Por <b>${h(item.author)}</b> · v${item.version || 1} · ${item.installs === 1 ? '1 uso' : `${item.installs || 0} usos`}</span></div>
+            <div class="inline-gap"><span class="badge">${h(item.category)}</span>${item.official ? '<span class="badge blue">Graao Oficial</span>' : '<span class="badge">Comunidade</span>'}<span class="badge green">Gratuito</span><span class="dim">Por <b>${h(item.author)}</b> · v${item.version || 1} · ${item.installs === 1 ? '1 uso' : `${item.installs || 0} usos`}</span></div>
             <p class="ag-mkt-desc">${h(item.description || item.summary)}</p>
             ${tagsHtml}
             ${sections ? `<div><h3 style="margin:0 0 8px;font-size:14px">O que vem neste setup</h3><div class="ag-mkt-sections">${sections}</div></div>` : `<p class="dim">${h(assetSummary(item.counts))}</p>`}
@@ -1872,7 +1872,7 @@ Authorization: Bearer &lt;sua-chave&gt;</pre></div>`,
           env.onOpenAIChange(connection);
           if (currentVisit !== visit) return;
           A.openAI = connection;
-          void sociChat.refreshState();
+          void graaoChat.refreshState();
           msg = connect ? 'Chave da OpenAI conectada.' : 'Chave da OpenAI desconectada.';
           break;
         }
@@ -2035,7 +2035,7 @@ Authorization: Bearer &lt;sua-chave&gt;</pre></div>`,
   });
 
   const prospecting = createProspecting({data:()=>A.data,accounts,call,render,dialog,close,flash,download});
-  const sociChat = createSociChat({
+  const graaoChat = createGraaoChat({
     api,
     flash,
     onOpenOpenAISettings: () => go('settings', 'openai'),
@@ -2044,6 +2044,6 @@ Authorization: Bearer &lt;sua-chave&gt;</pre></div>`,
       try { return { 'X-Go-User': localStorage.getItem('go.user') || '' }; } catch { return {}; }
     }
   });
-  window.addEventListener('soci:languagechange', () => { if (active()) render(); });
+  window.addEventListener('graao:languagechange', () => { if (active()) render(); });
   return { show, leave, session: () => A.data?.access?.session, act, render, agency: () => D() };
 }

@@ -10,16 +10,16 @@ export async function lerPagina(rota) {
   return readFile(`${dist}${limpa ? `${limpa}/` : ''}index.html`, 'utf8');
 }
 
-test('home publicada com tema da soci', async () => {
+test('home publicada com tema da graao', async () => {
   const html = await lerPagina('');
   assert.match(html, /lang="pt-BR"/);
-  assert.match(html, /Soci/);
+  assert.match(html, /Graao/);
 });
 
 test('título da aba sem repetição: home só com o nome do site, artigo com artigo e site', async () => {
   const titulo = html => html.match(/<title>([^<]*)<\/title>/)[1];
-  assert.equal(titulo(await lerPagina('')), 'Central de ajuda da Soci');
-  assert.equal(titulo(await lerPagina('conversas/caixa-unificada')), 'Atender na caixa unificada | Central de ajuda da Soci');
+  assert.equal(titulo(await lerPagina('')), 'Central de ajuda da Graao');
+  assert.equal(titulo(await lerPagina('conversas/caixa-unificada')), 'Atender na caixa unificada | Central de ajuda da Graao');
 });
 
 test('página de suporte leva ao grupo de suporte no WhatsApp', async () => {
@@ -35,11 +35,11 @@ test('busca e llms.txt gerados', async () => {
 
 test('componentes renderizam mídia do R2', async () => {
   const html = await lerPagina('interno/componentes');
-  assert.match(html, /src="https:\/\/midia\.soci\.app\.br\/docs\/exemplo\/x\/01-a\.0000abcd\.webp"/);
+  assert.match(html, /src="https:\/\/midia\.graao\.com\/docs\/exemplo\/x\/01-a\.0000abcd\.webp"/);
   assert.match(html, /loading="lazy"/);
   assert.match(html, /<video[^>]*preload="none"/);
   assert.doesNotMatch(html, /<video[^>]*autoplay/);
-  assert.match(html, /<source src="https:\/\/midia\.soci\.app\.br\/docs\/exemplo\/x\/video\.0000abcd\.mp4" type="video\/mp4"/);
+  assert.match(html, /<source src="https:\/\/midia\.graao\.com\/docs\/exemplo\/x\/video\.0000abcd\.mp4" type="video\/mp4"/);
   assert.match(html, /noindex/);
   assert.match(html, /Antes de começar/);
   assert.match(html, /Gatilhos/);

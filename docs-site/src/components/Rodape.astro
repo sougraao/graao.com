@@ -1,5 +1,5 @@
 ---
-// Rodapé padrão do Starlight com a linha de direitos e versão que aparece em todas as páginas da soci.
+// Rodapé padrão do Starlight com a linha de direitos e versão que aparece em todas as páginas da graao.
 // A versão é o commit publicado: na Vercel vem da variável do deploy; na máquina, do git.
 import Default from '@astrojs/starlight/components/Footer.astro';
 import { execFileSync } from 'node:child_process';
@@ -17,13 +17,13 @@ const ano = new Date().getFullYear();
 ---
 
 <Default><slot /></Default>
-<div class="rodape-soci">
-  <span>© {ano} soci. Feita no Brasil com ☕, carinho e muita API.</span>
+<div class="rodape-graao">
+  <span>© {ano} graao. Feita no Brasil com ☕, carinho e muita API.</span>
   {build && <span>build {build}</span>}
 </div>
 
 <style>
-  .rodape-soci {
+  .rodape-graao {
     display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.375rem 1.5rem;
     margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--sl-color-hairline);
     font: 0.75rem/1.5 var(--sl-font-mono); letter-spacing: 0.02em; color: var(--sl-color-gray-3);

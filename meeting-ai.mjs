@@ -3,7 +3,7 @@
 import { openAIResponse } from './openai.mjs';
 
 const fail = (message, status = 400) => Object.assign(new Error(message), { status });
-export const transcribeModel = process.env.SOCI_TRANSCRIBE_MODEL || 'gpt-4o-mini-transcribe';
+export const transcribeModel = process.env.GRAAO_TRANSCRIBE_MODEL || 'gpt-4o-mini-transcribe';
 export const audioTypes = ['audio/webm', 'audio/ogg', 'audio/mpeg', 'audio/mp3', 'audio/mp4', 'audio/m4a', 'audio/x-m4a', 'audio/wav', 'audio/x-wav', 'video/webm'];
 export const audioLimit = 4_000_000;
 const extension = mime => ({ 'audio/webm': 'webm', 'video/webm': 'webm', 'audio/ogg': 'ogg', 'audio/mpeg': 'mp3', 'audio/mp3': 'mp3', 'audio/mp4': 'mp4', 'audio/m4a': 'm4a', 'audio/x-m4a': 'm4a', 'audio/wav': 'wav', 'audio/x-wav': 'wav' })[mime] || 'webm';

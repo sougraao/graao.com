@@ -20,7 +20,7 @@ export function satelliteRows(id, state) {
 export function createAccountPurge({ store, r2, whatsapp }) {
   const load = async id => { try { return await store.load(id); } catch (e) { if (e?.status === 404) return null; throw e; } };
 
-  // O que está fora da soci (Evolution e R2), em ordem. Devolve as falhas em vez de lançar. Para na primeira falha,
+  // O que está fora da graao (Evolution e R2), em ordem. Devolve as falhas em vez de lançar. Para na primeira falha,
   // para a subconta que espera na lixeira não perder os arquivos à toa; com `force` (desistência) tenta tudo.
   async function external(agencyId, id, { force = false } = {}) {
     const steps = [
@@ -34,7 +34,7 @@ export function createAccountPurge({ store, r2, whatsapp }) {
     return failures;
   }
 
-  // O que está no banco da soci, menos a linha da subconta (quem chama apaga por último, depois de conferir a agência).
+  // O que está no banco da graao, menos a linha da subconta (quem chama apaga por último, depois de conferir a agência).
   // Um site do AI Studio só sai se for mesmo desta subconta.
   async function local(id) {
     const state = await load(id);

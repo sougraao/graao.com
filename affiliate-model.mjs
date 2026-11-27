@@ -162,7 +162,7 @@ export function reviewCommission(s, id, d) {
   return commission;
 }
 
-// A payout records money the team sent outside soci (PIX, transfer) for the approved commissions.
+// A payout records money the team sent outside graao (PIX, transfer) for the approved commissions.
 export function recordPayout(s, d, { add }) {
   const affiliate = s.affiliates.find(row => row.id === d.affiliateId) || fail('Afiliado não encontrado.', 404);
   const owed = s.affiliateCommissions.filter(row => row.affiliateId === affiliate.id && row.status === 'approved');

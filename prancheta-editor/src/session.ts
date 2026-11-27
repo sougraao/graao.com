@@ -13,7 +13,7 @@ export class PranchetaSession {
   readonly instanceId = crypto.randomUUID();
   readonly id: string;
   info: PranchetaFileInfo;
-  state: SaveState = { kind: "saved", message: "Salvo na soci" };
+  state: SaveState = { kind: "saved", message: "Salvo na graao" };
   private listeners = new Set<() => void>();
   private saved: string;
   private observed: string;
@@ -75,7 +75,7 @@ export class PranchetaSession {
     clearTimeout(this.timer);
     const next = this.snapshot();
     if (!this.writing && next.fingerprint === this.saved) {
-      this.publish("saved", "Salvo na soci");
+      this.publish("saved", "Salvo na graao");
       return true;
     }
     this.queued = next;
@@ -104,7 +104,7 @@ export class PranchetaSession {
       }
     }
     if (this.disposed) return false;
-    this.publish(this.dirty ? "dirty" : "saved", this.dirty ? "Alterações por salvar" : "Salvo na soci");
+    this.publish(this.dirty ? "dirty" : "saved", this.dirty ? "Alterações por salvar" : "Salvo na graao");
     return true;
   }
 
@@ -119,7 +119,7 @@ export class PranchetaSession {
       if (this.disposed) return false;
       this.info = updated;
       this.saved = next.fingerprint;
-      this.publish("saved", "Salvo na soci");
+      this.publish("saved", "Salvo na graao");
       return true;
     } catch (e) {
       this.publish("error", e instanceof Error ? e.message : "Não foi possível salvar.");

@@ -1,4 +1,4 @@
-/* soci — Liquid Glass. Última folha carregada. Só usa nomes de tokens.css.
+/* graao — Liquid Glass. Última folha carregada. Só usa nomes de tokens.css.
    1 Material · 2 Navegação · 3 Topo · 4 Menus · 5 Folhas e diálogos · 6 Avisos
    7 Conteúdo · 8 Abas e segmentos · 9 Campos e controles · 10 Acessibilidade */
 
@@ -196,7 +196,7 @@
 :root:root .spark-tile{background:var(--g-grad-logo);color:var(--g-grad-logo-on);box-shadow:none}
 :root:root .g-glide.g-ring{display:none}
 :root:root :is(.unread-dot,.box-count,.unread-count,.filter-count){background:var(--g-brand-fill);color:var(--g-brand-on);box-shadow:none}
-:root:root .wf-btn-ai{min-height:var(--soci-btn-height);padding:0 16px;border:0;border-radius:var(--r-pill);background:var(--g-fill);color:var(--g-ink);font-weight:650;box-shadow:none}
+:root:root .wf-btn-ai{min-height:var(--graao-btn-height);padding:0 16px;border:0;border-radius:var(--r-pill);background:var(--g-fill);color:var(--g-ink);font-weight:650;box-shadow:none}
 :root:root .wf-btn-ai:hover{background:var(--g-fill-hover);color:var(--g-ink)}
 :root:root .dash-card>header{border-bottom-color:transparent;padding-bottom:4px}
 :root:root .dash-switch{gap:6px}

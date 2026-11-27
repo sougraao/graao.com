@@ -1,13 +1,13 @@
-# Plano de paridade: Soci × GoHighLevel
+# Plano de paridade: Graao × GoHighLevel
 
-Levantamento feito em 20/11/2026 na conta GHL logada no navegador interno (agência "La Vaca Estudio", subconta `iJA1defi4GNScV59Dust`), percorrendo o menu lateral e as abas internas de cada módulo. O status da Soci vem das abas e rotas declaradas no código (`ui/screens.js`, `ui/crm.js`, `ui/app.js`) e de buscas por nome. Ele não vem de testes funcionais, então 🟡 quer dizer "existe algo, conferir profundidade".
+Levantamento feito em 20/11/2026 na conta GHL logada no navegador interno (agência "La Vaca Estudio", subconta `iJA1defi4GNScV59Dust`), percorrendo o menu lateral e as abas internas de cada módulo. O status da Graao vem das abas e rotas declaradas no código (`ui/screens.js`, `ui/crm.js`, `ui/app.js`) e de buscas por nome. Ele não vem de testes funcionais, então 🟡 quer dizer "existe algo, conferir profundidade".
 
 Legenda: ✅ existe · 🟡 parcial / conferir · ❌ não encontrado · ⏭ não recriar
 
 ## Como foi feito e limites
 
 - **Menus:** mapeados pelo DOM do app (ids `sb_*` do menu e links `/v2/location/<id>/...`).
-- **Código:** num Chrome com `--remote-debugging-port=9222` (perfil `%LOCALAPPDATA%\soci-ghl-cdp`), o código já carregado na aba foi extraído via CDP: 401 arquivos, 34 MB, build `static.leadconnectorhq.com/2246`.
+- **Código:** num Chrome com `--remote-debugging-port=9222` (perfil `%LOCALAPPDATA%\graao-ghl-cdp`), o código já carregado na aba foi extraído via CDP: 401 arquivos, 34 MB, build `static.leadconnectorhq.com/2246`.
 - **REA:** fez o inventário do código (evidência `ev_ab5c348b52c2…`, 398 arquivos). O `analyze_web_bundle` sobre o bundle inteiro estourou o tempo, então as rotas e o registro de micro-apps foram extraídos por busca estática no código salvo. Ver a seção 2.5 e [04b-ghl-microapps.txt](04b-ghl-microapps.txt).
 - **Não foi aberto:** nada que criaria dados na conta, como construtores de workflow, formulários, e-mails e funis. Por isso o catálogo completo de **gatilhos e ações de workflow**, os **elementos do construtor de funis** e os **campos de cada configuração** ainda não foram levantados (ver Fase 0).
 
@@ -16,7 +16,7 @@ Legenda: ✅ existe · 🟡 parcial / conferir · ❌ não encontrado · ⏭ nã
 ## 1. Inventário: subconta
 
 ### Conversas — `/conversations`
-| GHL | Soci |
+| GHL | Graao |
 |---|---|
 | Conversations (Unread / All / Recent / Starred, caixa da equipe) | ✅ inbox |
 | Manual Actions | ✅ ligação, SMS e WhatsApp manual |
@@ -27,7 +27,7 @@ Legenda: ✅ existe · 🟡 parcial / conferir · ❌ não encontrado · ⏭ nã
 | Compra / porte de número de telefone | ❌ (WhatsApp/WAHA no lugar) |
 
 ### Calendários — `/calendars`
-| GHL | Soci |
+| GHL | Graao |
 |---|---|
 | Calendar view (semana, usuários, calendários, grupos, "Manage view") | ✅ |
 | Appointment list view | ✅ |
@@ -40,7 +40,7 @@ Smart Lists ✅ · Bulk Actions ✅ · Custom Fields ✅ · Tasks ✅ · Compani
 Opportunities (kanban/lista) ✅ · Forecast ✅ · Pipelines ✅ · Bulk Actions ✅ · Import ✅
 
 ### Pagamentos — `/payments` (maior lacuna)
-| GHL | Soci |
+| GHL | Graao |
 |---|---|
 | All Invoices | ✅ |
 | Recurring Invoices | ❌ |
@@ -62,13 +62,13 @@ Opportunities (kanban/lista) ✅ · Forecast ✅ · Pipelines ✅ · Bulk Action
 
 ### Agentes de IA — `/ai-agents`
 Getting Started · Agent Studio · Voice AI · Conversation AI · Knowledge Base · Agent Templates · Content AI · Agent Logs · AI Usage.
-Soci: 🟡 `agents.js` / `agent-ai.mjs` existem. Conferir **Voice AI** (atendimento por ligação), **Knowledge Base** (RAG por subconta), **Logs** e **Uso/custo de IA**.
+Graao: 🟡 `agents.js` / `agent-ai.mjs` existem. Conferir **Voice AI** (atendimento por ligação), **Knowledge Base** (RAG por subconta), **Logs** e **Uso/custo de IA**.
 
 ### Vibe — `/vibe` (construtor de apps por IA)
 ✅ equivalente no Studio/Sites com construtor estilo vibe.
 
 ### Marketing — `/marketing`
-| GHL | Soci |
+| GHL | Graao |
 |---|---|
 | Social Planner (FB, IG, LinkedIn, TikTok, YouTube, Pinterest, Threads, Bluesky, GBP, Community; CSV, fila evergreen, post recorrente, RSS) | ✅ (5.3: fila evergreen, recorrente por dias/contagem, RSS com filtros e imagem, Threads/Bluesky completos) |
 | Emails (construtor, campanhas, estatísticas) | ✅ blocos, campanhas, A/B do assunto (sem blocos avançados) |
@@ -79,12 +79,12 @@ Soci: 🟡 `agents.js` / `agent-ai.mjs` existem. Conferir **Voice AI** (atendime
 | Brand Boards | ❌ |
 | Ad Manager | ✅ (5.4: Meta Ads e Google Ads; criação de anúncio no Meta) |
 | Prospecting | ✅ |
-| (extra Soci) Prancheta | ✅ |
+| (extra Graao) Prancheta | ✅ |
 
 ### Automação — `/automation`
 Workflows ✅ · Overview 🟡 · Global Workflow Settings 🟡
 
-**Catálogo:** o GHL tem **116 gatilhos e 180 ações**. A Soci (`ui/workflow-data.js`) tem **32 gatilhos e 34 ações**.
+**Catálogo:** o GHL tem **116 gatilhos e 180 ações**. A Graao (`ui/workflow-data.js`) tem **32 gatilhos e 34 ações**.
 
 As maiores diferenças estão em:
 - **Ações de IA:** decisão, resumo, intenção, tradução, extração, análise de imagem e vídeo, Claude/Gemini.
@@ -97,7 +97,7 @@ As maiores diferenças estão em:
 A lista completa está em [04c](04c-ghl-catalogo-tecnico.md) §1.3, e completar esse catálogo entra em cada fase junto com o módulo correspondente.
 
 ### Sites — `/funnels-websites`
-| GHL | Soci |
+| GHL | Graao |
 |---|---|
 | Funnels · Websites · Stores · Webinars · Analytics · Blogs | ✅ |
 | WordPress (hospedagem) | ⏭ / ❌ |
@@ -111,7 +111,7 @@ A lista completa está em [04c](04c-ghl-catalogo-tecnico.md) §1.3, e completar 
 | "Build with AI" | ✅ |
 
 ### Memberships — `/memberships`
-| GHL | Soci |
+| GHL | Graao |
 |---|---|
 | Client Portal | ✅ |
 | Courses (dashboard, produtos, ofertas, analytics, course builder) | ✅ 🟡 analytics |
@@ -124,7 +124,7 @@ A lista completa está em [04c](04c-ghl-catalogo-tecnico.md) §1.3, e completar 
 Upload ✅ · Pastas 🟡 · Conectar Canva ❌ · Conectar Google Drive 🟡 (`google-integrations.mjs` em andamento)
 
 ### Reputação — `/reputation`
-| GHL | Soci |
+| GHL | Graao |
 |---|---|
 | Overview | ✅ |
 | Requests (pedido de avaliação por SMS/e-mail/QR) | 🟡 |
@@ -139,10 +139,10 @@ Upload ✅ · Pastas 🟡 · Conectar Canva ❌ · Conectar Google Drive 🟡 (`
 Custom reports ✅ · Google Ads report ✅ · Meta Ads report ✅ · Attribution report ✅ (5.4) · Call report ❌ · Agent report ❌ · Appointment report 🟡 · Local Marketing Audit ✅ (`prospect-audit.mjs`)
 
 ### App Marketplace — `/integration`
-Marketplace de apps + App Studio. Soci: ✅ App Studio da agência e Configurações → Apps nas subcontas (7.3); `setup-marketplace.mjs` cuida dos setups de conta.
+Marketplace de apps + App Studio. Graao: ✅ App Studio da agência e Configurações → Apps nas subcontas (7.3); `setup-marketplace.mjs` cuida dos setups de conta.
 
 ### Configurações — `/settings`
-| GHL | Soci |
+| GHL | Graao |
 |---|---|
 | Business Profile | ✅ |
 | My Profile | 🟡 |
@@ -166,11 +166,11 @@ Marketplace de apps + App Studio. Soci: ✅ App Studio da agência e Configuraç
 | Brand Boards | ❌ |
 
 ### Topo
-Ask AI ✅ (Pergunte a Soci) · Launchpad ✅ · Dashboard ✅
+Ask AI ✅ (Pergunte a Graao) · Launchpad ✅ · Dashboard ✅
 
 ## 2. Inventário: agência
 
-| GHL | Soci |
+| GHL | Graao |
 |---|---|
 | AI Suite / uso de IA da agência | ✅ Central de IA: limites, liga/desliga, painel de uso e padrões (7.2) |
 | Ask AI | ✅ |
@@ -191,7 +191,7 @@ Ask AI ✅ (Pergunte a Soci) · Launchpad ✅ · Dashboard ✅
 
 O GHL é uma casca Vue (`static.leadconnectorhq.com/<build>/app.js`, com 119 rotas próprias, a maioria de agência, login e status de conta). Ela carrega cada módulo como micro-frontend via Module Federation (`appcdn.leadconnectorhq.com/<domínio>/<app>/remoteEntry.js`). O registro completo está em [04b-ghl-microapps.txt](04b-ghl-microapps.txt).
 
-O registro revela módulos que **não aparecem no menu desta conta**, porque dependem de plano, flag ou nicho. Os marcados com ★ são lacunas novas para a Soci:
+O registro revela módulos que **não aparecem no menu desta conta**, porque dependem de plano, flag ou nicho. Os marcados com ★ são lacunas novas para a Graao:
 
 | Domínio | Micro-apps (★ = não visto no menu) |
 |---|---|
@@ -216,7 +216,7 @@ O registro revela módulos que **não aparecem no menu desta conta**, porque dep
 
 ## 3. Roadmap
 
-A ordem segue impacto para o cliente da Soci (agências e PMEs no Brasil) e dependências técnicas.
+A ordem segue impacto para o cliente da Graao (agências e PMEs no Brasil) e dependências técnicas.
 
 > **Status vivo:** o andamento item a item fica no painel [painel/index.html](painel/index.html), que lê os dados de [painel/progresso.js](painel/progresso.js). Quem implementar deve atualizar `progresso.js` a cada item iniciado ou concluído. As instruções estão no topo desse arquivo.
 
@@ -291,4 +291,4 @@ WordPress hospedado, Swag, Gokollab, conteúdo de educação SaaS do GHL.
   - nasce com gatilho e ação no motor de workflow quando fizer sentido;
   - tem tradução pt-BR/es;
   - respeita o modelo de permissões (`authorization.mjs`).
-- Recriar o comportamento e a organização, não a marca: nomes, textos e visual são da Soci.
+- Recriar o comportamento e a organização, não a marca: nomes, textos e visual são da Graao.

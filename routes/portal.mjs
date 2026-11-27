@@ -111,7 +111,7 @@ export function createPortalRoutes(deps) {
         const state = await store.load(workspace);
         if (input?.action === 'staff-enter') {
           const staffUser = {
-            email: who.session?.email || state.profile?.email || 'admin@soci.app.br',
+            email: who.session?.email || state.profile?.email || 'admin@graao.com',
             name: who.session?.user_metadata?.name || who.session?.name || state.profile?.name || 'Administrador',
             photo: who.session?.picture || who.session?.user_metadata?.avatar_url || ''
           };
@@ -129,7 +129,7 @@ export function createPortalRoutes(deps) {
         await requireActiveAccount(who.agencyId, workspace, true);
         const state = await store.load(workspace);
         const staffUser = {
-          email: who.session?.email || state.profile?.email || 'admin@soci.app.br',
+          email: who.session?.email || state.profile?.email || 'admin@graao.com',
           name: who.session?.user_metadata?.name || who.session?.name || state.profile?.name || 'Administrador',
             photo: who.session?.picture || who.session?.user_metadata?.avatar_url || ''
         };
@@ -168,7 +168,7 @@ export function createPortalRoutes(deps) {
         try {
           const who = await workspaceAccess(req, res, workspace, { modules: ['memberships'], hide: true });
           const staffUser = {
-            email: who.session?.email || state.profile?.email || 'admin@soci.app.br',
+            email: who.session?.email || state.profile?.email || 'admin@graao.com',
             name: who.session?.user_metadata?.name || who.session?.name || state.profile?.name || 'Administrador',
             photo: who.session?.picture || who.session?.user_metadata?.avatar_url || ''
           };

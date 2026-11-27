@@ -1,5 +1,5 @@
 // Kit compartilhado dos modelos de site: cabeçalho do documento, animações e peças comuns.
-// As páginas da soci rodam sem JavaScript (a CSP bloqueia scripts), então todo movimento é CSS:
+// As páginas da graao rodam sem JavaScript (a CSP bloqueia scripts), então todo movimento é CSS:
 // revelar ao rolar e parallax usam animation-timeline (navegadores que não suportam mostram o
 // conteúdo parado), letreiros e Ken Burns usam keyframes, e menu e perguntas usam checkbox/details.
 
@@ -108,7 +108,7 @@ ${body}
 </body></html>`;
 }
 
-// Formulário de contato que vira lead na soci (data-go-lead). `extra` acrescenta campos.
+// Formulário de contato que vira lead na graao (data-go-lead). `extra` acrescenta campos.
 export function leadForm({ cls = 'form', title = '', text = '', button = 'Enviar', extra = '', note = 'Respondemos em até um dia útil. Seus dados ficam só com a gente.' } = {}) {
   return `<form data-go-lead class="${cls}">${title ? `<h3>${title}</h3>` : ''}${text ? `<p>${text}</p>` : ''}
 <label>Nome<input name="name" required autocomplete="name" placeholder="Seu nome"></label>

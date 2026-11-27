@@ -1,4 +1,4 @@
-/* soci — componentes base. Cores, materiais, formas e texto vêm de tokens.css;
+/* graao — componentes base. Cores, materiais, formas e texto vêm de tokens.css;
    a camada de vidro (navegação, menus, folhas e controles) vem de liquid-glass.css. */
 
 @font-face{font-family:"Plus Jakarta Sans";src:url(/fonts/plus-jakarta-sans.woff2) format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
@@ -491,7 +491,7 @@ dialog h2{font-weight:800;letter-spacing:-.03em}
 
 
 /* ═════════ Refinements: clarity, deference, legibility ═════════
-   The soci pink #ff4f9a (purple #c4a7ff second; buttons use the pink → lilac → blue gradient) stays the identity colour (logo, current-page marker, focus, dots).
+   The graao pink #ff4f9a (purple #c4a7ff second; buttons use the pink → lilac → blue gradient) stays the identity colour (logo, current-page marker, focus, dots).
    Surfaces that carry white text use a deeper tone of the same pink so the text clears 4.5:1.
    Pink marks the one primary action and the current location; selection inside a page
    (segmented tabs) is neutral, like a system segmented control. Motion explains change and
@@ -651,7 +651,7 @@ dialog::backdrop{background:rgba(15,19,26,.38);-webkit-backdrop-filter:blur(2px)
   color:var(--g-grad-on);
 }
 
-/* ═════════ Blur Glide Menu & Custom Select (Microkit × Soci) ═════════ */
+/* ═════════ Blur Glide Menu & Custom Select (Microkit × Graao) ═════════ */
 .g-select{
   position:relative;
   display:inline-flex;
@@ -1023,9 +1023,9 @@ dialog::backdrop{background:rgba(15,19,26,.38);-webkit-backdrop-filter:blur(2px)
   .g-menu-surface[data-open]{filter:none !important;transform:none !important}
 }
 
-/* ═════════ Social & Platform Highlight Cards (Microkit × Soci) ═════════
+/* ═════════ Social & Platform Highlight Cards (Microkit × Graao) ═════════
    Luminous top rail, top-down radial spotlight wash, and vector brand mark activation on hover.
-   Respects Soci's light/dark obsidian surfaces and dynamically weaves the user's brand colors
+   Respects Graao's light/dark obsidian surfaces and dynamically weaves the user's brand colors
    (--g-brand, --g-brand-2) through CTAs, focus rings, and neutral platform highlights. */
 .shc-card{
   --shc-highlight:var(--g-brand);
@@ -1283,10 +1283,10 @@ button.shc-card:active{
   }
 }
 
-/* ═════════ Count Up Number & Dashboard Metrics (Microkit × Soci) ═════════
+/* ═════════ Count Up Number & Dashboard Metrics (Microkit × Graao) ═════════
    Phantom-box inline-grid reserves final width from frame 0 (zero layout shift),
    tabular numerals settle smoothly on expo-out, and every dashboard surface honors
-   Soci light/dark modes plus the user's custom brand colors (--g-brand / --dash-accent). */
+   Graao light/dark modes plus the user's custom brand colors (--g-brand / --dash-accent). */
 :root{
   --cu-accent:var(--dash-accent,var(--g-brand));
   --cu-pill-bg:color-mix(in srgb,var(--cu-accent) 11%,var(--g-surface));
@@ -1534,11 +1534,11 @@ button.shc-card:active{
   color:var(--g-ink);
 }
 
-/* ═════════ Unified Page Structure & Sliding Underline Tabs (Microkit × Soci) ═════════
+/* ═════════ Unified Page Structure & Sliding Underline Tabs (Microkit × Graao) ═════════
    Standardizes every account (agency) and sub-account page around one anatomy:
    .page > .page-head (title, optional description, right-aligned actions)
          > .g-utabs (bordered card containing the sliding-underline tab bar + panel content inside).
-   Honors Soci light mode, dark mode, and user custom primary/secondary brand colors. */
+   Honors Graao light mode, dark mode, and user custom primary/secondary brand colors. */
 .page,
 .page.wf-page,
 .page.cp-admin,

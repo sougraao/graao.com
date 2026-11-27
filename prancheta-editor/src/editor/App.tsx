@@ -78,7 +78,7 @@ function Header({ onBack, saveSlot, actionsSlot, busy }: EditorProps) {
       {saveSlot ? (
         <div className="header-save-slot">{saveSlot}<span className="pr-editor-beta-tag" title="Prancheta em estágio Beta">Beta</span></div>
       ) : (
-        <span className="local-badge" title="Este arquivo fica salvo na soci"><IconCheck size={14} />soci</span>
+        <span className="local-badge" title="Este arquivo fica salvo na graao"><IconCheck size={14} />graao</span>
       )}
       <div className="header-spacer" />
       {actionsSlot}

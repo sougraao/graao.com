@@ -4,7 +4,7 @@ import { createAbacatePayHandler, webhookEvents } from '../abacatepay.mjs';
 import { createSqliteStore } from '../storage.mjs';
 import { fakeAbacate, KEY_SHOP, startBilling } from './helpers/abacate.mjs';
 
-const ORIGIN = 'https://app.soci.test';
+const ORIGIN = 'https://app.graao.test';
 function setup(t) {
   const store = createSqliteStore(':memory:'), gateway = fakeAbacate();
   t.after(() => store.close());

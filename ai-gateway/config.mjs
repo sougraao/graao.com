@@ -1,4 +1,4 @@
-// Configuração do soci AI Gateway: um documento do store ('platform-ai'), editado só pelo dono da plataforma.
+// Configuração do graao AI Gateway: um documento do store ('platform-ai'), editado só pelo dono da plataforma.
 // O padrão é seguro: nenhum provedor ligado, nada pago, nada de dado pessoal para provedor não revisado.
 // Valores monetários são inteiros em micro-dólares (1 US$ = 1.000.000), nunca float.
 import { DATA_CLASSES, defaultPrivacy, sanitizePrivacy } from './privacy.mjs';
@@ -14,7 +14,7 @@ export const DEFAULT_FREE_ORDER = Object.freeze(['groq', 'openrouter', 'cloudfla
 // Funcionalidades que já usam IA (todas pela chave própria da agência hoje) e as novas que passam pelo gateway.
 // dataClass é o pior caso do contexto que cada uma envia.
 export const FEATURES = Object.freeze({
-  'soci.chat': { label: 'Pergunte à Soci', dataClass: 'confidential', mode: 'auto' },
+  'graao.chat': { label: 'Pergunte à Graao', dataClass: 'confidential', mode: 'auto' },
   'content.writer': { label: 'Escrita de conteúdo', dataClass: 'confidential', mode: 'auto' },
   'conversation.reply': { label: 'Respostas nas Conversas', dataClass: 'personal', mode: 'auto' },
   'agent.reply': { label: 'Agentes de IA', dataClass: 'personal', mode: 'agent' },
@@ -38,11 +38,11 @@ const DEFAULT_PLANS = {
 
 const blankProvider = (id, index) => ({
   enabled: false, priority: DEFAULT_FREE_ORDER.includes(id) ? DEFAULT_FREE_ORDER.indexOf(id) : 10 + index,
-  // O administrador confirma que a conta da soci neste provedor está no plano gratuito (sem cartão/cobrança).
+  // O administrador confirma que a conta da graao neste provedor está no plano gratuito (sem cartão/cobrança).
   freeTier: false,
   // Liberar uso pago deste provedor (ainda limitado pelo orçamento e pelo kill switch).
   paidAllowed: false,
-  // Os termos do provedor permitem o uso comercial da soci (revisado por pessoa). Sem isso, nada vai à rota automática.
+  // Os termos do provedor permitem o uso comercial da graao (revisado por pessoa). Sem isso, nada vai à rota automática.
   commercialUse: false,
   privacy: defaultPrivacy(),
   // Limites da conta informados pelo administrador (0 = desconhecido; o gateway usa contadores conservadores).
@@ -62,7 +62,7 @@ export function blankConfig() {
       breaker: { failures: 5, cooldownMs: 60_000 }
     },
     features: {},
-    // Agências sem chave própria: 'off' (como hoje: pede a chave) ou 'free' (usa modelos gratuitos da soci).
+    // Agências sem chave própria: 'off' (como hoje: pede a chave) ou 'free' (usa modelos gratuitos da graao).
     agenciesWithoutKey: 'off',
     plans: structuredClone(DEFAULT_PLANS),
     budgets: { monthlyMicros: 0, dailyMicros: 0, perOrgMonthlyMicros: 0, alertAt: 0.8 },

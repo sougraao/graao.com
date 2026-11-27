@@ -74,7 +74,7 @@ test('On a published funnel, the opt-in sets the visitor cookie and the next pag
   assert.equal((await state()).runs.length, 0, 'an anonymous visit fires nothing');
 
   const sent = await fetch(site, { method: 'POST', redirect: 'manual', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'name=Ana&email=ana.funil%40example.test&_page=index' });
-  const cookie = sent.headers.getSetCookie().find(row => row.startsWith('soci_sv_demo='));
+  const cookie = sent.headers.getSetCookie().find(row => row.startsWith('graao_sv_demo='));
   assert.ok(cookie, 'the opt-in sets the visitor cookie');
   assert.match(cookie, /HttpOnly/);
   assert.match(cookie, /SameSite=Lax/);
@@ -88,7 +88,7 @@ test('On a published funnel, the opt-in sets the visitor cookie and the next pag
   assert.ok(ana.tags.includes('visitou-obrigado'));
 
   await fetch(`${site}/obrigado`, { headers: { cookie: `${pair}; outro=1` } });
-  await fetch(`${site}/obrigado`, { headers: { cookie: 'soci_sv_demo=forjado123' } });
+  await fetch(`${site}/obrigado`, { headers: { cookie: 'graao_sv_demo=forjado123' } });
   s = await state();
   assert.equal(s.runs.length, 1, 'a reload and an unknown visitor id fire nothing');
 });

@@ -124,7 +124,7 @@ test('Klaviyo, Apify, Browse AI e modelos (Mistral, OpenRouter)', async () => {
   assert.deepEqual(await run('browse_ai', 'run_robot', { apiKey: 'br' }, { robot: 'r1', input: '{}' }, api), { browse_ai_task: 'task1', browse_ai_status: 'in-progress' });
   assert.deepEqual(await run('mistral', 'chat', { apiKey: 'mi' }, { model: 'mistral-small', prompt: 'Oi' }, api), { mistral_answer: 'Olá!' });
   assert.deepEqual(await run('openrouter', 'chat', { apiKey: 'or' }, { model: 'x', prompt: 'Oi' }, api), { openrouter_answer: '' });
-  assert.equal(api.calls.at(-1).headers['X-Title'], 'Soci');
+  assert.equal(api.calls.at(-1).headers['X-Title'], 'Graao');
 });
 
 test('erros genéricos: ação desconhecida, HTTP com mensagem e app que não responde', async () => {
@@ -166,7 +166,7 @@ test('webhooks: Slack (verificação, reação, entrada, bot ignorado), Cal.com 
   const forms = readWebhook('google_forms', { raw: JSON.stringify({ form: 'Pesquisa', responses: { Email: 'caio@x.com', Cores: ['azul', 'verde'] } }), headers: { 'content-type': 'application/json' } });
   assert.deepEqual(forms.events[0].ctx, { form: 'Pesquisa', Email: 'caio@x.com', Cores: 'azul, verde' });
   const fathom = readWebhook('fathom', { raw: JSON.stringify({ meeting_title: 'Kickoff', default_summary: { markdown_formatted: 'Resumo' }, share_url: 'https://fathom.video/x',
-    calendar_invitees: [{ email: 'eu@soci.app.br', is_external: false }, { email: 'Cliente@X.com', name: 'Cliente' }] }), headers: { 'content-type': 'application/json' } });
+    calendar_invitees: [{ email: 'eu@graao.com', is_external: false }, { email: 'Cliente@X.com', name: 'Cliente' }] }), headers: { 'content-type': 'application/json' } });
   assert.deepEqual(fathom.events[0], { key: 'meeting_ready', ctx: { title: 'Kickoff', summary: 'Resumo', url: 'https://fathom.video/x' }, contact: { email: 'cliente@x.com', name: 'Cliente', phone: '' } });
   const tiktok = readWebhook('tiktok_leads', { raw: 'form_name=Promo&email=dani%40x.com&full_name=Dani', headers: { 'content-type': 'application/x-www-form-urlencoded' } });
   assert.deepEqual(tiktok.events[0], { key: 'form_submitted', ctx: { form: 'Promo' }, contact: { email: 'dani@x.com', phone: '', name: 'Dani' } });
@@ -222,8 +222,8 @@ test('Google Sheets: token da conta de serviço, linhas em lote, limpar, formata
 
 test('testar conexão: campo obrigatório, Slack válido e recusado, Google Sheets e app sem teste', async () => {
   await assert.rejects(testConnection('slack', {}, { request: async () => new Response('{}') }), /Preencha/);
-  const ok = fakeApi([['https://slack.com/api/auth.test', { ok: true, team: 'Equipe Soci' }]]);
-  assert.equal(await testConnection('slack', { botToken: 'xoxb', signingSecret: 's' }, { request: ok.request }), 'Equipe Soci');
+  const ok = fakeApi([['https://slack.com/api/auth.test', { ok: true, team: 'Equipe Graao' }]]);
+  assert.equal(await testConnection('slack', { botToken: 'xoxb', signingSecret: 's' }, { request: ok.request }), 'Equipe Graao');
   const bad = fakeApi([['https://slack.com/api/auth.test', { ok: false, error: 'invalid_auth' }]]);
   await assert.rejects(testConnection('slack', { botToken: 'xoxb', signingSecret: 's' }, { request: bad.request }), /Slack: invalid_auth/);
   await assert.rejects(testConnection('google_sheets', { serviceAccount: '{"client_email":"a@b.c"}' }, { request: ok.request }), /sem client_email ou private_key/);

@@ -272,7 +272,7 @@ test('The daily sweep drops events past the retention, once per day, and never t
 });
 
 test('migrate:sqlite copies the events of each sub-account, and accepts a database older than the table', async () => {
-  const dir = mkdtempSync(join(tmpdir(), 'soci-tracking-'));
+  const dir = mkdtempSync(join(tmpdir(), 'graao-tracking-'));
   const source = createSqliteStore(join(dir, 'go.sqlite')), target = createSqliteStore(':memory:');
   source.tracking.append('demo', [row(1), row(2)]);
   source.tracking.append('outra', [row(3)]);

@@ -1,6 +1,6 @@
 // i18n: Suporte completo a Português (Brasil) e Espanhol Latinoamericano (es-419).
 // O idioma padrão é Português. O usuário escolhe o idioma via interface,
-// e a seleção persiste no localStorage ('soci_lang').
+// e a seleção persiste no localStorage ('graao_lang').
 // O catálogo de traduções fica em ui/locales/*.js (public/ é o espelho de ui/: scripts/sync-public.mjs).
 // O catálogo espanhol (~440 KB) é baixado sob demanda no navegador: na abertura só se o idioma salvo for
 // espanhol, ou quando a pessoa troca para espanhol. No servidor (sem window) ele carrega já na importação,
@@ -9,7 +9,7 @@
 let currentLang = 'pt';
 try {
   if (typeof localStorage !== 'undefined') {
-    const saved = localStorage.getItem('soci_lang');
+    const saved = localStorage.getItem('graao_lang');
     if (saved === 'es' || saved === 'pt') currentLang = saved;
   }
 } catch {}
@@ -48,14 +48,14 @@ export function registerLanguage(id, { label, flag, translations = {} }) {
 }
 
 // Síncrono quando o catálogo já está carregado. Antes do primeiro uso do espanhol no navegador devolve uma
-// promessa: o idioma só muda (e o aviso soci:languagechange só sai) depois que o catálogo chegou.
+// promessa: o idioma só muda (e o aviso graao:languagechange só sai) depois que o catálogo chegou.
 export function setLanguage(lang) {
   if (lang !== 'es' && lang !== 'pt' && !TRANSLATIONS[lang]) return;
   if (lang === 'es' && !TRANSLATIONS.es) return loadSpanish().then(() => setLanguage(lang));
   currentLang = lang;
   try {
     if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('soci_lang', lang);
+      localStorage.setItem('graao_lang', lang);
     }
   } catch {}
   if (typeof document !== 'undefined') {
@@ -75,7 +75,7 @@ export function setLanguage(lang) {
     }
   }
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('soci:languagechange', { detail: { lang } }));
+    window.dispatchEvent(new CustomEvent('graao:languagechange', { detail: { lang } }));
   }
 }
 
@@ -347,7 +347,7 @@ export function translateDom(root = document.body) {
       if (val && val.trim()) {
         const translated = translateText(val);
         if (translated !== val) {
-          if (current.__sociOrig === undefined) current.__sociOrig = val;
+          if (current.__graaoOrig === undefined) current.__graaoOrig = val;
           current.nodeValue = translated;
         }
       }
@@ -358,9 +358,9 @@ export function translateDom(root = document.body) {
         if (val && val.trim()) {
           const translated = translateText(val);
           if (translated !== val) {
-            current.__sociOrigAttrs ??= {};
-            if (current.__sociOrigAttrs[attr] === undefined) {
-              current.__sociOrigAttrs[attr] = val;
+            current.__graaoOrigAttrs ??= {};
+            if (current.__graaoOrigAttrs[attr] === undefined) {
+              current.__graaoOrigAttrs[attr] = val;
             }
             current.setAttribute(attr, translated);
           }
@@ -382,14 +382,14 @@ export function restoreDom(root = document.body) {
 
   let current = walker.nextNode();
   while (current) {
-    if (current.nodeType === Node.TEXT_NODE && current.__sociOrig !== undefined) {
-      current.nodeValue = current.__sociOrig;
-      delete current.__sociOrig;
-    } else if (current.nodeType === Node.ELEMENT_NODE && current.__sociOrigAttrs) {
-      for (const [attr, val] of Object.entries(current.__sociOrigAttrs)) {
+    if (current.nodeType === Node.TEXT_NODE && current.__graaoOrig !== undefined) {
+      current.nodeValue = current.__graaoOrig;
+      delete current.__graaoOrig;
+    } else if (current.nodeType === Node.ELEMENT_NODE && current.__graaoOrigAttrs) {
+      for (const [attr, val] of Object.entries(current.__graaoOrigAttrs)) {
         current.setAttribute(attr, val);
       }
-      delete current.__sociOrigAttrs;
+      delete current.__graaoOrigAttrs;
     }
     current = walker.nextNode();
   }

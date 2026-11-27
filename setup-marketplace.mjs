@@ -1,4 +1,4 @@
-// Marketplace de Setups de conta: catálogo oficial da Soci + publicações da comunidade.
+// Marketplace de Setups de conta: catálogo oficial da Graao + publicações da comunidade.
 import { randomUUID } from 'node:crypto';
 import { agentTemplate } from './agent-model.mjs';
 import { marketplaceCategories } from './ui/agency-data.js';
@@ -70,7 +70,7 @@ function buildOfficial(spec) {
     description: spec.description,
     category: spec.category,
     tags: spec.tags,
-    author: 'Soci Oficial',
+    author: 'Graao Oficial',
     authorAgencyId: null,
     sourceSnapshotId: '',
     official: true,

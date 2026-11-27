@@ -1,5 +1,5 @@
 -- P2.5, fatia 2 (D26): log de auditoria da agência em tabela própria.
--- Rodar inteiro, uma vez, no SQL Editor do projeto Supabase da soci (zlkhoucdqfxgiorujifj).
+-- Rodar inteiro, uma vez, no SQL Editor do projeto Supabase da graao (zlkhoucdqfxgiorujifj).
 -- Só cria uma tabela nova; não altera nem apaga nada que já existe. Se algo falhar, tudo é desfeito.
 -- Equivale a 20261124180000_go_agency_audit.sql + o trecho novo do provision-storage.sql. A condição de acesso é copiada
 -- da política que já protege go_workspaces, então não é preciso informar o hash da GO_STORAGE_KEY.
@@ -31,7 +31,7 @@ begin
   select p.qual into regra from pg_policies p
   where p.schemaname = 'public' and p.tablename = 'go_workspaces' and p.policyname = 'go_storage_read' and p.cmd = 'SELECT';
   if regra is null or position('x-go-storage-key' in regra) = 0 or position('sha256' in regra) = 0 then
-    raise exception 'A política go_storage_read não foi encontrada como esperado. Este é o projeto da soci?';
+    raise exception 'A política go_storage_read não foi encontrada como esperado. Este é o projeto da graao?';
   end if;
   execute format('create policy go_audit_read on public.go_agency_audit for select to anon using (%s)', regra);
   execute format('create policy go_audit_insert on public.go_agency_audit for insert to anon with check (%s)', regra);

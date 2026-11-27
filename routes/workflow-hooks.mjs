@@ -1,5 +1,5 @@
 // Webhook de entrada das automações (/hooks/<subconta>/<automação>/<gatilho>): um sistema de fora dispara o gatilho
-// "inbound_webhook" de uma automação ativa, com a chave em ?key= ou no cabeçalho x-soci-key.
+// "inbound_webhook" de uma automação ativa, com a chave em ?key= ou no cabeçalho x-graao-key.
 // Extraído do server.mjs sem mudar comportamento (plano de melhoria P2.1). Recebe do servidor o que vive no
 // fechamento de makeServer (deps) e, a cada requisição, o contexto da rota (ctx).
 import { timingSafeEqual } from 'node:crypto';
@@ -16,7 +16,7 @@ export function createWorkflowHookRoutes(deps) {
       const state = await Promise.resolve().then(() => store.load(workspace)).catch(() => null);
       const flow = state?.workflows?.find(row => row.id === workflowId && row.active);
       const secret = flow?.triggers?.find(t => t.id === triggerId && t.type === 'inbound_webhook')?.config?.secret || '';
-      const key = String(url.searchParams.get('key') || req.headers['x-soci-key'] || '');
+      const key = String(url.searchParams.get('key') || req.headers['x-graao-key'] || '');
       if (!secret || key.length !== secret.length || !timingSafeEqual(Buffer.from(key), Buffer.from(secret))) throw error('Webhook não encontrado.', 404);
       await publicAccountPolicy(workspace, true, 'automation');
       const body = await payload(req).catch(() => ({}));

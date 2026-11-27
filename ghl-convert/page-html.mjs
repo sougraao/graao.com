@@ -1,6 +1,6 @@
-// Limpa o HTML renderizado de uma página do GHL para virar página de um site da Soci:
+// Limpa o HTML renderizado de uma página do GHL para virar página de um site da Graao:
 // tira scripts, comentários e estado do Nuxt, corta o CSS que a página não usa, troca formulários, pesquisas e agendas
-// pelos blocos da Soci (data-soci-embed) e reescreve os links entre páginas do mesmo site.
+// pelos blocos da Graao (data-graao-embed) e reescreve os links entre páginas do mesmo site.
 
 const VOID = /^(area|base|br|col|embed|hr|img|input|link|meta|source|track|wbr)$/i;
 
@@ -79,7 +79,7 @@ const minifyCss = css => css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' 
 /* ───────── Página ───────── */
 
 const esc = value => String(value ?? '').replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]);
-export const embed = (kind, id, label) => `<div data-soci-embed="${kind}" data-id="${esc(id)}" style="min-height:120px"><span>${esc(label)}</span></div>`;
+export const embed = (kind, id, label) => `<div data-graao-embed="${kind}" data-id="${esc(id)}" style="min-height:120px"><span>${esc(label)}</span></div>`;
 
 // Troca o conteúdo do primeiro elemento (dentro de `segment`) cuja tag de abertura casa com `open`.
 function replaceInner(segment, open, inner) {
@@ -113,7 +113,7 @@ export function restoreFills(body, fills = []) {
 
 /**
  * html: a página renderizada pelo GHL. elements: [{ id, kind: 'form'|'survey'|'booking'|'video', ref, label, url }].
- * links: Map do caminho da página no GHL (/servico-1) para o endereço na Soci (servico-1, ou ../site/pagina).
+ * links: Map do caminho da página no GHL (/servico-1) para o endereço na Graao (servico-1, ou ../site/pagina).
  */
 /**
  * Imagens de fundo que o GHL aplicava por script: { id, url, opacity, options } viram CSS. A imagem fica num ::before
@@ -139,7 +139,7 @@ export function cleanPage(html, { title = '', elements = [], fills = [], links =
   body = body.replace(/(\sstyle="[^"]*?)opacity:\s*0(?:\.0+)?(?![.\d])\s*;?/gi, '$1');
   for (const el of elements) {
     const replacement = el.kind === 'video'
-      ? `<div data-soci-embed="video" data-src="${esc(el.url || '')}" style="min-height:120px"><span>${esc(el.url ? el.label || 'Vídeo' : 'Vídeo: cole o link no painel Design')}</span></div>`
+      ? `<div data-graao-embed="video" data-src="${esc(el.url || '')}" style="min-height:120px"><span>${esc(el.url ? el.label || 'Vídeo' : 'Vídeo: cole o link no painel Design')}</span></div>`
       : embed(el.kind === 'survey' ? 'form' : el.kind, el.ref, el.label);
     body = replaceElement(body, el.id, replacement);
   }
@@ -153,7 +153,7 @@ export function cleanPage(html, { title = '', elements = [], fills = [], links =
   // engoliria todas as regras seguintes, então a string vira vazia.
   const css = [...head.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi), ...body.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)]
     .map(m => m[1].replace(/(content\s*:\s*)(['"])\\\2/g, '$1$2$2')).join('\n')
-    // Os ícones (Font Awesome 5) vêm do CDN do GHL; as páginas da Soci só carregam fontes do Google e do cdnjs.
+    // Os ícones (Font Awesome 5) vêm do CDN do GHL; as páginas da Graao só carregam fontes do Google e do cdnjs.
     .replace(/https:\/\/stcdn\.leadconnectorhq\.com\/funnel\/fontawesome\/webfonts\//g, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/');
   body = body.replace(/<style\b[\s\S]*?<\/style>/gi, '');
   const fonts = [...head.matchAll(/<link\b[^>]*href="(https:\/\/fonts\.googleapis\.com\/[^"]+)"[^>]*>/gi)].map(m => m[1].replace(/&amp;/g, '&'));

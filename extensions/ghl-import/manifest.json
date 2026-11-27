@@ -1,13 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "soci: Importar do GHL",
+  "name": "graao: Importar do GHL",
   "version": "1.0.0",
-  "description": "Leva uma subconta do GHL (com o snapshot carregado) para a soci como um setup seu. Só lê; nada muda no GHL.",
+  "description": "Leva uma subconta do GHL (com o snapshot carregado) para a graao como um setup seu. Só lê; nada muda no GHL.",
   "permissions": ["activeTab", "scripting", "storage"],
-  "host_permissions": ["https://soci.app.br/*", "http://localhost/*", "http://127.0.0.1/*"],
+  "host_permissions": ["https://graao.com/*", "http://localhost/*", "http://127.0.0.1/*"],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Importar para a soci",
+    "default_title": "Importar para a graao",
     "default_icon": { "128": "icon-128.png" }
   },
   "icons": { "128": "icon-128.png" }

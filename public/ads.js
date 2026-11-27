@@ -66,10 +66,10 @@ function campaignsTable(c) {
 }
 
 const trackingHelp = `<details class="surface ad-section ad-help"><summary>${icon('bulb', 15)} Como ligar leads e vendas a cada campanha</summary>
-  <p>O Soci guarda de onde veio cada visitante das suas páginas, formulários, loja e webinars (UTM, gclid, fbclid e site de origem). Para o relatório saber qual campanha trouxe o lead, use nas URLs dos anúncios:</p>
+  <p>O Graao guarda de onde veio cada visitante das suas páginas, formulários, loja e webinars (UTM, gclid, fbclid e site de origem). Para o relatório saber qual campanha trouxe o lead, use nas URLs dos anúncios:</p>
   <p><b>Google Ads</b> (modelo de acompanhamento da conta): <code>{lpurl}?utm_source=google&amp;utm_medium=cpc&amp;utm_campaign={campaignid}</code></p>
-  <p><b>Meta Ads</b> (parâmetros de URL do anúncio): <code>utm_source=facebook&amp;utm_medium=paid&amp;utm_campaign={{campaign.name}}&amp;utm_id={{campaign.id}}</code>. Os anúncios criados pelo Soci já saem com esses parâmetros.</p>
-  <p class="dim">Formulários incorporados em outros sites só recebem a origem quando o visitante passou antes por uma página do Soci.</p></details>`;
+  <p><b>Meta Ads</b> (parâmetros de URL do anúncio): <code>utm_source=facebook&amp;utm_medium=paid&amp;utm_campaign={{campaign.name}}&amp;utm_id={{campaign.id}}</code>. Os anúncios criados pelo Graao já saem com esses parâmetros.</p>
+  <p class="dim">Formulários incorporados em outros sites só recebem a origem quando o visitante passou antes por uma página do Graao.</p></details>`;
 
 export function adsScreen(c, { marketingTabs }) {
   if (status?.workspace !== c.workspace) queueMicrotask(() => requestStatus());
@@ -176,7 +176,7 @@ export function installAds({ c, api, url, mutate, flash, dialog, close, render }
   const post = (op, body) => api(url(`/api/ads/workspace/${op}`), body);
   requestStatus = loadStatus; // the screen asks for the connection state when it is drawn
   window.addEventListener('message', async ev => {
-    if (ev.origin !== location.origin || ev.data?.type !== 'soci-ads') return;
+    if (ev.origin !== location.origin || ev.data?.type !== 'graao-ads') return;
     if (ev.data.error) { flash(ev.data.error, true); return; }
     status = null; await loadStatus();
     try { take(await api(url('/api/state'))); } catch { /* the next render loads it */ }
@@ -207,7 +207,7 @@ export function installAds({ c, api, url, mutate, flash, dialog, close, render }
     if (el.dataset.adSet) { ui[el.dataset.adSet] = el.dataset.value; render(); return; }
     const { adAct: act, network, id } = el.dataset;
     try {
-      if (act === 'connect') window.open(`${url('/api/ads/workspace/connect')}&network=${network}`, 'soci-ads', 'width=600,height=760');
+      if (act === 'connect') window.open(`${url('/api/ads/workspace/connect')}&network=${network}`, 'graao-ads', 'width=600,height=760');
       if (act === 'sync') { loading = network; render(); const result = await post('sync', { network, full: event.shiftKey }); loading = ''; take(result); render(); flash(`${result.synced?.campaigns ?? 0} campanha(s) sincronizada(s).`); }
       if (act === 'disconnect') {
         if (!await ask(`${tr('Desconectar')} ${networkLabel(network)}?`, { text: 'As campanhas somem da lista; os números já sincronizados continuam nos relatórios.', ok: 'Desconectar' })) return;

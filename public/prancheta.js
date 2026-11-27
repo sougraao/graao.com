@@ -12,7 +12,7 @@ export const pranchetaPresets = [
 ];
 
 /**
- * Tela da Prancheta na soci. A rota do editor (#…/prancheta/editor/<id>) também
+ * Tela da Prancheta na graao. A rota do editor (#…/prancheta/editor/<id>) também
  * mostra a galeria: installPrancheta abre o editor por cima, num iframe.
  */
 export function pranchetaScreen(c) {
@@ -157,8 +157,8 @@ function renderGallery(c) {
   return pageShell({
     title: 'Prancheta Criativa',
     desc: isAgency
-      ? 'Estúdio de design vetorial da agência. Crie carrosséis, posts, stories e capas com visual oficial da soci.'
-      : `Estúdio de design vetorial da subconta ${h(orgName)}. Crie carrosséis, posts, stories e capas com visual oficial da soci.`,
+      ? 'Estúdio de design vetorial da agência. Crie carrosséis, posts, stories e capas com visual oficial da graao.'
+      : `Estúdio de design vetorial da subconta ${h(orgName)}. Crie carrosséis, posts, stories e capas com visual oficial da graao.`,
     cta: `
       <button type="button" class="secondary" data-act="pr-import-json">${i('upload', 15)} Importar JSON</button>
       <button type="button" class="primary" data-act="pr-create-modal">${i('plus', 15)} Nova Arte</button>

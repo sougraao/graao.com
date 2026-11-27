@@ -3,7 +3,7 @@
 interface Props { gatilhos: string[]; acoes: string[] }
 const { gatilhos = [], acoes = [] } = Astro.props;
 ---
-<div class="soci-automacao">
+<div class="graao-automacao">
   <div>
     <h4><a href="/automacoes/gatilhos/">Gatilhos</a></h4>
     <ul>{gatilhos.map(nome => <li>{nome}</li>)}</ul>
@@ -15,7 +15,7 @@ const { gatilhos = [], acoes = [] } = Astro.props;
 </div>
 
 <style>
-  .soci-automacao { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; }
-  .soci-automacao > div { border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; padding: 0.75rem 1rem; }
-  .soci-automacao h4 { margin: 0; }
+  .graao-automacao { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; }
+  .graao-automacao > div { border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; padding: 0.75rem 1rem; }
+  .graao-automacao h4 { margin: 0; }
 </style>

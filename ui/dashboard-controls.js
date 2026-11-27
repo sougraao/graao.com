@@ -172,7 +172,7 @@ export function installDashboardControls({ c, dialog, close, render, load, mutat
     },
     export() {
       const board = activeDashboard(c);
-      const template = { format:'soci-dashboard', version:1, name:board.name, theme:board.theme || 'default',
+      const template = { format:'graao-dashboard', version:1, name:board.name, theme:board.theme || 'default',
         widgets:board.widgets.map(({ id, ...widget }) => ({ ...widget, pipeline:'' })) };
       const file = `${tr(board.name).normalize('NFD').replace(/[^\w-]+/g,'-').replace(/^-+|-+$/g,'').toLowerCase() || 'painel'}.json`;
       download(file,JSON.stringify(template,null,2),'application/json');
@@ -261,7 +261,7 @@ export function installDashboardControls({ c, dialog, close, render, load, mutat
     if (file.size > 200000) throw new Error('O arquivo é grande demais para um modelo de painel.');
     let template;
     try { template = JSON.parse(await file.text()); } catch { throw new Error('O arquivo não é um JSON válido.'); }
-    if (template?.format !== 'soci-dashboard' || !Array.isArray(template.widgets)) throw new Error('Este arquivo não é um modelo de painel da soci.');
+    if (template?.format !== 'graao-dashboard' || !Array.isArray(template.widgets)) throw new Error('Este arquivo não é um modelo de painel da graao.');
     const unknown = template.widgets.filter(widget => !widgets[widget?.kind]).length;
     return { template, widgets:template.widgets.filter(widget => widgets[widget?.kind]), unknown };
   }

@@ -6,7 +6,7 @@ import { verifyLink } from '../phone-verify.mjs';
 import { API_KEY, fakeEvolution } from './helpers/fake-evolution.mjs';
 
 const SECRET = 'segredo-do-webhook-de-teste';
-const LINE = { number: '5500000000000', instance: 'soci-verify', secret: SECRET };
+const LINE = { number: '5500000000000', instance: 'graao-verify', secret: SECRET };
 const PHONE = '5531981234567';
 // Cada nome vira uma pessoa com a própria agência (agency-<nome>).
 const person = name => name ? { id: name, email: `${name}@agencia.test` } : null;
@@ -14,7 +14,7 @@ const person = name => name ? { id: name, email: `${name}@agencia.test` } : null
 async function boot(t, phoneVerify = LINE) {
   const store = createSqliteStore(':memory:');
   const evo = fakeEvolution();
-  evo.instances.set(LINE.instance, { state: 'open', ownerJid: `${LINE.number}@s.whatsapp.net`, profileName: 'soci', webhook: null, pairing: '' });
+  evo.instances.set(LINE.instance, { state: 'open', ownerJid: `${LINE.number}@s.whatsapp.net`, profileName: 'graao', webhook: null, pairing: '' });
   const auth = { user: async req => person(req.headers['x-test-user']), hasSession: () => true, session: async req => person(req.headers['x-test-user']) };
   const { server, host, ready } = makeServer({ store, auth, agencyOwnerId: 'root-owner', allowLocalAccess: false, port: 0, socialScheduler: false,
     evolutionBaseUrl: 'https://evo.test', evolutionApiKey: API_KEY, whatsappRequest: evo.request, phoneVerify });
@@ -45,14 +45,14 @@ test('Confirmar libera o teste e responde no WhatsApp', async t => {
   assert.equal(started.body.link, verifyLink(LINE.number, started.body.code));
   assert.ok(Date.parse(started.body.expiresAt) > Date.now());
   assert.deepEqual((await call('/api/verify/status', { who: 'nova' })).body, { status: 'waiting', reason: '' });
-  assert.equal((await deliver(from(PHONE), `Confirmar soci ${started.body.code.toLowerCase()}`)).status, 200);
+  assert.equal((await deliver(from(PHONE), `Confirmar graao ${started.body.code.toLowerCase()}`)).status, 200);
   assert.equal((await call('/api/verify/status', { who: 'nova' })).body.status, 'verified');
   const agency = await call('/api/agency', { who: 'nova' });
   assert.equal(agency.body.billing.status, 'Trial');
   assert.equal(agency.body.billing.phone, '•••• 4567');
   assert.equal(agency.body.agency.billing.verify, undefined, 'o hash do código não sai do servidor');
   assert.equal((await call('/api/workspaces', { who: 'nova' })).status, 200);
-  assert.deepEqual(sent().at(-1), { number: PHONE, text: 'Pronto, sua conta da soci está confirmada.' });
+  assert.deepEqual(sent().at(-1), { number: PHONE, text: 'Pronto, sua conta da graao está confirmada.' });
   const taken = await call('/api/verify/start', { who: 'outra', body: { phone: PHONE } });
   assert.deepEqual([taken.status, taken.body.code], [409, 'PHONE_TAKEN']);
   const again = await call('/api/verify/start', { who: 'nova', body: { phone: '5531911112222' } });
@@ -62,7 +62,7 @@ test('Confirmar libera o teste e responde no WhatsApp', async t => {
 test('Mensagem de outro número não confirma', async t => {
   const { call, deliver, from, sent } = await boot(t);
   const { body } = await call('/api/verify/start', { who: 'nova', body: { phone: PHONE } });
-  await deliver(from('5531999990000'), `Confirmar soci ${body.code}`);
+  await deliver(from('5531999990000'), `Confirmar graao ${body.code}`);
   assert.deepEqual((await call('/api/verify/status', { who: 'nova' })).body, { status: 'refused', reason: 'other-phone' });
   assert.equal((await call('/api/workspaces', { who: 'nova' })).body.code, 'PHONE_REQUIRED');
   assert.deepEqual(sent().at(-1), { number: '5531999990000', text: 'Abra o WhatsApp no celular deste número e envie a mensagem de novo.' });
@@ -72,20 +72,20 @@ test('Duas agências, mesmo número, ao mesmo tempo: uma só confirma', async t 
   const { call, deliver, from, sent } = await boot(t);
   const a = (await call('/api/verify/start', { who: 'nova', body: { phone: PHONE } })).body.code;
   const b = (await call('/api/verify/start', { who: 'outra', body: { phone: PHONE } })).body.code;
-  await Promise.all([deliver(from(PHONE), `Confirmar soci ${a}`), deliver(from(PHONE), `Confirmar soci ${b}`)]);
+  await Promise.all([deliver(from(PHONE), `Confirmar graao ${a}`), deliver(from(PHONE), `Confirmar graao ${b}`)]);
   const statuses = [(await call('/api/verify/status', { who: 'nova' })).body, (await call('/api/verify/status', { who: 'outra' })).body];
   assert.equal(statuses.filter(s => s.status === 'verified').length, 1, JSON.stringify(statuses));
   assert.deepEqual(statuses.find(s => s.status !== 'verified'), { status: 'refused', reason: 'phone-taken' });
-  assert.ok(sent().some(m => m.text === 'Este número já tem uma conta na soci.'));
+  assert.ok(sent().some(m => m.text === 'Este número já tem uma conta na graao.'));
 });
 
 test('Remetente só com LID é recusado com a resposta de abrir pelo celular', async t => {
   const { call, deliver, sent } = await boot(t);
   const { body } = await call('/api/verify/start', { who: 'nova', body: { phone: PHONE } });
-  await deliver({ remoteJid: '123456789012345@lid' }, `Confirmar soci ${body.code}`);
+  await deliver({ remoteJid: '123456789012345@lid' }, `Confirmar graao ${body.code}`);
   assert.deepEqual((await call('/api/verify/status', { who: 'nova' })).body, { status: 'waiting', reason: 'lid' });
   assert.deepEqual(sent().at(-1), { number: '123456789012345@lid', text: 'Abra o WhatsApp no celular deste número e envie a mensagem de novo.' });
-  await deliver({ remoteJid: '123456789012345@lid', remoteJidAlt: `${PHONE}@s.whatsapp.net` }, `Confirmar soci ${body.code}`);
+  await deliver({ remoteJid: '123456789012345@lid', remoteJidAlt: `${PHONE}@s.whatsapp.net` }, `Confirmar graao ${body.code}`);
   assert.equal((await call('/api/verify/status', { who: 'nova' })).body.status, 'verified');
 });
 
@@ -95,7 +95,7 @@ test('Mensagem comum não é guardada em lugar nenhum', async t => {
   const before = JSON.stringify(store.list());
   const agencyBefore = JSON.stringify(store.load('agency-nova'));
   assert.equal((await deliver(from('5531977776666'), 'Oi, tudo bem? Meu pedido chegou?')).status, 200);
-  assert.equal((await deliver(from('5531977776666'), 'Confirmar soci ZZZZZZ')).status, 200);
+  assert.equal((await deliver(from('5531977776666'), 'Confirmar graao ZZZZZZ')).status, 200);
   assert.equal(JSON.stringify(store.list()), before);
   assert.equal(JSON.stringify(store.load('agency-nova')), agencyBefore);
   assert.equal(sent().length, 0);
@@ -103,7 +103,7 @@ test('Mensagem comum não é guardada em lugar nenhum', async t => {
 
 test('Segredo errado no caminho: 404', async t => {
   const { deliver, from } = await boot(t);
-  assert.equal((await deliver(from(PHONE), 'Confirmar soci AAAAAA', 'outro-segredo')).status, 404);
+  assert.equal((await deliver(from(PHONE), 'Confirmar graao AAAAAA', 'outro-segredo')).status, 404);
 });
 
 test('Sexto código na mesma hora: 429', async t => {
@@ -144,7 +144,7 @@ test('Linha de confirmação: só o dono da plataforma vê, conecta e libera um 
   const connected = await call('/api/verify/line', { who: 'root-owner', body: { action: 'connect' } });
   assert.equal(connected.status, 200, JSON.stringify(connected.body));
   const started = await call('/api/verify/start', { who: 'nova', body: { phone: PHONE } });
-  await deliver(from(PHONE), `Confirmar soci ${started.body.code}`);
+  await deliver(from(PHONE), `Confirmar graao ${started.body.code}`);
   assert.equal((await call('/api/verify/start', { who: 'outra', body: { phone: PHONE } })).body.code, 'PHONE_TAKEN');
   assert.equal((await call('/api/verify/release', { who: 'nova', body: { phone: PHONE } })).status, 403);
   const released = await call('/api/verify/release', { who: 'root-owner', body: { phone: PHONE } });
@@ -154,7 +154,7 @@ test('Linha de confirmação: só o dono da plataforma vê, conecta e libera um 
 });
 
 test('Linha de confirmação sem as variáveis diz quais faltam', async t => {
-  const { call } = await boot(t, { number: '', instance: 'soci-verify', secret: '' });
+  const { call } = await boot(t, { number: '', instance: 'graao-verify', secret: '' });
   const line = await call('/api/verify/line', { who: 'root-owner' });
-  assert.deepEqual(line.body, { configured: false, missing: ['SOCI_VERIFY_WHATSAPP', 'SOCI_VERIFY_SECRET'] });
+  assert.deepEqual(line.body, { configured: false, missing: ['GRAAO_VERIFY_WHATSAPP', 'GRAAO_VERIFY_SECRET'] });
 });

@@ -8,11 +8,11 @@ O Planejador de eventos (Marketing › Eventos) foi portado de forma parcial da 
 `D:\meus documentos\Parceiras Conselho\mutirao-mentoria` (`events.js`, `event-copy-editor.js`, `timeline.js`).
 O usuário apontou dois problemas:
 
-1. a tela não segue o padrão visual da Soci (no tema escuro aparecem caixas brancas e títulos ilegíveis);
+1. a tela não segue o padrão visual da Graao (no tema escuro aparecem caixas brancas e títulos ilegíveis);
 2. faltam muitas funcionalidades que a ferramenta original tem.
 
-O objetivo é que a Soci tenha tudo o que o Parceiras tem para planejar um evento de lançamento e vá além, ligando o
-planejamento ao que só a Soci oferece: tarefas, agenda, automações, Social, e-mail e, principalmente, **envio real das
+O objetivo é que a Graao tenha tudo o que o Parceiras tem para planejar um evento de lançamento e vá além, ligando o
+planejamento ao que só a Graao oferece: tarefas, agenda, automações, Social, e-mail e, principalmente, **envio real das
 mensagens de WhatsApp** (grupos e privado) pela conexão Evolution da subconta.
 
 ## Metas
@@ -20,7 +20,7 @@ mensagens de WhatsApp** (grupos e privado) pela conexão Evolution da subconta.
 - Visual idêntico ao resto do app: tokens `--g-*`, componentes já usados no Planejador social e em E-mails, tema
   escuro correto, responsivo até 360 px.
 - Paridade funcional com o Parceiras (lista completa na seção “Paridade”).
-- Mensagens de WhatsApp de grupo e privado **agendadas e enviadas** pela Soci, com fila, ritmo, teto diário,
+- Mensagens de WhatsApp de grupo e privado **agendadas e enviadas** pela Graao, com fila, ritmo, teto diário,
   personalização, reenvio em falha e status por destinatário.
 - Linha do tempo (Gantt) das tarefas e mensagens, com arrastar para remarcar.
 - Integração com automações por eventos personalizados, para que conectores (Slack, Google Sheets etc.) possam reagir.
@@ -30,9 +30,9 @@ mensagens de WhatsApp** (grupos e privado) pela conexão Evolution da subconta.
 - Envio de mensagem privada pelo Instagram (não há API para isso fora da janela de 24 h): fica assistido, com copy
   pronta para copiar.
 - Anexar mídia às mensagens do evento (imagem, vídeo, áudio). Pode vir depois; a função `sendWorkspaceMedia` já existe.
-- Criar ou administrar grupos de WhatsApp pela Soci (convidar, remover participantes, mudar descrição).
+- Criar ou administrar grupos de WhatsApp pela Graao (convidar, remover participantes, mudar descrição).
 - Trazer a “Máquina de Infoprodutos” do Parceiras para a timeline.
-- Migrar dados do Supabase do Parceiras para a Soci.
+- Migrar dados do Supabase do Parceiras para a Graao.
 
 ## Anti-metas (seria falha mesmo funcionando)
 
@@ -70,7 +70,7 @@ mensagens de WhatsApp** (grupos e privado) pela conexão Evolution da subconta.
 
 ## Decisões do usuário
 
-- O WhatsApp é **enviado pela Soci**, não só planejado.
+- O WhatsApp é **enviado pela Graao**, não só planejado.
 - Mensagens no **privado** são enviadas **automaticamente com ritmo**: intervalo aleatório entre envios, teto diário
   configurável e exclusão de quem pediu para não receber.
 - Mensagem que não sai no horário (teto diário, desconexão, fila longa) é **enviada atrasada**, não descartada.
@@ -83,7 +83,7 @@ mensagens de WhatsApp** (grupos e privado) pela conexão Evolution da subconta.
 - O texto das mensagens é guardado **já no formato do WhatsApp** (`*negrito*`, `_itálico_`, `~tachado~`, listas com
   `- ` e `1. `). O editor mostra botões para essas marcações e uma prévia renderizada. Assim o que se vê é o que sai, sem
   conversão de HTML no envio. Mensagens antigas (texto puro) continuam válidas.
-- Variáveis de personalização seguem a sintaxe da Soci: `{{contact.first_name}}`, `{{contact.name}}`. No modelo,
+- Variáveis de personalização seguem a sintaxe da Graao: `{{contact.first_name}}`, `{{contact.name}}`. No modelo,
   `[nome]` do Parceiras vira `{{contact.first_name}}`. Em mensagens de grupo, variáveis de contato são proibidas
   (validação).
 - Ordem de entrega em três PRs (cada um mesclável sozinho): **Fase 1** visual + paridade; **Fase 2** envio pelo
@@ -91,7 +91,7 @@ mensagens de WhatsApp** (grupos e privado) pela conexão Evolution da subconta.
 
 ## Paridade com o Parceiras (Fase 1)
 
-| No Parceiras | Na Soci hoje | O que fazer |
+| No Parceiras | Na Graao hoje | O que fazer |
 | --- | --- | --- |
 | Galeria de eventos com progresso, renomear, duplicar, apagar | Galeria sem renomear; apagar só dentro do evento | Ações nos cartões; filtro por status |
 | Novo evento: “Começar com” modelo ou em branco; data obrigatória para o modelo | Checkbox; data opcional | Seleção explícita; exigir data quando for o modelo |
@@ -205,7 +205,7 @@ idem. Tudo registrado em `authorization.mjs` com teste.
 ## Interface (todas as fases)
 
 - Estrutura: `pageShell` com as abas de Marketing; dentro do evento, cabeçalho do padrão (voltar, título, status,
-  data, ações), linha de métricas, abas internas no estilo das abas da Soci, conteúdo da seção.
+  data, ações), linha de métricas, abas internas no estilo das abas da Graao, conteúdo da seção.
 - Seções do evento: Estratégia · Tarefas · Comunicação · Roteiro do dia · Links · Linha do tempo · Integrações.
 - Comunicação: lista agrupada por dia; cada mensagem mostra canal, código, horário, destino (grupo ou público com
   contagem), status e, se agendada, o andamento (“32 de 40 enviadas · 2 falhas”). Ações: editar, copiar texto,

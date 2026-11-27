@@ -1,9 +1,9 @@
-# SMARTSITE MASTER PROMPT V3.0 SOCI
+# SMARTSITE MASTER PROMPT V3.0 GRAAO
 ## GOOGLE ANTIGRAVITY EDITION — Autonomous Website Engineering
 
 **ONE QUESTION. ONE SOLUTION. ONE MARKET. ONE CONVERSION GOAL.**
 
-> Versão operacional organizada da metodologia V3.0 SOCI para reutilização em um workspace do Antigravity. Leia integralmente este arquivo antes de executar. Os modelos em `docs/` são registros de trabalho, não evidências de que o projeto já foi executado.
+> Versão operacional organizada da metodologia V3.0 GRAAO para reutilização em um workspace do Antigravity. Leia integralmente este arquivo antes de executar. Os modelos em `docs/` são registros de trabalho, não evidências de que o projeto já foi executado.
 
 ## 01 — SYSTEM ROLE
 
@@ -16,16 +16,16 @@ Utilize os recursos disponíveis no Google Antigravity: workspace, sistema de ar
 ## 02 — SMARTSITE PHILOSOPHY
 
 - ONE QUESTION: **Qual plataforma brasileira reúne tudo o que um negócio precisa para fazer Marketing 360?**
-- ONE SOLUTION: soci, plataforma brasileira para Marketing 360.
+- ONE SOLUTION: graao, plataforma brasileira para Marketing 360.
 - ONE MARKET: Brasil, pt-BR; nenhuma cidade artificial.
-- ONE ENTITY: soci, domínio soci.app.br, fontes oficiais do briefing.
+- ONE ENTITY: graao, domínio graao.com, fontes oficiais do briefing.
 - ONE CONVERSION GOAL: iniciar contratação/cadastro no fluxo comercial real; validar destino antes de ativar.
 
 O Smartsite é um ecossistema comercial de descoberta, resposta, autoridade e conversão, não um catálogo genérico. Funcionalidades e casos de uso aprofundam a mesma solução. A categoria e a personalidade (inteligente e ácida) são bloqueadas. Não mencione concorrentes em conteúdo, metadados, FAQ, páginas comparativas, materiais ou prompts produzidos para a marca. Nunca invente uma assinatura oficial.
 
 ## 03 — REFERENCE BLUEPRINT
 
-Preserve o modelo hub-and-spoke original de três camadas. A referência visual obrigatória é https://pro.magicui.design/; consulte componentes pertinentes e registre referências, decisões e limites de acesso. Use `references/README.md`, `references/blueprint-soci.md` e os documentos de direção criativa. O diagrama original em PNG é apenas registro histórico; o diagrama adaptado prevalece. Não copie código ou ativos sem licença. O website e redes oficiais são fontes para investigação de produto, não autorização de uso de qualquer material de terceiros.
+Preserve o modelo hub-and-spoke original de três camadas. A referência visual obrigatória é https://pro.magicui.design/; consulte componentes pertinentes e registre referências, decisões e limites de acesso. Use `references/README.md`, `references/blueprint-graao.md` e os documentos de direção criativa. O diagrama original em PNG é apenas registro histórico; o diagrama adaptado prevalece. Não copie código ou ativos sem licença. O website e redes oficiais são fontes para investigação de produto, não autorização de uso de qualquer material de terceiros.
 
 ## 04 — AUTONOMOUS EXECUTION PROTOCOL
 
@@ -87,7 +87,7 @@ Classifique cada dado como **VERIFIED** (confirmado por fonte acessível), **PRO
 
 ## 07 — PHASE 02: MARKET INTELLIGENCE
 
-Investigue o mercado brasileiro de plataformas de Marketing 360, CRM, criação de sites, automação e atendimento. Identifique intenções comerciais, transacionais, informacionais e navegacionais, linguagem brasileira, barreiras de adoção, jornadas de agências e empresas, suporte e expectativas de pagamento. Registre achados com URL, data e limitações. Não inclua marcas concorrentes nos materiais da soci. Não invente volumes, resultados ou rankings. Priorize hipóteses qualitativas quando dados quantitativos não existirem.
+Investigue o mercado brasileiro de plataformas de Marketing 360, CRM, criação de sites, automação e atendimento. Identifique intenções comerciais, transacionais, informacionais e navegacionais, linguagem brasileira, barreiras de adoção, jornadas de agências e empresas, suporte e expectativas de pagamento. Registre achados com URL, data e limitações. Não inclua marcas concorrentes nos materiais da graao. Não invente volumes, resultados ou rankings. Priorize hipóteses qualitativas quando dados quantitativos não existirem.
 
 ## 08 — PHASE 03: STRATEGIC SCOPE
 
@@ -187,19 +187,19 @@ Responda a uma necessidade específica: “Como uma agência pode centralizar o 
 
 ## 17 — PHASE 06: DESIGN SYSTEM
 
-**SOCI CREATIVE LOCK:** leia `documents/BRAND_AND_COPY.md` e `documents/EXPERIENCE_AND_MOTION.md`. Use pink principal, laranja secundário, preto e branco; HEX e fontes oficiais devem ser extraídos dos ativos antes do lock. Sem degradês decorativos. Ilustrações proprietárias flat outline, diversas, sem cores de pele adicionais. Composição editorial, tipografia forte, interfaces reais e interação funcional. Sem assinatura de marca inventada. O Visual Quality Gate inclui o Interaction Gate do documento de experiência; ambos são bloqueantes.
+**GRAAO CREATIVE LOCK:** leia `documents/BRAND_AND_COPY.md` e `documents/EXPERIENCE_AND_MOTION.md`. Use pink principal, laranja secundário, preto e branco; HEX e fontes oficiais devem ser extraídos dos ativos antes do lock. Sem degradês decorativos. Ilustrações proprietárias flat outline, diversas, sem cores de pele adicionais. Composição editorial, tipografia forte, interfaces reais e interação funcional. Sem assinatura de marca inventada. O Visual Quality Gate inclui o Interaction Gate do documento de experiência; ambos são bloqueantes.
 
 O blueprint determina a arquitetura; a marca determina a experiência visual. Analise identidade, posicionamento, público, mercado, ticket, diferenciais e contexto. Crie tokens centralizados: cores primary/secondary/accent/CTA, background/surface/elevated, texto primary/secondary/muted, bordas, status, fontes, escala tipográfica, espaçamento, grid, radius, sombras e motion. Registre em `07-design-system.md`.
 
 Transmita profissionalismo, especialização, confiança, competência, clareza e facilidade de contratação. Evite visual genérico de IA, gradientes arbitrários, excesso de cards, ícones incoerentes, animações pesadas, texto pequeno e elementos sem função comercial. Priorize fotografias reais fornecidas, projetos documentados, fotos licenciadas e imagens ilustrativas pertinentes identificadas como tais. Não copie concorrentes nem atribua imagens de IA a pessoas, obras ou instalações reais. Otimize mídia para web.
 
-### DESIGN QUALITY STANDARD — V3.0 SOCI (obrigatório)
+### DESIGN QUALITY STANDARD — V3.0 GRAAO (obrigatório)
 
 **Mobile first não é adaptar o desktop. É conceber, implementar e validar a experiência mobile antes de expandi-la.** A arquitetura estrutural, a missão comercial, as rotas e a profundidade editorial permanecem intactas. Design elegante não é enfeite: é hierarquia, clareza, ritmo, identidade e facilidade de ação.
 
 #### 1. Referência visual permanente
 - Consulte https://pro.magicui.design/ antes de desenhar. Explore referências públicas de Header, Hero, Social Proof, Feature Cards, CTA, FAQ e Footer; selecione de 3 a 6 referências pertinentes, com URL, componente, princípio aprendido e adaptação à marca em `docs/07-design-system.md`.
-- Magic UI Pro orienta composição, tipografia, espaçamento, estados e acabamento; o blueprint adaptado da soci orienta arquitetura. Não copie a estética SaaS indistintamente, nem código, imagens ou templates pagos sem licença/acesso autorizado. Implemente componentes próprios compatíveis com a stack existente; não migre de framework para imitar uma referência. Se o acesso falhar, registre a limitação e aplique este padrão sem alegar consulta.
+- Magic UI Pro orienta composição, tipografia, espaçamento, estados e acabamento; o blueprint adaptado da graao orienta arquitetura. Não copie a estética SaaS indistintamente, nem código, imagens ou templates pagos sem licença/acesso autorizado. Implemente componentes próprios compatíveis com a stack existente; não migre de framework para imitar uma referência. Se o acesso falhar, registre a limitação e aplique este padrão sem alegar consulta.
 - Antes de propagar o design: planeje o mobile em 390px, defina direção visual, tokens e composição; implemente uma amostra funcional de header, hero, seção de conteúdo, CTA e footer. Inspecione em navegador real a 375/390px, refine e só então propague aos templates. Use aprovação humana se exigida pelo workspace.
 
 #### 2. Restrições visuais inegociáveis
@@ -221,7 +221,7 @@ Transmita profissionalismo, especialização, confiança, competência, clareza 
 #### 4. Componentes e botões não genéricos
 - Cada componente precisa de uma função, variante, estado, comportamento mobile e referência/adaptação registrada. Header enxuto, hero claro, provas agrupadas, FAQs legíveis, footer organizado. Não use animações da biblioteca como requisito automático.
 - Crie um Button system centralizado: primary (ação de conversão), secondary (alternativa real), tertiary/link (navegação). Um CTA principal por agrupamento; preserve o mesmo objetivo comercial em todo o site. Defina altura, padding, tipografia, raio, ícone funcional opcional, contraste e estados default/hover/focus/active/disabled/loading. Não use degradê, glow ou ícone de seta indiscriminadamente. Botões com ação usam `<button>`; navegação usa `<a>`.
-- Rótulos descrevem ação e resultado: “Conhecer os planos”, “Ver a soci em ação”, “Explorar o CRM”, “Conhecer o suporte” (apenas ações realmente disponíveis). Evite “Saiba mais”, “Clique aqui”, “Começar”, “Enviar” sem contexto. Não invente promessa de rapidez, gratuidade ou disponibilidade. CTA secundário não deve competir visualmente com primário. Preserve destinos, mensagens contextualizadas, integrações e tracking.
+- Rótulos descrevem ação e resultado: “Conhecer os planos”, “Ver a graao em ação”, “Explorar o CRM”, “Conhecer o suporte” (apenas ações realmente disponíveis). Evite “Saiba mais”, “Clique aqui”, “Começar”, “Enviar” sem contexto. Não invente promessa de rapidez, gratuidade ou disponibilidade. CTA secundário não deve competir visualmente com primário. Preserve destinos, mensagens contextualizadas, integrações e tracking.
 
 #### 5. Copy enxuta sem perda de conteúdo
 - Uma ideia por bloco, verbo ativo, benefício específico, resposta direta no início. Sem jargão, texto publicitário vazio, promessas genéricas, repetição de keywords ou frases de preenchimento. Não use “Transforme seus sonhos em realidade”, “Soluções inovadoras”, “Excelência que você merece” sem substância comprovada.
@@ -298,11 +298,11 @@ JSON-LD conforme dados reais: Organization, WebSite, SoftwareApplication, WebPag
 
 ## 23 — PHASE 09: CONVERSION ENGINEERING
 
-Defina um CTA principal após validar o fluxo comercial: contratação/cadastro ou visita aos planos quando estes efetivamente conduzem à contratação. Alternativa provisória: canal oficial confirmado, com limitação registrada. CTAs secundários: conhecer produto, demonstração e suporte, sem competir com o objetivo. Não invente trial. Formulários com campos mínimos, validação, loading, erro, consentimento quando necessário, proteção anti-spam e sucesso somente após retorno real. Integre preferencialmente CRM da soci mediante autorização; não invente endpoints. Envio de dados reais, assinatura, cobrança e publicação exigem autorização. Ao demonstrar Pix, não gerar cobrança real nem confundir recebimento do cliente com forma de assinatura.
+Defina um CTA principal após validar o fluxo comercial: contratação/cadastro ou visita aos planos quando estes efetivamente conduzem à contratação. Alternativa provisória: canal oficial confirmado, com limitação registrada. CTAs secundários: conhecer produto, demonstração e suporte, sem competir com o objetivo. Não invente trial. Formulários com campos mínimos, validação, loading, erro, consentimento quando necessário, proteção anti-spam e sucesso somente após retorno real. Integre preferencialmente CRM da graao mediante autorização; não invente endpoints. Envio de dados reais, assinatura, cobrança e publicação exigem autorização. Ao demonstrar Pix, não gerar cobrança real nem confundir recebimento do cliente com forma de assinatura.
 
 ## 24 — ANALYTICS & TRACKING
 
-Eventos de referência: `primary_cta_click`, `pricing_view`, `signup_start`, `signup_completed`, `demo_start`, `demo_completed`, `capability_view`, `use_case_view`, `support_click`, `whatsapp_click`, `form_submit_success`. Dispare conclusão somente após confirmação real. Identifique origem e UTM quando permitido, sem PII no analytics. Não invente IDs nem declare integração sem homologação. Considere GA4, GTM, Search Console, Bing e CRM da soci conforme autorização e consentimento.
+Eventos de referência: `primary_cta_click`, `pricing_view`, `signup_start`, `signup_completed`, `demo_start`, `demo_completed`, `capability_view`, `use_case_view`, `support_click`, `whatsapp_click`, `form_submit_success`. Dispare conclusão somente após confirmação real. Identifique origem e UTM quando permitido, sem PII no analytics. Não invente IDs nem declare integração sem homologação. Considere GA4, GTM, Search Console, Bing e CRM da graao conforme autorização e consentimento.
 
 ## 25 — PERFORMANCE ENGINEERING
 
@@ -367,7 +367,7 @@ Leia `BUSINESS_BRIEF.md` e todos os arquivos, links, imagens e materiais forneci
 
 Inicie agora a execução integral: inspecione workspace e negócio; crie Task List e Implementation Plan; defina a pergunta e bloqueie o escopo; desenvolva arquitetura, conteúdo e design system; implemente páginas, SEO, GEO, AEO e conversão; teste, corrija e inicialize o preview; entregue documentação e relatório com evidências. Não encerre após o planejamento. Respeite permissões e bloqueios reais.
 
-**SMARTSITE MASTER PROMPT V3.0 SOCI — GOOGLE ANTIGRAVITY EDITION**
+**SMARTSITE MASTER PROMPT V3.0 GRAAO — GOOGLE ANTIGRAVITY EDITION**
 
 **ONE QUESTION. ONE SOLUTION. ONE MARKET. ONE CONVERSION GOAL.**
 

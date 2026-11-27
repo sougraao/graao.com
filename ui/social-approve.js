@@ -2,7 +2,7 @@
 // review and records "approve" or "request changes" with the reviewer's name. All text goes through
 // textContent; the token stays in the fragment so it never reaches server logs or referrers.
 try {
-  const saved = localStorage.getItem('soci.theme');
+  const saved = localStorage.getItem('graao.theme');
   const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
   if (dark) document.documentElement.setAttribute('data-theme', 'dark');
 } catch {}
@@ -17,8 +17,8 @@ let zone = 'America/Sao_Paulo';
 const when = iso => new Intl.DateTimeFormat('pt-BR', { dateStyle: 'full', timeStyle: 'short', timeZone: zone }).format(new Date(iso));
 
 const reviewer = get('reviewer');
-try { reviewer.value = localStorage.getItem('soci.approver') || ''; } catch {}
-reviewer.addEventListener('change', () => { try { localStorage.setItem('soci.approver', reviewer.value.trim()); } catch {} });
+try { reviewer.value = localStorage.getItem('graao.approver') || ''; } catch {}
+reviewer.addEventListener('change', () => { try { localStorage.setItem('graao.approver', reviewer.value.trim()); } catch {} });
 
 const api = async (action, data = {}) => {
   const r = await fetch(`/api/social/approval?workspace=${encodeURIComponent(workspace)}`, {
@@ -46,7 +46,7 @@ function card(post) {
     if (decision === 'rejected' && !note.value.trim()) { note.focus(); status.textContent = 'Conte o que precisa mudar neste post.'; return; }
     for (const b of article.querySelectorAll('button')) b.disabled = true;
     try {
-      try { localStorage.setItem('soci.approver', reviewer.value.trim()); } catch {}
+      try { localStorage.setItem('graao.approver', reviewer.value.trim()); } catch {}
       render(await api('decide', { postId: post.id, decision, note: note.value, name: reviewer.value }));
       show(decision === 'approved' ? 'Post aprovado. Obrigado!' : 'Pedido de ajuste enviado para a equipe.');
     } catch (e) { status.textContent = e.message; for (const b of article.querySelectorAll('button')) b.disabled = false; button.focus(); }

@@ -126,7 +126,7 @@ test('The bot switched on in the conversation answers each new message until it 
 
 test('With a service, the bot offers free times and books the one the client chose', () => {
   const { s, contactId } = setup();
-  execute(s, { type: 'scheduling-settings', data: { enabled: true, step: 60, leadMinutes: 0, horizonDays: 30, staff: [{ name: 'Ana' }], hours: everyDay, origin: 'https://app.soci.test' } });
+  execute(s, { type: 'scheduling-settings', data: { enabled: true, step: 60, leadMinutes: 0, horizonDays: 30, staff: [{ name: 'Ana' }], hours: everyDay, origin: 'https://app.graao.test' } });
   const service = save(s, 'services', { name: 'Avaliação', duration: 60, price: 0, staffIds: [s.scheduling.staff[0].id] });
   const slots = upcomingSlots(s, service, { count: 8 });
   assert.equal(slots.length, 8);

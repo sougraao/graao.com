@@ -1,4 +1,4 @@
-# 06 · Apresentações — engenharia reversa do Google Slides e plano para a soci
+# 06 · Apresentações — engenharia reversa do Google Slides e plano para a graao
 
 Data: 2026-11-23 · Ferramenta: REA (MCP) via Chrome DevTools, perfil temporário e anônimo.
 Alvo: apresentação pública de exemplo da API do Slides (`1EAYk18WDjIG-zp_0vLm3CsfQh_i8eXc67Jo2O9C6Vuc`, "Baby album"), aberta em `/edit`.
@@ -78,7 +78,7 @@ DOM com 563 `<g>`, 95 `<text>`, 66 `<path>`, 42 `<clipPath>`, 40 `<image>`, 14 `
 
 ---
 
-## 2. O que a soci já tem
+## 2. O que a graao já tem
 
 | | Apresentações (`ui/presentations.js`, `ui/presentation-data.js`, `presentation-model.mjs`) | Prancheta (`ui/prancheta.js`, `prancheta-model.mjs`) |
 |---|---|---|
@@ -92,12 +92,12 @@ A distância para o Slides não está no visual: está no **modelo**. O construt
 
 ---
 
-## 3. Arquitetura proposta para a soci
+## 3. Arquitetura proposta para a graao
 
 Decisões tiradas do que foi observado; os itens marcados **(escolha)** são de design nosso, não do Google.
 
 1. **Documento = estado + log de operações.** Guardar o estado materializado (`presentations[].doc`) para leitura rápida e aplicar edições como operações pequenas (`createElement`, `updateTransform`, `insertText`, `updateTextStyle`, `createSlide`, `moveSlides`, `deleteObject`…), no mesmo formato dos 49 requests da API. Isso dá desfazer/refazer, autosave em lote (`/save` com `rev` + lote) e abre caminho para colaboração. **(escolha)** Operações em JSON nomeado, não arrays posicionais.
-2. **Hierarquia tema → layout → slide.** Tema = 12 cores + par de fontes + mestre; layout = placeholders tipados (`TITLE`, `SUBTITLE`, `BODY`, `PICTURE`, `SLIDE_NUMBER`…); elementos do slide guardam só o que sobrescrevem. Trocar o tema reestiliza o deck inteiro. Os 8 layouts atuais viram layouts do tema "Proposta soci", então as apresentações existentes continuam abrindo.
+2. **Hierarquia tema → layout → slide.** Tema = 12 cores + par de fontes + mestre; layout = placeholders tipados (`TITLE`, `SUBTITLE`, `BODY`, `PICTURE`, `SLIDE_NUMBER`…); elementos do slide guardam só o que sobrescrevem. Trocar o tema reestiliza o deck inteiro. Os 8 layouts atuais viram layouts do tema "Proposta graao", então as apresentações existentes continuam abrindo.
 3. **Geometria em pontos com matriz afim** `{a,b,c,d,tx,ty}` + `size`. **(escolha)** Pontos em vez de EMU/25: mais simples, e a exportação PPTX converte (1 pt = 12.700 EMU).
 4. **Render em SVG**, um `<svg viewBox>` por slide, reaproveitado no palco, na tira de miniaturas, no modo apresentação, no link público e no PDF. Texto com `<foreignObject>` para edição rica, ou `<text>` com quebra calculada.
 5. **Reaproveitar a Prancheta**: seleção, arraste, alças de redimensionar e girar, inspetor de nó e formas já existem; extrair esse núcleo para um módulo comum de canvas.
@@ -110,7 +110,7 @@ Decisões tiradas do que foi observado; os itens marcados **(escolha)** são de 
 | **F1 · Núcleo** | modelo novo (tema/layout/slide/elementos), migração dos 8 layouts, render SVG, caixa de texto, forma, imagem, linha; mover, redimensionar, girar; desfazer/refazer; autosave por operações | 1.1–1.4 |
 | **F2 · Editor completo** | tabela, agrupar, alinhar e distribuir, guias e grade, ordem z, cortar imagem, listas e estilos por nível, editar tema e layouts, tira com arrastar para reordenar | 1.2, 1.6 |
 | **F3 · Apresentar** | transições e animações por objeto, visualização do apresentador com notas e cronômetro, link público e PDF no novo render, exportação PPTX | 1.5, 1.6 |
-| **F4 · Colaboração e IA** | histórico de versões, comentários, edição simultânea com presença, "gerar slide/imagem" com a IA da soci | 1.5 |
+| **F4 · Colaboração e IA** | histórico de versões, comentários, edição simultânea com presença, "gerar slide/imagem" com a IA da graao | 1.5 |
 
 ## 4. Em aberto
 

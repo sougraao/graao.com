@@ -12,7 +12,7 @@ const everyDay = Object.fromEntries([0, 1, 2, 3, 4, 5, 6].map(w => [w, ['08:00',
 function setup() {
   const s = blank();
   s.profile.timezone = 'America/Sao_Paulo';
-  execute(s, { type: 'scheduling-settings', data: { enabled: true, step: 60, leadMinutes: 0, horizonDays: 30, staff: [{ name: 'Ana' }], hours: everyDay, origin: 'https://app.soci.test/qualquer/coisa' } });
+  execute(s, { type: 'scheduling-settings', data: { enabled: true, step: 60, leadMinutes: 0, horizonDays: 30, staff: [{ name: 'Ana' }], hours: everyDay, origin: 'https://app.graao.test/qualquer/coisa' } });
   const ana = s.scheduling.staff[0].id;
   const service = save(s, 'services', { name: 'Avaliação', duration: 60, price: 0, staffIds: [ana] });
   return { s, service };
@@ -71,7 +71,7 @@ test('T.1 one-time booking link: a personal link, used once, through the public 
   const state = async () => (await (await fetch(`${base}/api/state?workspace=demo`)).json()).state;
   const post = (path, fields) => fetch(base + path, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: base }, body: new URLSearchParams(fields) });
 
-  await action({ type: 'scheduling-settings', data: { enabled: true, step: 60, leadMinutes: 0, horizonDays: 30, staff: [{ name: 'Ana' }], hours: everyDay, origin: 'https://app.soci.test' } });
+  await action({ type: 'scheduling-settings', data: { enabled: true, step: 60, leadMinutes: 0, horizonDays: 30, staff: [{ name: 'Ana' }], hours: everyDay, origin: 'https://app.graao.test' } });
   const staff = (await state()).scheduling.staff[0].id;
   const service = await action({ type: 'save', key: 'services', data: { name: 'Avaliação', duration: 60, price: 0, staffIds: [staff] } });
   await action({ type: 'save', key: 'workflows', data: { name: 'Convite', active: true, triggers: [{ type: 'contact_tag', config: { change: 'added', tag: 'convidar' } }],
@@ -81,8 +81,8 @@ test('T.1 one-time booking link: a personal link, used once, through the public 
   let s = await state();
   const note = s.messages.find(row => row.contactId === carla && row.channel === 'Note').body;
   const url = note.replace('Agende aqui: ', '');
-  assert.match(url, new RegExp(`^https://app\\.soci\\.test/agendar/demo\\?link=[0-9a-f]{32}&servico=${service}$`), 'a full link with the saved address');
-  const path = url.replace('https://app.soci.test', ''), token = new URL(url).searchParams.get('link');
+  assert.match(url, new RegExp(`^https://app\\.graao\\.test/agendar/demo\\?link=[0-9a-f]{32}&servico=${service}$`), 'a full link with the saved address');
+  const path = url.replace('https://app.graao.test', ''), token = new URL(url).searchParams.get('link');
 
   const page = await (await fetch(base + path)).text();
   assert.match(page, /value="Carla Dias"/, 'the page comes filled with the contact');

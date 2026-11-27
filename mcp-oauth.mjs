@@ -5,8 +5,8 @@ import { createHash, randomBytes, randomUUID } from 'node:crypto';
 const MINUTE = 60000, DAY = 86400000;
 const CODE_LIFE = 5 * MINUTE, TOKEN_LIFE = 60 * MINUTE, REFRESH_LIFE = 90 * DAY, RETRY_GRACE = MINUTE;
 export const MAX_GRANTS = 100;
-export const tokenPrefix = 'soci_mcp_';
-const clientPrefix = 'soci_client_';
+export const tokenPrefix = 'graao_mcp_';
+const clientPrefix = 'graao_client_';
 // Desktop apps that receive the answer through their own link scheme.
 const appSchemes = new Set(['cursor:', 'vscode:', 'vscode-insiders:', 'windsurf:', 'claude:']);
 const loopback = new Set(['localhost', '127.0.0.1', '[::1]']);
@@ -98,7 +98,7 @@ export function openGrant(agency, request, { userId, userName, workspace, access
 }
 
 function issue(grant, now) {
-  const token = secret(tokenPrefix), refresh = secret('soci_mcpr_');
+  const token = secret(tokenPrefix), refresh = secret('graao_mcpr_');
   Object.assign(grant, { tokenHash: digest(token), tokenExpires: iso(now + TOKEN_LIFE), refreshHash: digest(refresh), refreshExpires: iso(now + REFRESH_LIFE) });
   return { access_token: token, token_type: 'Bearer', expires_in: TOKEN_LIFE / 1000, refresh_token: refresh, scope: grant.access === 'write' ? 'read write' : 'read' };
 }

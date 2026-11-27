@@ -32,7 +32,7 @@ test('geocode devolve o centro numérico ou null quando não acha a região', as
   const { url, init } = calls[0];
   assert.equal(url.pathname, '/search');
   assert.equal(url.searchParams.get('q'), 'Belo Horizonte');
-  assert.match(init.headers['User-Agent'], /soci\.app\.br/);
+  assert.match(init.headers['User-Agent'], /graao\.com/);
   assert.equal(init.redirect, 'error');
   answer = [];
   assert.equal(await geocode('Lugar nenhum'), null);

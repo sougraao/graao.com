@@ -11,8 +11,8 @@ export const sharedReportPath = (workspace, report) => `/relatorio/${workspace}/
 export const findSharedReport = (state, shareId) => state.customReports?.find(report => report.share?.id === shareId && shareActive(report)) || null;
 
 const copy = {
-  pt: { updated: 'Dados atualizados em', made: 'Relatório compartilhado pela Soci', lang: 'Idioma', page: 'Página' },
-  es: { updated: 'Datos actualizados el', made: 'Informe compartido por Soci', lang: 'Idioma', page: 'Página' }
+  pt: { updated: 'Dados atualizados em', made: 'Relatório compartilhado pela Graao', lang: 'Idioma', page: 'Página' },
+  es: { updated: 'Datos actualizados el', made: 'Informe compartido por Graao', lang: 'Idioma', page: 'Página' }
 };
 
 // The app translates widget text by walking the DOM; there is no DOM here, so the text between tags
@@ -62,7 +62,7 @@ export function reportMailer({ key = process.env.RESEND_API_KEY, from = process.
     /** `fromAddress`: the sub-account's verified sending domain (Serviços de e-mail), shown with the workspace name. */
     async send(workspace, state, report, slot, { fromAddress = '' } = {}) {
       if (!configured) throw new Error('O envio por e-mail não está configurado (RESEND_API_KEY, PORTAL_EMAIL_FROM e PORTAL_PUBLIC_ORIGIN).');
-      const link = origin + sharedReportPath(workspace, report), brand = state.profile?.name || 'Soci';
+      const link = origin + sharedReportPath(workspace, report), brand = state.profile?.name || 'Graao';
       const subject = `${report.name} · ${brand}`;
       const text = `${report.schedule.message ? `${report.schedule.message}\n\n` : ''}O relatório “${report.name}” de ${brand} está disponível com os dados mais recentes:\n\n${link}\n\nVocê recebe este e-mail porque ${brand} programou o envio deste relatório.`;
       const post = (sender, idem) => request('https://api.resend.com/emails', {
@@ -71,7 +71,7 @@ export function reportMailer({ key = process.env.RESEND_API_KEY, from = process.
         body: JSON.stringify({ from: sender, to: report.schedule.recipients, subject, text })
       }).catch(() => null);
       const idem = `report-${workspace}-${report.id}-${slot}`;
-      let response = await post(fromAddress ? `${brand.replace(/[<>"\r\n]/g, '').trim() || 'Soci'} <${fromAddress}>` : from, idem);
+      let response = await post(fromAddress ? `${brand.replace(/[<>"\r\n]/g, '').trim() || 'Graao'} <${fromAddress}>` : from, idem);
       if (fromAddress && response?.status === 403) response = await post(from, `${idem}-platform`);
       if (!response?.ok) throw new Error(`O serviço de e-mail não confirmou o envio${response ? ` (HTTP ${response.status})` : ''}.`);
     }

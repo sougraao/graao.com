@@ -14,7 +14,7 @@ export function vapidKeys() {
 export const pushConfigured = (env = process.env) => Boolean(env.WEB_PUSH_PUBLIC_KEY && env.WEB_PUSH_PRIVATE_KEY);
 
 /** The VAPID Authorization header for an endpoint (the JWT audience is the push service origin). */
-export function vapidHeader(endpoint, { publicKey, privateKey, subject = 'mailto:suporte@soci.app.br', now = Date.now() }) {
+export function vapidHeader(endpoint, { publicKey, privateKey, subject = 'mailto:suporte@graao.com', now = Date.now() }) {
   const pub = fromB64u(publicKey);
   const key = createPrivateKey({ key: { kty: 'EC', crv: 'P-256', d: b64u(fromB64u(privateKey)), x: b64u(pub.subarray(1, 33)), y: b64u(pub.subarray(33, 65)) }, format: 'jwk' });
   const header = b64u(JSON.stringify({ typ: 'JWT', alg: 'ES256' }));

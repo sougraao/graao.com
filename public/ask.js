@@ -1,4 +1,4 @@
-// Perguntas da soci: substituem confirm(), prompt() e alert() do navegador (estilos em ask.css).
+// Perguntas da graao: substituem confirm(), prompt() e alert() do navegador (estilos em ask.css).
 //
 //   if (!await ask('Excluir esta marca?', { text: 'A IA deixa de usar a voz dela.', ok: 'Excluir' })) return;
 //   const url = await askText('Endereço do link', { type: 'url', ok: 'Inserir' });   // null se cancelar

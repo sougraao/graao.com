@@ -53,12 +53,12 @@ test('Portal shows the club and the member redeems a reward', async t => {
     return { status: r.status, cookie: r.headers.get('set-cookie'), body: await r.json() };
   };
   const act = body => call('/api/action?workspace=demo', body);
-  await act({ type: 'loyalty-settings', data: { enabled: true, name: 'Clube Soci', pointsName: 'moedas' } });
+  await act({ type: 'loyalty-settings', data: { enabled: true, name: 'Clube Graao', pointsName: 'moedas' } });
   const reward = (await act({ type: 'save', key: 'loyaltyRewards', data: { name: 'Brinde', kind: 'custom', cost: 100 } })).body.id;
   const { body: invite } = await call('/api/client-portal/demo/admin', { action: 'invite', email: 'cliente@example.test' });
   const cookie = (await call('/api/client-portal/demo/exchange', { token: invite.accessPath.split('#access=')[1] })).cookie.split(';')[0];
   const home = (await call('/api/client-portal/demo/home', undefined, { Cookie: cookie })).body;
-  assert.deepEqual([home.loyalty.name, home.loyalty.pointsName, home.loyalty.balance, home.loyalty.rewards.map(r => r.name)], ['Clube Soci', 'moedas', 0, ['Brinde']]);
+  assert.deepEqual([home.loyalty.name, home.loyalty.pointsName, home.loyalty.balance, home.loyalty.rewards.map(r => r.name)], ['Clube Graao', 'moedas', 0, ['Brinde']]);
   assert.equal((await call('/api/client-portal/demo/loyalty', { rewardId: reward }, { Cookie: cookie })).status, 409, 'no contact with points yet');
   const contact = (await act({ type: 'save', key: 'contacts', data: { name: 'Cliente', email: 'cliente@example.test', tags: [] } })).body.id;
   await act({ type: 'loyalty-adjust', data: { contactId: contact, points: 120 } });

@@ -1,16 +1,16 @@
-# Smartsite soci — design
+# Smartsite graao — design
 
 Data: 2026-11-23 · Status: rascunho para aprovação
 
 ## 1. Intenção
 
-Construir o site institucional completo da soci (soci.app.br) a partir do kit em `Smartsite/`
+Construir o site institucional completo da graao (graao.com) a partir do kit em `Smartsite/`
 (`BUSINESS_BRIEF.md`, `SMARTSITE_MASTER_PROMPT.md`, `documents/`, `docs/04-sitemap.md`).
 O site responde a uma pergunta comercial — *qual plataforma brasileira reúne tudo o que um
 negócio precisa para fazer Marketing 360?* — para agências, profissionais de marketing e
-pequenas empresas do Brasil, e leva a uma conversão real: criar a conta na soci.
+pequenas empresas do Brasil, e leva a uma conversão real: criar a conta na graao.
 
-O próprio site é prova do que a soci vende: bonito, fácil, mobile-first, brasileiro.
+O próprio site é prova do que a graao vende: bonito, fácil, mobile-first, brasileiro.
 
 ## 2. Objetivos, não-objetivos, anti-objetivos
 
@@ -38,7 +38,7 @@ O próprio site é prova do que a soci vende: bonito, fácil, mobile-first, bras
 
 ## 3. Restrições
 
-- Mercado Brasil, pt-BR. Marca escrita "soci" em minúsculas.
+- Mercado Brasil, pt-BR. Marca escrita "graao" em minúsculas.
 - Publicação **não autorizada**. Entrega = código + build + preview local + relatório.
 - Prompts visuais (se houver geração de imagem) em inglês; nenhuma foto stock genérica.
 - Respeitar `prefers-reduced-motion`; nenhum conteúdo SEO escondido atrás de interação.
@@ -55,14 +55,14 @@ Escopo: usuário escolheu **site inteiro** (não só a home).
 
 ## 5. Fatos verificados que sustentam o conteúdo
 
-Fonte: `RELATORIO-PLATAFORMA-SOCI.txt` (auditoria de código de 18/11/2026) + PRs mesclados
+Fonte: `RELATORIO-PLATAFORMA-GRAAO.txt` (auditoria de código de 18/11/2026) + PRs mesclados
 depois (#59 telefone Twilio, #60 voz com IA, #61 discador, #62 push no app, #63 catálogo de
 conectores; checkout AbacatePay com Pix e cartão em `abacatepay.mjs`).
 
 **Nível A — funciona de ponta a ponta (pode ser prometido):**
 WhatsApp bidirecional (instância por subconta, QR/pareamento, entrada vira contato/conversa);
 Planejador Social com publicação/agendamento em Facebook, Instagram, LinkedIn, TikTok, YouTube,
-Pinterest, Threads, Google Business e Bluesky; IA (Pergunte à Soci, AI Studio que gera e revisa
+Pinterest, Threads, Google Business e Bluesky; IA (Pergunte à Graao, AI Studio que gera e revisa
 sites, Estúdio de Agentes); páginas e funis publicados, formulários públicos/incorporáveis,
 trigger links; motor de automações; prospecção com Google Places e relatórios compartilháveis;
 portal do cliente/área de membros com login por link; API pública v1; agência → subcontas,
@@ -114,10 +114,10 @@ Total ≈ 37 páginas. Páginas de nível B ficam no ar com texto honesto; nenhu
 
 ## 7. Conversão
 
-- **Domínio (decisão do usuário):** o site mora em `https://www.soci.app.br`; `soci.app.br`
+- **Domínio (decisão do usuário):** o site mora em `https://www.graao.com`; `graao.com`
   continua sendo a plataforma como hoje. Canonicals, sitemap e `site` do Astro usam o `www`.
   O domínio fica numa única constante de configuração.
-- **Primária:** "Começar com a soci" → `https://soci.app.br/login` (login Google cria a agência
+- **Primária:** "Começar com a graao" → `https://graao.com/login` (login Google cria a agência
   automaticamente — fluxo real; página da plataforma, fora do escopo deste site).
 - **Secundárias:** "Ver planos" → `/planos/`. Comunidade **só para clientes** (decisão do
   usuário): a página explica a comunidade e diz que o acesso vem com a conta; o link do grupo
@@ -127,7 +127,7 @@ Total ≈ 37 páginas. Páginas de nível B ficam no ar com texto honesto; nenhu
 
 ## 8. Identidade visual
 
-- Mascote/isotipo oficial: caveira-chama (`soci-isotipo-1x1.png`, `ui/skull_flame.svg`,
+- Mascote/isotipo oficial: caveira-chama (`graao-isotipo-1x1.png`, `ui/skull_flame.svg`,
   quadros animados em `ui/brand/flame/`). Pink da marca `#ff00bb`, preto, branco.
 - Pink `#ff00bb` não passa AA como texto sobre branco → uso em superfícies, ícones, marca,
   destaques grandes; texto/link em tom escuro derivado (ponto de partida: `#a00070`, já usado na
@@ -155,9 +155,9 @@ I06 agenda de calls (sem horário real), I07 alternância de preço (sem preços
 ## 10. Estrutura técnica
 
 - `Smartsite/site/` — projeto Astro (TypeScript), saída estática (`output: 'static'`),
-  `site: 'https://www.soci.app.br'`, trailing slash.
+  `site: 'https://www.graao.com'`, trailing slash.
 - Fora do escopo: `ui/landing.html` (alteração não commitada não relacionada, ignorar) e a
-  landing servida em `soci.app.br/` pela plataforma.
+  landing servida em `graao.com/` pela plataforma.
 - Conteúdo em content collections (`funcionalidades`, `solucoes`) com frontmatter tipado:
   título, description, H1, pergunta que a página responde, nível de evidência, links
   relacionados, CTA.

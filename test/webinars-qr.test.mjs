@@ -65,11 +65,11 @@ test('Reminders are written once, only when due, and never for sessions that alr
   const w = s.webinars.find(row => row.id === webinar);
   const reg = execute(s, { type: 'webinar-register', id: webinar, data: { name: 'Caio Prado', email: 'caio@example.com', sessionId: w.sessions[0].id } });
   s.webinarRegistrations.find(row => row.id === reg).created = '2030-05-01T00:00:00.000Z';
-  const run = at => execute(s, { type: 'webinar-reminders', data: { at, base: 'https://soci.example', workspace: 'demo' } });
+  const run = at => execute(s, { type: 'webinar-reminders', data: { at, base: 'https://graao.example', workspace: 'demo' } });
   assert.deepEqual(run('2030-05-09T14:00:00Z'), [], 'nothing is due 25 hours before');
   const first = run('2030-05-09T15:00:30Z');
   assert.deepEqual(first.map(row => row.channel), ['Email']);
-  assert.match(first[0].body, /^Oi Caio! Amanhã tem Aula: https:\/\/soci.example\/w\/demo\//);
+  assert.match(first[0].body, /^Oi Caio! Amanhã tem Aula: https:\/\/graao.example\/w\/demo\//);
   assert.deepEqual(run('2030-05-09T15:05:00Z'), [], 'a reminder is written only once');
   assert.deepEqual(run('2030-05-10T14:00:10Z').map(row => row.channel), ['WhatsApp']);
   assert.deepEqual(run('2030-05-10T17:00:00Z'), []);
@@ -79,7 +79,7 @@ test('Reminders are written once, only when due, and never for sessions that alr
 
 test('QR codes encode, redirect through the dynamic link and count scans', async t => {
   const { base, send, save, state } = await start(t);
-  assert.equal(qrMatrix('https://soci.app').length, 25);
+  assert.equal(qrMatrix('https://graao.app').length, 25);
   assert.match(qrSvg('oi', { fg: '#ff0000' }), /fill="#ff0000"/);
   assert.throws(() => qrMatrix('x'.repeat(300)), /longo demais/);
 

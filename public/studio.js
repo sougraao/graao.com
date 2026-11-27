@@ -176,9 +176,9 @@ export function studio(c) {
 
 const frame = () => document.getElementById('studio-frame');
 const editStyle = '[data-go-hover]{outline:2px dashed #a00070!important;outline-offset:2px}[data-go-selected]{outline:3px solid #a00070!important;outline-offset:2px}[contenteditable]{cursor:text}';
-const layerSelector = 'header, nav, main, section, article, aside, footer, div[id], [data-soci-embed], h1, h2, h3, h4, h5, h6, p, a, img, ul, ol, form, label, input:not([type=hidden]), button, select, textarea';
+const layerSelector = 'header, nav, main, section, article, aside, footer, div[id], [data-graao-embed], h1, h2, h3, h4, h5, h6, p, a, img, ul, ol, form, label, input:not([type=hidden]), button, select, textarea';
 const textSelector = 'h1, h2, h3, h4, h5, h6, p, a, button, label, span, small, strong, em, li, blockquote, figcaption, div';
-const canEditText = element => element?.matches(textSelector) && !element.closest('[data-soci-embed]') && !element.querySelector('input, textarea, select, button, form, img, svg, video, iframe, div, section, p, ul, ol');
+const canEditText = element => element?.matches(textSelector) && !element.closest('[data-graao-embed]') && !element.querySelector('input, textarea, select, button, form, img, svg, video, iframe, div, section, p, ul, ol');
 const styles = [['color','Cor do texto','color'], ['background-color','Fundo','color'], ['font-size','Tamanho do texto (px)','number'],
   ['padding','Espaçamento interno (px)','number'], ['border-radius','Arredondamento (px)','number']];
 function colorHex(value) {
@@ -202,7 +202,7 @@ function actionButtons() {
 }
 // O que a página publicada vai mostrar no lugar do marcador.
 function embedFields(target) {
-  const kind = target.dataset.sociEmbed, value = kind === 'video' ? target.dataset.src || '' : target.dataset.id || '';
+  const kind = target.dataset.graaoEmbed, value = kind === 'video' ? target.dataset.src || '' : target.dataset.id || '';
   if (kind === 'video') return `<label class="sx-field">Link do vídeo<input type="text" data-studio-embed="src" value="${h(value)}" maxlength="600" spellcheck="false" placeholder="https://youtu.be/…"></label><p class="sx-field-note dim" data-studio-attr-note role="status">YouTube, Vimeo, Loom, Panda Video ou um arquivo .mp4. Sem link, o vídeo não aparece na página publicada.</p>`;
   const rows = kind === 'form' ? (env.c.s.forms || []).map(row => [row.id, `${row.name}${row.active ? '' : ' (rascunho)'}`]) : (env.c.s.services || []).filter(row => row.active && row.kind !== 'rental').map(row => [row.id, row.name]);
   return `<label class="sx-field">${kind === 'form' ? 'Formulário' : 'Serviço da agenda'}<select data-studio-embed="id"><option value="">Escolha</option>${rows.map(([id, name]) => `<option value="${h(id)}"${id === value ? ' selected' : ''}>${h(name)}</option>`).join('')}</select></label>
@@ -214,13 +214,13 @@ function setEmbed(target, name, raw) {
   if (value) target.setAttribute(`data-${name}`, value); else target.removeAttribute(`data-${name}`);
   const row = name === 'id' && [...env.c.s.forms, ...(env.c.s.services || [])].find(item => item.id === value);
   const label = target.querySelector('span');
-  const word = { video: 'Vídeo', form: 'Formulário', booking: 'Agenda' }[target.dataset.sociEmbed];
+  const word = { video: 'Vídeo', form: 'Formulário', booking: 'Agenda' }[target.dataset.graaoEmbed];
   if (label) label.textContent = value ? `${word}: ${row ? row.name : value.replace(/^https:\/\/(www\.)?/, '')}` : `${word}: configure no painel Design`;
   setDirty(true);
   return '';
 }
 function attributeFields() {
-  const marker = selected.closest('[data-soci-embed]');
+  const marker = selected.closest('[data-graao-embed]');
   if (marker) return embedFields(marker);
   const link = selected.closest('a'), photo = selected.matches('img') ? selected : null;
   const field = (name, label, value, extra = '') => `<label class="sx-field">${label}<input type="text" data-studio-attr="${name}" value="${h(value)}" maxlength="2000" spellcheck="false" ${extra}></label>`;
@@ -276,7 +276,7 @@ function showLayers() {
   panel.innerHTML = layers.length ? `<ul class="dw-layer-list">${layers.map((element, index) => {
     let depth = 0;
     for (let parent = element.parentElement; parent && parent !== body; parent = parent.parentElement) if (indices.has(parent)) depth++;
-    const text = (element.dataset.sociEmbed && element.textContent || element.getAttribute('aria-label') || element.getAttribute('alt') || element.getAttribute('placeholder') ||
+    const text = (element.dataset.graaoEmbed && element.textContent || element.getAttribute('aria-label') || element.getAttribute('alt') || element.getAttribute('placeholder') ||
       [...element.childNodes].filter(node => node.nodeType === 3).map(node => node.textContent).join(' ')).trim();
     return `<li><button class="dw-layer" data-studio-layer="${index}" aria-pressed="${element === selected}" style="--dw-depth:${Math.min(5,depth)}"><small>${h(element.localName)}</small>${text ? `<span>${h(text.slice(0,80))}</span>` : ''}</button></li>`;
   }).join('')}</ul>` : '<p class="dim">Esta página está vazia.</p>';
@@ -559,7 +559,7 @@ export function installStudio(environment) {
 
   document.addEventListener('change', event => {
     const input = event.target;
-    const marker = input.dataset?.studioEmbed && selected?.isConnected && selected.closest('[data-soci-embed]');
+    const marker = input.dataset?.studioEmbed && selected?.isConnected && selected.closest('[data-graao-embed]');
     if (marker) {
       const problem = setEmbed(marker, input.dataset.studioEmbed, input.value);
       const note = document.querySelector('[data-studio-attr-note]');

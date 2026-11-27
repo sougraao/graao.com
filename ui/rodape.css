@@ -1,5 +1,5 @@
 /* Linha de direitos e versão no pé das páginas (ui/rodape.js). */
-.rodape-soci {
+.rodape-graao {
   display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px;
   margin-top: 40px; padding: 20px 0 4px; border-top: 1px solid var(--g-line, rgba(20, 22, 26, .09));
   font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .02em;
@@ -8,10 +8,10 @@
 .rodape-build:empty { display: none; }
 
 /* No painel, a linha fica depois do conteúdo: a página cresce até o fim do que mostra, e a linha vem logo abaixo. */
-.workspace > .screen > :has(~ .rodape-soci) { flex-shrink: 0; }
-.workspace > .screen > .page:has(~ .rodape-soci) { flex: 1 0 auto; }
-.workspace > .screen > .rodape-soci { flex: none; margin: 0 clamp(16px, 3vw, 32px); padding-bottom: 16px; }
+.workspace > .screen > :has(~ .rodape-graao) { flex-shrink: 0; }
+.workspace > .screen > .page:has(~ .rodape-graao) { flex: 1 0 auto; }
+.workspace > .screen > .rodape-graao { flex: none; margin: 0 clamp(16px, 3vw, 32px); padding-bottom: 16px; }
 
 /* Páginas soltas (login, autorização do MCP): a linha fica no pé da janela. */
 .login-foot, .mcp-foot { box-sizing: border-box; width: 100%; max-width: 960px; margin: 0 auto; padding: 0 24px 16px; }
-.login-foot .rodape-soci, .mcp-foot .rodape-soci { margin-top: 0; }
+.login-foot .rodape-graao, .mcp-foot .rodape-graao { margin-top: 0; }

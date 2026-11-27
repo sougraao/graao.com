@@ -8,7 +8,7 @@ import { getLanguage, langToggle, tr } from './i18n.js';
 import { appStyle, barSplit, headerView, homeView, sheetView, tabsView } from './mobile-app-view.js';
 import { homeData } from './mobile-home-data.js';
 
-const KEY = 'soci-mobile-shell';
+const KEY = 'graao-mobile-shell';
 const keyBytes = base64 => { const raw = atob((base64 + '='.repeat((4 - base64.length % 4) % 4)).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(raw, ch => ch.charCodeAt(0)); };
 
 /** The agency app id when the platform runs in app mode (remembered for the session of the installed app). */
@@ -102,8 +102,8 @@ export async function installMobileShell({ c, app, api, url, flash, allowed, scr
     flash(tr('Notificações ativadas: você recebe as novas mensagens desta subconta.'));
   }
 
-  addEventListener('soci:theme-change', () => { paintTheme(); drawSheet(); });
-  addEventListener('soci:languagechange', () => { drawBar(); drawSheet(); });
+  addEventListener('graao:theme-change', () => { paintTheme(); drawSheet(); });
+  addEventListener('graao:languagechange', () => { drawBar(); drawSheet(); });
   addEventListener('hashchange', paint);
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && open) toggle(false); });
   document.addEventListener('click', async event => {

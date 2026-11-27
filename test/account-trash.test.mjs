@@ -116,11 +116,11 @@ function fakeBucket() {
       const keys = all.slice(from, from + 2).map(key => `<Contents><Key>${key.replace(/&/g, '&amp;')}</Key></Contents>`).join('');
       return new Response(`<?xml version="1.0" encoding="UTF-8"?><ListBucketResult>${keys}<IsTruncated>${more}</IsTruncated>${more ? `<NextContinuationToken>${from + 2}</NextContinuationToken>` : ''}</ListBucketResult>`);
     }
-    const key = decodeURIComponent(address.pathname.replace('/soci-arquivos/', ''));
+    const key = decodeURIComponent(address.pathname.replace('/graao-arquivos/', ''));
     if (init.method === 'DELETE') { objects.delete(key); return new Response(null, { status: 204 }); }
     return new Response(null, { status: 404 });
   };
-  return { objects, r2: createR2({ accountId: account, accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'soci-arquivos', request }) };
+  return { objects, r2: createR2({ accountId: account, accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'graao-arquivos', request }) };
 }
 
 // Evolution API falsa: anota as chamadas e pode ficar fora do ar.
@@ -138,7 +138,7 @@ const SATELLITES = ['ads', 'google', 'social', 'email', 'portal', 'community'];
 
 async function startWithEverything(t) {
   const bucket = fakeBucket(), evo = fakeEvolution();
-  const ctx = await start(t, { r2: bucket.r2, whatsappRequest: evo.request, evolutionBaseUrl: 'https://evo.soci.test', evolutionApiKey: 'chave-global' });
+  const ctx = await start(t, { r2: bucket.r2, whatsappRequest: evo.request, evolutionBaseUrl: 'https://evo.graao.test', evolutionApiKey: 'chave-global' });
   const { store, workspace, call, owner } = ctx;
   const outra = (await call('/api/workspaces', { user: owner, body: { name: 'Outra Loja' } })).body.id;
   for (const id of [workspace, outra]) {
@@ -149,8 +149,8 @@ async function startWithEverything(t) {
     for (const key of [`ws/${id}/files/a`, `ws/${id}/files/b`, `ws/${id}/messages/m1`]) bucket.objects.add(key);
   }
   store.insert('whatsapp-agency', { subaccounts: {
-    [workspace]: { provider: 'evolution', instanceName: 'soci_padaria', enabled: true },
-    [outra]: { provider: 'evolution', instanceName: 'soci_outra', enabled: true }
+    [workspace]: { provider: 'evolution', instanceName: 'graao_padaria', enabled: true },
+    [outra]: { provider: 'evolution', instanceName: 'graao_outra', enabled: true }
   } });
   store.change('agency', agency => {
     agency.users = [...(agency.users || []), { id: 'u-ana', name: 'Ana', email: 'ana@example.test', role: 'Account User', accounts: [workspace, outra] }];
@@ -177,7 +177,7 @@ test('Exclusão definitiva leva junto tudo o que era da subconta e não toca na 
   assert.deepEqual(store.tracking.page(workspace, {}).events, []);
   assert.equal(store.tracking.page(outra, {}).events.length, 1);
   assert.deepEqual([...bucket.objects].sort(), [`ws/${outra}/files/a`, `ws/${outra}/files/b`, `ws/${outra}/messages/m1`]);
-  assert.deepEqual(evo.calls.filter(c => c.startsWith('DELETE')), ['DELETE /instance/logout/soci_padaria', 'DELETE /instance/delete/soci_padaria']);
+  assert.deepEqual(evo.calls.filter(c => c.startsWith('DELETE')), ['DELETE /instance/logout/graao_padaria', 'DELETE /instance/delete/graao_padaria']);
   const wa = store.load('whatsapp-agency');
   assert.equal(wa.subaccounts[workspace], undefined);
   assert.ok(wa.subaccounts[outra]);
@@ -207,7 +207,7 @@ test('Exclusão definitiva: WhatsApp fora do ar segura a subconta na lixeira e t
   assert.equal(exists(store, `ads-${workspace}`), false);
 });
 
-test('Exclusão definitiva: depois de 7 dias de falha apaga o que é da soci e anota o que ficou de fora', async t => {
+test('Exclusão definitiva: depois de 7 dias de falha apaga o que é da graao e anota o que ficou de fora', async t => {
   const { store, purgeTrash, workspace, evo } = await startWithEverything(t);
   const due = Date.now() + (TRASH_DAYS + 1) * DAY;
   evo.setDown(true);

@@ -22,10 +22,10 @@ test('Inbound e-mail helpers: the sub-account address, the Svix signature, the s
   t.after(() => { if (previous === undefined) delete process.env.INBOUND_EMAIL_DOMAIN; else process.env.INBOUND_EMAIL_DOMAIN = previous; });
   delete process.env.INBOUND_EMAIL_DOMAIN;
   assert.equal(inboundAddress('demo'), '', 'no domain, no inbound address');
-  process.env.INBOUND_EMAIL_DOMAIN = 'Inbox.Soci.test';
-  assert.equal(inboundAddress('demo'), 'conversas+demo@inbox.soci.test');
-  assert.equal(inboundWorkspace(['Equipe <CONVERSAS+demo@inbox.soci.test>']), 'demo');
-  assert.equal(inboundWorkspace(['conversas+demo@outro.test', 'x@inbox.soci.test']), '');
+  process.env.INBOUND_EMAIL_DOMAIN = 'Inbox.Graao.test';
+  assert.equal(inboundAddress('demo'), 'conversas+demo@inbox.graao.test');
+  assert.equal(inboundWorkspace(['Equipe <CONVERSAS+demo@inbox.graao.test>']), 'demo');
+  assert.equal(inboundWorkspace(['conversas+demo@outro.test', 'x@inbox.graao.test']), '');
 
   const raw = JSON.stringify({ type: 'email.received' });
   assert.equal(svixValid(raw, sign(raw), SECRET), true);
@@ -43,7 +43,7 @@ test('Inbound e-mail helpers: the sub-account address, the Svix signature, the s
 test('inboundEmail reads the body from the Resend API when the webhook does not carry it', async () => {
   const asked = [];
   const request = async (url, options) => { asked.push([url, options.headers.Authorization]); return { ok: true, json: async () => ({ text: 'Quero o orçamento.\n> citação' }) }; };
-  const email = await inboundEmail({ type: 'email.received', data: { email_id: 'em_1', from: 'Caio <caio@x.test>', to: ['conversas+demo@inbox.soci.test'], subject: 'Orçamento' } }, { key: 're_key', request });
+  const email = await inboundEmail({ type: 'email.received', data: { email_id: 'em_1', from: 'Caio <caio@x.test>', to: ['conversas+demo@inbox.graao.test'], subject: 'Orçamento' } }, { key: 're_key', request });
   assert.deepEqual(asked, [['https://api.resend.com/emails/receiving/em_1', 'Bearer re_key']]);
   assert.deepEqual([email.id, email.from.email, email.subject, email.body], ['em_1', 'caio@x.test', 'Orçamento', 'Quero o orçamento.']);
   assert.equal(await inboundEmail({ type: 'email.sent', data: {} }), null);
@@ -71,7 +71,7 @@ test('"E-mail recebido": the e-mail becomes a message in Conversas, creates the 
 test('POST /api/email/inbound accepts only signed Resend events for a sub-account address; e-mails go out with that Reply-To', async t => {
   const env = { INBOUND_EMAIL_DOMAIN: process.env.INBOUND_EMAIL_DOMAIN, RESEND_INBOUND_SECRET: process.env.RESEND_INBOUND_SECRET };
   t.after(() => { for (const [key, value] of Object.entries(env)) { if (value === undefined) delete process.env[key]; else process.env[key] = value; } });
-  process.env.INBOUND_EMAIL_DOMAIN = 'inbox.soci.test';
+  process.env.INBOUND_EMAIL_DOMAIN = 'inbox.graao.test';
   process.env.RESEND_INBOUND_SECRET = SECRET;
   const sent = [];
   const documentMail = { linkOf: () => '', async email(to, message, idempotency, options) { sent.push(options); return 'e-mail enviado'; } };
@@ -83,7 +83,7 @@ test('POST /api/email/inbound accepts only signed Resend events for a sub-accoun
   const post = (raw, headers) => fetch(`${base}/api/email/inbound`, { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: raw });
   const event = to => JSON.stringify({ type: 'email.received', data: { email_id: `em_${to.length}`, from: 'Eva <eva@x.test>', to: [to], subject: 'Dúvida', text: 'Como funciona?' } });
 
-  const raw = event('conversas+demo@inbox.soci.test');
+  const raw = event('conversas+demo@inbox.graao.test');
   assert.equal((await post(raw, {})).status, 401, 'unsigned');
   assert.equal((await post(raw, sign(raw, { secret: `whsec_${Buffer.from('outro').toString('base64')}` }))).status, 401, 'wrong secret');
   assert.deepEqual(await (await post(event('alguem@outro.test'), sign(event('alguem@outro.test')))).json(), { ok: true, ignored: true });
@@ -97,7 +97,7 @@ test('POST /api/email/inbound accepts only signed Resend events for a sub-accoun
 
   const reply = await (await fetch(`${base}/api/action?workspace=demo`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'message', data: { contactId: eva.id, channel: 'Email', direction: 'Outbound', subject: 'Re: Dúvida', body: 'Assim.' } }) })).json();
   assert.deepEqual(reply.delivery, { sent: true });
-  assert.equal(sent.at(-1).replyTo, 'conversas+demo@inbox.soci.test');
+  assert.equal(sent.at(-1).replyTo, 'conversas+demo@inbox.graao.test');
 });
 
 test('"Código personalizado": lines "nome = expressão" become flow variables, in order, without network or disk', () => {

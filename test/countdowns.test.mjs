@@ -92,7 +92,7 @@ test('The e-mail Contador block shows the GIF, and a campaign cannot go out with
 
 test('The GIF and embed routes serve the timer; unknown timers get a blank image', async t => {
   const sent = [];
-  const campaignMail = campaignMailer({ key: 're_test', from: 'Soci <no-reply@soci.app.br>', request: async (input, options) => { sent.push(...JSON.parse(options.body)); return new Response('{"data":[]}', { status: 200 }); } });
+  const campaignMail = campaignMailer({ key: 're_test', from: 'Graao <no-reply@graao.com>', request: async (input, options) => { sent.push(...JSON.parse(options.body)); return new Response('{"data":[]}', { status: 200 }); } });
   const { server, host } = makeServer({ allowLocalAccess: true, auth: null, store: createSqliteStore(':memory:'), port: 0, campaignMail });
   await new Promise((resolve, reject) => { server.on('error', reject); server.listen(0, host, resolve); });
   t.after(() => new Promise(resolve => server.close(resolve)));

@@ -61,9 +61,9 @@ test('Trigger links in a sent message become absolute, per-contact URLs', () => 
   const s = blank('W');
   const contactId = save(s, 'contacts', { name: 'Ana', phone: '+5511999990000' });
   const linkId = save(s, 'triggerLinks', { name: 'Promo', url: 'https://loja.exemplo.com/promo' });
-  const id = execute(s, { type: 'message', data: { contactId, channel: 'WhatsApp', direction: 'Outbound', body: `Veja {{trigger_link.${linkId}}}`, origin: 'https://app.soci.test/x' } }, { workspace: 'demo' });
+  const id = execute(s, { type: 'message', data: { contactId, channel: 'WhatsApp', direction: 'Outbound', body: `Veja {{trigger_link.${linkId}}}`, origin: 'https://app.graao.test/x' } }, { workspace: 'demo' });
   const ticket = s.linkTickets.at(-1);
-  assert.equal(s.messages.find(m => m.id === id).body, `Veja https://app.soci.test/r/demo/${ticket.id}`);
+  assert.equal(s.messages.find(m => m.id === id).body, `Veja https://app.graao.test/r/demo/${ticket.id}`);
   assert.deepEqual([ticket.linkId, ticket.contactId, ticket.channel], [linkId, contactId, 'WhatsApp']);
   const relative = execute(s, { type: 'message', data: { contactId, channel: 'Email', direction: 'Outbound', body: `{{trigger_link.${linkId}}}`, origin: 'javascript:alert(1)' } }, { workspace: 'demo' });
   assert.match(s.messages.find(m => m.id === relative).body, /^\/r\/demo\//, 'a bad origin keeps the path relative');

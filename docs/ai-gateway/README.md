@@ -1,9 +1,9 @@
-# soci AI Gateway
+# graao AI Gateway
 
-Camada central de IA da soci. Toda chamada de IA passa por um único ponto, que escolhe o provedor e o modelo,
+Camada central de IA da graao. Toda chamada de IA passa por um único ponto, que escolhe o provedor e o modelo,
 tenta de novo quando falha, controla cotas e orçamento, registra custo e uso e aplica as regras de privacidade.
 
-**Para quem usa a soci, nada muda por padrão.** A configuração inicial deixa todos os provedores desligados,
+**Para quem usa a graao, nada muda por padrão.** A configuração inicial deixa todos os provedores desligados,
 não autoriza nada pago e mantém o comportamento de hoje: cada agência usa a própria chave da OpenAI, com o
 mesmo corpo de requisição e as mesmas mensagens de erro. O gateway entra no caminho como observador (log,
 kill switch, circuit breaker, nova tentativa em falha passageira) e só passa a escolher modelos quando o dono
@@ -49,7 +49,7 @@ flowchart LR
 
 | Arquivo | Papel |
 | --- | --- |
-| `ai-gateway/gateway.mjs` | `createSociAI()`: API interna (`generate`, `stream`, `structured`, `embed`, `agent`, `responses`) e funções do painel (`admin.*`). Laço de tentativas, reserva e conciliação. |
+| `ai-gateway/gateway.mjs` | `createGraaoAI()`: API interna (`generate`, `stream`, `structured`, `embed`, `agent`, `responses`) e funções do painel (`admin.*`). Laço de tentativas, reserva e conciliação. |
 | `ai-gateway/contracts.mjs` | Formato único de pedido (`normalizeRequest`), modos, tarefas e capacidades; conversão de/para a Responses API. |
 | `ai-gateway/router.mjs` | Filtros obrigatórios e pontuação ponderada. Função pura: não chama provedor. |
 | `ai-gateway/limits.mjs` | Cotas por minuto, dia e mês, circuit breaker, concorrência, limite diário por organização e orçamento. |
@@ -98,7 +98,7 @@ Integração com o que já existia:
    - Em *Regras deste provedor*, marque *Ligado*, confirme se a conta está no plano gratuito, se os termos
      permitem uso comercial e revise a privacidade (o que o provedor faz com os dados).
    - Em **Modelos**, revise os modelos: preço, gratuidade, capacidades e qualidade.
-   - Em **Roteamento**, decida se agências sem chave da OpenAI usam a IA gratuita da soci (padrão: não).
+   - Em **Roteamento**, decida se agências sem chave da OpenAI usam a IA gratuita da graao (padrão: não).
    - Em **Custos e planos**, defina um orçamento mensal e diário **só se** quiser permitir chamadas pagas.
 4. **Teste.** Use o **Playground** (chamada real, conta na cota) e *Simular falha* (sem chamar provedor).
 
@@ -109,11 +109,11 @@ Integração com o que já existia:
 | `GROQ_API_KEY` | Groq | Camada gratuita com limites por minuto e por dia. |
 | `OPENROUTER_API_KEY` | OpenRouter | Modelos com preço zero na API são marcados grátis automaticamente. |
 | `CLOUDFLARE_AI_API_TOKEN` e `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Workers AI | Sem listagem pela API compatível: cadastre os modelos à mão. |
-| `GEMINI_API_KEY` | Google Gemini | Também usada hoje pelo "Pergunte à Soci". |
+| `GEMINI_API_KEY` | Google Gemini | Também usada hoje pelo "Pergunte à Graao". |
 | `MISTRAL_API_KEY` | Mistral AI | |
-| `OPENAI_API_KEY` | OpenAI (conta da soci) | Também usada hoje pelo "Pergunte à Soci" e pela página Plataforma. Não é a chave das agências. |
+| `OPENAI_API_KEY` | OpenAI (conta da graao) | Também usada hoje pelo "Pergunte à Graao" e pela página Plataforma. Não é a chave das agências. |
 | `ANTHROPIC_API_KEY`, `DEEPSEEK_API_KEY`, `XAI_API_KEY`, `TOGETHER_API_KEY`, `FIREWORKS_API_KEY`, `CEREBRAS_API_KEY` | Pagos | Só entram na rota com orçamento e liberação explícita. |
-| `SOCI_AI_COMPAT_BASE_URL` e `SOCI_AI_COMPAT_API_KEY` | Servidor próprio | URL `https` pública (validação contra SSRF a cada 5 minutos). Chave opcional. |
+| `GRAAO_AI_COMPAT_BASE_URL` e `GRAAO_AI_COMPAT_API_KEY` | Servidor próprio | URL `https` pública (validação contra SSRF a cada 5 minutos). Chave opcional. |
 
 As chaves vivem só no ambiente. Nenhuma rota recebe, guarda ou devolve chave; o painel mostra se a variável
 existe e os 4 últimos caracteres.
@@ -140,9 +140,9 @@ Preços e limites mudam. O gateway **não inventa preço**: modelo sem preço co
   conhecido e sem gratuidade confirmada nunca é escolhido (aparece como "Preço desconhecido" até a revisão).
   Modelos que sumiram da lista ficam **inativos** (os cadastrados à mão não).
 - O que o administrador revisou (qualidade, capacidades, preço, ligado/desligado) sobrevive à sincronização.
-- **Gratuidade nunca vem do nome do modelo.** Um modelo é grátis para a soci só quando:
+- **Gratuidade nunca vem do nome do modelo.** Um modelo é grátis para a graao só quando:
   - a API do provedor informa preço zero (OpenRouter), ou
-  - o administrador confirmou que a conta da soci está no plano gratuito do provedor **e** marcou o modelo como
+  - o administrador confirmou que a conta da graao está no plano gratuito do provedor **e** marcou o modelo como
     incluído nesse plano.
 - Preço é guardado em micro-dólar por milhão de tokens (inteiro). Exemplo: US$ 2,50 por milhão = `2_500_000`.
 
@@ -206,7 +206,7 @@ ordem do free-first** (Groq, OpenRouter, Cloudflare, Gemini, Mistral, configurá
 - **Idempotência:** pedidos com `idempotencyKey` iguais (mesma organização) devolvem o mesmo resultado sem nova chamada.
 - **Cache:** só pedidos marcados `cache: true`, sem ferramentas, sem streaming e com temperatura 0. A chave
   inclui a organização: nada é compartilhado entre organizações.
-- O consumo das subcontas continua no ledger e na carteira existentes; o gasto pago **da soci** (conta da
+- O consumo das subcontas continua no ledger e na carteira existentes; o gasto pago **da graao** (conta da
   plataforma) fica no documento de execução e aparece no painel.
 
 ## Segurança e privacidade
@@ -233,30 +233,30 @@ Isto é uma base técnica de proteção de dados. Não substitui análise juríd
 ## Integrar uma funcionalidade
 
 As funcionalidades atuais já passam pelo gateway via `openAIResponse` (nada a fazer). Para código novo, use a
-instância criada em `server.mjs` (`sociAI`):
+instância criada em `server.mjs` (`graaoAI`):
 
 ```js
 // Texto
-const result = await sociAI.generate(
+const result = await graaoAI.generate(
   { feature: 'content.writer', messages: [{ role: 'user', content: 'Escreva um título para…' }], maxOutputTokens: 300 },
   { org: subaccountId, user: session.id, plan: 'paid', onUsage: usage => meter.record(usage) }
 );
 result.text; result.costMicros; result.modelKey; result.tier; // 'free' | 'paid' | 'byok'
 
 // JSON validado contra o schema
-const { json } = await sociAI.structured({ feature: 'workflow.ai', messages, schema: { name: 'acao', schema: { type: 'object', properties: { tipo: { type: 'string' } }, required: ['tipo'] } } }, ctx);
+const { json } = await graaoAI.structured({ feature: 'workflow.ai', messages, schema: { name: 'acao', schema: { type: 'object', properties: { tipo: { type: 'string' } }, required: ['tipo'] } } }, ctx);
 
 // Streaming
-for await (const event of sociAI.stream({ feature: 'soci.chat', messages }, ctx, { signal })) {
+for await (const event of graaoAI.stream({ feature: 'graao.chat', messages }, ctx, { signal })) {
   if (event.type === 'delta') res.write(event.text);
   if (event.type === 'done') console.log(event.result.usage);
 }
 
 // Embeddings
-const { vectors } = await sociAI.embed({ feature: 'content.writer', input: ['texto 1', 'texto 2'] }, ctx);
+const { vectors } = await graaoAI.embed({ feature: 'content.writer', input: ['texto 1', 'texto 2'] }, ctx);
 
 // Agente com ferramentas e aprovação humana
-const out = await sociAI.agent({ feature: 'agent.reply', messages, tools: [
+const out = await graaoAI.agent({ feature: 'agent.reply', messages, tools: [
   { name: 'buscar_contato', description: '…', parameters: { type: 'object', properties: { q: { type: 'string' } } }, handler: args => buscar(args.q) },
   { name: 'enviar_email', description: '…', parameters: {…}, sideEffect: true, permission: 'email.send', handler: args => enviar(args) }
 ] }, { ...ctx, permissions: ['email.send'] }, { approve: async call => perguntarAoUsuario(call), maxSteps: 6 });
@@ -316,12 +316,12 @@ npm test
 - **Cache e idempotência por instância:** na Vercel cada instância tem a própria memória. É ganho oportunista,
   não garantia. Idempotência entre instâncias exigiria uma tabela de chaves.
 - **Créditos:** não há um ledger de créditos separado. O consumo das subcontas usa o ledger e a carteira
-  existentes; o gasto da conta da soci fica no documento de execução. Um ledger de créditos por plano é o
-  próximo passo natural se a soci passar a vender IA da plataforma.
+  existentes; o gasto da conta da graao fica no documento de execução. Um ledger de créditos por plano é o
+  próximo passo natural se a graao passar a vender IA da plataforma.
 - **Provedores reais:** os adaptadores seguem a documentação pública dos provedores, mas só foram exercitados com
   respostas simuladas. Antes de ligar cada um em produção, teste no Playground com a chave real.
 - **Funcionalidades que ainda chamam a OpenAI fora do `openAIResponse`** (transcrição de reuniões, visibilidade
-  em buscas, e o "Pergunte à Soci", que tem caminho próprio com `OPENAI_API_KEY`/`GEMINI_API_KEY`) não passam pelo
+  em buscas, e o "Pergunte à Graao", que tem caminho próprio com `OPENAI_API_KEY`/`GEMINI_API_KEY`) não passam pelo
   gateway nesta entrega.
 
 ## Rollback

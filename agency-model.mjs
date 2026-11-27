@@ -24,10 +24,10 @@ import { apiScopes,
 
 export const AGENCY_ID = 'agency';
 const platformLanguage = 'Português (Brasil)';
-const platformBrand = 'soci';
+const platformBrand = 'graao';
 const defaultPrimary = '#ff4f9a';
 const defaultSecondary = '#c4a7ff';
-// Blue is the Soci visual accent used across marketing and landing surfaces.
+// Blue is the Graao visual accent used across marketing and landing surfaces.
 const defaultAccent = '#6bc9ff';
 const fail = (message, status = 400) => { throw Object.assign(new Error(message), { status }); };
 const str = (value, limit = 240) => typeof value === 'string' ? value.trim().slice(0, limit) : typeof value === 'number' ? String(value).slice(0, limit) : '';

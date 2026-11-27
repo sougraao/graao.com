@@ -12,7 +12,7 @@ const values = {};
 let view = null, padField = null, mode = 'draw', drawn = false;
 
 // Static text is written in Portuguese and translated by translateDom after each render.
-try { if (!localStorage.getItem('soci_lang') && /^es/i.test(navigator.language || '')) await setLanguage('es'); } catch {}
+try { if (!localStorage.getItem('graao_lang') && /^es/i.test(navigator.language || '')) await setLanguage('es'); } catch {}
 
 async function api(action, data = {}) {
   const response = await fetch(`/api/assinar/${encodeURIComponent(workspace)}`, {
@@ -31,7 +31,7 @@ const stateText = { waiting: 'Na fila', sent: 'Aguardando', viewed: 'Abriu', sig
 
 function render() {
   const v = view;
-  document.title = `${v.title} · ${v.sender || 'Soci'}`;
+  document.title = `${v.title} · ${v.sender || 'Graao'}`;
   $('title').textContent = v.title;
   $('sender').textContent = v.sender ? say(`Enviado por ${v.sender}`, `Enviado por ${v.sender}`) : say('Documento para assinatura', 'Documento para firmar');
   $('doc').innerHTML = v.html;

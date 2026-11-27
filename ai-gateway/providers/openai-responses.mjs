@@ -1,4 +1,4 @@
-// Adapter da OpenAI pela Responses API: é o formato que as funcionalidades atuais da soci já usam (chave própria
+// Adapter da OpenAI pela Responses API: é o formato que as funcionalidades atuais da graao já usam (chave própria
 // da agência, BYOK). `passthrough` envia o corpo da funcionalidade sem tradução, preservando web_search, imagens e schemas.
 import { GatewayError } from '../errors.mjs';
 import { blankUsage } from '../contracts.mjs';

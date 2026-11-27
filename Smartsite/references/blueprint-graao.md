@@ -1,4 +1,4 @@
-# Blueprint Smartsite — soci
+# Blueprint Smartsite — graao
 
 **Uma pergunta. Uma solução. Um mercado. Uma conversão.**
 

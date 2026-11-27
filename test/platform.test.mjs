@@ -290,7 +290,7 @@ test('ManyChat workflow triggers on inbound message keywords and executes WhatsA
     active: true,
     actions: [
       { type: 'Add tag', value: 'Interesse WhatsApp' },
-      { type: 'Send WhatsApp', value: 'Olá! Segue o link com a sua proposta: https://soci.app' },
+      { type: 'Send WhatsApp', value: 'Olá! Segue o link com a sua proposta: https://graao.app' },
       { type: 'Create opportunity', value: 'Oportunidade WhatsApp' }
     ]
   });
@@ -316,7 +316,7 @@ test('ManyChat workflow triggers on inbound message keywords and executes WhatsA
   const outbound = state.messages.find(m => m.contactId === contactId && m.direction === 'Outbound' && m.origin === 'workflow');
   assert.ok(outbound);
   assert.equal(outbound.channel, 'WhatsApp');
-  assert.equal(outbound.body, 'Olá! Segue o link com a sua proposta: https://soci.app');
+  assert.equal(outbound.body, 'Olá! Segue o link com a sua proposta: https://graao.app');
 });
 
 test('Workflow resolves dynamic expressions and template variables like Trama (contact.first_name, account.name, functions)', async t => {

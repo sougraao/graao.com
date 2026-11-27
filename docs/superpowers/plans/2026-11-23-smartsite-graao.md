@@ -1,22 +1,22 @@
-# Smartsite soci Implementation Plan
+# Smartsite graao Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Site institucional completo da soci (~37 páginas) em Astro estático, em `Smartsite/site/`, pronto para `www.soci.app.br`, sem publicar.
+**Goal:** Site institucional completo da graao (~37 páginas) em Astro estático, em `Smartsite/site/`, pronto para `www.graao.com`, sem publicar.
 
 **Architecture:** Astro SSG com três layouts (Core, Funcionalidade, Solução) sobre um `Base`. Funcionalidades e soluções são content collections em Markdown com frontmatter tipado; páginas core são `.astro`. Um teste `node:test` lê `dist/` e garante as invariantes de SEO, links, copy e conversão em todas as páginas.
 
 **Tech Stack:** Astro (última estável via `npm create astro@latest`, TypeScript strict), `@astrojs/sitemap`, CSS próprio com tokens (sem Tailwind), JS vanilla só nas ilhas de interação, `node:test` para os testes de saída, navegador embutido para QA visual.
 
-**Spec:** `docs/superpowers/specs/2026-11-23-smartsite-soci-design.md`
+**Spec:** `docs/superpowers/specs/2026-11-23-smartsite-graao-design.md`
 
 ## Global Constraints
 
 - Tudo dentro de `Smartsite/`. Nunca editar `server.mjs`, `ui/`, `public/`, `api/`, `vercel.json` nem `ui/landing.html`.
-- `SITE_URL = 'https://www.soci.app.br'`; `LOGIN_URL = 'https://soci.app.br/login'` — definidos só em `src/config.ts`.
-- pt-BR (`<html lang="pt-BR">`); marca sempre "soci" minúsculo.
+- `SITE_URL = 'https://www.graao.com'`; `LOGIN_URL = 'https://graao.com/login'` — definidos só em `src/config.ts`.
+- pt-BR (`<html lang="pt-BR">`); marca sempre "graao" minúsculo.
 - H1 da home: "A plataforma brasileira para Marketing 360." Linha de campanha: "Tudo que seu marketing precisa. Inclusive bom gosto."
-- CTA primário: texto "Começar com a soci", href `LOGIN_URL`, `data-cta="comecar"`.
+- CTA primário: texto "Começar com a graao", href `LOGIN_URL`, `data-cta="comecar"`.
 - Proibido no HTML gerado: nomes de concorrentes (HighLevel, GoHighLevel, GHL, HubSpot, RD Station, Kommo, ActiveCampaign, Wix, Hotmart, Kajabi), "24h", "24/7", "grátis", "garantido", "teste gratuito", `chat.whatsapp.com`, `aggregateRating`.
 - Informação ausente vira marcador visível `[[descrição]]`; página que contém `[[` recebe `<meta name="robots" content="noindex">` e fica fora do sitemap.
 - Pink da marca `#ff00bb` nunca como cor de texto sobre fundo claro; texto/link de destaque `#a00070` ou mais escuro (AA ≥ 4.5:1).
@@ -41,7 +41,7 @@
 - Modify: `Smartsite/site/package.json` (scripts)
 
 **Interfaces:**
-- Produces: `src/config.ts` exporta `SITE_URL`, `LOGIN_URL`, `BRAND = 'soci'`. `Base.astro` props `{ title: string; description: string; noindex?: boolean; jsonLd?: object[] }`, gera `<title>`, description, canonical `SITE_URL + Astro.url.pathname`, OG básicos, `lang="pt-BR"`. Scripts: `npm run build`, `npm test` (= `node --test tests/`), `npm run check` (= build + test).
+- Produces: `src/config.ts` exporta `SITE_URL`, `LOGIN_URL`, `BRAND = 'graao'`. `Base.astro` props `{ title: string; description: string; noindex?: boolean; jsonLd?: object[] }`, gera `<title>`, description, canonical `SITE_URL + Astro.url.pathname`, OG básicos, `lang="pt-BR"`. Scripts: `npm run build`, `npm test` (= `node --test tests/`), `npm run check` (= build + test).
 
 - [ ] **Step 1:** Criar branch `git switch -c feat/smartsite`; scaffold `npm create astro@latest Smartsite/site -- --template minimal --typescript strict --no-git --install`; `npx astro add sitemap --yes`. `astro.config.mjs`: `site: SITE_URL`, `trailingSlash: 'always'`, `build.format: 'directory'`, sitemap com `filter` que exclui páginas marcadas (lista gerada a partir de `[[` — ver Step 4).
 - [ ] **Step 2: Escrever `tests/output.test.mjs`** (lê todos os `dist/**/*.html`). Testes:
@@ -49,11 +49,11 @@
   - `links internos resolvem` (todo `href` começando com `/` aponta para arquivo existente em `dist/`)
   - `nenhum termo proibido` (lista de Global Constraints, case-insensitive, no texto e atributos)
   - `páginas com marcador têm noindex e estão fora do sitemap` (`[[` ⇒ meta robots noindex e URL ausente de `dist/sitemap-0.xml`)
-  - `CTA comecar aponta para LOGIN_URL` (todo `[data-cta="comecar"]` tem `href="https://soci.app.br/login"`)
+  - `CTA comecar aponta para LOGIN_URL` (todo `[data-cta="comecar"]` tem `href="https://graao.com/login"`)
   - `JSON-LD é JSON válido`
   - `pink não é cor de texto` (nenhum `color:\s*#ff00bb` no CSS de `dist/`)
 - [ ] **Step 3:** `npm test` sem build → FAIL (dist inexistente). Esperado: falha.
-- [ ] **Step 4:** Implementar `config.ts`, `Base.astro`, stub da home com H1 oficial; integração de sitemap filtrando páginas cujo HTML contém `[[` (hook `astro:build:done` ou filtro por lista de rotas `noindex` exportada de `src/noindex.ts`). `robots.txt`: `Allow: /` + `Sitemap: https://www.soci.app.br/sitemap-index.xml`.
+- [ ] **Step 4:** Implementar `config.ts`, `Base.astro`, stub da home com H1 oficial; integração de sitemap filtrando páginas cujo HTML contém `[[` (hook `astro:build:done` ou filtro por lista de rotas `noindex` exportada de `src/noindex.ts`). `robots.txt`: `Allow: /` + `Sitemap: https://www.graao.com/sitemap-index.xml`.
 - [ ] **Step 5:** `npm run check` → build OK e todos os testes PASS.
 - [ ] **Step 6:** Commit `feat(smartsite): scaffold Astro e testes de saída`.
 
@@ -62,7 +62,7 @@
 **Antes de começar:** carregar o skill `design-taste-frontend` e seguir sua direção dentro das restrições do spec §8.
 
 **Files:**
-- Create: `src/styles/tokens.css`, `src/styles/global.css`, `src/components/Header.astro`, `Footer.astro`, `Cta.astro`, `Faq.astro`, `Breadcrumbs.astro`, `Section.astro`, `Mascot.astro`, `public/brand/` (copiar `soci-isotipo-1x1.png`, `ui/skull_flame.svg`, `ui/brand/flame/*.svg` da raiz do repo)
+- Create: `src/styles/tokens.css`, `src/styles/global.css`, `src/components/Header.astro`, `Footer.astro`, `Cta.astro`, `Faq.astro`, `Breadcrumbs.astro`, `Section.astro`, `Mascot.astro`, `public/brand/` (copiar `graao-isotipo-1x1.png`, `ui/skull_flame.svg`, `ui/brand/flame/*.svg` da raiz do repo)
 - Modify: `Base.astro` (inclui Header/Footer/estilos), `Smartsite/docs/07-design-system.md`
 
 **Interfaces:**
@@ -111,7 +111,7 @@
 - Create: `src/layouts/Solucao.astro`, `src/pages/solucoes/index.astro`, `src/pages/solucoes/[slug].astro`, `src/content/solucoes/*.md` (agencias, profissionais-de-marketing, pequenas-empresas, negocios-locais, captacao-de-leads, conversao-de-vendas, atendimento-ao-cliente, relacionamento-e-recompra)
 
 **Interfaces:**
-- Consumes: `funcionalidades` (via `reference`) para montar o bloco "como a soci resolve" com links.
+- Consumes: `funcionalidades` (via `reference`) para montar o bloco "como a graao resolve" com links.
 
 - [ ] **Step 1:** Teste `cada solução liga a pelo menos 3 funcionalidades e cada funcionalidade é ligada por pelo menos 1 solução` (sem órfãs).
 - [ ] **Step 2:** Rodar → FAIL.

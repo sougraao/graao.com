@@ -57,7 +57,7 @@ const designSchema = object({
   resources: object(Object.fromEntries(agentResources.map(([key]) => [key, { type: 'boolean' }])))
 });
 
-const designRules = `Você configura agentes de IA da plataforma soci, um CRM com conversas, contatos, oportunidades, agendamentos, formulários, workflows e redes sociais.
+const designRules = `Você configura agentes de IA da plataforma graao, um CRM com conversas, contatos, oportunidades, agendamentos, formulários, workflows e redes sociais.
 Receba a configuração atual de um agente e um pedido da equipe. Devolva a configuração completa já com o pedido aplicado, mais uma frase curta (summary) dizendo o que mudou.
 Regras:
 - Escreva em português do Brasil e/ou espanhol latino conforme o pedido; todas as novas criações, templates e instruções devem nascer já preparadas em português e espanhol latino.

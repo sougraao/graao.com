@@ -8,7 +8,7 @@ import { ask, askText } from './ask.js';
 const drafts = new Map();
 const roleLabel = Object.fromEntries(colorRoles);
 const boardId = () => location.hash.split('/')[2] || '';
-const blank = () => ({ name: 'Minha marca', colors: [{ role: 'primary', hex: '#ff4f9a', name: 'Rosa Soci' }, { role: 'secondary', hex: '#c4a7ff', name: 'Lilás Soci' }, { role: 'accent', hex: '#6bc9ff', name: 'Azul Soci' }, { role: 'background', hex: '#ffffff', name: '' }, { role: 'text', hex: '#111827', name: '' }], fonts: { heading: 'Inter', body: 'Inter' }, voice: {} });
+const blank = () => ({ name: 'Minha marca', colors: [{ role: 'primary', hex: '#ff4f9a', name: 'Rosa Graao' }, { role: 'secondary', hex: '#c4a7ff', name: 'Lilás Graao' }, { role: 'accent', hex: '#6bc9ff', name: 'Azul Graao' }, { role: 'background', hex: '#ffffff', name: '' }, { role: 'text', hex: '#111827', name: '' }], fonts: { heading: 'Inter', body: 'Inter' }, voice: {} });
 
 function loadFonts(families) {
   const href = fontUrl(families);

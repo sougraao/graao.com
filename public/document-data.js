@@ -1,5 +1,5 @@
 // Documentos e contratos: the catalog shared by the server (validation, totals) and the browser (editor,
-// preview) — document kinds and statuses, block and field types, recipient roles, the Soci content
+// preview) — document kinds and statuses, block and field types, recipient roles, the Graao content
 // library and starter templates, the HTML allowlist and the price list math. See docs/implementation/05.
 
 export const documentKinds = [['proposal', 'Proposta'], ['contract', 'Contrato'], ['document', 'Documento']];
@@ -314,16 +314,16 @@ export const contactVariables = [['contact.first_name', 'Primeiro nome'], ['cont
   ['contact.phone', 'Telefone'], ['contact.company', 'Empresa'], ['account.name', 'Nome da empresa (subconta)'],
   ['document.title', 'Título do documento'], ['document.total', 'Total do documento'], ['document.expires_at', 'Validade']];
 
-/* ───────── Biblioteca de conteúdo e modelos da Soci ───────── */
+/* ───────── Biblioteca de conteúdo e modelos da Graao ───────── */
 
 const t = html => ({ type: 'text', html });
 export const socLibrary = [
-  { id: 'soci-about', name: 'Sobre nós', category: 'about', blocks: [t('<h2>Sobre nós</h2><p>Somos a {{account.name}}. Ajudamos empresas como a {{contact.company}} a crescer com processos claros, atendimento próximo e resultados que dá para medir.</p><p>Conte aqui a história da empresa, há quanto tempo atua e o que a diferencia.</p>')] },
-  { id: 'soci-benefits', name: 'Benefícios', category: 'benefits', blocks: [t('<h2>O que você ganha</h2><ul><li><b>Mais tempo:</b> tarefas repetitivas passam a rodar sozinhas.</li><li><b>Mais clareza:</b> relatórios simples, com os números que importam.</li><li><b>Mais vendas:</b> nenhum contato fica sem resposta.</li></ul>')] },
-  { id: 'soci-pricing', name: 'Planos', category: 'pricing', blocks: [t('<h2>Investimento</h2><p>Escolha os itens que fazem sentido para você. Os itens opcionais podem ser marcados antes de assinar.</p>'), { type: 'products', items: [] }] },
-  { id: 'soci-team', name: 'Equipe', category: 'team', blocks: [t('<h2>Quem vai cuidar do seu projeto</h2>'), { type: 'table', header: true, rows: [['Nome', 'Função', 'Contato'], ['', 'Gerente de conta', ''], ['', 'Especialista', '']] }] },
-  { id: 'soci-video', name: 'Vídeo', category: 'video', blocks: [t('<h2>Uma mensagem para você</h2><p>Grave um vídeo curto explicando a proposta e cole o link abaixo.</p>'), { type: 'video', url: '' }] },
-  { id: 'soci-columns', name: 'Duas colunas', category: 'columns', blocks: [{ type: 'columns', left: [t('<h3>Hoje</h3><p>Como o cliente trabalha agora e o que o impede de crescer.</p>')], right: [t('<h3>Com a gente</h3><p>Como vai ficar depois do projeto e em quanto tempo.</p>')] }] }
+  { id: 'graao-about', name: 'Sobre nós', category: 'about', blocks: [t('<h2>Sobre nós</h2><p>Somos a {{account.name}}. Ajudamos empresas como a {{contact.company}} a crescer com processos claros, atendimento próximo e resultados que dá para medir.</p><p>Conte aqui a história da empresa, há quanto tempo atua e o que a diferencia.</p>')] },
+  { id: 'graao-benefits', name: 'Benefícios', category: 'benefits', blocks: [t('<h2>O que você ganha</h2><ul><li><b>Mais tempo:</b> tarefas repetitivas passam a rodar sozinhas.</li><li><b>Mais clareza:</b> relatórios simples, com os números que importam.</li><li><b>Mais vendas:</b> nenhum contato fica sem resposta.</li></ul>')] },
+  { id: 'graao-pricing', name: 'Planos', category: 'pricing', blocks: [t('<h2>Investimento</h2><p>Escolha os itens que fazem sentido para você. Os itens opcionais podem ser marcados antes de assinar.</p>'), { type: 'products', items: [] }] },
+  { id: 'graao-team', name: 'Equipe', category: 'team', blocks: [t('<h2>Quem vai cuidar do seu projeto</h2>'), { type: 'table', header: true, rows: [['Nome', 'Função', 'Contato'], ['', 'Gerente de conta', ''], ['', 'Especialista', '']] }] },
+  { id: 'graao-video', name: 'Vídeo', category: 'video', blocks: [t('<h2>Uma mensagem para você</h2><p>Grave um vídeo curto explicando a proposta e cole o link abaixo.</p>'), { type: 'video', url: '' }] },
+  { id: 'graao-columns', name: 'Duas colunas', category: 'columns', blocks: [{ type: 'columns', left: [t('<h3>Hoje</h3><p>Como o cliente trabalha agora e o que o impede de crescer.</p>')], right: [t('<h3>Com a gente</h3><p>Como vai ficar depois do projeto e em quanto tempo.</p>')] }] }
 ];
 
 const signer = { id: 'role-client', label: 'Cliente', contactId: '', name: '', email: '', role: 'signer', order: 1 };
@@ -331,12 +331,12 @@ const signatureBlocks = [t('<h2>Assinaturas</h2><p>Ao assinar, as partes concord
   { type: 'field', kind: 'signature', label: 'Assinatura do cliente', required: true, recipientId: signer.id, dateMode: 'signed_at' },
   { type: 'field', kind: 'date', label: 'Data', required: true, recipientId: signer.id, dateMode: 'signed_at' }];
 export const socTemplates = [
-  { id: 'soci-proposal', title: 'Proposta comercial', kind: 'proposal', recipients: [signer], ordered: false, variables: [{ key: 'prazo', label: 'Prazo de entrega', value: '30 dias' }],
+  { id: 'graao-proposal', title: 'Proposta comercial', kind: 'proposal', recipients: [signer], ordered: false, variables: [{ key: 'prazo', label: 'Prazo de entrega', value: '30 dias' }],
     theme: { accent: '#155eef', font: 'sans', logoFileId: '' },
     blocks: [t('<h1>Proposta para {{contact.company}}</h1><p>Olá, {{contact.first_name}}. Preparamos esta proposta com base na nossa conversa.</p>'),
       ...socLibrary[0].blocks, ...socLibrary[1].blocks, t('<h2>Investimento</h2>'), { type: 'products', items: [] },
       t('<p>Prazo de entrega: {{doc.prazo}}. Esta proposta vale até {{document.expires_at}}.</p>'), ...signatureBlocks] },
-  { id: 'soci-contract', title: 'Contrato de prestação de serviços', kind: 'contract', recipients: [signer], ordered: false,
+  { id: 'graao-contract', title: 'Contrato de prestação de serviços', kind: 'contract', recipients: [signer], ordered: false,
     variables: [{ key: 'inicio', label: 'Data de início', value: '' }, { key: 'vigencia', label: 'Vigência', value: '12 meses' }],
     theme: { accent: '#344054', font: 'serif', logoFileId: '' },
     blocks: [t('<h1>Contrato de prestação de serviços</h1><p><b>Contratante:</b> {{contact.name}} ({{contact.company}}), e-mail {{contact.email}}.</p><p><b>Contratada:</b> {{account.name}}.</p>'),

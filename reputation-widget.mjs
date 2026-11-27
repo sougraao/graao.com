@@ -37,7 +37,7 @@ main{padding:4px}h1{margin:0 0 8px;font-size:18px}.summary{display:flex;align-it
 ${widget.title ? `<h1>${h(widget.title)}</h1>` : ''}${summary}${body}
 </main>
 <script>
-const report = () => parent.postMessage({ soci: 'review-widget', id: ${JSON.stringify(widget.id)}, height: Math.ceil(document.documentElement.scrollHeight) }, '*');
+const report = () => parent.postMessage({ graao: 'review-widget', id: ${JSON.stringify(widget.id)}, height: Math.ceil(document.documentElement.scrollHeight) }, '*');
 addEventListener('load', report); new ResizeObserver(report).observe(document.body);
 </script></body></html>`;
 }
@@ -48,7 +48,7 @@ export function widgetLoader({ origin, workspace, widgetId }) {
   return `(function(){var s=document.currentScript;var f=document.createElement('iframe');f.src=${JSON.stringify(src)};f.title='Avaliações';f.loading='lazy';
 f.style.cssText='width:100%;border:0;display:block;min-height:120px;color-scheme:normal';f.setAttribute('scrolling','no');
 (s&&s.parentNode?s.parentNode.insertBefore(f,s.nextSibling):document.body.appendChild(f));
-window.addEventListener('message',function(e){if(e.source===f.contentWindow&&e.data&&e.data.soci==='review-widget'&&e.data.id===${JSON.stringify(widgetId)}){f.style.height=Math.min(4000,Number(e.data.height)||0)+'px';}});})();`;
+window.addEventListener('message',function(e){if(e.source===f.contentWindow&&e.data&&e.data.graao==='review-widget'&&e.data.id===${JSON.stringify(widgetId)}){f.style.height=Math.min(4000,Number(e.data.height)||0)+'px';}});})();`;
 }
 
 export function renderCollector(state, collector, { workspace }) {

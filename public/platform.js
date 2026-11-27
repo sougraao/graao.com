@@ -11,8 +11,8 @@ const SETUP = {
   cloudflare: 'CLOUDFLARE_API_TOKEN',
   hostinger: 'HOSTINGER_API_TOKEN',
   evolution: 'EVOLUTION_BASE_URL e EVOLUTION_API_KEY',
-  twilio: 'TWILIO_ACCOUNT_SID e TWILIO_AUTH_TOKEN (só se a soci usar a telefonia)',
-  openai: 'OPENAI_ADMIN_KEY (gasto do mês da conta da soci; as agências usam chaves próprias)',
+  twilio: 'TWILIO_ACCOUNT_SID e TWILIO_AUTH_TOKEN (só se a graao usar a telefonia)',
+  openai: 'OPENAI_ADMIN_KEY (gasto do mês da conta da graao; as agências usam chaves próprias)',
   resend: 'RESEND_API_KEY com acesso total',
   meta: 'META_APP_ID e META_APP_SECRET'
 };
@@ -77,7 +77,7 @@ export function platformPage(view, { h, tr = x => x }) {
   const plans = view.settings.plans || {};
   const option = (value, current) => `<option value="${value}" ${current === value ? 'selected' : ''}>${PLAN_NAMES[value]}</option>`;
   return `<div class="page pf">
-    <header class="page-head"><div><h1>${h(tr('Plataforma'))}</h1><p>${h(tr('Planos, uso e limites dos serviços que mantêm o soci no ar. Conferido de hora em hora.'))}</p></div>
+    <header class="page-head"><div><h1>${h(tr('Plataforma'))}</h1><p>${h(tr('Planos, uso e limites dos serviços que mantêm o graao no ar. Conferido de hora em hora.'))}</p></div>
       <div class="head-actions"><span class="pf-checked">${h(tr('Última conferência'))}: ${h(checked)}</span><button class="secondary" data-ag="pf-check">${h(tr('Conferir agora'))}</button></div></header>
     ${platformBanner(view, { h, tr, link: false })}${noChannel}
     <div class="pf-grid">${view.services.map(service => card(service, h)).join('')}</div>

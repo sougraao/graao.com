@@ -1,5 +1,5 @@
 // Configurações → Rastreamento externo (script for the business's own site, pixels GA4 / Tag Manager /
-// Meta on the Soci public pages, events received) and Configurações → Pontuação de leads (rules that add
+// Meta on the Graao public pages, events received) and Configurações → Pontuação de leads (rules that add
 // or remove points when a contact does something, using the workflow triggers and their filters).
 import { icon as i } from './icons.js';
 import { badge, fmt, h, pageShell } from './screens.js';
@@ -67,9 +67,9 @@ function installView(c) {
         <li><b>Visitas de página</b> com a origem da visita (UTM, gclid, fbclid e site de origem; primeiro e último toque).</li>
         <li><b>Formulários HTML enviados</b>: com e-mail ou telefone, o contato é criado ou atualizado, as respostas viram uma nota e as visitas seguintes contam para ele.</li>
         <li><b>Vídeos assistidos</b>: vídeos HTML5 do seu site chegando a 25, 50, 75 e 100% (para contatos conhecidos, no gatilho Vídeo assistido).</li>
-        <li><b>Eventos seus</b>: chame <code>soci.track('nome-do-evento')</code> para registrar um clique ou uma conversão.</li>
+        <li><b>Eventos seus</b>: chame <code>graao.track('nome-do-evento')</code> para registrar um clique ou uma conversão.</li>
       </ul>
-      <p class="dim">Senhas, cartões, CPF e campos ocultos nunca são enviados. Para ignorar um formulário, acrescente <code>data-soci-ignore</code> à tag <code>&lt;form&gt;</code>.</p></section>
+      <p class="dim">Senhas, cartões, CPF e campos ocultos nunca são enviados. Para ignorar um formulário, acrescente <code>data-graao-ignore</code> à tag <code>&lt;form&gt;</code>.</p></section>
     <section class="surface padded tk-section"><h2>3. Use nas automações e na pontuação</h2>
       <p class="dim">O gatilho <b>Evento do rastreamento externo</b> dispara quando um contato conhecido visita uma página ou envia um formulário. As regras de pontuação usam o mesmo evento.</p>
       <div class="inline-gap"><a class="secondary" href="#automation/workflows">${i('flow', 15)} Abrir automações</a><a class="secondary" href="#settings/scoring">${i('star', 15)} Pontuação de leads</a></div></section>`;
@@ -78,7 +78,7 @@ function installView(c) {
 function settingsView(c) {
   const t = { ga4: '', gtm: '', metaPixel: '', domains: [], pageviews: true, forms: true, ...(c.s.tracking || {}) };
   return `<form class="surface settings-form set-form" data-tk-form="settings">
-      <section class="set-section"><header class="set-head"><h2>Pixels nas páginas do Soci</h2><p class="dim">Carregados em sites, funis, lojas, ofertas, blog e webinars desta subconta. Formulários enviados geram o evento <i>generate_lead</i> no GA4 e <i>Lead</i> no Pixel da Meta.</p></header><div class="set-body">
+      <section class="set-section"><header class="set-head"><h2>Pixels nas páginas do Graao</h2><p class="dim">Carregados em sites, funis, lojas, ofertas, blog e webinars desta subconta. Formulários enviados geram o evento <i>generate_lead</i> no GA4 e <i>Lead</i> no Pixel da Meta.</p></header><div class="set-body">
       <div class="field-grid">
         <label>ID de medição do Google Analytics 4<input name="ga4" value="${h(t.ga4)}" placeholder="G-XXXXXXXXXX" maxlength="24" spellcheck="false" autocomplete="off"></label>
         <label>ID do contêiner do Google Tag Manager<input name="gtm" value="${h(t.gtm)}" placeholder="GTM-XXXXXXX" maxlength="16" spellcheck="false" autocomplete="off"></label>
@@ -111,7 +111,7 @@ function formsView(c) {
     <section class="surface padded tk-section"><h2>Formulários de cadastro do Facebook e Instagram</h2>
       <p class="dim">Os leads dos formulários de cadastro (Lead Ads) das páginas conectadas no <a href="#marketing/social">Social Planner</a> chegam sozinhos, pela permissão de leads da Meta. Cada lead vira contato e dispara o gatilho <b>Formulário de cadastro do Facebook</b>. Se a página foi conectada antes, conecte de novo para dar a permissão de leads.</p></section>
     <section class="surface padded tk-section"><h2>Formulários em iframe</h2>
-      <p class="dim">Formulários do Soci incorporados no seu site já criam o contato direto. Formulários de outras ferramentas em iframe não podem ser lidos pelo script (o navegador isola o iframe): use a integração da ferramenta ou um webhook de entrada nas automações.</p></section>
+      <p class="dim">Formulários do Graao incorporados no seu site já criam o contato direto. Formulários de outras ferramentas em iframe não podem ser lidos pelo script (o navegador isola o iframe): use a integração da ferramenta ou um webhook de entrada nas automações.</p></section>
     <h2 class="section-heading">Formulários recebidos</h2>
     ${table(['Formulário', 'Página', 'Envios', 'Contatos', 'Último envio'], rows.map(r => `<tr><td><b>${h(r.name)}</b></td><td><small>${h(pagePath(r.url))}</small></td><td>${r.total}</td><td>${r.contacts}</td><td>${h(when(c, r.last))}</td></tr>`),
       feed.error ? empty('Não foi possível carregar os eventos', h(feed.error), 'alert') : !feed.summary ? empty('Carregando…', '', 'list') : empty('Nenhum formulário recebido', 'Os formulários do seu site aparecem aqui depois do primeiro envio.', 'list'))}`;

@@ -1,4 +1,4 @@
-// Extensão do Chrome "soci: Importar do GHL": o leitor (reader.js) roda na aba do GHL com o cliente HTTP do próprio app
+// Extensão do Chrome "graao: Importar do GHL": o leitor (reader.js) roda na aba do GHL com o cliente HTTP do próprio app
 // e só faz GET. Aqui ele roda num contexto do node:vm, com um GHL falso.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -45,7 +45,7 @@ function loadReader() {
     fetch: async url => { fetched.push(String(url)); return { ok: true, status: 200, text: async () => '{"sections":[]}' }; }
   });
   vm.runInContext(readFileSync(new URL('reader.js', dir), 'utf8'), context, { filename: 'reader.js' });
-  return { reader: context.sociGhlReader, fetched };
+  return { reader: context.graaoGhlReader, fetched };
 }
 
 test('reads a location with every item the converter needs', async () => {
@@ -109,9 +109,9 @@ test('never cuts an emoji in half between two pieces', () => {
 test('the manifest asks only for activeTab, scripting and storage', () => {
   const manifest = JSON.parse(readFileSync(new URL('manifest.json', dir), 'utf8'));
   assert.equal(manifest.manifest_version, 3);
-  assert.equal(manifest.name, 'soci: Importar do GHL');
+  assert.equal(manifest.name, 'graao: Importar do GHL');
   assert.deepEqual(manifest.permissions, ['activeTab', 'scripting', 'storage']);
-  assert.deepEqual(manifest.host_permissions, ['https://soci.app.br/*', 'http://localhost/*', 'http://127.0.0.1/*']);
+  assert.deepEqual(manifest.host_permissions, ['https://graao.com/*', 'http://localhost/*', 'http://127.0.0.1/*']);
   assert.equal(manifest.action.default_popup, 'popup.html');
   assert.equal(manifest.content_scripts, undefined);
 });

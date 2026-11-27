@@ -1,5 +1,5 @@
 {
-  "name": "soci-prancheta-editor",
+  "name": "graao-prancheta-editor",
   "private": true,
   "type": "module",
   "description": "Código-fonte do editor da Prancheta. O pacote compilado fica em ui/vendor/prancheta-editor.js.",

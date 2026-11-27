@@ -1,4 +1,4 @@
-// App mobile white-label (6.6, D2: included in the agency plan). Soci is a web platform, so the mobile app is a
+// App mobile white-label (6.6, D2: included in the agency plan). Graao is a web platform, so the mobile app is a
 // branded installable app (PWA): Android and iOS add it to the home screen with the agency's name, icon and colors.
 // It opens the platform in "app mode": a bottom tab bar with the modules the agency chose (and its own URL modules)
 // and push notifications (Web Push). For the stores, the agency gets a package built from the same app — a Trusted
@@ -170,7 +170,7 @@ export function storePackage(app, id, origin) {
     packageId: app.store.androidPackage, host, name: app.appName, launcherName: app.appName.slice(0, 12), display: 'standalone', orientation: 'portrait',
     themeColor: app.primary, navigationColor: app.primary, backgroundColor: '#FFFFFF', enableNotifications: true, startUrl: `/mobile/${id}/?source=app`,
     iconUrl: `${base}/mobile/${id}/icon-512.png`, maskableIconUrl: `${base}/mobile/${id}/icon-512.png`, webManifestUrl: `${base}/mobile/${id}/manifest.webmanifest`,
-    appVersionName: `1.0.${app.version || 0}`, appVersionCode: Math.max(1, app.version || 0), signingKey: { path: './android.keystore', alias: 'android' }, generatorApp: 'soci'
+    appVersionName: `1.0.${app.version || 0}`, appVersionCode: Math.max(1, app.version || 0), signingKey: { path: './android.keystore', alias: 'android' }, generatorApp: 'graao'
   };
   const assetlinks = app.store.androidPackage && app.store.fingerprints.length
     ? [{ relation: ['delegate_permission/common.handle_all_urls'], target: { namespace: 'android_app', package_name: app.store.androidPackage, sha256_cert_fingerprints: app.store.fingerprints } }] : [];
@@ -179,9 +179,9 @@ export function storePackage(app, id, origin) {
     listing: { name: app.appName, developer: app.store.developer, supportEmail: app.store.supportEmail, supportUrl: app.store.supportUrl, privacyUrl: app.store.privacyUrl, iosBundle: app.store.iosBundle },
     steps: [
       'Google Play: instale o Bubblewrap (npm i -g @bubblewrap/cli), salve twa-manifest.json numa pasta e rode "bubblewrap build". Envie o .aab no Play Console da agência.',
-      `Copie a impressão SHA-256 da chave de assinatura (Play Console → Integridade do app) para a Soci; o arquivo ${base}/.well-known/assetlinks.json passa a liberar o app em tela cheia.`,
+      `Copie a impressão SHA-256 da chave de assinatura (Play Console → Integridade do app) para a Graao; o arquivo ${base}/.well-known/assetlinks.json passa a liberar o app em tela cheia.`,
       `App Store: em pwabuilder.com, abra ${base}/mobile/${id}/ e baixe o pacote iOS com o Bundle ID ${app.store.iosBundle || '(defina)'}; abra no Xcode, assine com a conta Apple Developer da agência e envie pelo App Store Connect.`,
-      'Nas duas lojas, use o nome, o e-mail e os links de suporte e privacidade acima. Cada nova publicação na Soci atualiza o app sem novo envio (o conteúdo vem da web).'
+      'Nas duas lojas, use o nome, o e-mail e os links de suporte e privacidade acima. Cada nova publicação na Graao atualiza o app sem novo envio (o conteúdo vem da web).'
     ]
   };
 }

@@ -3,7 +3,7 @@
 // Pega pacotes de função incompletos, como o deploy de 21/11/2026 que subiu sem 40 arquivos de
 // ui/ e respondia 500 (ENOENT) até o deploy seguinte.
 //
-// Uso:   node scripts/smoke-deploy.mjs https://soci.app.br
+// Uso:   node scripts/smoke-deploy.mjs https://graao.com
 // Deploy protegido da Vercel: defina VERCEL_AUTOMATION_BYPASS_SECRET.
 import { pathToFileURL } from 'node:url';
 import { sessionOnlyFiles, staticFiles } from '../server.mjs';

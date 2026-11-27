@@ -1,4 +1,4 @@
-// soci Prompt Registry: prompts internos versionados (rascunho → publicado → rollback), guardados no documento
+// graao Prompt Registry: prompts internos versionados (rascunho → publicado → rollback), guardados no documento
 // de configuração. O prompt de sistema fica separado das mensagens do usuário; variáveis só entram no template
 // do usuário, escapadas como dado, e nunca podem trocar as instruções privilegiadas. Segredos nunca entram aqui.
 import { MODE_IDS } from './contracts.mjs';

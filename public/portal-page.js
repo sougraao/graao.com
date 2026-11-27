@@ -91,7 +91,7 @@ let portal, course, community = null, courseView = 'lesson', redeemed = null;
 // A course opened from a community's Academia goes back there, not to the portal home.
 let cmReturn = '';
 // The member's light/dark choice for communities lives in this browser only.
-const savedMode = () => { try { const value = localStorage.getItem('soci:cm-mode'); return value === 'light' || value === 'dark' ? value : ''; } catch { return ''; } };
+const savedMode = () => { try { const value = localStorage.getItem('graao:cm-mode'); return value === 'light' || value === 'dark' ? value : ''; } catch { return ''; } };
 const cmUi = { tab: 'discussion', channel: '', period: '30', feed: 'recent', openComments: new Set(), mode: savedMode() };
 const uploadCard = files => `<section class="cp-public-card cp-upload"><h2>${icon('upload', 18)} Enviar um arquivo para a equipe</h2>
   <p>Imagem, vídeo, áudio, PDF, TXT ou CSV de até 700 KB.</p>
@@ -112,7 +112,7 @@ async function enablePush() {
   await api('push', { subscription: sub.toJSON() });
 }
 
-// Light/dark switch with the same diagonal wipe as the soci app (View Transitions); instant without support or
+// Light/dark switch with the same diagonal wipe as the graao app (View Transitions); instant without support or
 // when the system asks for reduced motion.
 async function switchMode(mode) {
   const swap = () => { draw(); root.querySelector('[data-cm-public="mode"]')?.focus(); };
@@ -244,7 +244,7 @@ root.addEventListener('click', async event => {
       if (verb === 'tab') { cmUi.tab = value; focus = `[data-cm-public="tab"][data-value="${value}"]`; }
       else if (verb === 'channel') { cmUi.channel = value; cmUi.tab = 'discussion'; focus = `[data-cm-public="channel"][data-value="${value}"]`; }
       else if (verb === 'events') { cmUi.events = value; focus = `[data-cm-public="events"][data-value="${value}"]`; }
-      else if (verb === 'mode') { cmUi.mode = value; try { localStorage.setItem('soci:cm-mode', value); } catch { /* private window: the choice lasts this visit */ } await switchMode(value); return; }
+      else if (verb === 'mode') { cmUi.mode = value; try { localStorage.setItem('graao:cm-mode', value); } catch { /* private window: the choice lasts this visit */ } await switchMode(value); return; }
       else if (verb === 'feed') { cmUi.feed = value; focus = `[data-cm-public="feed"][data-value="${value}"]`; }
       else if (verb === 'comments-all') { cmUi.openComments.add(post); focus = `#post-${post} .cp-comments`; }
       else if (verb === 'comment-focus') { root.querySelector(`#post-${CSS.escape(post)} .cp-comment-form input`)?.focus(); return; }

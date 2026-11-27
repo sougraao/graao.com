@@ -1,4 +1,4 @@
-// Soci's setup milestones. Completion is derived from the current workspace,
+// Graao's setup milestones. Completion is derived from the current workspace,
 // never from opening a link or watching a tutorial.
 export const setupCategories = [
   ['initial', 'Configuração inicial', 'sun'],
@@ -22,7 +22,7 @@ export function setupTasks(state, access, whatsapp) {
     task('contact', ['initial'], 'Criar um novo contato', 'Comece sua base de clientes com as informações de quem já conversa com você.', 'contacts', ['contacts'], [
       step('Adicionar o primeiro contato', has('contacts'), '#contacts')
     ], ['Abra Contatos e clique em Adicionar contato.', 'Preencha o nome e, se possível, o e-mail ou telefone. Salve o contato.', 'Volte ao Launchpad para conferir a conclusão desta tarefa.']),
-    task('import', ['initial'], 'Importar seus contatos', 'Traga sua base existente para a Soci com uma planilha CSV.', 'contacts', ['contacts', 'settings'], [
+    task('import', ['initial'], 'Importar seus contatos', 'Traga sua base existente para a Graao com uma planilha CSV.', 'contacts', ['contacts', 'settings'], [
       step('Concluir uma importação de contatos', rows('imports').some(row => row.object !== 'opportunities' && row.status === 'Completed' && row.added > 0), '#settings/import')
     ], ['Prepare um CSV com a coluna name. Você também pode incluir email, phone, company, tags e notes.', 'Em Configurações → Importar dados, selecione o arquivo e confirme a importação de até 500 contatos.', 'Contatos com e-mail já cadastrado são ignorados. A tarefa é concluída quando a importação adiciona pelo menos um contato.']),
     task('funnel', ['initial', 'marketing'], 'Capturar leads com um funil e formulário', 'Crie uma página de captação e um formulário para receber novos interessados.', 'flow', ['sites'], [

@@ -22,7 +22,7 @@ function bucketFalso() {
   return { objetos, pedidos, request };
 }
 
-const cliente = request => criarCliente({ accountId: ACCOUNT, accessKeyId: 'AKID', secretAccessKey: 'SECRET', bucket: 'soci-docs-midia', request });
+const cliente = request => criarCliente({ accountId: ACCOUNT, accessKeyId: 'AKID', secretAccessKey: 'SECRET', bucket: 'graao-docs-midia', request });
 
 test('slug tira acento, espaço e maiúscula', () => {
   assert.equal(slug('02 Novo Contato.PNG'), '02-novo-contato.png');
@@ -49,7 +49,7 @@ test('enviar assina e manda o cache imutável para o bucket certo', async () => 
   await cliente(b.request).enviar('docs/a/b/1.abcdef12.webp', Buffer.from('img'), 'image/webp');
   const [pedido] = b.pedidos;
   assert.equal(pedido.method, 'PUT');
-  assert.equal(pedido.url, `https://${ACCOUNT}.r2.cloudflarestorage.com/soci-docs-midia/docs/a/b/1.abcdef12.webp`);
+  assert.equal(pedido.url, `https://${ACCOUNT}.r2.cloudflarestorage.com/graao-docs-midia/docs/a/b/1.abcdef12.webp`);
   assert.equal(pedido.headers['cache-control'], 'public, max-age=31536000, immutable');
   assert.equal(pedido.headers['content-type'], 'image/webp');
   assert.match(pedido.headers.Authorization, /^AWS4-HMAC-SHA256 /);
@@ -85,7 +85,7 @@ test('chavesAusentes lista o que o MDX cita e o bucket não tem', async () => {
 
 test('midiaBase usa DOCS_MIDIA_BASE quando definida (prévia local) e o R2 nos outros casos', async () => {
   const { midiaBase } = await import('../docs-site/scripts/midia.mjs');
-  assert.equal(midiaBase({}), 'https://midia.soci.app.br');
+  assert.equal(midiaBase({}), 'https://midia.graao.com');
   assert.equal(midiaBase({ DOCS_MIDIA_BASE: '/midia-local/' }), '/midia-local');
 });
 

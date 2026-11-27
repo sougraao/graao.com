@@ -1,9 +1,9 @@
-# 08 · Momentos de cobrança no GoHighLevel, situação da Soci e cuidados fiscais
+# 08 · Momentos de cobrança no GoHighLevel, situação da Graao e cuidados fiscais
 
 Análise de 24/11/2026, base da decisão. Entrega 1 (fundação) construída: ver `docs/superpowers/plans/2026-11-24-cobranca-fundacao.md`. Resolvidas as falhas F1 a F5; F6 a F8 ficam para as próximas entregas.
 
 > **Decisão do usuário (24/11/2026): sem porcentagem. A cobrança funciona exatamente como no GHL.**
-> A Soci cobra a agência; a agência cobra a subconta no gateway dela; a subconta cobra o consumidor no gateway dela.
+> A Graao cobra a agência; a agência cobra a subconta no gateway dela; a subconta cobra o consumidor no gateway dela.
 Não é parecer jurídico nem contábil. Os itens marcados **[contador]** precisam de confirmação profissional.
 
 ## 1. Como foi levantado
@@ -27,15 +27,15 @@ Camada 4  Comissões: afiliado recebe, não paga
 
 **Achado central:** não há taxa do HighLevel sobre as vendas da camada 3. Nenhum dos pacotes tem `application_fee`
 ou `platformFee`, e nenhuma página oficial lida menciona percentual. O GHL ganha com assinatura e consumo.
-É o modelo adotado: a Soci também não toca no dinheiro das camadas 2 e 3.
+É o modelo adotado: a Graao também não toca no dinheiro das camadas 2 e 3.
 
 ## 3. Momentos de cobrança
 
-Situação na Soci: ✅ existe · 🟡 parcial · ❌ não existe.
+Situação na Graao: ✅ existe · 🟡 parcial · ❌ não existe.
 
 ### Camada 1 · Plataforma → agência
 
-| # | Momento | Como o GHL configura | Soci hoje |
+| # | Momento | Como o GHL configura | Graao hoje |
 | --- | --- | --- | --- |
 | 1.1 | Entrada com teste grátis | Cartão salvo; aviso de dias restantes; "pular teste e pagar"; extensão de 14 dias | ❌ |
 | 1.2 | Fim do teste | Cobrança automática na data | ❌ |
@@ -53,7 +53,7 @@ Situação na Soci: ✅ existe · 🟡 parcial · ❌ não existe.
 
 ### Camada 2 · Agência → subconta
 
-| # | Momento | Como o GHL configura | Soci hoje |
+| # | Momento | Como o GHL configura | Graao hoje |
 | --- | --- | --- | --- |
 | 2.1 | Contratação do plano | Link de venda direta; até 20 planos; categorias por moeda; mensal e anual; cupom | 🟡 só mensal |
 | 2.2 | Taxa de adesão | Única, junto do plano | ❌ |
@@ -70,7 +70,7 @@ Situação na Soci: ✅ existe · 🟡 parcial · ❌ não existe.
 
 ### Camada 3 · Subconta → consumidor
 
-| # | Momento | Como o GHL configura | Soci hoje |
+| # | Momento | Como o GHL configura | Graao hoje |
 | --- | --- | --- | --- |
 | 3.1 | Fatura avulsa | Envio, link de pagamento | ✅ |
 | 3.2 | Lembretes de fatura | Até 5, antes e depois do vencimento | ❌ |
@@ -87,7 +87,7 @@ Situação na Soci: ✅ existe · 🟡 parcial · ❌ não existe.
 | 3.13 | Reembolso total e parcial | Na transação | 🟡 recebe o aviso; não inicia |
 | 3.14 | Contestação (chargeback) | Não apareceu nos pacotes lidos | ❌ evento não assinado |
 
-## 4. Falhas encontradas na Soci (corrigir antes ou junto)
+## 4. Falhas encontradas na Graao (corrigir antes ou junto)
 
 | ID | Problema | Onde |
 | --- | --- | --- |
@@ -97,7 +97,7 @@ Situação na Soci: ✅ existe · 🟡 parcial · ❌ não existe.
 | F4 | Reembolso muda a transação, mas a fatura continua "Paga"; não há tratamento de reembolso parcial | `abacatepay.mjs:231` |
 | F5 | Não há livro contábil: extrato guarda 500 linhas, pagamentos 24 e eventos vistos 300; o resto some | `wallet-model.mjs:12`, `abacatepay.mjs:301` e `:358` |
 | F6 | Plano da agência não cobra nem limita | `agency-model.mjs:655` |
-| F7 | Serviços pagos pela Soci (Resend, Twilio, Evolution, Google Places) não são cobrados da agência: o crédito da subconta vai para a agência | `server.mjs` (rota `/api/wallet/topup`) |
+| F7 | Serviços pagos pela Graao (Resend, Twilio, Evolution, Google Places) não são cobrados da agência: o crédito da subconta vai para a agência | `server.mjs` (rota `/api/wallet/topup`) |
 | F8 | Custo padrão do WhatsApp é R$ 0, então a revenda cobra zero mesmo com margem | `ui/agency-data.js:237` |
 
 ## 5. Regras do GHL que completam as tabelas
@@ -117,21 +117,21 @@ Situação na Soci: ✅ existe · 🟡 parcial · ❌ não existe.
 
 ## 6. Cuidados fiscais brasileiros no modelo do GHL
 
-1. **A Soci emite NFS-e só do que ela cobra da agência:** plano, consumo e adicionais. Vendas das camadas 2 e 3 não são receita dela,
+1. **A Graao emite NFS-e só do que ela cobra da agência:** plano, consumo e adicionais. Vendas das camadas 2 e 3 não são receita dela,
    porque são cobradas em outra conta, com outro vendedor e outra nota.
 2. **Do que ela cobra, a receita é o valor cheio.** No consumo (WhatsApp, ligação, IA), o faturamento é o preço cobrado da agência,
    e não só a margem. O custo do fornecedor é despesa. **[contador]**
 3. **O mesmo vale para a agência:** plano e créditos vendidos à subconta são receita cheia dela, com nota dela.
-4. **Contas separadas de verdade.** A chave do gateway da Soci nunca pode cobrar por uma agência nem o contrário.
+4. **Contas separadas de verdade.** A chave do gateway da Graao nunca pode cobrar por uma agência nem o contrário.
    Hoje a agência-raiz e a plataforma dividem a mesma identidade (`AGENCY_ID`) e precisam ser separadas.
-5. **LC 214/2025, art. 22 (plataforma digital).** Sem percentual e com o gateway do próprio vendedor, a Soci fornece software, o que
+5. **LC 214/2025, art. 22 (plataforma digital).** Sem percentual e com o gateway do próprio vendedor, a Graao fornece software, o que
    afasta bastante a figura do intermediário. O §1º fala em controlar cobrança **ou** pagamento, então convém confirmar. **[contador]**
 6. **Recarga de carteira.** Definir se a nota sai na recarga ou no consumo e o que acontece com saldo não usado. **[contador]**
 7. **Cadastro fiscal do tomador.** CPF/CNPJ, razão social, endereço e município antes da primeira cobrança (o GHL faz isso com o Tax ID).
 8. **NFS-e nacional.** Obrigatória para ME e EPP do Simples desde 01/11/2026 (Resolução CGSN 191/2026, via Fenacon); IBS/CBS do Simples em 2027.
    Fontes divergem sobre outubro ou dezembro para os demais. **[contador]**
 9. **Livro imutável.** Cada lançamento guardado por pelo menos 5 anos, sem corte, com vínculo a pagamento e nota.
-10. **Recibo do consumidor.** Mostrar sempre o vendedor (subconta), com CPF/CNPJ, e nunca a Soci como recebedora.
+10. **Recibo do consumidor.** Mostrar sempre o vendedor (subconta), com CPF/CNPJ, e nunca a Graao como recebedora.
 
 ## 6b. O que o AbacatePay permite (gateway atual)
 

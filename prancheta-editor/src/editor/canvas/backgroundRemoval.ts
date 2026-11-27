@@ -43,7 +43,7 @@ async function getSegmenter(onProgress?: (msg: string) => void) {
   onProgress?.('Carregando modelo neural...');
 
   // Modelo oficial selfie_segmenter float16 (249 KB)
-  // Google Cloud Storage oficial float16 (a soci não hospeda o modelo)
+  // Google Cloud Storage oficial float16 (a graao não hospeda o modelo)
   const candidateUrls: string[] = [];
   candidateUrls.push(
     'https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite'

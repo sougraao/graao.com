@@ -26,8 +26,8 @@ test('A chave do celular é um hash estável que não mostra o número', () => {
 });
 
 test('O código sai do texto em qualquer caixa e com espaços', () => {
-  assert.equal(codeFromText('confirmar SOCI  ab3k9z'), 'AB3K9Z');
-  assert.equal(codeFromText('Confirmar soci AB3K9Z obrigado'), 'AB3K9Z');
+  assert.equal(codeFromText('confirmar GRAAO  ab3k9z'), 'AB3K9Z');
+  assert.equal(codeFromText('Confirmar graao AB3K9Z obrigado'), 'AB3K9Z');
   assert.equal(codeFromText('oi'), '');
   assert.equal(codeFromText(null), '');
 });
@@ -41,5 +41,5 @@ test('Código usa só o alfabeto sem ambiguidade e o hash não é o código', ()
 });
 
 test('O link abre o WhatsApp com a mensagem pronta', () => {
-  assert.equal(verifyLink('5500000000000', 'AB3K9Z'), 'https://wa.me/5500000000000?text=Confirmar%20soci%20AB3K9Z');
+  assert.equal(verifyLink('5500000000000', 'AB3K9Z'), 'https://wa.me/5500000000000?text=Confirmar%20graao%20AB3K9Z');
 });

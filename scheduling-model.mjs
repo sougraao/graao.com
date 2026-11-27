@@ -359,7 +359,7 @@ export function bookingPage(view, { base, done = null, error = '', form = {}, em
   const step = text => `<h2>${++count}. ${text}</h2>`;
   const tail = embed ? `<script>${heightScript}</script>` : '';
   form = view.person && !form.nome ? { ...form, nome: view.person.name, email: view.person.email, telefone: view.person.phone } : form;
-  const head = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${done?.event ? `<meta name="soci-event" content="${esc(done.event)}">` : ''}<title>${esc(view.title)}</title>
+  const head = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${done?.event ? `<meta name="graao-event" content="${esc(done.event)}">` : ''}<title>${esc(view.title)}</title>
 <style>*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,-apple-system,'Segoe UI',sans-serif;background:#f6f5f8;color:#1e1821;padding:24px 16px}main{max-width:640px;margin:0 auto;background:#fff;border:1px solid #e8e1e9;border-radius:16px;padding:28px;display:grid;gap:16px}
 h1{margin:0;font-size:24px}h2{margin:0;font-size:17px}p{margin:0;color:#5d5560}a{color:#a00070}.list{display:grid;gap:8px;margin:0;padding:0;list-style:none}.svc{display:block;padding:12px 14px;border:1px solid #e8e1e9;border-radius:12px;text-decoration:none;color:inherit}.svc.on{border-color:#b71889;background:#fff4fa}.svc small{display:block;color:#7a727d}
 .chips{display:flex;flex-wrap:wrap;gap:8px}.chip{padding:8px 12px;border:1px solid #e8e1e9;border-radius:999px;text-decoration:none;color:inherit;font-size:14px}.chip.on{background:#b71889;border-color:#b71889;color:#fff}

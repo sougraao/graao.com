@@ -18,7 +18,7 @@ async function start(store = createSqliteStore(':memory:')) {
 const action = (local, body, headers) => local.call('/api/agency/action', body, headers);
 const prospectAction = (local, op, id, data) => local.call('/api/agency/prospecting-action', { op, id, data });
 
-test('Company name is editable while the platform brand stays soci', async t => {
+test('Company name is editable while the platform brand stays graao', async t => {
   const local = await start(); t.after(local.close);
   const { body: initial } = await local.call('/api/agency');
   assert.equal(initial.agency.company.primary, '#ff4f9a');
@@ -30,14 +30,14 @@ test('Company name is editable while the platform brand stays soci', async t => 
     const saved = await action(local, { type: 'company', data: { ...data, ...requestedBrand } });
     assert.equal(saved.status, 200);
     assert.equal(saved.body.agency.company.name, data.name);
-    assert.equal(saved.body.agency.company.brand, 'soci');
+    assert.equal(saved.body.agency.company.brand, 'graao');
     assert.equal(saved.body.agency.company.primary, data.primary);
     assert.equal(saved.body.agency.company.secondary, data.secondary);
   }
   const invalidSecondary = await action(local, { type: 'company', data: { ...data, secondary: 'not-a-color' } });
   assert.equal(invalidSecondary.status, 400);
   const { body } = await local.call('/api/state?workspace=demo');
-  assert.equal(body.agency.brand, 'soci');
+  assert.equal(body.agency.brand, 'graao');
   assert.equal(body.agency.name, data.name);
   assert.equal(body.agency.primary, data.primary);
   assert.equal(body.agency.secondary, data.secondary);
@@ -323,7 +323,7 @@ test('Reselling, plans, affiliate payouts and announcements feed the dashboard a
   assert.ok(!agencyNav.some(([key]) => key === 'templates'));
   // A Universidade saiu: o menu leva para a central de ajuda.
   assert.ok(!agencyNav.some(([key]) => key === 'university'));
-  assert.equal(helpCenterUrl, 'https://doc.soci.app.br/');
+  assert.equal(helpCenterUrl, 'https://doc.graao.com/');
   // Cada item do menu pertence a uma seção conhecida (ou ao rodapé), e nenhuma seção fica vazia.
   const sections = agencyNavGroups.map(([key]) => key);
   for (const [key, , , group] of agencyNav) assert.ok([...sections, 'rodape'].includes(group), `${key} sem seção`);
@@ -370,10 +370,10 @@ test('SaaS Configurator, sub-account feature switches, email domain and app rese
   assert.equal(agency.apps.installs.length, 0);
 });
 
-test('Setup marketplace serves official Soci setups, supports install into sub-accounts, and community publish/unpublish across agencies', async t => {
+test('Setup marketplace serves official Graao setups, supports install into sub-accounts, and community publish/unpublish across agencies', async t => {
   const local = await start(); t.after(local.close);
 
-  // 1. Official Soci setups are available out of the box
+  // 1. Official Graao setups are available out of the box
   const initial = await local.call('/api/agency');
   assert.equal(initial.status, 200);
   const officials = initial.body.marketplace.filter(item => item.official);

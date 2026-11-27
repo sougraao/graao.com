@@ -71,9 +71,9 @@ function actionButtons(list, name) {
 
 function templatesList(c) {
   const own = (c.s.documentTemplates || []).filter(row => matches(c, row.title)).sort(byUpdated);
-  return `<section class="dc-group"><h2>Modelos da Soci</h2><div class="dc-cards">${socTemplates.map(tpl => `<article class="surface dc-card">
+  return `<section class="dc-group"><h2>Modelos da Graao</h2><div class="dc-cards">${socTemplates.map(tpl => `<article class="surface dc-card">
       <span class="dc-card-icon">${icon(tpl.kind === 'contract' ? 'book' : 'file', 18)}</span><div><b>${h(tpl.title)}</b><small class="dim">${h(label(documentKinds, tpl.kind))} · ${tpl.blocks.length} blocos</small></div>
-      <div class="dc-card-actions"><button type="button" class="secondary" data-dc-act="use" data-id="${tpl.id}">Usar</button><button type="button" class="secondary" data-dc-act="copy-soci-template" data-id="${tpl.id}">Duplicar para editar</button></div></article>`).join('')}</div></section>
+      <div class="dc-card-actions"><button type="button" class="secondary" data-dc-act="use" data-id="${tpl.id}">Usar</button><button type="button" class="secondary" data-dc-act="copy-graao-template" data-id="${tpl.id}">Duplicar para editar</button></div></article>`).join('')}</div></section>
     <section class="dc-group"><div class="dc-group-head"><h2>Seus modelos</h2><button type="button" class="secondary" data-dc-act="new-template">${icon('plus', 15)} Novo modelo</button></div>
     <div class="toolbar">${search(c.query, 'Buscar modelos…')}</div>
     ${own.length ? `<div class="surface table-shell"><table><thead><tr><th scope="col">Título</th><th scope="col">Tipo</th><th scope="col" class="right">Valor</th><th scope="col">Alterado em</th><th scope="col"><span class="sr-only">Ações</span></th></tr></thead>
@@ -86,14 +86,14 @@ function templatesList(c) {
 
 function libraryList(c) {
   const own = (c.s.contentBlocks || []).filter(row => matches(c, row.name)).sort(byUpdated);
-  const card = (item, soci) => `<article class="surface dc-card"><span class="dc-card-icon">${icon(blockKinds[item.blocks[0]?.type]?.icon || 'note', 18)}</span>
+  const card = (item, graao) => `<article class="surface dc-card"><span class="dc-card-icon">${icon(blockKinds[item.blocks[0]?.type]?.icon || 'note', 18)}</span>
     <div><b>${h(item.name)}</b><small class="dim">${h(label(libraryCategories, item.category))} · ${item.blocks.length} ${item.blocks.length === 1 ? 'bloco' : 'blocos'}</small></div>
-    <div class="dc-card-actions">${soci ? `<button type="button" class="secondary" data-dc-act="copy-soci-block" data-id="${item.id}">Duplicar para editar</button>`
+    <div class="dc-card-actions">${graao ? `<button type="button" class="secondary" data-dc-act="copy-graao-block" data-id="${item.id}">Duplicar para editar</button>`
       : `<a class="secondary" href="#payments/document/${h(item.id)}">Editar</a><button type="button" class="icon-btn" data-dc-act="delete" data-key="contentBlocks" data-id="${h(item.id)}" aria-label="Excluir: ${h(item.name)}" title="Excluir">${icon('trash', 16)}</button>`}</div></article>`;
   return `<p class="dim dc-note">Trechos prontos para inserir em qualquer documento pelo editor, na aba Biblioteca.</p>
-    <section class="dc-group"><h2>Da Soci</h2><div class="dc-cards">${socLibrary.map(item => card(item, true)).join('')}</div></section>
+    <section class="dc-group"><h2>Da Graao</h2><div class="dc-cards">${socLibrary.map(item => card(item, true)).join('')}</div></section>
     <section class="dc-group"><div class="dc-group-head"><h2>Seus itens</h2><button type="button" class="secondary" data-dc-act="new-block">${icon('plus', 15)} Novo item</button></div>
-    ${own.length ? `<div class="dc-cards">${own.map(item => card(item, false)).join('')}</div>` : '<p class="dim dc-note">Nenhum item seu ainda. Duplique um item da Soci ou crie um do zero.</p>'}</section>`;
+    ${own.length ? `<div class="dc-cards">${own.map(item => card(item, false)).join('')}</div>` : '<p class="dim dc-note">Nenhum item seu ainda. Duplique um item da Graao ou crie um do zero.</p>'}</section>`;
 }
 
 function listView(c) {
@@ -214,7 +214,7 @@ function paletteHtml(c) {
       <p class="fb-palette-hint dim">Cada campo pertence a um destinatário. A cor mostra de quem é.</p>`;
   }
   if (dc.palette === 'library') {
-    const item = (row, soci) => `<button type="button" class="dc-lib" data-dc-lib="${h(row.id)}"><b>${h(row.name)}</b><small>${h(label(libraryCategories, row.category))}${soci ? ' · Soci' : ''}</small></button>`;
+    const item = (row, graao) => `<button type="button" class="dc-lib" data-dc-lib="${h(row.id)}"><b>${h(row.name)}</b><small>${h(label(libraryCategories, row.category))}${graao ? ' · Graao' : ''}</small></button>`;
     body = `<div class="dc-lib-list">${socLibrary.map(row => item(row, true)).join('')}${(c.s.contentBlocks || []).map(row => item(row, false)).join('')}</div>
       <p class="fb-palette-hint dim">O trecho entra depois do bloco selecionado.</p>`;
   }
@@ -317,7 +317,7 @@ function paymentProps(c, d) {
   const total = documentTotal(d.blocks);
   const connected = c.pay && !c.pay.error ? Boolean(c.pay.connected) : null;
   const head = field('Cobrança', `<select data-dc-pay="mode"><option value="">Sem cobrança</option>${paymentModes.map(([value, text]) => option(value, text, pay?.mode || '')).join('')}</select>`,
-    'Quando todos assinarem, a Soci cria a cobrança no valor total do documento.');
+    'Quando todos assinarem, a Graao cria a cobrança no valor total do documento.');
   if (!pay?.mode) return head + '<p class="dim dc-note">O documento só coleta assinaturas.</p>';
   const parts = paymentParts(pay, total);
   const schedule = pay.mode === 'one_time' ? `<h3 class="dc-subhead">Parcelas</h3>
@@ -493,7 +493,7 @@ function newDocumentDialog(c, presetTemplate = '') {
     <div class="dc-two"><label>Tipo<select name="kind">${documentKinds.map(([value, text]) => option(value, text, 'proposal')).join('')}</select></label>
       <label>Cliente<select name="contactId"><option value="">Escolher depois</option>${c.s.contacts.map(row => option(row.id, row.name, '')).join('')}</select></label></div>
     <fieldset class="fm-templates"><legend>Começar com</legend>${radio('', 'Em branco', 'Página vazia com um destinatário.')}
-      ${socTemplates.map(tpl => radio(tpl.id, tpl.title, `Modelo da Soci · ${label(documentKinds, tpl.kind)}`)).join('')}
+      ${socTemplates.map(tpl => radio(tpl.id, tpl.title, `Modelo da Graao · ${label(documentKinds, tpl.kind)}`)).join('')}
       ${own.map(tpl => radio(tpl.id, tpl.title, `Seu modelo · ${label(documentKinds, tpl.kind)}`)).join('')}</fieldset>
     <p class="form-status" role="alert" data-dc-error></p>
     <div class="co-form-actions"><button type="button" class="secondary" data-act="close">Cancelar</button><button class="primary" type="submit">Criar documento</button></div></form>`;
@@ -505,7 +505,7 @@ function fromTemplate(c, templateId, { title, kind, contactId }) {
   const recipients = structuredClone(tpl?.recipients?.length ? tpl.recipients : [newRecipient(0)]);
   if (contact) Object.assign(recipients[0], { contactId: contact.id, name: contact.name, email: contact.email || '' });
   return { title, kind: tpl && !kind ? tpl.kind : kind || tpl?.kind || 'proposal', contactId: contact?.id || '', opportunityId: '', expiresAt: '',
-    templateId: tpl && !tpl.id.startsWith('soci-') ? tpl.id : '', theme: structuredClone(tpl?.theme || { accent: '#155eef', font: 'sans', logoFileId: '' }),
+    templateId: tpl && !tpl.id.startsWith('graao-') ? tpl.id : '', theme: structuredClone(tpl?.theme || { accent: '#155eef', font: 'sans', logoFileId: '' }),
     recipients, ordered: Boolean(tpl?.ordered), variables: structuredClone(tpl?.variables || []), payment: structuredClone(tpl?.payment || null), blocks: cloneBlocks(tpl?.blocks || [newBlock('text', { html: '<h1>Título do documento</h1><p>Comece a escrever aqui.</p>' })]) };
 }
 
@@ -793,8 +793,8 @@ export function installDocuments(environment) {
     if (action === 'use') { dialog('Novo documento', newDocumentDialog(c, ds.id)); return; }
     if (action === 'new-template') { await create('documentTemplates', { title: 'Novo modelo', kind: 'proposal', recipients: [newRecipient(0)], blocks: [newBlock('text', { html: '<h1>Título do modelo</h1><p>Escreva aqui.</p>' })] }, 'Modelo criado.'); return; }
     if (action === 'new-block') { await create('contentBlocks', { name: 'Novo item', category: 'other', blocks: [newBlock('text')] }, 'Item criado.'); return; }
-    if (action === 'copy-soci-template') { const tpl = socTemplates.find(row => row.id === ds.id); await create('documentTemplates', { ...structuredClone(tpl), id: undefined, title: `${tpl.title} (cópia)`, blocks: cloneBlocks(tpl.blocks) }, 'Modelo duplicado.'); return; }
-    if (action === 'copy-soci-block') { const item = socLibrary.find(row => row.id === ds.id); await create('contentBlocks', { name: `${item.name} (cópia)`, category: item.category, blocks: cloneBlocks(item.blocks) }, 'Item duplicado.'); return; }
+    if (action === 'copy-graao-template') { const tpl = socTemplates.find(row => row.id === ds.id); await create('documentTemplates', { ...structuredClone(tpl), id: undefined, title: `${tpl.title} (cópia)`, blocks: cloneBlocks(tpl.blocks) }, 'Modelo duplicado.'); return; }
+    if (action === 'copy-graao-block') { const item = socLibrary.find(row => row.id === ds.id); await create('contentBlocks', { name: `${item.name} (cópia)`, category: item.category, blocks: cloneBlocks(item.blocks) }, 'Item duplicado.'); return; }
     if (action === 'duplicate' && doc) { await create('documents', { ...payloadOf('documents', normalize('documents', doc)), title: `${doc.title} (cópia)`, archived: false, blocks: cloneBlocks(doc.blocks) }, 'Documento duplicado.'); return; }
     if (action === 'duplicate-template') { const tpl = c.s.documentTemplates.find(row => row.id === ds.id); await create('documentTemplates', { ...payloadOf('documentTemplates', normalize('documentTemplates', tpl)), title: `${tpl.title} (cópia)`, blocks: cloneBlocks(tpl.blocks) }, 'Modelo duplicado.'); return; }
     if (action === 'to-template') {

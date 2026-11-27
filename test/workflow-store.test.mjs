@@ -59,5 +59,5 @@ test('T.1 product viewed: the product page reports the view only with an existin
   const item = catalog(s, shopRow).find(row => row.id === mug);
   const html = storeProduct(s, shopRow, item, { base: `/loja/demo/${storeId}` });
   assert.ok(html.includes(`"/api/store/demo/${storeId}"+'/view'`), 'posts to the store view endpoint');
-  assert.match(html, new RegExp(`soci-cart-session:'\\+"${storeId}"`));
+  assert.match(html, new RegExp(`graao-cart-session:'\\+"${storeId}"`));
 });

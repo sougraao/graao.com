@@ -9,9 +9,9 @@ import { countVisit, findPage, previewHeaders, publicHeaders, publishedPages, re
 import { hasPixels, pixelsScript, trackerScript, trackingOf } from '../tracking.mjs';
 import { NEXT_ROUTE } from './next-route.mjs';
 
-// Sites and funnels published on the Soci: a random visitor id, linked to the contact when the visitor sends
+// Sites and funnels published on the Graao: a random visitor id, linked to the contact when the visitor sends
 // the site's form, so later page views can fire "Página do site ou funil visitada".
-const siteVisitorCookie = workspace => `soci_sv_${workspace.replace(/[^\w-]/g, '')}`;
+const siteVisitorCookie = workspace => `graao_sv_${workspace.replace(/[^\w-]/g, '')}`;
 function siteVisitorOf(req, workspace) {
   const name = siteVisitorCookie(workspace);
   for (const part of String(req.headers.cookie || '').split(';')) {
@@ -105,7 +105,7 @@ export function createSiteRoutes(deps) {
           const next = project.kind === 'funnel' && from >= 0 ? order[from + 1] : null;
           const secure = String(req.headers['x-forwarded-proto'] || '').includes('https') || publicBase(req).startsWith('https') ? '; Secure' : '';
           res.setHeader('Set-Cookie', [...[res.getHeader('Set-Cookie') || []].flat(), `${siteVisitorCookie(workspace)}=${vid}; Max-Age=${365 * 86400}; Path=/; HttpOnly; SameSite=Lax${secure}`]);
-          const event = hasPixels((await store.load(workspace)).tracking) ? `soci_ev=lead.${sent.id}` : '';
+          const event = hasPixels((await store.load(workspace)).tracking) ? `graao_ev=lead.${sent.id}` : '';
           res.writeHead(303,{ Location:next ? `${base}/${encodeURIComponent(next.slug)}${event && `?${event}`}` : `${back}?sent=1${event && `&${event}`}` });
         } catch {
           res.writeHead(303,{ Location:`${back}?error=1` });

@@ -16,7 +16,7 @@ export default {
       await page.keyboard.press('Escape');
       await page.locator('main').getByText('Link e mensagens', { exact: true }).click();
       // O app local mostra 127.0.0.1; no print vai o endereço que o cliente vê na produção.
-      await page.locator('main input[value*="/avaliar/"]').first().evaluate(no => { no.value = no.value.replace(/^https?:\/\/[^/]+/, 'https://soci.app.br'); });
+      await page.locator('main input[value*="/avaliar/"]').first().evaluate(no => { no.value = no.value.replace(/^https?:\/\/[^/]+/, 'https://graao.com'); });
     }, espera: 1200, destacar: 'main input[value*="/avaliar/"]' },
   ],
 };

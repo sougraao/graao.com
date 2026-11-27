@@ -150,7 +150,7 @@ async function refreshEmail(){
   if(c.workspace===ws&&c.mode!=='agency'&&c.view==='settings'&&c.tab==='email') render();
 }
 window.addEventListener('message',ev=>{
-  if(ev.origin!==location.origin||ev.data?.type!=='soci-google') return;
+  if(ev.origin!==location.origin||ev.data?.type!=='graao-google') return;
   if(ev.data.error){ flash(ev.data.error,true); return; }
   flash('Conta Google conectada.'); c.google=null; render(); void refreshGoogle();
 });
@@ -266,7 +266,7 @@ function route(){ const [key,tab,project]=location.hash.slice(1).split('/');
   if(c.mode==='agency'){ agencyUI?.leave(); c.mode=''; renderedView=''; }
   if (c.account) { renderAccountLifecycle(); return; }
   if (!c.s) {
-    app.innerHTML = bootScreen('Abrindo a soci…');
+    app.innerHTML = bootScreen('Abrindo a graao…');
     openingWorkspace ??= openInitialWorkspace()
       .then(() => {
         if ((c.s || c.account) && c.mode !== 'agency') {
@@ -598,7 +598,7 @@ function opportunityDialog(action) {
   } else if (action === 'opportunity-import') {
     const history = c.s.imports.filter(row=>row.object === 'opportunities').slice(-5).reverse();
     dialog('Importar oportunidades',option('Pipeline padrão','pipelineId',pipelineId,pipelineChoices())+
-      '<p>Envie até 500 linhas. Informe <b>title</b> e o <b>email</b> ou <b>contactid</b> de um contato existente. Sem etapa indicada, a Soci usa a primeira do pipeline.</p>'+
+      '<p>Envie até 500 linhas. Informe <b>title</b> e o <b>email</b> ou <b>contactid</b> de um contato existente. Sem etapa indicada, a Graao usa a primeira do pipeline.</p>'+
       '<button class="secondary" type="button" data-act="opportunity-template">Baixar modelo CSV</button>'+
       '<label>Arquivo CSV<input name="file" type="file" accept=".csv,text/csv" required></label>'+
       (history.length ? '<h3>Importações recentes</h3>'+history.map(row=>`<div class="line-item"><span>${h(row.file || 'CSV')}</span><span>${row.added} importada(s)</span></div>`).join('') : ''),
@@ -870,7 +870,7 @@ document.addEventListener('click',async ev=>{
       case 'new-workspace':dialog('Criar workspace',input('Nome do workspace','name','',true),{form:'workspace',buttons:'<button class="secondary" type="button" data-act="close">Cancelar</button><button class="primary">Criar workspace</button>'});break;
       case 'search':dialog('Buscar no workspace','<div id="search-results" class="bui-search-host"></div>');mountGlobalSearch();break;
       case 'dialer':dialog('Discador','<p>O discador não está conectado. Chamadas de voz exigem a configuração de um provedor de telefonia autorizado.</p>');break;
-      case 'updates':dialog('Novidades','<p>A soci está rodando localmente com tudo atualizado.</p>');break;
+      case 'updates':dialog('Novidades','<p>A graao está rodando localmente com tudo atualizado.</p>');break;
       case 'notifications':dialog('Notificações',`<p>${c.m.unread} mensage${c.m.unread===1?'m não lida':'ns não lidas'}.</p><button class="secondary" data-go="conversations">Abrir conversas</button>`);break;
       case 'help':dialog('Ajuda','<p>Gerencie contatos, oportunidades, agendamentos, formulários e automações. Acesse Configurações para gerenciar workspaces.</p><button class="secondary" data-go="dashboard">Abrir painel</button>');break;
       case 'reload':await load();render();flash('Workspace atualizado.');break;
@@ -944,10 +944,10 @@ document.addEventListener('click',async ev=>{
       }
       case 'phone-call': {
         let agentPhone='';
-        try{ agentPhone=localStorage.getItem('soci-agent-phone')||''; }catch{}
-        agentPhone=await askText('Qual é o seu telefone?',{text:'A Soci liga primeiro para o seu telefone e, quando você atender, completa a ligação com o contato.',value:agentPhone,type:'tel',ok:'Ligar agora'});
+        try{ agentPhone=localStorage.getItem('graao-agent-phone')||''; }catch{}
+        agentPhone=await askText('Qual é o seu telefone?',{text:'A Graao liga primeiro para o seu telefone e, quando você atender, completa a ligação com o contato.',value:agentPhone,type:'tel',ok:'Ligar agora'});
         if(!agentPhone) break;
-        try{ localStorage.setItem('soci-agent-phone',agentPhone); }catch{}
+        try{ localStorage.setItem('graao-agent-phone',agentPhone); }catch{}
         await api(url('/api/phone/call'),{contactId:c.thread,agentPhone});
         await load(); render(); flash(tr('Ligando para você. Atenda para falar com o contato.'));
         break;
@@ -967,7 +967,7 @@ document.addEventListener('click',async ev=>{
         render(); flash('Domínio de envio removido.');
         break;
       }
-      case 'google-connect': window.open(url('/api/google/workspace/connect'),'soci-google','width=560,height=720'); break;
+      case 'google-connect': window.open(url('/api/google/workspace/connect'),'graao-google','width=560,height=720'); break;
       case 'google-disconnect': {
         if(!await ask('Desconectar o Google desta subconta?', { text: 'Os widgets do Google Analytics e do Perfil da Empresa param de mostrar dados.', ok: 'Desconectar' })) break;
         c.google={...await api(url('/api/google/workspace/disconnect'),{}),workspace:c.workspace};
@@ -1289,7 +1289,7 @@ document.addEventListener('submit',async ev=>{
 });
 
 if(viewPath){
-  try{const result=await api(`/api/view${viewPath}`), workspace=viewPath.split('/')[2]; document.title=domainBrand()?.name||'soci';app.innerHTML=publicView(result,workspace);}
+  try{const result=await api(`/api/view${viewPath}`), workspace=viewPath.split('/')[2]; document.title=domainBrand()?.name||'graao';app.innerHTML=publicView(result,workspace);}
   catch(e){app.innerHTML=`<div class="boot"><h1>Página indisponível</h1><p>${h(e.message)}</p><a href="/app">Voltar para a plataforma</a></div>`;}
 }else{
   installDashboardControls({ c,dialog,close,render,load,mutate,flash,go,download:downloads });
@@ -1420,7 +1420,7 @@ if(viewPath){
     if (live) try { await load(); render(); } catch { /* The current view remains available. */ }
   });
   initI18n();
-  window.addEventListener('soci:languagechange', () => { if (c.mode !== 'agency') render(); });
+  window.addEventListener('graao:languagechange', () => { if (c.mode !== 'agency') render(); });
   if (shellAgency()) {
     app.innerHTML = bootScreen('Abrindo o app…');
     mobileShell = await installMobileShell({ c, app, api, url, flash, allowed: allowedView, screens }).catch(() => mobileShell);

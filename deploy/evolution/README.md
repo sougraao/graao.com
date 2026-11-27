@@ -1,6 +1,6 @@
-# WhatsApp do soci.app com Evolution API na VPS da Hostinger
+# WhatsApp do graao.app com Evolution API na VPS da Hostinger
 
-Esta pasta sobe a Evolution API v2.3.8 numa VPS e liga o soci.app a ela. Depois disso, cada subconta conecta o próprio número lendo um QR Code.
+Esta pasta sobe a Evolution API v2.3.8 numa VPS e liga o graao.app a ela. Depois disso, cada subconta conecta o próprio número lendo um QR Code.
 
 ## Por que a Evolution costuma cair, e o que esta configuração faz
 
@@ -10,15 +10,15 @@ Esta pasta sobe a Evolution API v2.3.8 numa VPS e liga o soci.app a ela. Depois 
 | Reiniciou e pediu QR Code de novo | Sessões no Postgres (`DATABASE_SAVE_DATA_INSTANCE=true`, `CACHE_REDIS_SAVE_INSTANCES=false`) e volume persistente. |
 | Container travado, mas ainda "vivo" | Healthcheck mais **autoheal**, que reinicia o container travado em até ~2 min. |
 | Número caiu e ficou desconectado | **watchdog**: reconecta quem caiu e reinicia instância presa em "connecting" há 10 min. Não mexe em logout nem em banimento. |
-| VPS sem memória: o Linux mata o processo | Swap automático, teto de memória por container e integrações que o soci não usa desligadas. |
+| VPS sem memória: o Linux mata o processo | Swap automático, teto de memória por container e integrações que o graao não usa desligadas. |
 | Disco cheio por logs e mensagens | Rotação de logs do Docker e limpeza diária de mensagens com mais de 30 dias. |
 | Mensagem "Aguardando mensagem" no celular do cliente | Mensagens novas ficam salvas para o WhatsApp poder pedir reenvio. |
-| Webhook perdido durante uma queda | Ao enviar, o soci confere o status ao vivo e regrava o webhook a cada conexão. |
+| Webhook perdido durante uma queda | Ao enviar, o graao confere o status ao vivo e regrava o webhook a cada conexão. |
 | Atualizar o Docker derruba tudo | `live-restore` no Docker e `restart: unless-stopped` em todos os serviços. |
-| Fica "conectada" mas para de receber, ou cai a cada ~50 min | Corrigido na `v2.3.8` (na 2.3.7 acontecia). Além disso, o soci reinicia sozinho a instância que não responde. |
-| Mensagem recebida que não chega ao soci | A cada 2 min o soci busca na Evolution o que o webhook não entregou (até 24 h para trás) e guarda sem repetir. |
-| Webhook apagado ou trocado | O soci confere a cada 10 min e registra de novo. |
-| Resposta que não saiu durante uma queda | O soci reenvia quando o número volta, por até 30 min, só se tiver certeza de que não saiu. |
+| Fica "conectada" mas para de receber, ou cai a cada ~50 min | Corrigido na `v2.3.8` (na 2.3.7 acontecia). Além disso, o graao reinicia sozinho a instância que não responde. |
+| Mensagem recebida que não chega ao graao | A cada 2 min o graao busca na Evolution o que o webhook não entregou (até 24 h para trás) e guarda sem repetir. |
+| Webhook apagado ou trocado | O graao confere a cada 10 min e registra de novo. |
+| Resposta que não saiu durante uma queda | O graao reenvia quando o número volta, por até 30 min, só se tiver certeza de que não saiu. |
 | Queda que ninguém percebe | Depois de 5 min fora do ar, aviso nas Conversas e na agência, e e-mail para a equipe se o envio de e-mail estiver configurado. |
 | Disco cheio de repente | `guard-vps.sh` a cada 10 min: com 85% limpa o Docker; com 92%, também os backups antigos (guarda os 3 mais novos). |
 | Docker parado | `guard-vps.sh` sobe de novo os containers que não estiverem rodando. |
@@ -54,9 +54,9 @@ A senha root é pedida duas vezes (envio e instalação), a não ser que você u
 
 Ao final, o script mostra a **URL** e a **API Key global**. Guarde a chave num cofre de senhas.
 
-## 4. Ligar o soci.app
+## 4. Ligar o graao.app
 
-Na Vercel, abra o projeto soci.app e vá em **Settings → Environment Variables** (Production):
+Na Vercel, abra o projeto graao.app e vá em **Settings → Environment Variables** (Production):
 
 ```
 EVOLUTION_BASE_URL = https://whatsapp.seudominio.com.br
@@ -113,7 +113,7 @@ Esses backups ficam na própria VPS. Para se proteger da perda da VPS inteira, l
 
 ### Excluir a instância de uma subconta
 
-Em **Agência → Configurações → WhatsApp**, o botão **Excluir instância** desconecta o número e apaga a instância do servidor, o que libera memória da VPS. As conversas continuam no soci.app.
+Em **Agência → Configurações → WhatsApp**, o botão **Excluir instância** desconecta o número e apaga a instância do servidor, o que libera memória da VPS. As conversas continuam no graao.app.
 
 ### Monitoramento externo (recomendado)
 
@@ -136,7 +136,7 @@ powershell -ExecutionPolicy Bypass -File deploy\evolution\start-pc.ps1
 Para o WhatsApp não cair:
 - O PC não pode **suspender nem hibernar**: em *Configurações → Sistema → Energia*, coloque "Nunca" para suspensão na tomada.
 - O **Windows Update** reinicia o PC sozinho. Defina o horário ativo para o dia todo, ou pause as atualizações. Depois de um reinício, o Docker Desktop e o Tailscale voltam ao entrar no Windows e os containers sobem sozinhos.
-- Se o PC desligar, o WhatsApp para de enviar e receber até ele voltar. Nesse intervalo, as mensagens que chegam ficam no celular, mas não entram no soci. Para uso sério e contínuo, a VPS continua sendo o caminho.
+- Se o PC desligar, o WhatsApp para de enviar e receber até ele voltar. Nesse intervalo, as mensagens que chegam ficam no celular, mas não entram no graao. Para uso sério e contínuo, a VPS continua sendo o caminho.
 
 Comandos úteis (na pasta `deploy\evolution`):
 
@@ -153,4 +153,4 @@ docker compose -f docker-compose.yml -f docker-compose.pc.yml logs --tail 50 wat
 - A Evolution usa o WhatsApp Web (não é a API oficial da Meta). Ela não cai por causa do servidor, mas o WhatsApp pode **banir números** que disparam muitas mensagens para quem não conhece. Aqueça números novos e evite listas frias.
 - Se o cliente remover o aparelho no celular (logout), só ele resolve, lendo o QR de novo. O watchdog não insiste nesses casos.
 - Mensagens recebidas de grupos e de status são ignoradas: as Conversas tratam apenas contatos individuais. O envio para grupos existe só no Planejador de eventos.
-- Um número por subconta. Cada subconta tem a própria instância, `soci_<subconta>`.
+- Um número por subconta. Cada subconta tem a própria instância, `graao_<subconta>`.

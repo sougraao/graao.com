@@ -302,8 +302,8 @@ function settingsHtml(c) {
 
 function integrateHtml(c, form) {
   const link = absolute(formUrl(c, form));
-  const id = `soci-form-${form.id.slice(0, 8)}`;
-  const embed = `<iframe id="${id}" src="${link}?embed=1" title="${form.name.replace(/"/g, '')}" style="width:100%;border:0;min-height:420px" loading="lazy"></iframe>\n<script>addEventListener('message',e=>{if(e.data&&e.data.sociForm==='${form.id}'){document.getElementById('${id}').style.height=e.data.height+'px'}})</script>`;
+  const id = `graao-form-${form.id.slice(0, 8)}`;
+  const embed = `<iframe id="${id}" src="${link}?embed=1" title="${form.name.replace(/"/g, '')}" style="width:100%;border:0;min-height:420px" loading="lazy"></iframe>\n<script>addEventListener('message',e=>{if(e.data&&e.data.graaoForm==='${form.id}'){document.getElementById('${id}').style.height=e.data.height+'px'}})</script>`;
   if (!form.active) return `<div class="surface empty fb-integrate-off">${icon('lock', 24)}<strong>Publique o formulário para compartilhar</strong><p>O link e o código de incorporação funcionam depois de publicar.</p><button class="primary" data-fb-publish="on">Publicar formulário</button></div>`;
   return `<div class="fb-integrate"><div class="fb-integrate-side">
       <section class="surface padded"><h2>${icon('link', 16)} Link direto</h2><p class="dim">Página própria do formulário. Use os parâmetros para preencher campos, ex.: <code>?email=ana@exemplo.com</code>.</p>
@@ -630,8 +630,8 @@ export function installForms(environment) {
 
   // Embedded forms report their height.
   addEventListener('message', event => {
-    if (event.origin !== location.origin || !event.data?.sociForm) return;
-    document.querySelectorAll(`[data-form-frame="${CSS.escape(event.data.sociForm)}"]`).forEach(frame => { frame.style.height = `${Math.min(4000, event.data.height + 8)}px`; });
+    if (event.origin !== location.origin || !event.data?.graaoForm) return;
+    document.querySelectorAll(`[data-form-frame="${CSS.escape(event.data.graaoForm)}"]`).forEach(frame => { frame.style.height = `${Math.min(4000, event.data.height + 8)}px`; });
   });
 
   // Leaving the builder with unsaved changes asks first.

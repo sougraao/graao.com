@@ -1,6 +1,6 @@
-// Importar do GHL: a conversão em passos curtos (cada chamada da janela da soci roda um passo de menos de 20 s).
+// Importar do GHL: a conversão em passos curtos (cada chamada da janela da graao roda um passo de menos de 20 s).
 // received → pages (pré-visualizações das páginas, 10 por passo) → converting (o conversor de ghl-convert/) →
-// images (cópia das imagens para os assets da soci, 20 por passo) → done (setup em Importados). Erro: failed.
+// images (cópia das imagens para os assets da graao, 20 por passo) → done (setup em Importados). Erro: failed.
 // Tudo o que o passo lê e grava passa por `io` (routes/ghl-import.mjs), para o módulo não conhecer o banco.
 import { createHash } from 'node:crypto';
 import { isIP } from 'node:net';
@@ -99,7 +99,7 @@ async function stepConvert(job, io) {
   // Os modelos de e-mail viram blocos de texto: as imagens deles não vêm (nem ficam presas ao GHL).
   const withImages = (source.dump.emailTemplates || []).filter(e => /<img\b/i.test(e.html || '')).length;
   if (withImages) note(job, `${withImages === 1 ? '1 modelo de e-mail tinha imagens; ele veio' : `${withImages} modelos de e-mail tinham imagens; eles vieram`} só com o texto. Coloque as imagens no editor de e-mail.`);
-  // Limites da soci: 50 páginas por site e o tamanho máximo de cada página.
+  // Limites da graao: 50 páginas por site e o tamanho máximo de cada página.
   for (const project of assets.studioProjects || []) {
     let pages = sites[project.id] || [];
     if (pages.length > SITE_LIMITS.pages) {
@@ -123,7 +123,7 @@ async function stepConvert(job, io) {
   job.status = images.length ? 'images' : 'saving';
 }
 
-/** Copia as próximas imagens para os assets da soci (as que falham continuam no endereço do GHL). */
+/** Copia as próximas imagens para os assets da graao (as que falham continuam no endereço do GHL). */
 async function stepImages(job, io) {
   const [{ images }, copied] = await Promise.all([io.readTemp('images'), io.readTemp('copied')]);
   const batch = images.slice(job.imagesDone, job.imagesDone + IMAGES_PER_STEP);

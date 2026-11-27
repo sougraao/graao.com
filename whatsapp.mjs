@@ -19,7 +19,7 @@ const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 function deriveKey(secret) {
   const material = typeof secret === 'string' && secret.trim()
     ? secret.trim()
-    : 'soci-local-dev-whatsapp-seal-key-do-not-use-without-env';
+    : 'graao-local-dev-whatsapp-seal-key-do-not-use-without-env';
   return createHash('sha256').update(material).digest();
 }
 
@@ -62,9 +62,11 @@ function cleanBaseUrl(raw) {
   return `${parsed.origin}${parsed.pathname.replace(/\/+$/, '')}`;
 }
 
+const INSTANCE_PREFIX = 'graao_';
+const INSTANCE_NAME_LIMIT = 37;
 function instanceSlug(workspaceId) {
-  const clean = String(workspaceId || 'ws').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 32) || 'ws';
-  return `soci_${clean}`;
+  const clean = String(workspaceId || 'ws').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, INSTANCE_NAME_LIMIT - INSTANCE_PREFIX.length) || 'ws';
+  return `${INSTANCE_PREFIX}${clean}`;
 }
 
 function normalizeQr(raw) {
@@ -123,7 +125,7 @@ function unwrap(message, once = false, depth = 0) {
   return inner ? unwrap(inner, once || Boolean(single), depth + 1) : { message, once };
 }
 
-// A mídia da mensagem e, quando o arquivo não fica na soci, o porquê em `skip`.
+// A mídia da mensagem e, quando o arquivo não fica na graao, o porquê em `skip`.
 function evolutionMedia(raw) {
   const { message, once } = unwrap(raw);
   if (!message) return null;
@@ -1260,7 +1262,7 @@ export function createWhatsAppHandler({
     return true;
   }
 
-  // A linha de confirmação do celular (routes/verify.mjs): uma instância da soci no servidor global, sem row de agência.
+  // A linha de confirmação do celular (routes/verify.mjs): uma instância da graao no servidor global, sem row de agência.
   function verifyLine(instanceName) {
     if (!hasManaged || !instanceName) return null;
     const sub = { instanceName };

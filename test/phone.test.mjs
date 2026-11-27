@@ -18,7 +18,7 @@ test('Twilio helpers: E.164, the request signature and escaped TwiML', () => {
   assert.equal(e164('0055 11 3333-4444'), '+551133334444');
   assert.equal(e164('123'), '');
   const params = { CallSid: 'CA1', From: '+5511999990000', To: '+551140001000' };
-  const url = 'https://soci.test/api/phone/twilio/voice/demo';
+  const url = 'https://graao.test/api/phone/twilio/voice/demo';
   const signature = twilioSignature(url, params, TOKEN);
   assert.equal(twilioSignatureValid(url, params, signature, TOKEN), true);
   assert.equal(twilioSignatureValid(url, { ...params, From: '+5511000000000' }, signature, TOKEN), false);
@@ -161,7 +161,7 @@ test('Server: buys a number, answers an inbound call (forward, then voicemail) a
     if (url.endsWith('/Calls.json')) return ok({ sid: 'CAout1' });
     return { ok: false, status: 404, json: async () => ({ message: 'not found' }) };
   };
-  const phoneEnv = { TWILIO_ACCOUNT_SID: 'AC1', TWILIO_AUTH_TOKEN: TOKEN, PHONE_PUBLIC_ORIGIN: 'https://soci.test' };
+  const phoneEnv = { TWILIO_ACCOUNT_SID: 'AC1', TWILIO_AUTH_TOKEN: TOKEN, PHONE_PUBLIC_ORIGIN: 'https://graao.test' };
   const { server, host } = makeServer({ dbPath: ':memory:', port: 0, auth: null, allowLocalAccess: true, socialScheduler: false, twilioRequest, phoneEnv });
   await new Promise(resolve => server.listen(0, host, resolve));
   t.after(() => new Promise(resolve => server.close(resolve)));
@@ -171,7 +171,7 @@ test('Server: buys a number, answers an inbound call (forward, then voicemail) a
     return { status: r.status, body: await r.json() };
   };
   const twilio = async (path, params, { sign = true } = {}) => {
-    const signature = twilioSignature(`https://soci.test${path}`, params, TOKEN);
+    const signature = twilioSignature(`https://graao.test${path}`, params, TOKEN);
     const r = await fetch(base + path, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', ...(sign ? { 'X-Twilio-Signature': signature } : {}) }, body: new URLSearchParams(params).toString() });
     return { status: r.status, text: await r.text() };
   };
@@ -182,15 +182,15 @@ test('Server: buys a number, answers an inbound call (forward, then voicemail) a
   assert.match(twilioCalls.at(-1).url, /Contains=%2B5511\*/);
   const bought = (await call('/api/phone/buy?workspace=demo', { number: '+551140001000', name: 'Recepção', forward: '11988887777' })).body;
   assert.equal(bought.numbers[0].number, '+551140001000');
-  assert.deepEqual([twilioCalls.at(-1).form.VoiceUrl, twilioCalls.at(-1).form.StatusCallback], ['https://soci.test/api/phone/twilio/voice/demo', 'https://soci.test/api/phone/twilio/status/demo']);
+  assert.deepEqual([twilioCalls.at(-1).form.VoiceUrl, twilioCalls.at(-1).form.StatusCallback], ['https://graao.test/api/phone/twilio/voice/demo', 'https://graao.test/api/phone/twilio/status/demo']);
 
   const inbound = { CallSid: 'CAin1', From: '+5511955554444', To: '+551140001000' };
   assert.equal((await twilio('/api/phone/twilio/voice/demo', inbound, { sign: false })).status, 403, 'unsigned webhooks are refused');
   let answer = await twilio('/api/phone/twilio/voice/demo', inbound);
-  assert.match(answer.text, /<Dial action="https:\/\/soci.test\/api\/phone\/twilio\/dial\/demo\?call=[^"]+" method="POST" timeout="20"><Number>\+5511988887777<\/Number><\/Dial>/);
+  assert.match(answer.text, /<Dial action="https:\/\/graao.test\/api\/phone\/twilio\/dial\/demo\?call=[^"]+" method="POST" timeout="20"><Number>\+5511988887777<\/Number><\/Dial>/);
   const callId = (await state()).calls.find(row => row.callSid === 'CAin1').id;
   answer = await twilio(`/api/phone/twilio/dial/demo?call=${callId}`, { CallSid: 'CAin1', DialCallStatus: 'no-answer' });
-  assert.match(answer.text, /<Say[^>]*>Não conseguimos atender agora.*<Record action="https:\/\/soci.test\/api\/phone\/twilio\/voicemail\/demo\?call=/);
+  assert.match(answer.text, /<Say[^>]*>Não conseguimos atender agora.*<Record action="https:\/\/graao.test\/api\/phone\/twilio\/voicemail\/demo\?call=/);
   await twilio(`/api/phone/twilio/voicemail/demo?call=${callId}`, { CallSid: 'CAin1', RecordingUrl: 'https://api.twilio.com/2010-04-01/Accounts/AC1/Recordings/RE9' });
   await twilio('/api/phone/twilio/status/demo', { CallSid: 'CAin1', CallStatus: 'completed', CallDuration: '35' });
   let s = await state();
@@ -202,10 +202,10 @@ test('Server: buys a number, answers an inbound call (forward, then voicemail) a
   const placed = await call('/api/phone/call?workspace=demo', { contactId, agentPhone: '11 97777-0000' });
   assert.equal(placed.status, 200, JSON.stringify(placed.body));
   const dialed = twilioCalls.at(-1).form;
-  assert.deepEqual([dialed.To, dialed.From], ['+5511977770000', '+551140001000'], 'the team phone rings first, from the Soci number');
+  assert.deepEqual([dialed.To, dialed.From], ['+5511977770000', '+551140001000'], 'the team phone rings first, from the Graao number');
   const outId = placed.body.id;
   answer = await twilio(`/api/phone/twilio/bridge/demo?call=${outId}`, { CallSid: 'CAout1' });
-  assert.match(answer.text, /<Dial action="https:\/\/soci.test\/api\/phone\/twilio\/dial\/demo\?call=[^"]+" method="POST" callerId="\+551140001000" timeout="30"><Number>\+5511955554444<\/Number>/);
+  assert.match(answer.text, /<Dial action="https:\/\/graao.test\/api\/phone\/twilio\/dial\/demo\?call=[^"]+" method="POST" callerId="\+551140001000" timeout="30"><Number>\+5511955554444<\/Number>/);
   await twilio(`/api/phone/twilio/dial/demo?call=${outId}`, { CallSid: 'CAout1', DialCallStatus: 'completed', DialCallDuration: '61' });
   await twilio(`/api/phone/twilio/status/demo?call=${outId}`, { CallSid: 'CAout1', CallStatus: 'completed', CallDuration: '70' });
   s = await state();

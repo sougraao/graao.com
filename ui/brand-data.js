@@ -12,7 +12,7 @@ export const voiceTraits = ['Acolhedora', 'Direta', 'Divertida', 'Especialista',
 
 export const brandLimits = { boards: 20, colors: 10, words: 20, word: 40, logoBytes: 300 * 1024 };
 
-// Starting points. Names and palettes are soci's own.
+// Starting points. Names and palettes are graao's own.
 export const brandPresets = [
   { id: 'terra', name: 'Terra', colors: [['primary', '#8a5a3b'], ['secondary', '#c9a27e'], ['accent', '#3f6b4f'], ['background', '#f6f0e8'], ['text', '#2b2118']], fonts: ['Fraunces', 'Work Sans'] },
   { id: 'laguna', name: 'Laguna', colors: [['primary', '#0e7490'], ['secondary', '#67e8f9'], ['accent', '#f59e0b'], ['background', '#f0fbfd'], ['text', '#0b2530']], fonts: ['Manrope', 'Inter'] },

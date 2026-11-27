@@ -62,7 +62,7 @@ export default {
       await abrir(page);
       const code = await page.locator('dialog[open] .ag-ghl-value').textContent();
       await page.evaluate(async ({ code, parts }) => {
-        const headers = { 'Content-Type': 'application/json', 'X-Soci-Import-Code': code };
+        const headers = { 'Content-Type': 'application/json', 'X-Graao-Import-Code': code };
         for (const part of parts) await fetch('/api/ghl-import/part', { method: 'POST', headers, body: JSON.stringify(part) });
         await fetch('/api/ghl-import/done', { method: 'POST', headers, body: '{}' });
       }, { code, parts: partes(leitura()) });

@@ -60,9 +60,9 @@ test('A sub-account adds its domain, sees SPF/DKIM records, verifies it and the 
     sent.push(body);
     return reply({ id: `email_${sent.length}` });
   };
-  const documentMail = documentMailer({ key: 're_test', from: 'Soci <no-reply@soci.app.br>', publicOrigin: 'https://app.soci.test', request: sendMail });
+  const documentMail = documentMailer({ key: 're_test', from: 'Graao <no-reply@graao.com>', publicOrigin: 'https://app.graao.test', request: sendMail });
   const emailDomainApi = emailDomains({ key: 're_test', base: 'https://resend.test', request: fakeResend(calls) });
-  process.env.PORTAL_EMAIL_FROM = 'Soci <no-reply@soci.app.br>';
+  process.env.PORTAL_EMAIL_FROM = 'Graao <no-reply@graao.com>';
   const { server, host } = makeServer({ allowLocalAccess: true, auth: null, store: createSqliteStore(':memory:'), port: 0, documentMail, emailDomainApi });
   await new Promise((resolve, reject) => { server.on('error', reject); server.listen(0, host, resolve); });
   t.after(() => { delete process.env.PORTAL_EMAIL_FROM; return new Promise(resolve => server.close(resolve)); });
@@ -71,7 +71,7 @@ test('A sub-account adds its domain, sees SPF/DKIM records, verifies it and the 
   const post = async (path, body) => (await fetch(base + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })).json();
 
   const empty = await get('/api/email/workspace/status?workspace=demo');
-  assert.deepEqual([empty.configured, empty.domain, empty.sender, empty.platformAddress], [true, null, '', 'no-reply@soci.app.br']);
+  assert.deepEqual([empty.configured, empty.domain, empty.sender, empty.platformAddress], [true, null, '', 'no-reply@graao.com']);
   assert.match((await post('/api/email/workspace/add?workspace=demo', { domain: 'não é domínio' })).error, /domínio válido/);
   assert.match((await post('/api/email/workspace/add?workspace=demo', { domain: 'mail.padaria.com.br', localPart: 'a b' })).error, /antes do @/);
 
@@ -122,14 +122,14 @@ test('When Resend refuses the domain, the e-mail falls back to the platform addr
     sent.push({ from: body.from, idem: options.headers['Idempotency-Key'] });
     return reply({}, body.from.includes('mail.loja.com') ? 403 : 200);
   };
-  const mailer = documentMailer({ key: 're_test', from: 'Soci <no-reply@soci.app.br>', publicOrigin: 'https://app.soci.test', request });
+  const mailer = documentMailer({ key: 're_test', from: 'Graao <no-reply@graao.com>', publicOrigin: 'https://app.graao.test', request });
   const outcome = await mailer.email('ana@x.com', { subject: 'Oi', text: 'Olá' }, 'doc-1', { fromName: 'Loja', fromAddress: 'oi@mail.loja.com' });
   assert.match(outcome, /endereço da plataforma.*mail\.loja\.com/);
-  assert.deepEqual(sent, [{ from: 'Loja <oi@mail.loja.com>', idem: 'doc-1' }, { from: 'Loja <no-reply@soci.app.br>', idem: 'doc-1-platform' }]);
+  assert.deepEqual(sent, [{ from: 'Loja <oi@mail.loja.com>', idem: 'doc-1' }, { from: 'Loja <no-reply@graao.com>', idem: 'doc-1-platform' }]);
   assert.equal(await mailer.email('ana@x.com', { subject: 'Oi', text: 'Olá' }, 'doc-2', {}), 'e-mail enviado');
 
   const reports = [];
-  const reportMail = reportMailer({ key: 're_test', from: 'Soci <no-reply@soci.app.br>', publicOrigin: 'https://app.soci.test', request: async (input, options) => { reports.push(JSON.parse(options.body).from); return reply({}); } });
+  const reportMail = reportMailer({ key: 're_test', from: 'Graao <no-reply@graao.com>', publicOrigin: 'https://app.graao.test', request: async (input, options) => { reports.push(JSON.parse(options.body).from); return reply({}); } });
   const report = { id: 'r1', name: 'Mensal', share: { id: 'sh1' }, schedule: { recipients: ['dono@x.com'], message: '' } };
   await reportMail.send('demo', { profile: { name: 'Padaria <Bom Pão>' } }, report, '2026-11', { fromAddress: 'oi@mail.loja.com' });
   assert.deepEqual(reports, ['Padaria Bom Pão <oi@mail.loja.com>']);

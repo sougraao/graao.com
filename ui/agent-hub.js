@@ -138,7 +138,7 @@ function templatesView(s) {
       <small class="dim">Salvo em ${when(template.created)}</small>
       <div class="tpl-actions"><button class="secondary" type="button" data-tpl-use="${h(template.id)}">${icon('plus', 14)} Criar agente</button>
         <button class="icon-btn" type="button" data-tpl-delete="${h(template.id)}" aria-label="Excluir modelo ${h(template.name)}" title="Excluir modelo">${icon('trash', 15)}</button></div>
-    </article>`).join('')}</div>` : empty('copy', 'Nenhum modelo da subconta', 'Salve um agente pronto como modelo para criar outros parecidos. Os modelos prontos da soci continuam na tela inicial do estúdio.');
+    </article>`).join('')}</div>` : empty('copy', 'Nenhum modelo da subconta', 'Salve um agente pronto como modelo para criar outros parecidos. Os modelos prontos da graao continuam na tela inicial do estúdio.');
   return shell('templates', 'Modelos de agente', 'Modelos criados pela sua equipe nesta subconta.', `${save}${list}`);
 }
 

@@ -1,10 +1,10 @@
 name: Smoke pós-deploy
 
 # A Vercel avisa o GitHub com um commit status (não com Deployments). O contexto era "Vercel"; desde que o
-# projeto soci-docs foi ligado ao repositório, cada projeto tem o seu ("Vercel – soci-app-br", "Vercel – soci-docs")
+# projeto graao-docs foi ligado ao repositório, cada projeto tem o seu ("Vercel – graao-app-br", "Vercel – graao-docs")
 # e só o do app conta. Aceita os dois nomes do app.
 # Quando esse status fica "success" num commit da main, o deploy de produção está pronto:
-# o smoke confere https://soci.app.br. Também dá para rodar à mão (Actions → Run workflow),
+# o smoke confere https://graao.com. Também dá para rodar à mão (Actions → Run workflow),
 # inclusive contra um preview protegido, com o segredo VERCEL_AUTOMATION_BYPASS_SECRET.
 on:
   status:
@@ -13,7 +13,7 @@ on:
       url:
         description: Endereço a testar
         required: true
-        default: https://soci.app.br
+        default: https://graao.com
 
 permissions:
   contents: read
@@ -22,7 +22,7 @@ jobs:
   smoke:
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      ((github.event.context == 'Vercel' || github.event.context == 'Vercel – soci-app-br') && github.event.state == 'success' &&
+      ((github.event.context == 'Vercel' || github.event.context == 'Vercel – graao-app-br') && github.event.state == 'success' &&
        contains(github.event.branches.*.name, 'main'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -35,5 +35,5 @@ jobs:
           node-version: 26
       - run: npm run smoke -- "$SMOKE_URL"
         env:
-          SMOKE_URL: ${{ inputs.url || 'https://soci.app.br' }}
+          SMOKE_URL: ${{ inputs.url || 'https://graao.com' }}
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
