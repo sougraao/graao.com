@@ -55,7 +55,7 @@
 .mc-color{display:grid;gap:6px;justify-items:start}
 :is(.mc-color,.mc-tokens) input[type=color]{width:100%;max-width:160px;height:40px;padding:4px;border:1px solid var(--g-line-2);border-radius:var(--r-control);background:var(--g-field);cursor:pointer}
 .mc-all summary{cursor:pointer;font-weight:650;font-size:13px;min-height:32px;display:list-item;line-height:32px}
-.mc-tokens{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;padding-top:8px}
+.mc-tokens{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:12px;padding-top:8px}
 .mc-warn{display:flex;align-items:center;gap:8px;margin:0;padding:10px 14px;border-radius:14px;background:var(--g-orange-100);color:var(--g-orange-ink);font-weight:600;font-size:13px}
 
 .mc-modules,.mc-links{list-style:none;margin:0;padding:0;display:grid;gap:8px}

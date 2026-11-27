@@ -4,6 +4,7 @@
 import { readFile, squarePng } from './agency-desktop.js';
 import { mobileModules } from './agency-data.js';
 import { ask } from './ask.js';
+import { colorPicker, mountColorPicker } from './color-picker.js';
 import { contrast, themeFromColor, themeIsDark, themePresets, themeTokens } from './community-data.js';
 import { icon as i } from './icons.js';
 import { langToggle, tr } from './i18n.js';
@@ -103,8 +104,8 @@ export function createMobileCreator({ getApp, agencyId, origin, head, act, flash
     const choice = (id, name, tokens, on) => `<label class="mc-theme"><input type="radio" name="themePreset" value="${id}"${on ? ' checked' : ''}>${swatch(tokens)}<span>${t(name)}</span></label>`;
     const weak = [[theme.tokens.onPrimary, theme.tokens.primary, 'O texto do botão principal está difícil de ler.'], [theme.tokens.font, theme.tokens.background, 'O texto sobre o fundo está difícil de ler.']].find(([a, b]) => contrast(a, b) < 4.5);
     return `<fieldset class="mc-themes"><legend>${t('Tema')}</legend>${themePresets.map(row => choice(row.id, row.name, row.tokens, !own && draft.theme?.preset === row.id)).join('')}${choice('custom', 'Suas cores', theme.tokens, own)}</fieldset>
-      ${own ? `<label class="mc-color">${t('Cor principal')}<input type="color" name="ownColor" value="${h(theme.tokens.primary)}"></label>` : ''}
-      <details class="mc-all"><summary>${t('Ajustar todas as cores')}</summary><div class="mc-tokens">${themeTokens.map(([key, label]) => `<label>${t(label)}<input type="color" name="token.${key}" value="${h(theme.tokens[key])}"></label>`).join('')}</div></details>
+      ${own ? `<div class="mc-color">${colorPicker(theme.tokens.primary, { name: 'ownColor', id: 'mc-own-color', label: t('Cor principal'), fallback: '#FF6B1A' })}</div>` : ''}
+      <details class="mc-all"><summary>${t('Ajustar todas as cores')}</summary><div class="mc-tokens">${themeTokens.map(([key, label]) => colorPicker(theme.tokens[key], { name: `token.${key}`, id: `mc-${key}-color`, label: t(label), fallback: '#FF6B1A' })).join('')}</div></details>
       ${weak ? `<p class="mc-warn" role="status">${i('alert', 16)}${t(weak[2])}</p>` : ''}
       <p class="dim">${t('São os mesmos temas das comunidades. Cada pessoa escolhe entre claro e escuro no app; sem escolha, vale o modo do tema.')}</p>`;
   };
@@ -174,7 +175,8 @@ export function createMobileCreator({ getApp, agencyId, origin, head, act, flash
   }
 
   // ---- Redrawing: the fields being typed in are never replaced.
-  const part = (key, html) => { const el = $(`[data-mc-part="${key}"]`); if (el) el.innerHTML = html; };
+  // Os seletores de cor redesenhados voltam a funcionar (o primeiro desenho é montado por agency.js).
+  const part = (key, html) => { const el = $(`[data-mc-part="${key}"]`); if (!el) return; el.innerHTML = html; for (const picker of el.querySelectorAll('[data-color-picker]')) mountColorPicker(picker); };
   function refresh() {
     const along = $('.mc-nav').scrollLeft;
     $('[data-mc-side]').innerHTML = drawSide();
@@ -255,13 +257,25 @@ export function createMobileCreator({ getApp, agencyId, origin, head, act, flash
     else if (el.name === 'linkLabel') draft.custom[el.dataset.k].label = el.value;
     else if (el.name === 'linkUrl') draft.custom[el.dataset.k].url = el.value;
     else if (el.matches('[data-store]')) { draft.store[el.name] = el.value; part('publish', drawPublish()); }
-    else if (el.name === 'ownColor') setTheme(themeFromColor(el.value), true);
-    else if (el.name?.startsWith('token.')) { const theme = draftTheme(draft); setTheme({ preset: 'custom', tokens: { ...theme.tokens, [el.name.slice(6)]: el.value } }, true); }
+    else if (el.name === 'ownColor' || el.name?.startsWith('token.')) {
+      // o campo HEX do seletor emite input a cada tecla: só uma cor completa entra no rascunho
+      if (!/^#[0-9a-f]{6}$/i.test(el.value)) return;
+      const value = el.value.toLowerCase();
+      if (el.name === 'ownColor') setTheme(themeFromColor(value), true);
+      else { const theme = draftTheme(draft); setTheme({ preset: 'custom', tokens: { ...theme.tokens, [el.name.slice(6)]: value } }, true); }
+    }
     else return;
     refresh();
   }
   async function onChange(el) {
-    if (el.name === 'ownColor' || el.name?.startsWith('token.')) { const all = $('.mc-all')?.open; part('themes', drawThemes()); if (all) $('.mc-all').open = true; return; }
+    if (el.name === 'ownColor' || el.name?.startsWith('token.')) {
+      // redesenha (aviso de contraste, amostra de Suas cores) só quando o painel do seletor fecha
+      setTimeout(() => {
+        if ($('[data-mc-part="themes"] [data-color-panel]:not([hidden])')) return;
+        const all = $('.mc-all')?.open; part('themes', drawThemes()); if (all) $('.mc-all').open = true;
+      });
+      return;
+    }
     if (el.name === 'themePreset') {
       const preset = themePresets.find(row => row.id === el.value);
       if (preset) setTheme({ preset: preset.id, tokens: { ...preset.tokens } }, false);

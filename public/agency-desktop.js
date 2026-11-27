@@ -2,6 +2,7 @@
 // subtitle, logo, background, illustration) with a live preview of its sign-in screen, and the Status panel
 // (publish, version, link to install). The server side is agency-desktop.mjs.
 import { icon } from './icons.js';
+import { colorPicker } from './color-picker.js';
 
 const h = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 export const desktopPresets = [
@@ -35,7 +36,7 @@ export function desktopPage(agency, origin, agencyId) {
       <section class="set-section"><header class="set-head"><h2>Tema</h2><p class="dim">Escolha um tema pronto ou monte o seu.</p></header><div class="set-body"><div class="dk-presets">${desktopPresets.map(([id, name, bg, fg, btn]) => `<label class="dk-preset"><input type="radio" name="preset" value="${id}" ${app.theme.preset === id ? 'checked' : ''}>
         <span style="background:${bg};color:${fg}"><i style="background:${btn}"></i>${h(name)}</span></label>`).join('')}
         <label class="dk-preset"><input type="radio" name="preset" value="custom" ${app.theme.preset === 'custom' ? 'checked' : ''}><span>${icon('edit', 13)} Personalizado</span></label></div>
-      <div class="field-grid">${tokens.map(([key, label]) => `<label>${label}<input type="color" name="${key}" value="${h(app.theme[key])}"></label>`).join('')}</div></div></section>
+      <div class="field-grid dk-colors">${tokens.map(([key, label]) => colorPicker(app.theme[key], { name: key, id: `dk-${key}-color`, label, fallback: '#111111' })).join('')}</div></div></section>
       <section class="set-section"><header class="set-head"><h2>Identidade</h2><p class="dim">O nome na barra de tarefas e os textos da tela de entrada.</p></header><div class="set-body">
       <div class="field-grid"><label>Nome do app *<input name="appName" required maxlength="50" value="${h(app.appName)}" placeholder="Ex.: Agência Norte"></label>
         <label>Domínio (opcional)<input name="domain" maxlength="200" value="${h(app.domain || '')}" placeholder="app.suaagencia.com.br"></label></div>
@@ -64,7 +65,8 @@ export function desktopPreview(form, el) {
   if (['appName', 'title', 'subtitle'].includes(el.name)) box.querySelectorAll(`[data-ad="${el.name}"]`).forEach(node => { node.textContent = el.value; });
   if (el.name === 'preset') {
     const preset = desktopPresets.find(row => row[0] === el.value);
-    if (preset) tokens.forEach(([key], i) => { form.elements[key].value = preset[2 + i]; });
+    // o seletor redesenha a amostra com o evento graao:color-sync (sem disparar input, que marcaria Personalizado)
+    if (preset) tokens.forEach(([key], i) => { const field = form.elements[key]; field.value = preset[2 + i].toUpperCase(); field.dispatchEvent(new Event('graao:color-sync')); });
   }
   if (tokens.some(([key]) => key === el.name)) { const custom = form.querySelector('[name="preset"][value="custom"]'); if (custom) custom.checked = true; }
   const vars = { background: '--bg', text: '--fg', button: '--btn', buttonText: '--btn-fg' };
