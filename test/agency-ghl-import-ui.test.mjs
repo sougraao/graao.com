@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { GHL_EXTENSION_URL, ghlImportBody, ghlImportState, ghlPhase } from '../ui/ghl-import-view.js';
+import { GHL_EXTENSION_URL, GHL_EXTENSION_ZIP, ghlImportBody, ghlImportState, ghlPhase } from '../ui/ghl-import-view.js';
 
 const job = (status, extra = {}) => ({ id: 'j1', status, pagesDone: 0, pagesTotal: 0, imagesDone: 0, imagesTotal: 0, notes: [], error: '', snapshotId: '', ...extra });
 
@@ -13,7 +13,8 @@ test('the Importados tab shows the GHL import button and dialog', () => {
   const body = ghlImportBody({ code: 'ABC-234-XYZ', expiresAt: 1_800_000, now: 0 });
   assert.match(body, />ABC-234-XYZ</);
   assert.match(body, /vale 30 min/);
-  assert.ok(body.includes(`href="${GHL_EXTENSION_URL}"`) && /Instalar no Chrome/.test(body));
+  assert.ok(body.includes(`href="${GHL_EXTENSION_ZIP}" download=`) && /Instalar no Chrome/.test(body), 'the button downloads the extension folder');
+  assert.ok(body.includes(`href="${GHL_EXTENSION_URL}"`) && /Carregar sem compactação/.test(body), 'how to load it, with the help article');
   assert.equal((body.match(/<li>/g) || []).length, 3, 'three steps');
   assert.match(body, /data-ghl-state/);
   assert.match(ghlImportBody({ code: '<b>', expiresAt: 0, now: 0 }), /&lt;b&gt;/, 'the code is escaped');

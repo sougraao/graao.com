@@ -660,7 +660,19 @@ export function createEngine({ add, now, preferencePath = null, makeAffiliate = 
         output(run, id, { id: made.id, status: made.status });
         return made.status === 'scheduled' ? 'post agendado' : made.status === 'in_review' ? 'post enviado para aprovação' : made.problem ? `rascunho criado: ${made.problem}`.slice(0, 300) : 'rascunho criado';
       }
-      case 'reply_social_comment': message('Instagram', `[Resposta ao comentário] ${c.body}`); return 'comentário respondido';
+      case 'reply_social_comment': {
+        const network = run.context?.network === 'facebook' ? 'facebook' : run.context?.network === 'instagram' ? 'instagram' : '';
+        const accountId = String(run.context?.accountId || '');
+        const commentId = String(run.context?.commentId || '');
+        const channel = network === 'facebook' ? 'Facebook' : 'Instagram';
+        if (!network || !/^\d{3,64}$/.test(accountId) || !/^\d{3,64}(?:_\d{3,64})?$/.test(commentId)) return 'erro: esta ação exige um comentário recebido pela Meta';
+        if (!text(c.body).trim()) return 'erro: resposta vazia';
+        const row = message(channel, c.body);
+        row.commentId = commentId;
+        row.publicComment = true;
+        outbox(s, { kind: 'meta-comment-reply', runId: run.id, network, accountId, commentId, body: row.body, contactId: contact.id, messageId: row.id });
+        return 'registrada e na fila de resposta pública';
+      }
       case 'adjust_score': {
         const points = Math.round(Number(text(c.points)));
         if (!Number.isFinite(points) || !points) return 'erro: pontos inválidos';

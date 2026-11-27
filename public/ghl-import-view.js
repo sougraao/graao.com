@@ -3,8 +3,10 @@
 import { icon } from './icons.js';
 const h = x => String(x ?? '').replace(/[&<>"']/g, v => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[v]);
 
-/** Onde instalar a extensão (até a aprovação na Chrome Web Store, o artigo da central de ajuda explica como carregar). */
+/** O passo a passo de instalação na central de ajuda (até a aprovação na Chrome Web Store, a extensão é carregada à mão). */
 export const GHL_EXTENSION_URL = 'https://doc.graao.com/agencia/importar-do-ghl/';
+/** A pasta da extensão em .zip (servida por routes/pages.mjs a partir de extensions/ghl-import). */
+export const GHL_EXTENSION_ZIP = '/downloads/graao-importar-do-ghl.zip';
 /** Fases em que a janela do graao avança a conversão. */
 export const GHL_RUNNING = ['received', 'pages', 'converting', 'images', 'saving'];
 
@@ -53,7 +55,8 @@ export function ghlImportBody({ code, expiresAt, now = Date.now(), job = { statu
       <li>Clique na extensão <b>graao: Importar do GHL</b> e cole o código abaixo.</li>
       <li>Deixe esta janela aberta: a conversão começa sozinha quando os dados chegarem.</li>
     </ol>
-    <p class="inline-gap"><a class="secondary ag-ghl-link" href="${h(GHL_EXTENSION_URL)}" target="_blank" rel="noopener">${icon('download', 15)}Instalar no Chrome</a></p>
+    <p class="inline-gap"><a class="secondary ag-ghl-link" href="${h(GHL_EXTENSION_ZIP)}" download="graao-importar-do-ghl.zip">${icon('download', 15)}Instalar no Chrome</a></p>
+    <p class="dim ag-ghl-hint">Descompacte o arquivo, abra <b>chrome://extensions</b>, ligue o <b>Modo do desenvolvedor</b> e clique em <b>Carregar sem compactação</b> escolhendo a pasta <b>graao-importar-do-ghl</b>. <a href="${h(GHL_EXTENSION_URL)}" target="_blank" rel="noopener">Ver o passo a passo</a></p>
     <div class="ag-ghl-code"><span class="ag-ghl-value" aria-label="Código de importação">${h(code)}</span><button type="button" class="secondary" data-ag="copy" data-text="${h(code)}">${icon('copy', 15)}Copiar</button></div>
     <p class="dim">O código vale ${minutes} min e serve uma vez. O graao nunca recebe sua senha do GHL.</p>
     <div data-ghl-state>${ghlImportState(job)}</div>`;

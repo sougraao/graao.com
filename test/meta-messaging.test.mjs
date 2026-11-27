@@ -5,7 +5,7 @@ import { makeServer } from '../server.mjs';
 import { createSqliteStore } from '../storage.mjs';
 import { blank, execute } from '../model.mjs';
 import { seal } from '../social-providers.mjs';
-import { metaFailure, metaInbound, metaSignatureValid, quickReplies, sendMetaMessage } from '../meta-messaging.mjs';
+import { metaComments, metaFailure, metaInbound, metaSignatureValid, quickReplies, sendMetaCommentReply, sendMetaMessage, subscribeMetaPage } from '../meta-messaging.mjs';
 import { actionSpec, triggerSpec } from '../ui/workflow-data.js';
 
 const save = (s, key, data, id) => execute(s, { type: 'save', key, id, data });
@@ -31,6 +31,10 @@ test('Webhook bodies: the signature, the messages of a page and of an Instagram 
   const ig = metaInbound({ object: 'instagram', entry: [{ id: '222', messaging: [{ sender: { id: '7007' }, recipient: { id: '222' }, message: { mid: 'i_1', text: 'Olá' } }] }] });
   assert.deepEqual(ig.map(row => [row.network, row.accountId, row.senderId]), [['instagram', '222', '7007']]);
   assert.deepEqual(metaInbound({ object: 'user' }), []);
+  const comments = metaComments({ object: 'instagram', entry: [{ id: '222', changes: [{ field: 'comments', value: { id: '3003', text: 'Quero saber', from: { id: '7007', username: 'ana' }, media: { id: '444' } } }] }] });
+  assert.deepEqual(comments, [{ network: 'instagram', accountId: '222', commentId: '3003', senderId: '7007', body: 'Quero saber', authorName: 'ana', handle: 'ana', mediaId: '444', parentId: '' }]);
+  const fbComments = metaComments({ object: 'page', entry: [{ id: '111', changes: [{ field: 'feed', value: { item: 'comment', verb: 'add', comment_id: '111_3003', message: 'Oi', from: { id: '9001', name: 'Ana' } } }] }] });
+  assert.deepEqual(fbComments.map(row => [row.network, row.accountId, row.commentId, row.senderId, row.body]), [['facebook', '111', '111_3003', '9001', 'Oi']]);
 
   assert.deepEqual(quickReplies('Sim\n\nNão\nSim\nUm título com mais de vinte letras'), [
     { content_type: 'text', title: 'Sim', payload: 'Sim' }, { content_type: 'text', title: 'Não', payload: 'Não' },
@@ -52,6 +56,16 @@ test('Sending goes to the page with the recipient, the text and the quick replie
   assert.equal((await sendMetaMessage({ token: 'T', pageId: '111', recipientId: '9001', text: 'Oi' }, closed)).reason, 'window_closed');
   assert.equal((await sendMetaMessage({ token: '', pageId: '111', recipientId: '9001', text: 'Oi' }, request)).reason, 'not_connected');
   assert.equal((await sendMetaMessage({ token: 'T', pageId: '111', recipientId: '', text: 'Oi' }, request)).reason, 'no_recipient');
+  const commentCalls = [];
+  const commentRequest = async (url, init) => { commentCalls.push({ url, body: JSON.parse(init.body) }); return new Response(JSON.stringify({ id: 'reply.1' })); };
+  assert.deepEqual(await sendMetaCommentReply({ token: 'T', commentId: '111_3003', network: 'facebook', text: 'Obrigada!' }, commentRequest), { sent: true, id: 'reply.1' });
+  assert.match(commentCalls[0].url, /\/111_3003\/comments\?access_token=T$/);
+  assert.deepEqual(commentCalls[0].body, { message: 'Obrigada!' });
+  await sendMetaCommentReply({ token: 'T', commentId: '3003', network: 'instagram', text: 'Oi' }, commentRequest);
+  assert.match(commentCalls[1].url, /\/3003\/replies\?access_token=T$/);
+  const subscription = [];
+  assert.equal(await subscribeMetaPage({ token: 'T', pageId: '111' }, async url => { subscription.push(url); return new Response('{}'); }), true);
+  assert.match(subscription[0], /subscribed_fields=messages,leadgen,feed/);
 });
 
 test('A direct message finds the contact by the id Meta gives, never twice for the same message', () => {
@@ -100,6 +114,7 @@ test('The webhook routes a page message to its sub-account; workflows and team r
   const metaFetch = async (url, init = {}) => {
     if (url.includes('/9001?fields=')) return new Response(JSON.stringify({ first_name: 'Ana', last_name: 'Lima' }));
     if (url.includes('/messages?')) { sent.push({ url, body: JSON.parse(init.body) }); const data = reply(); return new Response(JSON.stringify(data), { status: data.error ? 400 : 200 }); }
+    if (url.includes('/comments?') || url.includes('/replies?')) { sent.push({ url, body: JSON.parse(init.body) }); return new Response(JSON.stringify({ id: 'comment.ok' })); }
     return new Response('{}');
   };
   const store = createSqliteStore(':memory:');

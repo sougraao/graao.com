@@ -45,13 +45,15 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--g-brand); outli
 
 .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--g-brand-text); margin-bottom: 18px; }
 .eyebrow-pill { padding: 5px 14px 5px 6px; border-radius: var(--r-pill); background: var(--g-surface); border: 1px solid var(--g-brand-line); box-shadow: var(--g-shadow); }
-.eyebrow-pill img { width: 24px; height: 24px; }
+.eyebrow-pill :is(img, svg) { width: 44px; height: 20px; }
+/* O gato (gato.js troca a <img> por SVG inline para as pupilas seguirem o mouse) pinta na cor da marca. */
+.g-gato { color: var(--g-brand-fill); overflow: visible; }
 
 /* ── Logo animado (a chama da caveira já pisca dentro do SVG; aqui só o balanço do app) ── */
 .logo { display: inline-flex; align-items: center; gap: 2px; font-size: 22px; font-weight: 800; letter-spacing: -.05em; line-height: 1; color: var(--g-ink); text-decoration: none; min-height: 44px; }
-.logo .mark { width: 36px; height: 36px; transform-origin: 50% 85%; transition: transform .5s var(--ease-out); }
-.logo:hover .mark { transform: rotate(-8deg) scale(1.06); }
-@keyframes flicker { to { transform: translateY(-3px) rotate(-5deg) scale(1.04); } }
+.logo .mark { width: 66px; height: 30px; transform-origin: 50% 100%; transition: transform .5s var(--ease-out); }
+.logo:hover .mark { transform: translateY(-2px) scale(1.06); }
+@keyframes flicker { to { transform: translateY(-4px); } }
 
 /* ── Navegação: vidro flutuante, como a barra lateral do app ── */
 .nav { position: fixed; inset: 12px 0 auto; z-index: 50; height: 64px; pointer-events: none; }
@@ -194,7 +196,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--g-brand); outli
 .p3 { offset-path: path("M200 200 L104 312"); animation-delay: 1.5s; } .p4 { offset-path: path("M200 200 L296 312"); animation-delay: 2.25s; }
 @keyframes run { from { offset-distance: 0%; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } to { offset-distance: 100%; opacity: 0; } }
 .hub-core { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 132px; height: 132px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--g-surface); box-shadow: 0 0 0 10px var(--g-brand-surface), 0 0 0 11px var(--g-brand-line), 0 24px 50px -20px color-mix(in srgb, var(--g-brand) 60%, transparent); }
-.hub-core img { width: 76px; height: 76px; transform-origin: 50% 85%; animation: flicker 1.6s var(--ease-std) infinite alternate; }
+.hub-core :is(img, svg) { width: 104px; height: 47px; transform-origin: 50% 85%; animation: flicker 1.6s var(--ease-std) infinite alternate; }
 .hub-node { position: absolute; transform: translate(-50%, -50%); padding: 10px 16px; border-radius: var(--r-pill); background: var(--g-surface); font-size: 14.5px; font-weight: 700; white-space: nowrap; box-shadow: 0 0 0 1px var(--g-line), var(--g-shadow-lift); }
 .n1 { left: 26%; top: 22%; } .n2 { left: 74%; top: 22%; } .n3 { left: 26%; top: 78%; } .n4 { left: 74%; top: 78%; }
 
@@ -222,7 +224,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--g-brand); outli
 /* Fechamento: o logo grande, como na tela de abertura do app */
 .close { position: relative; overflow: hidden; background: var(--g-surface); min-height: 80svh; display: flex; align-items: center; padding: 112px 0; text-align: center; }
 .close-inner { position: relative; display: flex; flex-direction: column; align-items: center; }
-.close-mark { width: 112px; height: 112px; margin-bottom: 24px; transform-origin: 50% 85%; animation: flicker 1.6s var(--ease-std) infinite alternate; }
+.close-mark { width: 180px; height: 82px; margin-bottom: 24px; transform-origin: 50% 85%; animation: flicker 1.6s var(--ease-std) infinite alternate; }
 .close h2 { font-size: clamp(40px, 5.4vw, 76px); max-width: 14em; letter-spacing: -.04em; }
 .close p { margin-top: 18px; font-size: 19px; color: var(--g-dim); }
 .close .hero-actions { justify-content: center; }
@@ -278,10 +280,10 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--g-brand); outli
   .tabs { width: 100%; }
   .hub-node { font-size: 12px; padding: 7px 10px; white-space: normal; text-align: center; max-width: 34%; }
   .hub-core { width: 96px; height: 96px; }
-  .hub-core img { width: 56px; height: 56px; }
+  .hub-core :is(img, svg) { width: 76px; height: 35px; }
   .phone { width: 260px; }
   .close { min-height: 0; padding: 96px 0; }
-  .close-mark { width: 88px; height: 88px; }
+  .close-mark { width: 140px; height: 64px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

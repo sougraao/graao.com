@@ -12,6 +12,8 @@ export default defineConfig({
       description: 'Documentação do graao para agências: como usar cada ferramenta da plataforma, passo a passo.',
       logo: { src: './src/assets/logo-graao.svg', alt: 'Graao' },
       favicon: '/favicon.svg',
+      // As pupilas do gato da logo seguem o mouse (cópia de ui/gato.js; o teste gato.test.mjs confere que é igual).
+      head: [{ tag: 'script', attrs: { type: 'module', src: '/gato.js' } }],
       defaultLocale: 'root',
       locales: { root: { label: 'Português', lang: 'pt-BR' } },
       customCss: ['./src/styles/graao.css'],

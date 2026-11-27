@@ -18,13 +18,13 @@ body{
 ::selection{background:color-mix(in srgb,var(--g-brand) 16%,var(--g-surface));color:var(--g-brand-text)}
 button:focus-visible,a:focus-visible{outline:2px solid var(--g-brand);outline-offset:2px}
 .boot{min-height:111.111111dvh;display:grid;place-content:center;justify-items:center;text-align:center;gap:10px;padding:24px;color:var(--g-dim);font-weight:600}
-.boot::before{content:'';width:96px;height:96px;margin:0 auto 12px;background:url(/skull_flame_animated.svg) center/contain no-repeat;transform-origin:50% 85%;animation:g-flicker 1.6s var(--ease-std) infinite alternate}
-@keyframes g-flicker{to{transform:translateY(-3px) rotate(-5deg) scale(1.04)}}
-:root[data-marca=agencia] .boot::before{display:none}.boot .boot-logo{width:88px;height:88px;margin:0 auto 12px;object-fit:cover;border-radius:22px}
-.boot-live::before{display:none}.boot .boot-mark{width:96px;height:96px;margin:0 auto 12px;transform-origin:50% 85%;animation:g-flicker 1.6s var(--ease-std) infinite alternate}
+.boot::before{content:'';width:132px;height:60px;margin:0 auto 14px;background:url(/graao-gato.svg) center/contain no-repeat;transform-origin:50% 85%;animation:g-flicker 1.6s var(--ease-std) infinite alternate}
+@keyframes g-flicker{to{transform:translateY(-4px)}}
+:root[data-marca=agencia] .boot::before{display:none}:root[data-marca=agencia] .boot-quip{display:none}.boot .boot-logo{width:88px;height:88px;margin:0 auto 12px;object-fit:cover;border-radius:22px}
+.boot-live::before{display:none}.boot .boot-mark{width:132px;height:60px;margin:0 auto 14px;transform-origin:50% 85%;animation:g-flicker 1.6s var(--ease-std) infinite alternate}
 @media (prefers-reduced-motion:reduce){.boot::before,.boot .boot-mark{animation:none}}
 .boot-title{font-size:19px;font-weight:700;letter-spacing:-.015em;color:var(--g-ink)}
-.boot-quip{font-size:15px;font-weight:500;color:var(--g-dim);animation:g-quip .5s var(--ease-out) .25s both}
+.boot-quip{font-size:15px;font-weight:500;color:var(--g-dim);animation:g-quip .45s var(--ease-out) both}
 @keyframes g-quip{from{opacity:0;transform:translateY(4px)}}
 
 /* ───────── Global Custom Scrollbar (Microkit) ───────── */
@@ -60,15 +60,17 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--g-brand);outline-of
 .g-side .logo .g-mark{margin-right:-2px}
 .g-side .logo .ag-logo{margin-right:6px}
 .g-side .logo .g-mark,.g-side .logo .ag-logo{flex:none;width:34px;height:34px;transition:transform .5s var(--ease-out)}
-.g-side .logo:hover .g-mark{transform:rotate(-8deg) scale(1.06)}
-.g-mark{display:inline-block;vertical-align:middle;overflow:visible}
-.g-mark .sk-flame{fill:url(#g-flame-grad);transition:fill .3s var(--ease-std)}
-.g-mark .sk-head{fill:#ffffff;transition:fill .3s var(--ease-std)}
-.g-mark .sk-feat{fill:#0d0f12;transition:fill .3s var(--ease-std)}
-.g-mark .sk-glint{fill:#ffffff;transition:fill .3s var(--ease-std)}
-.g-mark .sk-fr{opacity:0;animation:sk-flick .6s steps(1,end) infinite}.g-mark .sk-f2{animation-delay:-.45s}.g-mark .sk-f3{animation-delay:-.3s}.g-mark .sk-f4{animation-delay:-.15s}
-@keyframes sk-flick{0%{opacity:1}25%,100%{opacity:0}}
-@media (prefers-reduced-motion:reduce){.g-mark .sk-fr{animation:none}.g-mark .sk-f1{opacity:1}}
+.g-side .logo .g-mark{width:48px;height:22px}
+.shell:not(.wide) .g-side .logo .g-mark{width:44px;height:20px;margin-right:0}
+/* O gato é largo (≈2,2:1): as caixas seguem essa proporção, senão sobra espaço em cima e embaixo dele.
+   Marca no topo do menu (Configurações › Empresa e marca): só o isotipo ganha um pouco mais de espaço;
+   só o nome guarda o isotipo para o menu recolhido, onde o nome não cabe. */
+.shell.wide .g-side .logo-mark .g-mark{width:64px;height:29px}
+.g-side .logo-mark .g-mark,.g-side .logo-mark .ag-logo{margin-right:0}
+.g-side .side-rail-mark{display:contents}
+.shell.wide .g-side .side-rail-mark{display:none}
+.g-side .logo:hover .g-mark{transform:translateY(-2px) scale(1.06)}
+.g-mark{display:inline-block;vertical-align:middle;overflow:visible;color:var(--g-brand-fill, #ff6b1a)}
 /* Collapse toggle (microkit "sidebar trigger"): beside the logo when open; in the rail it
    takes the logo's place on hover or keyboard focus, and is always shown on touch screens. */
 .side-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);flex:none;width:32px;height:32px;display:grid;place-items:center;padding:0;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--g-dim);transition:background .2s var(--ease-std),border-color .2s,color .2s,opacity .2s,transform .16s var(--ease-out)}

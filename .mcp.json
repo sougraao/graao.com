@@ -16,6 +16,11 @@
     "cloudflare": {
       "type": "http",
       "url": "https://bindings.mcp.cloudflare.com/mcp"
+    },
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=vqrexhlvfsjnzlazrosx&features=docs%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions"
     }
   }
 }
+

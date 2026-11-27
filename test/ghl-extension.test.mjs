@@ -111,7 +111,24 @@ test('the manifest asks only for activeTab, scripting and storage', () => {
   assert.equal(manifest.manifest_version, 3);
   assert.equal(manifest.name, 'graao: Importar do GHL');
   assert.deepEqual(manifest.permissions, ['activeTab', 'scripting', 'storage']);
-  assert.deepEqual(manifest.host_permissions, ['https://graao.com/*', 'http://localhost/*', 'http://127.0.0.1/*']);
+  assert.deepEqual(manifest.host_permissions, ['https://www.graao.com/*', 'https://graao.com/*', 'http://localhost/*', 'http://127.0.0.1/*']);
   assert.equal(manifest.action.default_popup, 'popup.html');
   assert.equal(manifest.content_scripts, undefined);
+});
+
+test('the extension wears the graao identity: orange cat icons, brand font and palette', () => {
+  const manifest = JSON.parse(readFileSync(new URL('manifest.json', dir), 'utf8'));
+  for (const size of ['16', '32', '48', '128']) {
+    assert.equal(manifest.icons[size], `icon-${size}.png`);
+    assert.equal(manifest.action.default_icon[size], `icon-${size}.png`);
+    const png = readFileSync(new URL(`icon-${size}.png`, dir));
+    assert.equal(png.readUInt32BE(16), Number(size), `icon-${size}.png has ${size}px`);
+  }
+  const popup = readFileSync(new URL('popup.html', dir), 'utf8');
+  assert.match(popup, /--brand-fill: #ff6b1a/i, 'orange on the main action');
+  assert.match(popup, /--canvas: #111111/i, 'neutral dark gray as the default');
+  assert.match(popup, /src: url\("plus-jakarta-sans\.woff2"\)/, 'the app font, shipped inside the extension');
+  assert.match(popup, /src="logo-gato\.svg"/);
+  assert.doesNotMatch(popup, /#ff4f9a/i, 'no more pink');
+  assert.match(readFileSync(new URL('logo-gato.svg', dir), 'utf8'), /#ff6b1a/);
 });

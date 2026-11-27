@@ -3,7 +3,7 @@
 // Extraído do server.mjs sem mudar comportamento (plano de melhoria P2.1). Recebe do servidor o que vive no
 // fechamento de makeServer (deps) e, a cada requisição, o contexto da rota (ctx).
 import { metaLeadFields } from '../lead-forms.mjs';
-import { fetchMetaLead, metaInbound, metaLeads, metaSenderName, metaSignatureValid } from '../meta-messaging.mjs';
+import { fetchMetaLead, metaComments, metaInbound, metaLeads, metaSenderName, metaSignatureValid } from '../meta-messaging.mjs';
 import { execute } from '../model.mjs';
 import { NEXT_ROUTE } from './next-route.mjs';
 
@@ -42,6 +42,18 @@ export function createMetaRoutes(deps) {
           await change(route.workspace, { type: 'social-interaction-trigger', data: { kind: 'dm', network: message.network, body: message.body, senderId: message.senderId, accountId: message.accountId, mid: message.mid, authorName } });
           touched.add(route.workspace);
         } catch (problem) { console.error(`Meta webhook (${route.workspace}): ${problem.message}`); }
+      }
+      // Public comments are recorded in Conversas and trigger social_comment_received workflows.
+      for (const comment of metaComments(body)) {
+        const route = routes[comment.accountId];
+        if (!route || route.network !== comment.network) continue;
+        try {
+          if (!await publicAccountPolicy(route.workspace, false, 'conversations')) continue;
+          await change(route.workspace, { type: 'social-interaction-trigger', data: { kind: 'comment', network: comment.network, body: comment.body, comment: comment.body,
+            senderId: comment.senderId, accountId: comment.accountId, commentId: comment.commentId, mediaId: comment.mediaId, parentId: comment.parentId,
+            mid: comment.commentId, authorName: comment.authorName, handle: comment.handle } });
+          touched.add(route.workspace);
+        } catch (problem) { console.error(`Meta comment (${route.workspace}): ${problem.message}`); }
       }
       // Lead Ads: the lead's answers are read with the page token, then become a contact and the trigger.
       for (const lead of metaLeads(body)) {

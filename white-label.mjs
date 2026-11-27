@@ -134,12 +134,14 @@ export function brandedPage(html, brand = {}) {
   let page = html
     .replace('<html lang="pt-BR">', `<html lang="pt-BR" data-marca="agencia" data-marca-nome="${name}"${logo ? ` data-marca-logo="${escapeHtml(logo)}"` : ''}>`)
     .replace('<strong class="boot-title">Abrindo o graao…</strong>', `${mark}<strong class="boot-title">Abrindo ${name}…</strong>`)
+    // As frases divertidas do carregamento são do graao; no domínio da agência fica só o nome dela.
+    .replace(/<small class="boot-quip"[^>]*>[^<]*<\/small>/, '')
     .replace(/<title>Entrar · graao<\/title>/, `<title>Entrar · ${name}</title>`)
     .replace(/<title>graao<\/title>/, `<title>${name}</title>`)
     .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="Acesse ${name}.">`)
     .replace(/<div class="brand" aria-label="graao">[\s\S]*?<\/div>/, `<div class="brand" aria-label="${name}">${logo ? `<img class="brand-logo" src="${escapeHtml(logo)}" alt="${name}">` : name}</div>`)
     .replace('Acesse a plataforma graao com a sua conta Google.', `Acesse a plataforma ${name} com a sua conta Google.`)
-    .replace(/© \d{4} graao\. Feita no Brasil com ☕, carinho e muita API\./, `© ${new Date().getFullYear()} ${name}.`);
+    .replace(/© \d{4} graao\. Feito no Brasil com ☕, mordidas e muito MCP\./, `© ${new Date().getFullYear()} ${name}.`);
   if (logo) page = page.replace(/<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/, `<link rel="icon" href="${escapeHtml(logo)}">`);
   if (color) {
     page = page.replace(/<meta name="theme-color" content="[^"]*">/, `<meta name="theme-color" content="${color}">`)

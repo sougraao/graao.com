@@ -13,23 +13,23 @@
   color-scheme:light;
 
   /* Paleta oficial (2026-11-27, revisão laranja): laranja #FF6B1A na ação principal, brasa #C2410C como secundária,
-     ciano neon #1FE5F0 como acento, sobre neutros levemente quentes (carvão #100D0A / #1E1A16, creme #FAF7F3).
+     ciano neon #1FE5F0 como acento, sobre cinzas neutros nos dois temas: #111111 / #1C1C1C no escuro e #FAFAFA / #FFFFFF no claro.
      O escuro é o tema padrão; este bloco é o tema claro, que segue disponível. Contrastes conferidos (WCAG AA). */
 
   /* Texto */
-  --g-ink:#1a1410; --g-ink-2:#3a322b; --g-dim:#62584f; --g-faint:#6b6158;
+  --g-ink:#1a1a1a; --g-ink-2:#383838; --g-dim:#5c5c5c; --g-faint:#666666;
 
   /* Linhas */
-  --g-line:rgba(26,20,16,.09); --g-line-2:rgba(26,20,16,.15); --g-line-strong:rgba(26,20,16,.28);
+  --g-line:rgba(23,23,23,.09); --g-line-2:rgba(23,23,23,.15); --g-line-strong:rgba(23,23,23,.28);
 
   /* Superfícies de conteúdo (sólidas) */
-  --g-canvas:#faf7f3;
-  --g-surface:#ffffff; --g-surface-2:#f4efe9; --g-surface-3:#e8e0d6; --g-paper:255 255 255;
-  --g-stage:#faf7f3; --g-shell:#faf7f3;
+  --g-canvas:#fafafa;
+  --g-surface:#ffffff; --g-surface-2:#f4f4f4; --g-surface-3:#e5e5e5; --g-paper:255 255 255;
+  --g-stage:#fafafa; --g-shell:#fafafa;
   --panel:#fff;
 
   /* Preenchimentos de controles no conteúdo */
-  --g-fill:rgba(58,40,24,.08); --g-fill-hover:rgba(58,40,24,.13); --g-fill-press:rgba(58,40,24,.19);
+  --g-fill:rgba(23,23,23,.07); --g-fill-hover:rgba(23,23,23,.11); --g-fill-press:rgba(23,23,23,.16);
   --g-field:#ffffff;
 
   /* Marca: laranja #FF6B1A na ação principal e no item ativo, com texto #1A1410 (6,4:1).
@@ -43,7 +43,7 @@
   --g-brand-accent-surface:#e3fbfc; --g-brand-accent-line:#a6eef2;
   --g-brand-2:#c2410c; --g-brand-2-hover:#a3360a; --g-brand-2-bright:#e0520f;
   --g-brand-2-surface:#fbebe1; --g-brand-2-line:#f1c3a6; --g-brand-2-tint:#6e2507;
-  --g-brand-2-text:#a3360a; --g-brand-2-fill:#c2410c; --g-brand-2-fill-hover:#d14a12; --g-brand-2-on:#faf7f3;
+  --g-brand-2-text:#a3360a; --g-brand-2-fill:#c2410c; --g-brand-2-fill-hover:#d14a12; --g-brand-2-on:#fafafa;
   /* O gradiente da identidade fica no logo. Nos controles, "gradiente da marca" é a cor cheia. */
   --g-grad-logo:linear-gradient(135deg,#ff6b1a 0%,#c2410c 100%);
   --g-grad-logo-on:#1a1410;
@@ -63,12 +63,12 @@
      regular: navegação, menus, popovers. thick: folhas e diálogos com muito texto.
      clear: só sobre mídia, sempre com --lg-dim atrás se o fundo for claro. */
   --lg-blur:22px; --lg-sat:1.8;
-  --lg-regular:rgba(252,250,247,.66);
-  --lg-thick:rgba(252,250,247,.9);
+  --lg-regular:rgba(250,250,250,.66);
+  --lg-thick:rgba(250,250,250,.9);
   --lg-clear:rgba(255,255,255,.18);
   --lg-dim:rgba(0,0,0,.35);
-  --lg-tint-on:rgba(26,20,16,.07);
-  --lg-edge:rgba(26,20,16,.1);
+  --lg-tint-on:rgba(23,23,23,.07);
+  --lg-edge:rgba(23,23,23,.1);
   --lg-spec-top:rgba(255,255,255,.95); --lg-spec-side:rgba(255,255,255,.5); --lg-spec-bottom:rgba(255,255,255,.28);
   --lg-shadow:0 1px 2px rgba(20,22,26,.05),0 10px 30px -10px rgba(20,22,26,.16);
   --lg-shadow-float:0 2px 6px rgba(20,22,26,.06),0 24px 60px -18px rgba(20,22,26,.28);
@@ -97,7 +97,7 @@
   /* ── Papéis derivados ── */
   --g-focus:0 0 0 3px color-mix(in srgb,var(--g-brand-accent-text) 55%,transparent);
   --g-scrollbar-thumb:rgba(20,22,26,.2); --g-scrollbar-thumb-hover:rgba(20,22,26,.38); --g-scrollbar-track:transparent;
-  --g-gauge-track:#e8e0d6;
+  --g-gauge-track:#e5e5e5;
   --g-select-bg:var(--g-field); --g-select-bg-hover:var(--g-surface-2);
   --g-select-border:var(--g-line-2); --g-select-border-hover:var(--g-line-strong);
   --g-menu-bg:var(--lg-regular); --g-menu-border:transparent; --g-menu-divider:var(--g-line);
@@ -113,7 +113,7 @@
   --g-utabs-nested-bg:var(--g-surface-2); --g-utabs-nested-border:var(--g-line);
   --g-utabs-panel-surface:var(--g-surface); --g-utabs-panel-surface-alt:var(--g-surface);
   --shc-bg:var(--g-surface); --shc-bg-hover:var(--g-surface-2); --shc-border:var(--g-line); --shc-inset:rgba(20,24,30,.035); --shc-inset-hover:rgba(20,24,30,.06);
-  --shc-drop:rgba(20,24,30,.06); --shc-lift:rgba(15,19,26,.08); --shc-icon-rest:#7d7369; --shc-mono:#1a1410; --shc-whatsapp:#128046;
+  --shc-drop:rgba(20,24,30,.06); --shc-lift:rgba(15,19,26,.08); --shc-icon-rest:#737373; --shc-mono:#1a1a1a; --shc-whatsapp:#128046;
 
   --g-eb-bg:var(--g-brand-fill); --g-eb-border:transparent; --g-eb-text:var(--g-brand-on); --g-eb-shadow:none;
 
@@ -126,14 +126,14 @@
 
 :root[data-theme=dark]{
   color-scheme:dark;
-  --g-ink:#faf7f3; --g-ink-2:#ddd5cc; --g-dim:#ada399; --g-faint:#978d83;
-  --g-line:rgba(250,247,243,.09); --g-line-2:rgba(250,247,243,.15); --g-line-strong:rgba(250,247,243,.28);
-  --g-canvas:#100d0a;
-  --g-surface:#1e1a16; --g-surface-2:#26211c; --g-surface-3:#332c25; --g-paper:30 26 22;
-  --g-stage:#100d0a; --g-shell:#100d0a;
-  --panel:#1e1a16;
-  --g-fill:rgba(250,247,243,.08); --g-fill-hover:rgba(250,247,243,.13); --g-fill-press:rgba(250,247,243,.19);
-  --g-field:#26211c;
+  --g-ink:#f5f5f5; --g-ink-2:#d9d9d9; --g-dim:#a6a6a6; --g-faint:#949494;
+  --g-line:rgba(255,255,255,.09); --g-line-2:rgba(255,255,255,.15); --g-line-strong:rgba(255,255,255,.28);
+  --g-canvas:#111111;
+  --g-surface:#1c1c1c; --g-surface-2:#262626; --g-surface-3:#333333; --g-paper:28 28 28;
+  --g-stage:#111111; --g-shell:#111111;
+  --panel:#1c1c1c;
+  --g-fill:rgba(255,255,255,.08); --g-fill-hover:rgba(255,255,255,.13); --g-fill-press:rgba(255,255,255,.19);
+  --g-field:#262626;
 
   --g-brand:#ff6b1a; --g-brand-hover:#ff8a4c; --g-brand-bright:#ffa070;
   --g-brand-fill:#ff6b1a; --g-brand-fill-hover:#ff7f38; --g-brand-on:#1a1410;
@@ -142,7 +142,7 @@
   --g-brand-accent-surface:#0b2729; --g-brand-accent-line:#145a5e;
   --g-brand-2:#c2410c; --g-brand-2-hover:#d14a12; --g-brand-2-bright:#e0520f;
   --g-brand-2-surface:#2a160b; --g-brand-2-line:#4e2410; --g-brand-2-text:#f4a06e; --g-brand-2-tint:#ffc9a8;
-  --g-brand-2-fill:#c2410c; --g-brand-2-fill-hover:#d14a12; --g-brand-2-on:#faf7f3;
+  --g-brand-2-fill:#c2410c; --g-brand-2-fill-hover:#d14a12; --g-brand-2-on:#f5f5f5;
 
   --g-orange:#fbbf24; --g-amber:#fbbf24; --g-orange-100:rgba(251,191,36,.14); --g-orange-200:#6b5220; --g-orange-ink:#fcd36a;
   --g-blue:#86c5ff; --g-blue-100:rgba(134,197,255,.16);
@@ -150,8 +150,8 @@
   --g-mint:#76d29b; --g-mint-100:rgba(118,210,155,.16);
   --g-red:#ff8a9e; --g-red-fill:#e0365d; --g-red-fill-hover:#e94b6e; --g-red-100:rgba(255,90,120,.16);
 
-  --lg-regular:rgba(30,26,22,.66);
-  --lg-thick:rgba(30,26,22,.94);
+  --lg-regular:rgba(28,28,28,.66);
+  --lg-thick:rgba(28,28,28,.94);
   --lg-clear:rgba(255,255,255,.1);
   --lg-tint-on:rgba(255,255,255,.1);
   --lg-edge:rgba(0,0,0,.5);
@@ -163,10 +163,10 @@
   --g-shadow:none;
   --g-shadow-lift:0 18px 40px -20px rgba(0,0,0,.9);
   --g-scrollbar-thumb:rgba(255,255,255,.2); --g-scrollbar-thumb-hover:rgba(255,255,255,.38);
-  --g-gauge-track:#332c25;
+  --g-gauge-track:#333333;
   --g-utabs-indicator:rgba(255,255,255,.16); --g-utabs-nested-bg:var(--g-surface-2);
   --shc-inset:rgba(255,255,255,.035); --shc-inset-hover:rgba(255,255,255,.06); --shc-drop:rgba(255,255,255,.06); --shc-lift:rgba(0,0,0,.38);
-  --shc-icon-rest:#978d83; --shc-mono:#faf7f3; --shc-whatsapp:#25d366;
+  --shc-icon-rest:#949494; --shc-mono:#f5f5f5; --shc-whatsapp:#25d366;
 }
 
 /* App móvel da agência: a plataforma veste o tema do app (--cm-*, ver mobile-app-view.js). Cores de estado não mudam. */
@@ -190,18 +190,18 @@
 
 /* Reduzir transparência: o vidro vira superfície opaca, com a mesma hierarquia */
 @media (prefers-reduced-transparency:reduce){
-  :root{--lg-blur:0px; --lg-sat:1; --lg-regular:#fcfaf7; --lg-thick:#ffffff; --lg-clear:rgba(20,22,26,.78); --lg-edge:rgba(20,22,26,.16)}
-  :root[data-theme=dark]{--lg-regular:#1e1a16; --lg-thick:#1e1a16; --lg-clear:rgba(0,0,0,.82); --lg-edge:rgba(255,255,255,.18)}
+  :root{--lg-blur:0px; --lg-sat:1; --lg-regular:#fbfbfb; --lg-thick:#ffffff; --lg-clear:rgba(20,22,26,.78); --lg-edge:rgba(20,22,26,.16)}
+  :root[data-theme=dark]{--lg-regular:#1c1c1c; --lg-thick:#1c1c1c; --lg-clear:rgba(0,0,0,.82); --lg-edge:rgba(255,255,255,.18)}
 }
 
 /* Aumentar contraste: linhas visíveis, texto mais escuro e bordas nos controles */
 @media (prefers-contrast:more){
   :root{--g-ink:#000; --g-ink-2:#1b1e24; --g-dim:#3a3f48; --g-faint:#454b55; --g-line:rgba(0,0,0,.4); --g-line-2:rgba(0,0,0,.6); --g-line-strong:#000; --g-brand-text:#8a3307; --g-brand-accent-text:#005a62; --g-brand-fill:#ff6b1a; --lg-regular:#fff; --lg-thick:#fff; --lg-edge:rgba(0,0,0,.6); --lg-blur:0px; --lg-sat:1}
-  :root[data-theme=dark]{--g-ink:#fff; --g-ink-2:#f0f1f3; --g-dim:#d3d7de; --g-faint:#bcc2cb; --g-line:rgba(255,255,255,.45); --g-line-2:rgba(255,255,255,.65); --g-line-strong:#fff; --g-brand-text:#ffc4a0; --g-brand-accent-text:#8ff4f9; --lg-regular:#100d0a; --lg-thick:#100d0a; --lg-edge:rgba(255,255,255,.65)}
+  :root[data-theme=dark]{--g-ink:#fff; --g-ink-2:#f0f1f3; --g-dim:#d3d7de; --g-faint:#bcc2cb; --g-line:rgba(255,255,255,.45); --g-line-2:rgba(255,255,255,.65); --g-line-strong:#fff; --g-brand-text:#ffc4a0; --g-brand-accent-text:#8ff4f9; --lg-regular:#111111; --lg-thick:#111111; --lg-edge:rgba(255,255,255,.65)}
 }
 
 /* Navegador sem desfoque: material opaco */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  :root{--lg-regular:#fcfaf7}
-  :root[data-theme=dark]{--lg-regular:#1e1a16}
+  :root{--lg-regular:#fbfbfb}
+  :root[data-theme=dark]{--lg-regular:#1c1c1c}
 }

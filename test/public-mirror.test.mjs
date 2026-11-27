@@ -20,7 +20,7 @@ test('todo estático que o app serve também está em public/', () => {
   assert.deepEqual(missing, []);
 });
 
-test('a Vercel inclui ui/ e os templates de setup na função que de fato atende (server.mjs), para nada faltar se public/ falhar', async () => {
+test('a Vercel inclui ui/, os templates de setup e a extensão do Chrome na função que de fato atende (server.mjs), para nada faltar se public/ falhar', async () => {
   const { default: config } = await import('../vercel.json', { with: { type: 'json' } });
-  assert.equal(config.functions?.['server.mjs']?.includeFiles, '{ui/**,setup-templates/**}');
+  assert.equal(config.functions?.['server.mjs']?.includeFiles, '{ui/**,setup-templates/**,extensions/**}');
 });

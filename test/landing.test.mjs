@@ -40,7 +40,7 @@ test('Root is the public home page, /login is the Google login and the platform 
     // O único rodapé do login é a linha de direitos e versão, sem links.
     const footer = html.match(/<footer\b[\s\S]*?<\/footer>/g) || [];
     assert.equal(footer.length, 1);
-    assert.match(footer[0], /Feita no Brasil com ☕, carinho e muita API\./);
+    assert.match(footer[0], /Feito no Brasil com ☕, mordidas e muito MCP\./);
     assert.doesNotMatch(footer[0], /<a\b/);
   }
 
@@ -325,7 +325,7 @@ test('A política de privacidade é pública em /privacidade, sem sessão', asyn
     assert.match(html, /Política de Privacidade/);
     assert.match(html, /LGPD/);
   }
-  const art = await fetch(server.base + '/skull_flame_animated.svg');
+  const art = await fetch(server.base + '/graao-gato.svg');
   assert.equal(art.status, 200);
   assert.equal(art.headers.get('content-type'), 'image/svg+xml');
 });

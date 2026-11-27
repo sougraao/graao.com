@@ -264,7 +264,7 @@ label.ag-sw{position:relative;display:inline-flex;width:38px;height:22px;flex:no
 .ag-brand-mockup-logo span{display:grid;place-items:center;width:25px;height:25px;border-radius:var(--r-control);background:var(--g-brand);color:var(--g-brand-on, #1a1410);font-weight:900;box-shadow:0 5px 14px color-mix(in srgb,var(--g-brand) 30%,transparent)}
 .ag-brand-mockup-nav{display:grid;gap:4px}.ag-brand-mockup-nav span,.ag-brand-mockup-side-link{padding:8px 9px;border-radius:var(--r-control);color:var(--g-dim,var(--dim));font-size:11px;font-weight:650}.ag-brand-mockup-nav span.is-active{background:var(--g-brand-2-surface);color:var(--g-brand-2-text)}
 .ag-brand-mockup-side-label{margin:15px 5px 0;color:var(--g-faint,var(--muted));font-size:9px;font-weight:800;}.ag-brand-mockup-side-link{padding-top:4px;padding-bottom:4px}
-.ag-brand-mockup-side-cta{margin-top:auto;min-height:34px;border-radius:var(--r-control);background:var(--g-brand-2);color:var(--g-brand-2-on, #faf7f3);font-size:11px;font-weight:800;box-shadow:0 7px 15px color-mix(in srgb,var(--g-brand-2) 22%,transparent);transition:transform .16s ease,filter .16s ease}.ag-brand-mockup-side-cta:hover{transform:translateY(-1px);filter:saturate(1.08)}
+.ag-brand-mockup-side-cta{margin-top:auto;min-height:34px;border-radius:var(--r-control);background:var(--g-brand-2);color:var(--g-brand-2-on, #fafafa);font-size:11px;font-weight:800;box-shadow:0 7px 15px color-mix(in srgb,var(--g-brand-2) 22%,transparent);transition:transform .16s ease,filter .16s ease}.ag-brand-mockup-side-cta:hover{transform:translateY(-1px);filter:saturate(1.08)}
 .ag-brand-mockup-main{display:grid;gap:14px;padding:18px;background:linear-gradient(145deg,var(--g-surface),color-mix(in srgb,var(--g-brand-accent) 4%,var(--g-surface-2)))}
 .ag-brand-mockup-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px}.ag-brand-mockup-topbar div{display:grid;gap:3px}.ag-brand-mockup-topbar span:first-child{color:var(--g-faint,var(--muted));font-size:9px;font-weight:800;letter-spacing:.1em}.ag-brand-mockup-topbar b{font-size:14px;letter-spacing:-.03em}.ag-brand-mockup-avatar{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--g-brand-accent);color:var(--g-brand-accent-on);font-size:10px;font-weight:900;box-shadow:0 0 0 4px color-mix(in srgb,var(--g-brand-accent) 19%,transparent)}
 .ag-brand-mockup-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.ag-brand-mockup-metrics>div{display:grid;gap:4px;padding:11px;border:1px solid var(--g-line);border-radius:var(--r-group);background:var(--g-surface)}.ag-brand-mockup-metrics span{color:var(--g-dim,var(--dim));font-size:10px}.ag-brand-mockup-metrics b{font-size:19px;letter-spacing:-.06em}.ag-brand-mockup-metrics em{font-size:10px;font-style:normal;font-weight:800;color:var(--g-brand-text,var(--g-brand))}.ag-brand-mockup-metrics em.is-blue{color:var(--g-brand-accent-text)}.ag-brand-mockup-metrics em.is-lilac{color:var(--g-brand-2-text)}
@@ -333,6 +333,8 @@ label.ag-sw{position:relative;display:inline-flex;width:38px;height:22px;flex:no
 .ag-ghl-notes{margin:0;padding-left:20px;display:grid;gap:4px;max-height:220px;overflow:auto}
 [data-ghl-state]{margin-top:14px}
 .ag-ghl-link{display:inline-flex;align-items:center;text-decoration:none}
+.ag-ghl-hint{margin:-4px 0 12px;font-size:12.5px;line-height:1.5}
+.ag-ghl-hint a{color:inherit;text-decoration:underline}
 
 /* AI Gateway (página do dono da plataforma). Só tokens de ui/tokens.css; vidro fica na navegação. */
 [data-aig-root] .badge.orange{background:var(--g-orange-100);color:var(--g-orange-ink)}
@@ -369,3 +371,12 @@ label.ag-sw{position:relative;display:inline-flex;width:38px;height:22px;flex:no
 .aig-candidates{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:13px}
 .aig-output{white-space:pre-wrap;overflow-wrap:anywhere;max-height:420px;overflow:auto;margin:0;padding:12px;border-radius:var(--g-r-sm);background:var(--g-surface-2);color:var(--g-ink);font-size:13px}
 @media(max-width:720px){.aig-kill{flex-direction:column;align-items:stretch}.aig-filter label{min-width:0;flex:1 1 100%}}
+/* Configurações › Empresa e marca: como a marca aparece no topo do menu das subcontas. */
+.ag-logo-display{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-width:0;margin:0;padding:0;border:0}
+.ag-logo-display legend{padding:0;margin-bottom:8px;font-weight:600}
+.ag-logo-display .choice{min-width:0}
+.ag-logo-display .choice input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.ag-logo-display .choice:has(input:checked){border-color:var(--g-brand);background:var(--g-brand-surface);box-shadow:0 0 0 3px color-mix(in srgb,var(--g-brand) 18%,transparent)}
+.ag-logo-display .choice:has(input:focus-visible){outline:2px solid var(--g-brand);outline-offset:2px}
+.ag-logo-display small{grid-column:1/-1}
+@media (max-width:640px){.ag-logo-display{grid-template-columns:1fr}}
