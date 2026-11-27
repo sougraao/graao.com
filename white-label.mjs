@@ -1,4 +1,4 @@
-// White Label das subcontas: o domínio da agência (app.suaagencia.com.br) abre a graao com a marca dela.
+// White Label das subcontas: o domínio da agência (app.suaagencia.com.br) abre o graao com a marca dela.
 // Três partes: o endereço salvo é validado e só pode ser de uma agência; o login, aberto nesse endereço,
 // mostra o nome, o logotipo e a cor da agência; e, com um token da hospedagem (Vercel), o domínio é
 // registrado no projeto sozinho, faltando à agência só o CNAME no DNS dela.
@@ -133,7 +133,7 @@ export function brandedPage(html, brand = {}) {
   const mark = logo ? `<img class="boot-logo" src="${escapeHtml(logo)}" alt="">` : '';
   let page = html
     .replace('<html lang="pt-BR">', `<html lang="pt-BR" data-marca="agencia" data-marca-nome="${name}"${logo ? ` data-marca-logo="${escapeHtml(logo)}"` : ''}>`)
-    .replace('<strong class="boot-title">Abrindo a graao…</strong>', `${mark}<strong class="boot-title">Abrindo ${name}…</strong>`)
+    .replace('<strong class="boot-title">Abrindo o graao…</strong>', `${mark}<strong class="boot-title">Abrindo ${name}…</strong>`)
     .replace(/<title>Entrar · graao<\/title>/, `<title>Entrar · ${name}</title>`)
     .replace(/<title>graao<\/title>/, `<title>${name}</title>`)
     .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="Acesse ${name}.">`)

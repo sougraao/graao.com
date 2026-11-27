@@ -4,7 +4,7 @@ Estado: aguardando aprovação. Base: `docs/implementation/08-cobrancas-ghl-e-fi
 
 ## Intenção
 
-A Graao vai cobrar como o GoHighLevel: a Graao cobra a agência, a agência cobra a subconta, a subconta cobra o consumidor, cada um no
+O Graao vai cobrar como o GoHighLevel: o Graao cobra a agência, a agência cobra a subconta, a subconta cobra o consumidor, cada um no
 próprio gateway. Sem porcentagem e sem split. Antes de ligar cobranças novas, o que já existe precisa registrar dinheiro
 corretamente, reagir a quem não paga e identificar vendedor e comprador para a contabilidade brasileira.
 
@@ -21,13 +21,13 @@ Decisões do usuário: modelo igual ao GHL; sem porcentagem; o AbacatePay renova
 ## Fora desta entrega
 
 Cobrança Graao → agência, carteira automática, taxa de adesão, anual, créditos, troca de plano, cancelamento no fim do ciclo,
-revenda, multa, lembretes, pagamento parcial, cartão salvo, emissão de NFS-e, devolução iniciada pela Graao.
+revenda, multa, lembretes, pagamento parcial, cartão salvo, emissão de NFS-e, devolução iniciada pelo Graao.
 
 ## O que seria fracasso
 
 - Cobrar alguém duas vezes, ou suspender quem pagou.
 - Suspender subcontas já existentes sem a agência ter ligado a opção.
-- Somar no livro da Graao vendas de agências ou subcontas.
+- Somar no livro do Graao vendas de agências ou subcontas.
 - Perder um aviso de pagamento por conflito de gravação.
 
 ## Caminhos considerados
@@ -138,7 +138,7 @@ chave fixa, para poder repetir. O que já foi cortado do extrato não volta; a t
   (Simples, MEI, presumido, real), endereço com CEP, município e código IBGE, e-mail fiscal.
 - Contato: CPF/CNPJ opcional, também na importação e na API.
 - Exigido para conectar um gateway novo. Contas já conectadas continuam cobrando e veem um aviso para completar.
-- Fatura, página de pagamento e recibo mostram "Vendido por" com nome e CPF/CNPJ da subconta, nunca a Graao. Sem cadastro, mostram o nome da subconta.
+- Fatura, página de pagamento e recibo mostram "Vendido por" com nome e CPF/CNPJ da subconta, nunca o Graao. Sem cadastro, mostram o nome da subconta.
 - CPF aparece mascarado em listas, e inteiro só na ficha e no CSV. Páginas públicas mostram o documento do vendedor, nunca o do comprador.
 
 ### 6. Telas e exportação

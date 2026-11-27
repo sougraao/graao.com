@@ -60,7 +60,7 @@ export function createPageRoutes(deps) {
     // A raiz é a página inicial pública (ui/index.html); o login com Google mora em /login (ui/login.html).
     const homePaths = ['/','/index.html'];
     const loginPaths = ['/login','/login.html'];
-    // White Label: no domínio de uma agência a raiz é a entrada com a marca dela, nunca a página inicial da graao.
+    // White Label: no domínio de uma agência a raiz é a entrada com a marca dela, nunca a página inicial do graao.
     if ((method==='GET'||method==='HEAD') && homePaths.includes(p) && !isPlatformHost(requestHost(req))) {
       await ready;
       if ((await whiteLabelBrand(store, requestHost(req))).name !== undefined) {

@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Site institucional completo da graao (~37 páginas) em Astro estático, em `Smartsite/site/`, pronto para `www.graao.com`, sem publicar.
+**Goal:** Site institucional completo do graao (~37 páginas) em Astro estático, em `Smartsite/site/`, pronto para `www.graao.com`, sem publicar.
 
 **Architecture:** Astro SSG com três layouts (Core, Funcionalidade, Solução) sobre um `Base`. Funcionalidades e soluções são content collections em Markdown com frontmatter tipado; páginas core são `.astro`. Um teste `node:test` lê `dist/` e garante as invariantes de SEO, links, copy e conversão em todas as páginas.
 
@@ -16,7 +16,7 @@
 - `SITE_URL = 'https://www.graao.com'`; `LOGIN_URL = 'https://graao.com/login'` — definidos só em `src/config.ts`.
 - pt-BR (`<html lang="pt-BR">`); marca sempre "graao" minúsculo.
 - H1 da home: "A plataforma brasileira para Marketing 360." Linha de campanha: "Tudo que seu marketing precisa. Inclusive bom gosto."
-- CTA primário: texto "Começar com a graao", href `LOGIN_URL`, `data-cta="comecar"`.
+- CTA primário: texto "Começar com o graao", href `LOGIN_URL`, `data-cta="comecar"`.
 - Proibido no HTML gerado: nomes de concorrentes (HighLevel, GoHighLevel, GHL, HubSpot, RD Station, Kommo, ActiveCampaign, Wix, Hotmart, Kajabi), "24h", "24/7", "grátis", "garantido", "teste gratuito", `chat.whatsapp.com`, `aggregateRating`.
 - Informação ausente vira marcador visível `[[descrição]]`; página que contém `[[` recebe `<meta name="robots" content="noindex">` e fica fora do sitemap.
 - Pink da marca `#ff00bb` nunca como cor de texto sobre fundo claro; texto/link de destaque `#a00070` ou mais escuro (AA ≥ 4.5:1).
@@ -111,7 +111,7 @@
 - Create: `src/layouts/Solucao.astro`, `src/pages/solucoes/index.astro`, `src/pages/solucoes/[slug].astro`, `src/content/solucoes/*.md` (agencias, profissionais-de-marketing, pequenas-empresas, negocios-locais, captacao-de-leads, conversao-de-vendas, atendimento-ao-cliente, relacionamento-e-recompra)
 
 **Interfaces:**
-- Consumes: `funcionalidades` (via `reference`) para montar o bloco "como a graao resolve" com links.
+- Consumes: `funcionalidades` (via `reference`) para montar o bloco "como o graao resolve" com links.
 
 - [ ] **Step 1:** Teste `cada solução liga a pelo menos 3 funcionalidades e cada funcionalidade é ligada por pelo menos 1 solução` (sem órfãs).
 - [ ] **Step 2:** Rodar → FAIL.

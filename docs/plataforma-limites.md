@@ -14,7 +14,7 @@ Na visão da agência, o menu **Visão geral → Plataforma** (`/app#agency/plat
 | Hostinger | Disco, memória e CPU da VPS da Evolution, e o vencimento quando a renovação automática está desligada |
 | Evolution API | Se responde e quantas instâncias existem |
 | Twilio | Saldo da conta contra o mínimo definido na página (padrão US$ 10) |
-| OpenAI | Com `OPENAI_ADMIN_KEY`, o gasto do mês em dólares da conta da graao (sem limite: a OpenAI não expõe o saldo pela API). Com `OPENAI_API_KEY`, se ela é aceita |
+| OpenAI | Com `OPENAI_ADMIN_KEY`, o gasto do mês em dólares da conta do graao (sem limite: a OpenAI não expõe o saldo pela API). Com `OPENAI_API_KEY`, se ela é aceita |
 | Resend | Se o domínio do remetente (`PORTAL_EMAIL_FROM`) está verificado. Pendente gera aviso. Com chave só de envio (a de produção), o cartão diz isso e não confere o domínio |
 | Meta | Quanto do limite de chamadas por hora do app já foi usado (cabeçalho `X-App-Usage`) |
 
@@ -67,9 +67,9 @@ Situação em 26/11/2026: em produção já estão `VERCEL_TEAM_ID`, `VERCEL_API
 | `CLOUDFLARE_API_TOKEN` | dash.cloudflare.com → My Profile → API Tokens → Custom token | Account → **Account Analytics: Read** e **Workers R2 Storage: Read**, só na conta do R2 |
 | `CLOUDFLARE_ACCOUNT_ID` | dash.cloudflare.com → R2 → Account ID (a mesma conta do R2 da doc) | Sem ela, a conta sai do próprio token, mas só se o token tiver permissão de listar contas; o token de produção não tem ("o token não vê nenhuma conta"). **Não use `R2_ACCOUNT_ID` para isso:** sozinha ela liga o armazenamento R2 do app, que exige bucket e chaves, e derruba o servidor |
 | `HOSTINGER_API_TOKEN` | hPanel → Perfil → API → Novo token | Token da conta, com validade definida |
-| `TWILIO_ACCOUNT_SID` e `TWILIO_AUTH_TOKEN` | console.twilio.com → Account Info | Só se a graao usar a telefonia; as mesmas variáveis ligam a compra de números |
-| `OPENAI_ADMIN_KEY` (opcional) | platform.openai.com → Organization → Admin keys | Só leitura de uso. Mostra o gasto do mês da conta da graao. As agências usam chaves próprias da OpenAI, que não entram aqui |
-| `OPENAI_API_KEY` (opcional) | A chave do "Pergunte à Graao", se for usada | O cartão confere se a chave é aceita. `STUDIO_OPENAI_API_KEY` não é lida pelo app e não entra |
+| `TWILIO_ACCOUNT_SID` e `TWILIO_AUTH_TOKEN` | console.twilio.com → Account Info | Só se o graao usar a telefonia; as mesmas variáveis ligam a compra de números |
+| `OPENAI_ADMIN_KEY` (opcional) | platform.openai.com → Organization → Admin keys | Só leitura de uso. Mostra o gasto do mês da conta do graao. As agências usam chaves próprias da OpenAI, que não entram aqui |
+| `OPENAI_API_KEY` (opcional) | A chave do "Pergunte ao Graao", se for usada | O cartão confere se a chave é aceita. `STUDIO_OPENAI_API_KEY` não é lida pelo app e não entra |
 | `RESEND_API_KEY` | Já usada pelo app | Só de envio basta (é a de produção). Para o cartão conferir o domínio, ela precisaria de **Full access** |
 | `META_APP_ID` e `META_APP_SECRET` | Já usadas pelo app | — |
 

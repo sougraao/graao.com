@@ -201,7 +201,7 @@
     h+='<span class="pnum">'+esc(f.id)+'</span><span class="pname">'+esc(f.nome)+'</span>';
     h+='<span class="pcount">'+(tot?c.feito+'/'+tot:'—')+'</span>';
     h+='<span class="pobj">'+esc(f.objetivo)+'</span>'+(tot?'<span class="pbar">'+barra(c,tot)+'</span>':'')+'</summary>';
-    if(f.base) h+='<div class="base">Base existente na Graao: '+esc(f.base)+'</div>';
+    if(f.base) h+='<div class="base">Base existente no Graao: '+esc(f.base)+'</div>';
     h+='<ul class="items">';
     f.itens.forEach(function(i){
       var x=[]; if(i.ref)x.push('Ref.: <b>'+esc(i.ref)+'</b>'); if(i.entrega)x.push('Entrega: <b>'+esc(i.entrega)+'</b>'); if(i.data)x.push(fmt(i.data)); if(i.nota)x.push(esc(i.nota));

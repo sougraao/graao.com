@@ -1,6 +1,6 @@
 ## O que muda
 
-<!-- O que a pessoa que usa a graao passa a ver ou conseguir fazer. -->
+<!-- O que a pessoa que usa o graao passa a ver ou conseguir fazer. -->
 
 ## Testes
 

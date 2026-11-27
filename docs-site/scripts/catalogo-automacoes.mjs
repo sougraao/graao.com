@@ -31,13 +31,13 @@ async function gerar() {
   const docs = new URL('../src/content/docs/automacoes/', import.meta.url);
   await writeFile(new URL('gatilhos.mdx', docs), paginaCatalogo({
     titulo: 'Gatilhos', coluna: 'Gatilho',
-    descricao: 'Todos os eventos que podem iniciar um workflow na graao, agrupados como no editor.',
+    descricao: 'Todos os eventos que podem iniciar um workflow no graao, agrupados como no editor.',
     intro: 'O gatilho é o evento que inicia o workflow. A lista abaixo segue os grupos do editor de workflows. Os grupos que começam com "Apps" vêm dos conectores e só aparecem depois que o app é conectado.',
     grupos: triggerCatalog,
   }));
   await writeFile(new URL('acoes.mdx', docs), paginaCatalogo({
     titulo: 'Ações', coluna: 'Ação',
-    descricao: 'Todas as ações que um workflow da graao pode executar, agrupadas como no editor.',
+    descricao: 'Todas as ações que um workflow do graao pode executar, agrupadas como no editor.',
     intro: 'A ação é o que o workflow faz depois do gatilho: enviar uma mensagem, mudar um contato, chamar a IA, esperar. A lista abaixo segue os grupos do editor de workflows.',
     grupos: actionCatalog,
   }));

@@ -1,7 +1,7 @@
 // graao Model Registry: os modelos que o gateway conhece, vindos da sincronização com a API oficial de cada provedor
 // e da revisão do administrador. Regras:
 // - gratuidade nunca pelo nome: só quando a API informa preço zero (OpenRouter) ou quando o administrador confirma
-//   que a conta da graao está no plano gratuito do provedor E marca o modelo como incluído nele;
+//   que a conta do graao está no plano gratuito do provedor E marca o modelo como incluído nele;
 // - preço desconhecido = fora da rota automática até alguém informar;
 // - modelo que some da listagem do provedor fica 'inactive' (descontinuado), não é apagado.
 import { CAPABILITIES } from './contracts.mjs';
@@ -65,7 +65,7 @@ export const isZeroPrice = pricing => Boolean(pricing) && pricing.inputMicrosPer
 export const priceKnown = model => Boolean(model.pricing) && Number.isInteger(model.pricing.inputMicrosPerM) && Number.isInteger(model.pricing.outputMicrosPerM);
 
 /**
- * O modelo custa zero PARA A GRAAO agora? Preço zero da API, ou plano gratuito da conta confirmado no provedor
+ * O modelo custa zero PARA O GRAAO agora? Preço zero da API, ou plano gratuito da conta confirmado no provedor
  * e o modelo marcado pelo administrador como incluído nesse plano.
  */
 export function isFree(model, providerConfig) {

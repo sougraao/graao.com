@@ -1231,7 +1231,7 @@ document.fonts?.ready.then(() => document.querySelectorAll('[data-g]').forEach(e
 /* Theme toggle: microkit diagonal wipe via View Transitions API */
 let themeBusy = null;
 let themeStorageKey;
-// A graao abre no escuro (paleta oficial #0F0F0F/#202020 + verde); o claro é escolha de quem usa.
+// O graao abre no escuro (paleta oficial #0F0F0F/#202020 + verde); o claro é escolha de quem usa.
 let themeFallback = 'dark';
 
 function applyTheme(theme) {
@@ -1241,7 +1241,7 @@ function applyTheme(theme) {
   window.dispatchEvent(new CustomEvent('graao:theme-change'));
 }
 
-// Paleta oficial da graao: verde #5DD62C principal, verde-escuro #337418 secundário (mesmos padrões de agency-model.mjs).
+// Paleta oficial do graao: verde #5DD62C principal, verde-escuro #337418 secundário (mesmos padrões de agency-model.mjs).
 // Pares que já foram o padrão (rosa/lilás, laranja/amarelo, roxo) contam como padrão até a agência escolher outro.
 const DEFAULT_BRAND_PRIMARY = '#5dd62c';
 const DEFAULT_BRAND_SECONDARY = '#337418';

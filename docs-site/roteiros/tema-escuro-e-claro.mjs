@@ -1,4 +1,4 @@
-// Roteiro de prints do artigo configuracoes/tema-escuro-e-claro. A graao abre no tema escuro; o botão do topo troca para o claro.
+// Roteiro de prints do artigo configuracoes/tema-escuro-e-claro. O graao abre no tema escuro; o botão do topo troca para o claro.
 const botao = 'button[aria-label="Alternar entre tema claro e escuro"]';
 
 export default {

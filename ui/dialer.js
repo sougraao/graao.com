@@ -23,7 +23,7 @@ export function dialerPanel(c) {
       <label>${h(tr('Ligar pelo número'))}<select name="numberId">${numbers.map(n => option(n.id, n.name ? `${n.name} (${pretty(n.number)})` : pretty(n.number), '')).join('')}</select></label>
       <label>${h(tr('Seu telefone'))}<input name="agentPhone" value="${h(c.dialerAgent || '')}" placeholder="(11) 99999-0000" required></label>
       <button class="primary" ${pending.length ? '' : 'disabled'}>${i('phone', 15)} ${h(tr('Iniciar discador'))}</button><p class="form-status" role="alert"></p>
-    </form><p class="dim">${h(tr('A Graao liga para o seu telefone e mantém a linha aberta. Depois, cada contato da fila entra na ligação com você, um por vez.'))}</p>`;
+    </form><p class="dim">${h(tr('O Graao liga para o seu telefone e mantém a linha aberta. Depois, cada contato da fila entra na ligação com você, um por vez.'))}</p>`;
 
   const call = session?.currentCallId ? s.calls.find(row => row.id === session.currentCallId) : null;
   const contact = call && contacts.get(call.contactId);

@@ -25,7 +25,7 @@ import { apiScopes,
 export const AGENCY_ID = 'agency';
 const platformLanguage = 'Português (Brasil)';
 const platformBrand = 'graao';
-// Paleta oficial da graao (2026-11-27): verde #5DD62C, verde-escuro #337418.
+// Paleta oficial do graao (2026-11-27): verde #5DD62C, verde-escuro #337418.
 const defaultPrimary = '#5dd62c';
 const defaultSecondary = '#337418';
 const defaultAccent = '#5dd62c';

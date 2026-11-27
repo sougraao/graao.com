@@ -1,6 +1,6 @@
 // White Label: entrar com Google no domínio da agência (app.agencia.com.br). O Supabase só devolve o login para a
 // graao.com (a única origem na lista dele), então antes o Google voltava para lá sem o verificador PKCE, que mora
-// no cookie do domínio da agência, e a entrada falhava. Agora a graao.com só repassa o código para a agência.
+// no cookie do domínio da agência, e a entrada falhava. Agora o graao.com só repassa o código para a agência.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createSupabaseAuth } from '../auth.mjs';
@@ -67,7 +67,7 @@ test('Google login on the agency domain goes through graao.com and ends on the a
 
   const back = await visit('graao.com', 'GET', '/api/auth/callback/google?code=code-ana');
   assert.equal(back.location, 'https://app.agencia.com.br/api/auth/callback/google?code=code-ana');
-  assert.equal(exchanged.length, 0, 'a graao.com não troca o código: ela não tem o verificador');
+  assert.equal(exchanged.length, 0, 'o graao.com não troca o código: ela não tem o verificador');
   assert.equal(jars['graao.com'].has('go_google_relay'), false, 'o repasse vale uma vez só');
 
   const done = await visit('app.agencia.com.br', 'GET', '/api/auth/callback/google?code=code-ana');

@@ -119,7 +119,7 @@ test('Saving another domain adds the new one and takes the old one off the hosti
   assert.deepEqual(log, [['add', 'umcaracaramelo.com.br'], ['add', 'app.umcaracaramelo.com.br'], ['remove', 'umcaracaramelo.com.br'], ['remove', 'app.umcaracaramelo.com.br']]);
 });
 
-// Desde o PR 188 a raiz é a página inicial da graao; no domínio da agência ela abria a marca da plataforma.
+// Desde o PR 188 a raiz é a página inicial do graao; no domínio da agência ela abria a marca da plataforma.
 test('The root of an agency domain opens its branded login; graao.com keeps the home page', async t => {
   const http = await import('node:http');
   const { makeServer } = await import('../server.mjs');
@@ -134,7 +134,7 @@ test('The root of an agency domain opens its branded login; graao.com keeps the 
   assert.equal(saved.status, 200);
   assert.deepEqual(await get('/?utm_source=x', 'app.agencia.com.br'), [303, '/login?utm_source=x']);
   assert.deepEqual(await get('/', 'graao.com'), [200, '']);
-  assert.deepEqual(await get('/', 'outro.com.br'), [200, ''], 'um domínio que não é de agência segue com a página da graao');
+  assert.deepEqual(await get('/', 'outro.com.br'), [200, ''], 'um domínio que não é de agência segue com a página do graao');
 });
 
 // Produção, 26/11: graao.com (sem subdomínio, DNS na Squarespace). A tela pedia um CNAME em "graao.com" e um TXT

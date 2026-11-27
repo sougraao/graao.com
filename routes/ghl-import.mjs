@@ -1,6 +1,6 @@
 // Importar do GHL (/api/ghl-import/* e /api/agency/ghl-import*): a agência gera um código, a extensão do Chrome manda a
-// extração em partes autenticadas por ele (sem sessão: vem de chrome-extension://) e a janela da graao avança a conversão
-// em passos (ghl-import-run.mjs). A graao nunca recebe senha, token ou cookie do GHL.
+// extração em partes autenticadas por ele (sem sessão: vem de chrome-extension://) e a janela do graao avança a conversão
+// em passos (ghl-import-run.mjs). O graao nunca recebe senha, token ou cookie do GHL.
 import { lookup } from 'node:dns/promises';
 import { requireCapability } from '../authorization.mjs';
 import { acceptPart, finishUpload, jobByCode, jobView, codeHash, newImportCode, PART_MAX } from '../ghl-import-model.mjs';
@@ -36,7 +36,7 @@ export function createGhlImportRoutes(deps) {
   async function agencyOfCode(req) {
     const code = String(req.headers['x-graao-import-code'] || '');
     const found = code ? await store.findAgency({ ghlImports: [{ codeHash: codeHash(code) }] }) : null;
-    if (!found) throw error('Código inválido ou expirado. Gere outro na graao.', 401);
+    if (!found) throw error('Código inválido ou expirado. Gere outro no graao.', 401);
     return { code, agencyId: found.id };
   }
 

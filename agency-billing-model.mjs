@@ -1,4 +1,4 @@
-// Estado da agência perante a graao: celular confirmado, teste, plano pago, bloqueio.
+// Estado da agência perante o graao: celular confirmado, teste, plano pago, bloqueio.
 // Puro: o servidor decide quando gravar; aqui só as regras.
 export const TRIAL_DAYS = 15;
 const DAY = 86400000;

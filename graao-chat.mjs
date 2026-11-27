@@ -1,4 +1,4 @@
-// Pergunte à Graao — backend de conversas com árvore de ramos, streaming SSE,
+// Pergunte ao Graao — backend de conversas com árvore de ramos, streaming SSE,
 // contexto vivo da agência e integração com OpenAI / provedores compatíveis.
 import { randomUUID } from 'node:crypto';
 
@@ -123,7 +123,7 @@ export function parseSkillMd(raw) {
   return { name, description, instructions };
 }
 
-// ---------- Persistência via store da Graao ----------
+// ---------- Persistência via store do Graao ----------
 
 function createChatStore(store) {
   const tempByAgency = new Map();
@@ -150,7 +150,7 @@ function createChatStore(store) {
     const id = chatRowId(agencyId);
     try {
       const row = await store.load(id);
-      if (!row.profile?.name) row.profile = { name: 'Pergunte à Graao', ...(row.profile || {}) };
+      if (!row.profile?.name) row.profile = { name: 'Pergunte ao Graao', ...(row.profile || {}) };
       if (typeof row.instructions !== 'string') row.instructions = '';
       if (!Array.isArray(row.conversations)) row.conversations = [];
       if (!Array.isArray(row.skills)) row.skills = [];
@@ -158,7 +158,7 @@ function createChatStore(store) {
     } catch (err) {
       if (err.status !== 404) throw err;
       await store.insert(id, {
-        profile: { name: 'Pergunte à Graao' },
+        profile: { name: 'Pergunte ao Graao' },
         instructions: '',
         conversations: [],
         skills: []
@@ -170,7 +170,7 @@ function createChatStore(store) {
   async function changeRow(agencyId, mutate) {
     await ensureRow(agencyId);
     return store.change(chatRowId(agencyId), row => {
-      if (!row.profile?.name) row.profile = { name: 'Pergunte à Graao', ...(row.profile || {}) };
+      if (!row.profile?.name) row.profile = { name: 'Pergunte ao Graao', ...(row.profile || {}) };
       if (typeof row.instructions !== 'string') row.instructions = '';
       if (!Array.isArray(row.conversations)) row.conversations = [];
       if (!Array.isArray(row.skills)) row.skills = [];
@@ -474,7 +474,7 @@ export async function localAgencyReply({ prompt, agency, overview, attachments =
 
   if (/snapshot|setup|marketplace/.test(q)) {
     const snaps = agency.snapshots || [];
-    if (!snaps.length) return 'Você ainda não tem setups salvos na sua biblioteca.\n\nExplore o **Marketplace** em **Setups de conta** para adicionar setups prontos da Graao e da comunidade gratuitamente, ou crie um setup a partir da sua melhor subconta.';
+    if (!snaps.length) return 'Você ainda não tem setups salvos na sua biblioteca.\n\nExplore o **Marketplace** em **Setups de conta** para adicionar setups prontos do Graao e da comunidade gratuitamente, ou crie um setup a partir da sua melhor subconta.';
     return `### Setups de conta da agência\n\nVocê possui **${snaps.length}** setup(s) na biblioteca e **${agency.snapshotLoads?.length || 0}** carregamento(s) registrado(s):\n\n${snaps.slice(0, 10).map(s => `- **${s.name}** (v${s.version || 1}${s.published ? ' · Publicado no marketplace' : s.kind === 'marketplace' ? ` · Marketplace (${s.marketplaceAuthor || 'Graao'})` : ''})`).join('\n')}`;
   }
 
@@ -518,7 +518,7 @@ export async function localAgencyReply({ prompt, agency, overview, attachments =
   return `Aqui está o panorama atual da **${agency.company?.name || 'sua agência'}** com base nos registros locais:\n\n- **MRR:** ${fmtMoney(t.mrr)} em **${t.active}** subconta(s) ativa(s)\n- **Contatos:** ${t.contacts} | **Oportunidades abertas:** ${t.open}\n- **Setups de conta:** ${agency.snapshots?.length || 0} | **Equipe:** ${agency.users?.length || 0}\n\nVocê pode perguntar especificamente sobre **MRR e planos**, **ranking de contatos**, **subcontas sem login**, **setups de conta**, **equipe**, **prospects** ou **próximos passos**.\n\n> **Dica:** conecte sua chave da OpenAI em **Configurações → OpenAI** para conversar livremente com modelos generativos usando todos os dados da agência em tempo real.`;
 }
 
-// ---------- Provedor LLM (OpenAI conectada na Graao / env / Assistente local) ----------
+// ---------- Provedor LLM (OpenAI conectada no Graao / env / Assistente local) ----------
 
 async function resolveProvider({ openAI, session, env = process.env, request = fetch }) {
   const userConn = await openAI.optionalConnection(session);
@@ -680,7 +680,7 @@ ${activeSkills.map(s => `### ${s.name}
 ${s.description ? `*${s.description}*\n` : ''}${s.instructions}`).join('\n\n')}` : '';
 
   const system = [
-    `Você é a Graao, assistente executiva de IA integrada à plataforma de gestão de agências graao. Responda em português do Brasil ou espanhol latino (conforme a preferência ou idioma do usuário), de forma clara, direta, útil e usando Markdown bem estruturado (listas, tabelas, destaques, código quando pertinente). Todas as novas criações, templates, copies ou materiais devem nascer já prontos em português e espanhol latino, com alta qualidade e linguagem natural para ambos os mercados. Data atual: ${today}.`,
+    `Você é o Graao, assistente executiva de IA integrada à plataforma de gestão de agências graao. Responda em português do Brasil ou espanhol latino (conforme a preferência ou idioma do usuário), de forma clara, direta, útil e usando Markdown bem estruturado (listas, tabelas, destaques, código quando pertinente). Todas as novas criações, templates, copies ou materiais devem nascer já prontos em português e espanhol latino, com alta qualidade e linguagem natural para ambos os mercados. Data atual: ${today}.`,
     `Dados atuais desta agência (trate como base factual da operação):\n${agencyContext}`,
     skillsSection,
     typeof customInstructions === 'string' && customInstructions.trim()

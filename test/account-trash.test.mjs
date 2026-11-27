@@ -207,7 +207,7 @@ test('Exclusão definitiva: WhatsApp fora do ar segura a subconta na lixeira e t
   assert.equal(exists(store, `ads-${workspace}`), false);
 });
 
-test('Exclusão definitiva: depois de 7 dias de falha apaga o que é da graao e anota o que ficou de fora', async t => {
+test('Exclusão definitiva: depois de 7 dias de falha apaga o que é do graao e anota o que ficou de fora', async t => {
   const { store, purgeTrash, workspace, evo } = await startWithEverything(t);
   const due = Date.now() + (TRASH_DAYS + 1) * DAY;
   evo.setDown(true);

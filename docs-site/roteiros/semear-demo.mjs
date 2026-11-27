@@ -41,7 +41,7 @@ async function preencher(base, workspace, subconta) {
     await salvar('opportunities', { title: titulo, contactId: contatos[i], stage: etapa, value: 900 + i * 650, status: etapa === 'won' ? 'Won' : 'Open' });
   }
   for (const [i, corpo] of MENSAGENS.entries()) {
-    // Mensagens recebidas: a graao só registra, não envia nada.
+    // Mensagens recebidas: o graao só registra, não envia nada.
     await pedir(base, `/api/action?workspace=${workspace}`, { type: 'message', data: { contactId: contatos[i], body: corpo, direction: 'Inbound', channel: 'WhatsApp' } });
   }
   await salvar('tasks', { title: `Ligar para ${NOMES[1]}`, contactId: contatos[1], due: '', done: false });
@@ -49,7 +49,7 @@ async function preencher(base, workspace, subconta) {
 }
 
 export async function semear({ base }) {
-  // A agência local nasce como "My Agency": nos prints ela é a Agência Demo, com a cor da graao.
+  // A agência local nasce como "My Agency": nos prints ela é a Agência Demo, com a cor do graao.
   const { company } = (await pedir(base, '/api/agency')).agency || {};
   if (!company || company.name !== 'Agência Demo') {
     await pedir(base, '/api/agency/action', { type: 'company', data: { name: 'Agência Demo', domain: '', website: '', phone: '+55 11 4000-0000', address: 'São Paulo, SP', primary: '#5dd62c', secondary: '#337418', timezone: 'America/Sao_Paulo' } });

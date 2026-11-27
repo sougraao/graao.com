@@ -56,7 +56,7 @@ export function reportSources(c) {
       ${source('blank','note','Relatório em branco','Comece com uma página vazia.')}
       ${source('template','grid','Biblioteca de modelos','Use métricas organizadas por objetivo.')}
       ${source('clone','copy','Duplicar relatório','Use um relatório existente como base.',!c.s.customReports.length)}
-      ${source('dashboard','chart','Importar de um painel','Copie os widgets de um painel da Graao.',!c.s.dashboards.length)}
+      ${source('dashboard','chart','Importar de um painel','Copie os widgets de um painel do Graao.',!c.s.dashboards.length)}
     </div></div>`;
 }
 
@@ -131,7 +131,7 @@ function shareMarkup(c, report) {
     <footer class="report-share-foot">${active ? button('share-revoke','Revogar link','close',`data-id="${h(report.id)}"`) : ''}<span class="spacer"></span><button class="primary">${active ? 'Gerar novo link' : 'Gerar link'}</button></footer></form>`;
   const scheduleForm = `<form data-form="report:schedule" data-id="${h(report.id)}" class="report-share-form">
     <h3>Envio automático por e-mail</h3>
-    <p class="dim">A Graao envia o link do relatório para os e-mails escolhidos, no fuso ${h(zone)}. Se ainda não houver link, um link sem validade é criado.</p>
+    <p class="dim">O Graao envia o link do relatório para os e-mails escolhidos, no fuso ${h(zone)}. Se ainda não houver link, um link sem validade é criado.</p>
     ${c.features?.reportEmail ? '' : '<p class="report-share-warn">O envio por e-mail ainda não está configurado no servidor (RESEND_API_KEY, PORTAL_EMAIL_FROM e PORTAL_PUBLIC_ORIGIN). O agendamento fica salvo e começa a enviar quando a configuração existir.</p>'}
     ${s ? `<p class="dim">${s.lastSent ? `Último envio: ${fmt(s.lastSent,zone,true)}.` : 'Ainda não enviado.'}${s.lastError ? ` <span class="report-share-error">Falha no último envio: ${h(s.lastError)}</span>` : ''}</p>` : ''}
     <div class="field-grid">${select('Frequência','frequency',[['weekly','Toda semana'],['monthly','Todo mês']],s?.frequency || 'weekly')}

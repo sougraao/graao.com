@@ -1,4 +1,4 @@
-// Conectar uma IA ao servidor MCP com o login da graao (OAuth 2.1): registro, consentimento, tokens e revogação.
+// Conectar uma IA ao servidor MCP com o login do graao (OAuth 2.1): registro, consentimento, tokens e revogação.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash, randomBytes, randomUUID } from 'node:crypto';

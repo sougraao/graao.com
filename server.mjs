@@ -655,13 +655,13 @@ export function makeServer({
     const access = agencyAccess(agency.billing, new Date());
     if (access.canUse) return null;
     if (invited && access.gate === 'PHONE_REQUIRED') return { code: 'AGENCY_NOT_ACTIVE', error: 'A agência ainda não foi ativada pelo responsável.' };
-    return { code: access.gate, error: access.gate === 'PHONE_REQUIRED' ? 'Confirme seu celular pelo WhatsApp para começar a usar a graao.' : 'A agência está bloqueada por falta de pagamento.' };
+    return { code: access.gate, error: access.gate === 'PHONE_REQUIRED' ? 'Confirme seu celular pelo WhatsApp para começar a usar o graao.' : 'A agência está bloqueada por falta de pagamento.' };
   }
   function requireAgencyOpen(agency, invited) {
     const closed = agencyGate(agency, invited);
     if (closed) throw Object.assign(error(closed.error, 402), { code: closed.code, billing: publicBilling(agency.billing, new Date()) });
   }
-  // Qual agência é dona do domínio da requisição ({ id, name }) ou null na graao. Só o id e o nome ficam um minuto em
+  // Qual agência é dona do domínio da requisição ({ id, name }) ou null no graao. Só o id e o nome ficam um minuto em
   // memória: o resto da agência é sempre lido de novo.
   const domainAgencies = new Map();
   async function domainAgency(req) {
@@ -682,7 +682,7 @@ export function makeServer({
     catch (e) { if (e.status !== 404 || agencyId === AGENCY_ID) throw e; }
     if (!agency) {
       const email = session.email.toLowerCase();
-      // White Label: no domínio de uma agência só entra quem ela liberou; ninguém vira cliente novo da graao por ali.
+      // White Label: no domínio de uma agência só entra quem ela liberou; ninguém vira cliente novo do graao por ali.
       const domain = await domainAgency(req);
       let invite = await store.findAgency({ users: [{ email, loginEnabled: true }] });
       if (domain && invite && invite.id !== domain.id) {
@@ -1705,7 +1705,7 @@ export function makeServer({
   }
   // AI steps run in the background with the OpenAI key of whoever saved the workflow, and only while that
   // person still belongs to the agency that owns the sub-account (or it is their own personal account).
-  // Sem a chave, as etapas só de texto (`scope.allowPlatform`) usam a IA gratuita da graao quando o dono a liberou.
+  // Sem a chave, as etapas só de texto (`scope.allowPlatform`) usam a IA gratuita do graao quando o dono a liberou.
   async function workflowConnection(workspace, state, workflowId, scope = {}) {
     if (localAccess && workflowAI) return { model: agentModel };
     return keyConnection(workspace, state, state.workflows.find(row => row.id === workflowId)?.aiKey, 'salve o fluxo de novo para usar as ações de IA', 'quem salvou o fluxo não tem mais acesso a esta subconta; salve o fluxo de novo', 'conecte a OpenAI de quem salvou o fluxo (Visão da agência → Configurações → OpenAI)', { org: workspace, feature: 'workflow.ai', ...scope });
@@ -1801,7 +1801,7 @@ export function makeServer({
         if (item.runId) results.push({ runId: item.runId, kind: 'push', text: devices.length ? `enviada para ${sent.filter(row => row.ok).length} de ${devices.length} aparelho(s)` : 'nenhum aparelho com notificações ativadas' });
       }
       if (item.kind === 'phone-call' || item.kind === 'voicemail-drop' || item.kind === 'voice-ai-call') {
-        const text = !phoneOrigin() ? 'erro: defina PHONE_PUBLIC_ORIGIN para a Twilio chamar a Graao'
+        const text = !phoneOrigin() ? 'erro: defina PHONE_PUBLIC_ORIGIN para a Twilio chamar o Graao'
           : await phone.workflowItem(workspace, item, phoneOrigin()).catch(problem => `erro: ${problem.message}`);
         results.push({ runId: item.runId, kind: 'phone', text });
       }
@@ -2079,7 +2079,7 @@ export function makeServer({
   const accountPurge = createAccountPurge({ store, r2, whatsapp });
   // Lixeira de subcontas: passados TRASH_DAYS da exclusão, a subconta é apagada de vez com tudo o que era dela
   // (account-purge.mjs) e sai da agência. Se o R2 ou a Evolution falham, ela espera na lixeira e o servidor tenta de
-  // novo a cada hora; depois de 7 dias de falha, apaga o que é da graao e anota no histórico o que ficou de fora.
+  // novo a cada hora; depois de 7 dias de falha, apaga o que é do graao e anota no histórico o que ficou de fora.
   async function purgeTrash(agencyId, at = Date.now()) {
     const agency = await store.load(agencyId), done = [];
     for (const id of trashExpired(agency, at)) {

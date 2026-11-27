@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** a graao passa a exigir celular confirmado pelo WhatsApp, dar 15 + 15 dias de teste, cobrar os planos de R$ 97/297/497 pelo AbacatePay da graao, aplicar os limites do GHL e pagar afiliados pelo link.
+**Goal:** o graao passa a exigir celular confirmado pelo WhatsApp, dar 15 + 15 dias de teste, cobrar os planos de R$ 97/297/497 pelo AbacatePay do graao, aplicar os limites do GHL e pagar afiliados pelo link.
 
 **Architecture:** um modelo puro (`agency-billing-model.mjs`) decide estado, acesso e limites a partir de `agency.billing` e de um relógio injetado; o servidor só lê o veredito. A confirmação do celular é um webhook próprio da Evolution que nunca guarda mensagens. A cobrança usa a conexão de agência da agência raiz (`AGENCY_ID`) no AbacatePay e o webhook que já existe.
 
@@ -147,7 +147,7 @@ test('Sem celular ou bloqueada não usa; teste vencido ainda usa até a varredur
   - `POST /api/verify/start` `{ phone }` → `{ link, code, expiresAt, number }`; grava `billing.verify = { phone, hash, expiresAt, refused: '' }`; 429 acima dos limites; 503 `VERIFY_OFF` sem as variáveis; 409 `PHONE_TAKEN` se `phoneKey` já existe.
   - `GET /api/verify/status` → `{ status: 'waiting'|'verified'|'refused'|'expired', reason }`.
   - `POST /api/verify/whatsapp/<GRAAO_VERIFY_SECRET>` — webhook da Evolution. Para cada texto com código: acha a agência por `store.findAgency({ billing: { verify: { hash } } })` (ou índice `verify-<hash>` gravado no start; o construtor escolhe o que `findAgency` suporta), confere que `normalizePhone(remetente) === verify.phone`, faz a trava, `startTrial`, grava `phone`/`phoneVerifiedAt`, responde pelo `verifyLine.sendText`. Sempre devolve 200.
-  - Respostas fixas: "Pronto, sua conta da graao está confirmada.", "Este número já tem uma conta na graao.", "Abra o WhatsApp no celular deste número e envie a mensagem de novo.", "Este código venceu. Gere outro na graao."
+  - Respostas fixas: "Pronto, sua conta do graao está confirmada.", "Este número já tem uma conta no graao.", "Abra o WhatsApp no celular deste número e envie a mensagem de novo.", "Este código venceu. Gere outro no graao."
 
 - [ ] **Step 1: testes**
 
@@ -210,7 +210,7 @@ Comportamento: campo do celular (Brasil por padrão), botão **Confirmar pelo Wh
 - [ ] Testes para cada evento, eventos fora de ordem (`renewed` depois de `cancelled` não reativa), `canExtend` nos dias 11, 12 e 16, e `sweepDue` com assinatura em teste (não bloqueia).
 - [ ] Commit `feat(cobranca): planos e transições da agência`.
 
-### Task 8: AbacatePay da graao
+### Task 8: AbacatePay do graao
 
 **Files:**
 - Modify: `abacatepay.mjs`
@@ -222,8 +222,8 @@ Comportamento: campo do celular (Brasil por padrão), botão **Confirmar pelo Wh
   - `getSubscription(subscriptionId)`, `cancelAgencySubscription(subscriptionId)`, `changeAgencyPlan(subscriptionId, plan)`.
   - No `receive`: quando `agencyId === AGENCY_ID`, `scope === AGENCY_SCOPE` e `data.checkout?.metadata?.agency` existe, chama `onPlatformSubscription(targetAgencyId, event, data, devMode)` em vez de `subscriptionEvent`.
 
-- [ ] Testes: produto criado uma vez; extensão usa `-t15` e só cartão; evento com `metadata.agency` chega ao callback e não mexe em `accounts`; sem conexão na raiz → erro "A graao ainda não ligou o AbacatePay".
-- [ ] Commit `feat(cobranca): assinatura da agência no AbacatePay da graao`.
+- [ ] Testes: produto criado uma vez; extensão usa `-t15` e só cartão; evento com `metadata.agency` chega ao callback e não mexe em `accounts`; sem conexão na raiz → erro "O graao ainda não ligou o AbacatePay".
+- [ ] Commit `feat(cobranca): assinatura da agência no AbacatePay do graao`.
 
 ### Task 9: rotas, webhook, livro e varredura
 
@@ -279,7 +279,7 @@ Atualizar os artigos das telas com selo (white-label/app desktop, configurador S
 
 ---
 
-## PR 4 · Afiliados da graao (branch `feat/cobranca-agencia-afiliados`, base PR 3)
+## PR 4 · Afiliados do graao (branch `feat/cobranca-agencia-afiliados`, base PR 3)
 
 ### Task 14: link, indicação e comissão
 
@@ -291,7 +291,7 @@ Atualizar os artigos das telas com selo (white-label/app desktop, configurador S
 - Produces: `referralFor(cookieValue, { selfCode, selfPhoneKey, referrerPhoneKey }): string|''` · `commissionFor(paymentCents): number` (40%) · indicação `{ id, agencyId, name, plan, status: 'Trial'|'Active'|'Inactive', since }` · comissão `{ id, referralId, paymentId, cents, availableAt (pagamento + 30 dias), status: 'pending'|'available'|'paid'|'reversed', paidAt }`.
 
 - [ ] Testes: cookie só no primeiro link; autoindicação (mesmo código ou mesmo celular) ignorada; confirmação cria a indicação Em teste; pagamento gera comissão de 40% disponível em 30 dias; reembolso antes disso estorna; agência não consegue mais criar indicação nem marcar pagamento; a raiz marca **Pago** e o livro registra.
-- [ ] Commit `feat(afiliados): link da graao, indicação e comissão automáticas`.
+- [ ] Commit `feat(afiliados): link do graao, indicação e comissão automáticas`.
 
 ### Task 15: documentação do PR 4 e revisão final
 

@@ -19,7 +19,7 @@
 - Sem `alert/confirm/prompt`: usar `ask/askText/tell` de `ui/ask.js`. Textos em pt com tradução em `ui/locales/es.js`. Sem emojis.
 - Agência, subconta e camada vêm da sessão, nunca do navegador.
 - Pagamento com `devMode` não entra no livro.
-- A Graao não tem importação de transações por CSV hoje; a regra do projeto sobre isso não pede código.
+- O Graao não tem importação de transações por CSV hoje; a regra do projeto sobre isso não pede código.
 - Nada roda em produção (migração, importação) sem autorização do usuário. Nenhum PR é mesclado sem pedido.
 - PRs: A = tarefas 1 a 4; B = 5 a 7; C = 8 e 9; D = 10 e 11; E = 12. Empilhados nessa ordem.
 
@@ -338,7 +338,7 @@ test('Pagar reativa', async t => { /* subscription.completed → Active, suspend
 test('Conectar gateway sem cadastro: 409 FISCAL_REQUIRED; com cadastro conecta', async t => {});
 test('Conta já conectada continua cobrando e reconecta sem cadastro', async t => {});
 test('Página pública mostra o vendedor e nunca o documento do comprador', async t => { assert.doesNotMatch(JSON.stringify(view), /52998224725|529\.982/); });
-test('Sem cadastro, mostra o nome da subconta, nunca a Graao', async t => {});
+test('Sem cadastro, mostra o nome da subconta, nunca o Graao', async t => {});
 ```
 
 - [ ] **Step 2: Rodar e ver falhar**

@@ -1,6 +1,6 @@
 # Plano de paridade: Graao × GoHighLevel
 
-Levantamento feito em 20/11/2026 na conta GHL logada no navegador interno (agência "La Vaca Estudio", subconta `iJA1defi4GNScV59Dust`), percorrendo o menu lateral e as abas internas de cada módulo. O status da Graao vem das abas e rotas declaradas no código (`ui/screens.js`, `ui/crm.js`, `ui/app.js`) e de buscas por nome. Ele não vem de testes funcionais, então 🟡 quer dizer "existe algo, conferir profundidade".
+Levantamento feito em 20/11/2026 na conta GHL logada no navegador interno (agência "La Vaca Estudio", subconta `iJA1defi4GNScV59Dust`), percorrendo o menu lateral e as abas internas de cada módulo. O status do Graao vem das abas e rotas declaradas no código (`ui/screens.js`, `ui/crm.js`, `ui/app.js`) e de buscas por nome. Ele não vem de testes funcionais, então 🟡 quer dizer "existe algo, conferir profundidade".
 
 Legenda: ✅ existe · 🟡 parcial / conferir · ❌ não encontrado · ⏭ não recriar
 
@@ -84,7 +84,7 @@ Graao: 🟡 `agents.js` / `agent-ai.mjs` existem. Conferir **Voice AI** (atendim
 ### Automação — `/automation`
 Workflows ✅ · Overview 🟡 · Global Workflow Settings 🟡
 
-**Catálogo:** o GHL tem **116 gatilhos e 180 ações**. A Graao (`ui/workflow-data.js`) tem **32 gatilhos e 34 ações**.
+**Catálogo:** o GHL tem **116 gatilhos e 180 ações**. O Graao (`ui/workflow-data.js`) tem **32 gatilhos e 34 ações**.
 
 As maiores diferenças estão em:
 - **Ações de IA:** decisão, resumo, intenção, tradução, extração, análise de imagem e vídeo, Claude/Gemini.
@@ -166,7 +166,7 @@ Marketplace de apps + App Studio. Graao: ✅ App Studio da agência e Configura�
 | Brand Boards | ❌ |
 
 ### Topo
-Ask AI ✅ (Pergunte a Graao) · Launchpad ✅ · Dashboard ✅
+Ask AI ✅ (Pergunte ao Graao) · Launchpad ✅ · Dashboard ✅
 
 ## 2. Inventário: agência
 
@@ -191,7 +191,7 @@ Ask AI ✅ (Pergunte a Graao) · Launchpad ✅ · Dashboard ✅
 
 O GHL é uma casca Vue (`static.leadconnectorhq.com/<build>/app.js`, com 119 rotas próprias, a maioria de agência, login e status de conta). Ela carrega cada módulo como micro-frontend via Module Federation (`appcdn.leadconnectorhq.com/<domínio>/<app>/remoteEntry.js`). O registro completo está em [04b-ghl-microapps.txt](04b-ghl-microapps.txt).
 
-O registro revela módulos que **não aparecem no menu desta conta**, porque dependem de plano, flag ou nicho. Os marcados com ★ são lacunas novas para a Graao:
+O registro revela módulos que **não aparecem no menu desta conta**, porque dependem de plano, flag ou nicho. Os marcados com ★ são lacunas novas para o Graao:
 
 | Domínio | Micro-apps (★ = não visto no menu) |
 |---|---|
@@ -216,7 +216,7 @@ O registro revela módulos que **não aparecem no menu desta conta**, porque dep
 
 ## 3. Roadmap
 
-A ordem segue impacto para o cliente da Graao (agências e PMEs no Brasil) e dependências técnicas.
+A ordem segue impacto para o cliente do Graao (agências e PMEs no Brasil) e dependências técnicas.
 
 > **Status vivo:** o andamento item a item fica no painel [painel/index.html](painel/index.html), que lê os dados de [painel/progresso.js](painel/progresso.js). Quem implementar deve atualizar `progresso.js` a cada item iniciado ou concluído. As instruções estão no topo desse arquivo.
 
@@ -291,4 +291,4 @@ WordPress hospedado, Swag, Gokollab, conteúdo de educação SaaS do GHL.
   - nasce com gatilho e ação no motor de workflow quando fizer sentido;
   - tem tradução pt-BR/es;
   - respeita o modelo de permissões (`authorization.mjs`).
-- Recriar o comportamento e a organização, não a marca: nomes, textos e visual são da Graao.
+- Recriar o comportamento e a organização, não a marca: nomes, textos e visual são do Graao.

@@ -101,7 +101,7 @@ export function startAgency(env) {
   const confirmBox = (title, text, form, id, submit) => dialog(title, `<p>${h(text)}</p>`, { form, id, submit });
 
   // ---- Importar do GHL ---------------------------------------------------
-  // A janela mostra o código; a extensão do Chrome envia a leitura; daqui a graao consulta o andamento a cada 2 s e,
+  // A janela mostra o código; a extensão do Chrome envia a leitura; daqui o graao consulta o andamento a cada 2 s e,
   // quando os dados chegam, avança a conversão passo a passo (cada passo leva menos de 20 s no servidor).
   let ghlJob = '', ghlTimer = null;
   const stopGhl = () => { clearTimeout(ghlTimer); ghlTimer = null; ghlJob = ''; };
@@ -136,7 +136,7 @@ export function startAgency(env) {
   async function openGhlImport() {
     stopGhl();
     const issued = await api('/api/agency/ghl-import-code', {});
-    dialog('Importar do GHL', ghlImportBody({ code: issued.code, expiresAt: issued.expiresAt }), { wide: true, description: 'Traga o snapshot da sua agência no GHL como um setup da graao.' });
+    dialog('Importar do GHL', ghlImportBody({ code: issued.code, expiresAt: issued.expiresAt }), { wide: true, description: 'Traga o snapshot da sua agência no GHL como um setup do graao.' });
     for (const el of G('#dialog').querySelectorAll('[data-w]')) el.style.width = `${el.dataset.w}%`;
     ghlJob = issued.jobId;
     ghlTimer = setTimeout(() => watchGhl(issued.jobId), 2000);
@@ -840,7 +840,7 @@ export function startAgency(env) {
       <p class="dim">Crie uma chave de API v2 com permissão de leitura e escrita em <a class="text-link" href="https://app.abacatepay.com/api-keys" target="_blank" rel="noopener">app.abacatepay.com</a>. Use a chave do modo teste para experimentar sem dinheiro real. Cada subconta conecta a própria conta em Configurações → AbacatePay para receber as suas faturas.</p><label>Chave de API v2<input name="apiKey" required autocomplete="off" spellcheck="false" maxlength="400"></label></div></section><footer class="set-foot"><p class="form-status" role="alert"></p><button class="primary">Conectar</button></footer></form>`;
     const hook = g.webhookStatus === 'registered' ? `<p>${badge('Webhook cadastrado automaticamente', 'green')}</p>`
       : `<p class="surface padded ag-warn">${h(g.webhookError || 'Cadastre o webhook no painel do AbacatePay.')} Use os dados abaixo em app.abacatepay.com/webhooks.</p>`;
-    const update = g.webhookOutdated ? `<div class="surface padded ag-notice">${i('pay', 20)}<div><b>Há avisos novos do AbacatePay</b><p>Atualize para a graao saber de plano recusado, contestação e devolução.</p></div>${btn('Atualizar avisos', 'abacate-hooks', '', 'primary')}</div>` : '';
+    const update = g.webhookOutdated ? `<div class="surface padded ag-notice">${i('pay', 20)}<div><b>Há avisos novos do AbacatePay</b><p>Atualize para o graao saber de plano recusado, contestação e devolução.</p></div>${btn('Atualizar avisos', 'abacate-hooks', '', 'primary')}</div>` : '';
     const missing = g.missingEvents?.length ? `<p class="dim"><small>O AbacatePay não aceitou: ${h(g.missingEvents.join(', '))}</small></p>` : '';
     return (D().fiscal ? '' : fiscalMissing('#agency/settings/fiscal')) + update + card(`${head(g.storeName || 'AbacatePay')}<p>${badge('Conectado', 'green')} ${g.devMode ? badge('Modo teste', 'gold') : ''}</p><p class="dim">Chave terminada em <b>${h(g.last4)}</b>, conectada em ${day(g.connectedAt)}. Gere as assinaturas em <a class="text-link" href="#agency/saas/accounts">Configurador SaaS → Subcontas SaaS</a>.</p><div class="inline-gap">${btn('Desconectar', 'abacate-disconnect')}</div>`, true)
       + `<section class="surface set-card"><div class="set-section"><header class="set-head"><h2>Webhook de assinaturas</h2></header><div class="set-body">${hook}<label>URL<input readonly value="${h(g.webhookUrl)}"></label><label>Secret<input readonly value="${h(g.webhookSecret || '')}"></label><p class="dim"><small>Eventos: ${h(g.events.join(', '))}</small></p>${missing}</div></div></section>`;
@@ -885,7 +885,7 @@ export function startAgency(env) {
     if (status === 'hibernated') return badge('Hibernado', 'gold');
     return badge('Desconectado', '');
   }
-  // Linha da graao que recebe o "Confirmar graao XXXXXX" de quem cria uma agência. Só o dono da plataforma vê.
+  // Linha do graao que recebe o "Confirmar graao XXXXXX" de quem cria uma agência. Só o dono da plataforma vê.
   async function refreshVerifyLine() {
     if (!isPlatformOwner()) return;
     A.vl = await api('/api/verify/line').catch(e => ({ error: e.message }));
@@ -912,13 +912,13 @@ export function startAgency(env) {
       : !vl.server ? '<p class="form-status">O servidor gerenciado da Evolution (EVOLUTION_BASE_URL e EVOLUTION_API_KEY) não está configurado.</p>'
       : `<div class="inline-gap">${vl.missing ? badge('Instância ainda não criada') : waStatusBadge(vl.status)}<span class="dim">+${h(vl.number)} · instância ${h(vl.instance)}</span></div>
          ${vl.status === 'connected' ? '' : vl.qrcode
-           ? `<div class="ag-waha-qr ag-gap"><div class="ag-waha-qr-frame"><img src="${h(vl.qrcode)}" alt="QR Code do WhatsApp de confirmação"></div><b>Leia com o WhatsApp do número da graao</b><small class="dim">Aparelhos conectados → Conectar aparelho. ${vlPollTimer ? 'Verificando sozinho…' : 'Depois de ler, clique em <b>Atualizar</b>.'}</small></div>`
+           ? `<div class="ag-waha-qr ag-gap"><div class="ag-waha-qr-frame"><img src="${h(vl.qrcode)}" alt="QR Code do WhatsApp de confirmação"></div><b>Leia com o WhatsApp do número do graao</b><small class="dim">Aparelhos conectados → Conectar aparelho. ${vlPollTimer ? 'Verificando sozinho…' : 'Depois de ler, clique em <b>Atualizar</b>.'}</small></div>`
            : vl.paircode ? `<p>Código de pareamento: <b class="ag-waha-code">${h(vl.paircode)}</b></p>` : ''}
          <div class="inline-gap ag-gap">${vl.status === 'connected' ? '' : btn('Conectar', 'vl-connect', 'type="button"', 'primary')}${btn('Atualizar', 'vl-refresh', 'type="button"', 'secondary', 'refresh')}</div>`;
     return `
       <form class="surface settings-form set-form ag-gap" data-ag-form="vl-release">
         <section class="set-section"><header class="set-head"><h2>WhatsApp de confirmação</h2>
-          <p class="dim">Número da graao que recebe a mensagem de quem cria uma agência e confirma o celular. Nada do que chega nele é guardado.</p></header>
+          <p class="dim">Número do graao que recebe a mensagem de quem cria uma agência e confirma o celular. Nada do que chega nele é guardado.</p></header>
           <div class="set-body">${body}</div></section>
         <section class="set-section"><header class="set-head"><h3>Liberar um número</h3>
           <p class="dim">Para o suporte trocar o celular de uma agência: o número volta a poder confirmar outra conta.</p></header>
@@ -981,7 +981,7 @@ export function startAgency(env) {
             <form class="settings-form" data-ag-form="wa-sub-test" data-id="${focus.workspace}">
               <h3>Enviar mensagem de teste</h3>
               <label>Número destino (com DDI)<input name="phone" required inputmode="numeric" placeholder="5511999999999"></label>
-              <label>Mensagem<textarea name="text" required maxlength="2000" placeholder="Olá! WhatsApp conectado na Graao via ${h(pl)}."></textarea></label>
+              <label>Mensagem<textarea name="text" required maxlength="2000" placeholder="Olá! WhatsApp conectado no Graao via ${h(pl)}."></textarea></label>
               <button class="primary">Enviar teste</button>
               <p class="form-status" role="alert"></p>
             </form>
@@ -1373,9 +1373,9 @@ Authorization: Bearer &lt;sua-chave&gt;</pre></div>`,
         const { result: s } = await api('/api/agency/domain-status', {});
         const proof = s.verification || [];
         const ready = s.pointing && s.verified && !s.proxied;
-        const message = !s.hosting ? 'A conexão automática com a hospedagem não está ativa: peça ao suporte da graao para adicionar o domínio.'
+        const message = !s.hosting ? 'A conexão automática com a hospedagem não está ativa: peça ao suporte do graao para adicionar o domínio.'
           : !s.added ? 'O domínio ainda não foi adicionado à hospedagem. Salve de novo em alguns minutos.'
-          : ready ? 'Pronto: o domínio aponta para a graao.'
+          : ready ? 'Pronto: o domínio aponta para o graao.'
           : proof.length ? 'Falta provar que o domínio é seu: crie no DNS os registros abaixo e clique em Verificar domínio de novo.'
           : s.proxied ? 'O registro está passando pelo proxy da Cloudflare (nuvem laranja). Mude para “Somente DNS” (nuvem cinza): com o proxy, o endereço mostra erro 525.'
           : 'Aguardando o CNAME: a mudança de DNS pode levar algumas horas.';

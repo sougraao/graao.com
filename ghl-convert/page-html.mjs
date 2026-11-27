@@ -1,6 +1,6 @@
-// Limpa o HTML renderizado de uma página do GHL para virar página de um site da Graao:
+// Limpa o HTML renderizado de uma página do GHL para virar página de um site do Graao:
 // tira scripts, comentários e estado do Nuxt, corta o CSS que a página não usa, troca formulários, pesquisas e agendas
-// pelos blocos da Graao (data-graao-embed) e reescreve os links entre páginas do mesmo site.
+// pelos blocos do Graao (data-graao-embed) e reescreve os links entre páginas do mesmo site.
 
 const VOID = /^(area|base|br|col|embed|hr|img|input|link|meta|source|track|wbr)$/i;
 
@@ -113,7 +113,7 @@ export function restoreFills(body, fills = []) {
 
 /**
  * html: a página renderizada pelo GHL. elements: [{ id, kind: 'form'|'survey'|'booking'|'video', ref, label, url }].
- * links: Map do caminho da página no GHL (/servico-1) para o endereço na Graao (servico-1, ou ../site/pagina).
+ * links: Map do caminho da página no GHL (/servico-1) para o endereço no Graao (servico-1, ou ../site/pagina).
  */
 /**
  * Imagens de fundo que o GHL aplicava por script: { id, url, opacity, options } viram CSS. A imagem fica num ::before
@@ -153,7 +153,7 @@ export function cleanPage(html, { title = '', elements = [], fills = [], links =
   // engoliria todas as regras seguintes, então a string vira vazia.
   const css = [...head.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi), ...body.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)]
     .map(m => m[1].replace(/(content\s*:\s*)(['"])\\\2/g, '$1$2$2')).join('\n')
-    // Os ícones (Font Awesome 5) vêm do CDN do GHL; as páginas da Graao só carregam fontes do Google e do cdnjs.
+    // Os ícones (Font Awesome 5) vêm do CDN do GHL; as páginas do Graao só carregam fontes do Google e do cdnjs.
     .replace(/https:\/\/stcdn\.leadconnectorhq\.com\/funnel\/fontawesome\/webfonts\//g, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/');
   body = body.replace(/<style\b[\s\S]*?<\/style>/gi, '');
   const fonts = [...head.matchAll(/<link\b[^>]*href="(https:\/\/fonts\.googleapis\.com\/[^"]+)"[^>]*>/gi)].map(m => m[1].replace(/&amp;/g, '&'));

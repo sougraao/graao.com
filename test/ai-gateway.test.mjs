@@ -392,6 +392,6 @@ test('chave da agência: o corpo vai sem tradução para a OpenAI e os erros ant
   await assert.rejects(openAIResponse(body, { apiKey: 'sk-ruim', timeout: 5000, problem: 'falhou', gateway: refused, gatewayContext: { org: 'sub-1' } }),
     error => error.status === 422 && /OpenAI recusou a chave/.test(error.message));
 
-  // Sem chave e sem a IA da graao liberada (padrão): continua pedindo a chave.
+  // Sem chave e sem a IA do graao liberada (padrão): continua pedindo a chave.
   await assert.rejects(gw.responses(body, { org: 'sub-1' }), error => error.kind === 'disabled');
 });

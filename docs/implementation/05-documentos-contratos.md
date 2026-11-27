@@ -22,7 +22,7 @@ Referência do GHL: catálogo técnico [04c](04c-ghl-catalogo-tecnico.md) §3 (`
 
 ---
 
-## 2. O que a Graao já tem e vamos aproveitar
+## 2. O que o Graao já tem e vamos aproveitar
 
 | Peça | Onde está | Uso aqui |
 |---|---|---|
@@ -52,7 +52,7 @@ Referência do GHL: catálogo técnico [04c](04c-ghl-catalogo-tecnico.md) §3 (`
 - **Upload de PDF com campos sobrepostos** (decisão D4, §11). No começo, o PDF entra como bloco "anexo" e os campos vão abaixo dele.
 - **Documentos públicos**: um modelo com link aberto, que qualquer pessoa preenche e que gera o próprio documento. Entra depois do 1.4, reaproveitando o fluxo de assinatura.
 - **Seção "Contratos" no portal do cliente**: entra com a Fase 6 (o portal do GHL tem Faturas, Estimativas e Contratos).
-- **Campo "dados de cartão"**: não será recriado. A Graao não guarda dados de cartão; o pagamento acontece no checkout do AbacatePay logo depois da assinatura, o que cobre o mesmo caso de uso.
+- **Campo "dados de cartão"**: não será recriado. O Graao não guarda dados de cartão; o pagamento acontece no checkout do AbacatePay logo depois da assinatura, o que cobre o mesmo caso de uso.
 
 ---
 
@@ -99,7 +99,7 @@ Mesmo formato de `documents`, mas sem `status`, `contactId`, datas de envio, cob
 { id, created, name, category: 'about' | 'benefits' | 'pricing' | 'team' | 'video' | 'columns' | 'other', blocks: [Block] }
 ```
 
-A Graao entrega 6 itens prontos, equivalentes aos do GHL e com textos próprios: Sobre nós, Benefícios, Planos, Equipe, Vídeo e Duas colunas.
+O Graao entrega 6 itens prontos, equivalentes aos do GHL e com textos próprios: Sobre nós, Benefícios, Planos, Equipe, Vídeo e Duas colunas.
 
 ### 4.4 Validação
 
@@ -201,7 +201,7 @@ Cor de destaque, fonte (3 opções das já carregadas no app) e logo (da Mídia 
 
 - Sem ordem: todos recebem o link no envio.
 - Com ordem: só os do menor `order` pendente recebem o link. Quando todos desse nível assinam, o próximo nível recebe o dele.
-- **Remetente que assina**: o usuário da Graao pode se incluir como destinatário e assinar pelo próprio app, sem link.
+- **Remetente que assina**: o usuário do Graao pode se incluir como destinatário e assinar pelo próprio app, sem link.
 
 ### 7.2 Envio e página pública
 
@@ -262,7 +262,7 @@ Quando o último signatário assina:
 
 ## 8. Workflow (parte do item 1.10)
 
-| Tipo | Nome na Graao | Filtros / campos |
+| Tipo | Nome no Graao | Filtros / campos |
 |---|---|---|
 | Gatilho `document_status` | Documento ou contrato | Status: enviado, visualizado, assinado por um destinatário, concluído, recusado, expirado. Modelo (opcional). |
 | Gatilho `document_paid` | Documento pago | Modelo (opcional). |

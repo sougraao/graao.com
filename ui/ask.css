@@ -1,4 +1,4 @@
-/* Perguntas da graao (ui/ask.js). Usa as cores do app; no portal e na Prancheta cai nas delas ou no padrão. */
+/* Perguntas do graao (ui/ask.js). Usa as cores do app; no portal e na Prancheta cai nas delas ou no padrão. */
 dialog.ask{
   --ask-bg:var(--g-surface,var(--surface,#fff)); --ask-ink:var(--g-ink,var(--text,#0f131a)); --ask-dim:var(--g-dim,var(--muted,#5d6673));
   --ask-line:var(--g-line-2,var(--border,#d9dee5)); --ask-soft:var(--g-surface-2,var(--surface-hover,#f4f6f8));

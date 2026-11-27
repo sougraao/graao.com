@@ -34,14 +34,14 @@ Use o código no carrinho da loja, no campo “Cartão-presente”.${until}` };
   if (item.what === 'estimate') {
     if (item.kind === 'document-owner') {
       const what = item.event === 'accepted' ? 'foi aceito' : 'foi recusado';
-      return { subject: `Orçamento ${item.title} ${what}`, text: `O orçamento ${item.title} ${what}.\n\nAbra Pagamentos → Orçamentos na Graao para ver os detalhes.` };
+      return { subject: `Orçamento ${item.title} ${what}`, text: `O orçamento ${item.title} ${what}.\n\nAbra Pagamentos → Orçamentos no Graao para ver os detalhes.` };
     }
     return { subject: item.subject || `${sender} enviou o orçamento ${item.title}`,
       text: `Olá, ${item.name}.\n\n${sender} enviou o orçamento ${item.title} para você.${item.message ? `\n\n${item.message}` : ''}\n\nVeja, escolha os itens opcionais e aprove ou recuse pelo link:\n${link}` };
   }
   if (item.kind === 'document-owner') {
     const what = item.event === 'completed' ? 'foi assinado por todos' : 'foi recusado';
-    return { subject: `“${item.title}” ${what}`, text: `O documento “${item.title}” ${what}.\n\nAbra Pagamentos → Documentos e contratos na Graao para ver os detalhes e a trilha de auditoria.` };
+    return { subject: `“${item.title}” ${what}`, text: `O documento “${item.title}” ${what}.\n\nAbra Pagamentos → Documentos e contratos no Graao para ver os detalhes e a trilha de auditoria.` };
   }
   if (item.final) {
     return { subject: `Cópia final: ${item.title}`, text: `Olá, ${item.name}.\n\nO documento “${item.title}”, enviado por ${sender}, foi assinado por todos.${item.pays ? ' Falta o pagamento: pelo mesmo link você paga por Pix ou cartão.' : ''}\n\nAbra a cópia final com o certificado de conclusão:\n${link}\n\nGuarde este e-mail: o link é pessoal.` };

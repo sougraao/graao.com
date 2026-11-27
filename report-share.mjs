@@ -11,7 +11,7 @@ export const sharedReportPath = (workspace, report) => `/relatorio/${workspace}/
 export const findSharedReport = (state, shareId) => state.customReports?.find(report => report.share?.id === shareId && shareActive(report)) || null;
 
 const copy = {
-  pt: { updated: 'Dados atualizados em', made: 'Relatório compartilhado pela Graao', lang: 'Idioma', page: 'Página' },
+  pt: { updated: 'Dados atualizados em', made: 'Relatório compartilhado pelo Graao', lang: 'Idioma', page: 'Página' },
   es: { updated: 'Datos actualizados el', made: 'Informe compartido por Graao', lang: 'Idioma', page: 'Página' }
 };
 

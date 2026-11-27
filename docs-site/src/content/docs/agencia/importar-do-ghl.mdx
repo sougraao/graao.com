@@ -1,6 +1,6 @@
 ---
-title: Trazer o snapshot da sua agência no GHL para a graao
-description: Com a extensão do Chrome, uma subconta do GHL com o seu snapshot vira um setup seu na graao, com campos, automações, formulários, pipelines e sites.
+title: Trazer o snapshot da sua agência no GHL para o graao
+description: Com a extensão do Chrome, uma subconta do GHL com o seu snapshot vira um setup seu no graao, com campos, automações, formulários, pipelines e sites.
 modulo: agencia
 sidebar:
   order: 3
@@ -11,14 +11,14 @@ import { Steps, Aside, CardGrid, LinkCard } from '@astrojs/starlight/components'
 import Print from '../../../components/Print.astro';
 import Requisitos from '../../../components/Requisitos.astro';
 
-Se a sua agência está saindo do GHL, você não precisa montar tudo de novo. A extensão **graao: Importar do GHL** lê uma subconta onde o seu snapshot está carregado e leva tudo para a graao como um setup em **Importados**. Depois é só usar esse setup para criar as subcontas dos seus clientes.
+Se a sua agência está saindo do GHL, você não precisa montar tudo de novo. A extensão **graao: Importar do GHL** lê uma subconta onde o seu snapshot está carregado e leva tudo para o graao como um setup em **Importados**. Depois é só usar esse setup para criar as subcontas dos seus clientes.
 
 <Requisitos permissao="Dono ou admin da agência (acesso às configurações)" integracoes={['Google Chrome', 'Login de agência no GHL']} />
 
 ## Antes de começar
 
 - O link de compartilhamento do snapshot sozinho não serve: sem login no GHL, ele só mostra a tela de entrada. Carregue o snapshot numa subconta do GHL (pode ser uma subconta de teste) e importe a partir dela.
-- Instale a extensão no Chrome. Enquanto ela não aparece na Chrome Web Store, peça o arquivo ao suporte da graao, descompacte, abra `chrome://extensions`, ligue o **Modo do desenvolvedor** e clique em **Carregar sem compactação**, escolhendo a pasta da extensão.
+- Instale a extensão no Chrome. Enquanto ela não aparece na Chrome Web Store, peça o arquivo ao suporte do graao, descompacte, abra `chrome://extensions`, ligue o **Modo do desenvolvedor** e clique em **Carregar sem compactação**, escolhendo a pasta da extensão.
 
 ## Passo a passo
 
@@ -28,13 +28,13 @@ Se a sua agência está saindo do GHL, você não precisa montar tudo de novo. A
 
    <Print src="docs/agencia/importar-do-ghl/01-botao.ee013506.webp" alt="Tela Setups de conta na aba Importados, com o botão Importar do GHL em destaque no topo." />
 
-2. A graao mostra o passo a passo e um **código de importação** de 9 letras e números. Ele vale 30 minutos e serve uma vez. Clique em **Copiar** e deixe esta janela aberta.
+2. O graao mostra o passo a passo e um **código de importação** de 9 letras e números. Ele vale 30 minutos e serve uma vez. Clique em **Copiar** e deixe esta janela aberta.
 
    <Print src="docs/agencia/importar-do-ghl/02-codigo.49d5a4ec.webp" alt="Janela Importar do GHL com os três passos, o botão Instalar no Chrome e o código de importação em destaque." />
 
-3. No GHL, abra a subconta com o snapshot. Clique no ícone da extensão **graao: Importar do GHL**, cole o código e clique em **Importar esta subconta**. A extensão lê a subconta e envia para a graao. Não feche a janelinha da extensão até ela dizer **Enviado**.
+3. No GHL, abra a subconta com o snapshot. Clique no ícone da extensão **graao: Importar do GHL**, cole o código e clique em **Importar esta subconta**. A extensão lê a subconta e envia para o graao. Não feche a janelinha da extensão até ela dizer **Enviado**.
 
-4. De volta à graao, a conversão começa sozinha. A janela mostra cada fase: baixando as páginas, convertendo e copiando as imagens.
+4. De volta ao graao, a conversão começa sozinha. A janela mostra cada fase: baixando as páginas, convertendo e copiando as imagens.
 
    <Print src="docs/agencia/importar-do-ghl/03-andamento.16ef89e6.webp" alt="Janela Importar do GHL mostrando o andamento Baixando páginas 12/41 com a barra de progresso." />
 
@@ -49,19 +49,19 @@ Se a sua agência está saindo do GHL, você não precisa montar tudo de novo. A
 </Steps>
 
 <Aside type="tip">
-Leia as notas do relatório antes de criar a primeira subconta. Elas dizem exatamente o que não teve equivalente na graao e onde ajustar.
+Leia as notas do relatório antes de criar a primeira subconta. Elas dizem exatamente o que não teve equivalente no graao e onde ajustar.
 </Aside>
 
 ## O que vem e o que não vem
 
-Vêm: campos e valores personalizados, tags, pipelines e etapas, formulários e pesquisas, workflows com gatilhos e ações, links de gatilho, modelos de e-mail (só o texto: as imagens você coloca no editor de e-mail, e o relatório avisa), calendários (viram serviços de agendamento), chats do site, agentes e bases de conhecimento, e os funis e sites com as páginas (até 50 por site). Formulários, pesquisas e calendários colocados nas páginas viram os blocos da graao.
+Vêm: campos e valores personalizados, tags, pipelines e etapas, formulários e pesquisas, workflows com gatilhos e ações, links de gatilho, modelos de e-mail (só o texto: as imagens você coloca no editor de e-mail, e o relatório avisa), calendários (viram serviços de agendamento), chats do site, agentes e bases de conhecimento, e os funis e sites com as páginas (até 50 por site). Formulários, pesquisas e calendários colocados nas páginas viram os blocos do graao.
 
-Não vêm: contatos, conversas, oportunidades, pagamentos e históricos. Widgets do GHL que a graao não tem (como o de avaliações) não vêm: confira as páginas antes de publicar. Automações e sites chegam **desligados**, para você revisar antes de ligar.
+Não vêm: contatos, conversas, oportunidades, pagamentos e históricos. Widgets do GHL que o graao não tem (como o de avaliações) não vêm: confira as páginas antes de publicar. Automações e sites chegam **desligados**, para você revisar antes de ligar.
 
 ## Perguntas frequentes
 
-**A graao vê a minha senha do GHL?**
-Não. A extensão usa o login que já está aberto no seu Chrome, só para **ler** a subconta. Ela não cria, não salva e não apaga nada no GHL, e envia para a graao apenas os dados lidos. Senha, token e cookies nunca saem do seu navegador.
+**O graao vê a minha senha do GHL?**
+Não. A extensão usa o login que já está aberto no seu Chrome, só para **ler** a subconta. Ela não cria, não salva e não apaga nada no GHL, e envia para o graao apenas os dados lidos. Senha, token e cookies nunca saem do seu navegador.
 
 **O código expirou. E agora?**
 Feche a janela e clique em **Importar do GHL** de novo para gerar outro código. Cada código vale 30 minutos e serve para uma importação.
@@ -70,10 +70,10 @@ Feche a janela e clique em **Importar do GHL** de novo para gerar outro código.
 Funciona. A extensão lê a aba aberta, qualquer que seja o endereço, desde que seja uma subconta (o endereço tem `/location/`).
 
 **E as imagens das páginas?**
-A graao copia as imagens das páginas para o armazenamento dela. Se alguma não puder ser copiada, ela continua no endereço do GHL e o relatório avisa. Troque essas imagens antes de cancelar o GHL.
+O graao copia as imagens das páginas para o armazenamento dela. Se alguma não puder ser copiada, ela continua no endereço do GHL e o relatório avisa. Troque essas imagens antes de cancelar o GHL.
 
 **Meu site tem mais de 50 páginas.**
-Entram as primeiras 50 de cada site, e o relatório avisa. Se precisar das outras, crie as páginas no editor de sites da graao.
+Entram as primeiras 50 de cada site, e o relatório avisa. Se precisar das outras, crie as páginas no editor de sites do graao.
 
 **O setup importado aparece para outras agências?**
 Não. Ele é só da sua agência. Você pode renomear, apagar ou compartilhar por código, como os seus outros setups.

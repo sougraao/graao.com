@@ -1,8 +1,8 @@
 // T.1 — mapa de cobertura do motor de workflows: cada gatilho e ação do editor do GoHighLevel (04c §1.3)
-// ligado ao que a Graao tem em ui/workflow-data.js.
+// ligado ao que o Graao tem em ui/workflow-data.js.
 //
 // status:
-//   'coberto'  — `graao` lista os tipos da Graao que fazem o mesmo (test/t1-cobertura.test.mjs confere que existem);
+//   'coberto'  — `graao` lista os tipos do Graao que fazem o mesmo (test/t1-cobertura.test.mjs confere que existem);
 //   'falta'    — ainda não existe; `plano` diz o tipo previsto e em que item do roadmap entra;
 //   'conector' — vem pelo catálogo de conectores (T.2: Google Sheets, Slack, Shopify, LinkedIn, TikTok);
 //   'fora'     — fora do escopo, com o motivo em `nota`.
@@ -13,8 +13,8 @@ const falta = (ghl, plano, nota = '') => ({ ghl, status: 'falta', plano, nota })
 const conector = (ghl, nota = '') => ({ ghl, status: 'conector', nota });
 const fora = (ghl, nota) => ({ ghl, status: 'fora', nota });
 
-const objetos = 'A Graao não tem objetos personalizados com registros próprios: Configurações → Objetos cobre campos em Contato, Oportunidade e Empresa, e a Empresa tem as ações company_*.';
-const eliza = 'Produto proprietário do GHL (Eliza); o equivalente na Graao é o agente de IA da subconta (ai_agent).';
+const objetos = 'O Graao não tem objetos personalizados com registros próprios: Configurações → Objetos cobre campos em Contato, Oportunidade e Empresa, e a Empresa tem as ações company_*.';
+const eliza = 'Produto proprietário do GHL (Eliza); o equivalente no Graao é o agente de IA da subconta (ai_agent).';
 
 export const gatilhos = [
   // Contact (12)
@@ -40,7 +40,7 @@ export const gatilhos = [
   c('External tracking event', 'external_tracking_event'), c('Prospect generated', 'prospect_received'),
   c('Click to WhatsApp ads', 'whatsapp_ad_click'),
   c('User replied', 'user_replied'),
-  c('AI studio form submitted', 'form_submitted', 'Os sites do Studio da Graao mandam os formulários como Formulário enviado.'),
+  c('AI studio form submitted', 'form_submitted', 'Os sites do Studio do Graao mandam os formulários como Formulário enviado.'),
   c('New review received', 'review_received'), c('Video testimonial received', 'video_testimonial'),
   // Appointments (4)
   c('Appointment status', 'appointment_status'), c('Customer booked appointment', 'appointment_booked'),
@@ -127,14 +127,14 @@ export const acoes = [
   c('Log external call', 'log_call'),
   c('WhatsApp', 'send_whatsapp'), c('Whatsapp: customer service window check', 'whatsapp_window'), c('Book appointment', 'book_appointment'),
   c('Update conversation AI bot and status', 'conversation_ai_status'),
-  fora('Whatsapp: send flows', 'WhatsApp Flows existe só na API oficial da Meta (Cloud API); a Graao usa a Evolution API.'),
+  fora('Whatsapp: send flows', 'WhatsApp Flows existe só na API oficial da Meta (Cloud API); o Graao usa a Evolution API.'),
   c('WhatsApp media', 'whatsapp_media'),
   c('WhatsApp interactive messages', 'whatsapp_interactive', 'Botões, lista ou enquete pela Evolution API.'),
   fora('TikTok interactive messenger', 'O TikTok não abre a API de mensagens diretas para contas comerciais em geral.'),
   c('Send opt-in message (beta)', 'send_optin'),
   c('Add internal comments', 'add_note', 'Nota interna na conversa.'),
-  fora('Send RCS', 'RCS Business Messaging exige marca aprovada pelo Google e um provedor RCS; nenhum dos canais da Graao oferece.'),
-  fora('RCS interactive message', 'RCS Business Messaging exige marca aprovada pelo Google e um provedor RCS; nenhum dos canais da Graao oferece.'),
+  fora('Send RCS', 'RCS Business Messaging exige marca aprovada pelo Google e um provedor RCS; nenhum dos canais do Graao oferece.'),
+  fora('RCS interactive message', 'RCS Business Messaging exige marca aprovada pelo Google e um provedor RCS; nenhum dos canais do Graao oferece.'),
   c('Live chat interactive messenger (beta)', 'send_live_chat', 'Botões de resposta no chat do site.'),
   c('Show WhatsApp typing indicator', 'whatsapp_typing'),
   // Slack (6)
@@ -154,7 +154,7 @@ export const acoes = [
   c('Set event start date', 'set_event_date', 'Com o modo Aguardar “em relação à data do evento”.'),
   c('Add to workflow', 'add_to_workflow'), c('Remove from workflow', 'remove_from_workflow'), c('Array formatter', 'list_format'), c('Drip', 'drip'),
   c('Text formatter', 'text_format'),
-  c('Custom code', 'custom_code', 'Linguagem de expressões da Graao (nome = expressão por linha), sem rede nem disco.'),
+  c('Custom code', 'custom_code', 'Linguagem de expressões do Graao (nome = expressão por linha), sem rede nem disco.'),
   // Workflow AI (7)
   c('AI Agent', 'ai_agent'), c('External AI models', 'ai_prompt'), c('GPT powered by OpenAI', 'ai_prompt'),
   c('AI image generation', 'ai_image_generate'),
@@ -193,7 +193,7 @@ export const acoes = [
   c('AI extract data (beta)', 'ai_extract'), c('AI email parser (beta)', 'ai_extract', 'O e-mail entra como texto de onde extrair.'),
   c('AI analyze image', 'ai_image'), c('Claude action', 'ai_prompt'),
   c('AI video generation', 'ai_video_generate'),
-  fora('AI analyze video', 'A conexão de IA da Graao é a OpenAI, cuja API não recebe vídeo como entrada.'),
+  fora('AI analyze video', 'A conexão de IA do Graao é a OpenAI, cuja API não recebe vídeo como entrada.'),
   c('Gemini action', 'ai_prompt'),
   // Associations (3)
   fora('Add associated records to workflow', objetos), fora('Remove associated records from workflow', objetos), fora('Associate records with Contact (beta)', objetos),

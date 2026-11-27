@@ -613,7 +613,7 @@ const quip = quips[Math.floor(Math.random() * quips.length)];
 const escText = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 /**
  * White Label: aberto no domínio de uma agência, o servidor marca o <html> com o nome e o logotipo dela
- * (white-label.mjs brandedPage). Devolve { name, logo } nesse caso e null na graao.
+ * (white-label.mjs brandedPage). Devolve { name, logo } nesse caso e null no graao.
  */
 export const domainBrand = () => {
   const data = typeof document === 'undefined' ? null : document.documentElement.dataset;
@@ -621,10 +621,10 @@ export const domainBrand = () => {
 };
 export const bootScreen = title => {
   const marca = domainBrand();
-  // No domínio da agência: o logotipo e o nome dela, sem a caveira nem as piadas da graao.
+  // No domínio da agência: o logotipo e o nome dela, sem a caveira nem as piadas do graao.
   if (marca) {
     const mark = marca.logo ? `<img class="boot-logo" src="${escText(marca.logo)}" alt="">` : '';
-    const line = title === 'Abrindo a graao…' && marca.name ? `Abrindo ${marca.name}…` : tr(title);
+    const line = title === 'Abrindo o graao…' && marca.name ? `Abrindo ${marca.name}…` : tr(title);
     return `<div class="boot boot-live boot-marca" role="status">${mark}<strong class="boot-title">${escText(line)}</strong></div>`;
   }
   const quip = quips[Math.floor(Math.random() * quips.length)];

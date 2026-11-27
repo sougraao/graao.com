@@ -558,7 +558,7 @@ export function createEngine({ add, now, preferencePath = null, makeAffiliate = 
       case 'voice_ai_call': {
         // "Ligação do Voice AI": the server dials the contact and the agent talks (voice-ai.mjs), with this flow's OpenAI.
         const number = (s.phone?.numbers || []).find(row => row.id === c.numberId);
-        if (!number) return 'erro: número da Graao não encontrado (Configurações → Telefonia)';
+        if (!number) return 'erro: número do Graao não encontrado (Configurações → Telefonia)';
         const agent = (s.agents || []).find(row => row.id === c.agentId);
         if (!agent) return 'erro: agente não encontrado';
         if (!agent.published) return 'erro: o agente não está publicado';
@@ -571,7 +571,7 @@ export function createEngine({ add, now, preferencePath = null, makeAffiliate = 
       }
       case 'call': case 'voicemail_drop': {
         const number = (s.phone?.numbers || []).find(row => row.id === c.numberId);
-        if (!number) return 'erro: número da Graao não encontrado (Configurações → Telefonia)';
+        if (!number) return 'erro: número do Graao não encontrado (Configurações → Telefonia)';
         if (contact.dnd) return 'contato em não perturbe';
         const to = e164(contact.phone);
         if (!to) return 'erro: contato sem telefone válido';

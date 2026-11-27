@@ -1,4 +1,4 @@
-// Regra da graao: toda ferramenta nova ou melhoria visível chega com o artigo da central de ajuda
+// Regra do graao: toda ferramenta nova ou melhoria visível chega com o artigo da central de ajuda
 // (docs-site/, doc.graao.com) no mesmo PR. Roda no CI em todo pull request.
 // Uso no CI: BASE=<branch base> PR_BODY=<corpo do PR> node scripts/docs-check.mjs
 import { execFileSync } from 'node:child_process';
@@ -21,7 +21,7 @@ export function precisaDeDoc(arquivos, corpo) {
     motivo: [
       `Este PR muda o produto (${produto.slice(0, 5).join(', ')}${produto.length > 5 ? ', ...' : ''}) sem criar nem atualizar um artigo em ${DOCS}.`,
       'Escreva ou atualize o artigo (modelo em docs-site/src/content/docs/_modelo.mdx) e acrescente uma linha em comece-aqui/novidades.mdx.',
-      'Se a mudança não aparece para quem usa a graao, escreva no corpo do PR: "Documentação: não se aplica — <motivo>".',
+      'Se a mudança não aparece para quem usa o graao, escreva no corpo do PR: "Documentação: não se aplica — <motivo>".',
     ].join('\n'),
   };
 }

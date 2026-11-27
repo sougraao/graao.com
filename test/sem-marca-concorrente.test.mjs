@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdir, readFile } from 'node:fs/promises';
 
-// A interface é da graao (e das agências): nenhum texto que aparece na tela cita a HighLevel.
+// A interface é do graao (e das agências): nenhum texto que aparece na tela cita a HighLevel.
 // Comentários de código podem citar a referência; textos do catálogo de traduções e do HTML, não.
 test('nenhum texto da interface ou do catálogo de traduções cita a HighLevel', async () => {
   const pasta = new URL('../ui/', import.meta.url);

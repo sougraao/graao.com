@@ -87,7 +87,7 @@ Classifique cada dado como **VERIFIED** (confirmado por fonte acessível), **PRO
 
 ## 07 — PHASE 02: MARKET INTELLIGENCE
 
-Investigue o mercado brasileiro de plataformas de Marketing 360, CRM, criação de sites, automação e atendimento. Identifique intenções comerciais, transacionais, informacionais e navegacionais, linguagem brasileira, barreiras de adoção, jornadas de agências e empresas, suporte e expectativas de pagamento. Registre achados com URL, data e limitações. Não inclua marcas concorrentes nos materiais da graao. Não invente volumes, resultados ou rankings. Priorize hipóteses qualitativas quando dados quantitativos não existirem.
+Investigue o mercado brasileiro de plataformas de Marketing 360, CRM, criação de sites, automação e atendimento. Identifique intenções comerciais, transacionais, informacionais e navegacionais, linguagem brasileira, barreiras de adoção, jornadas de agências e empresas, suporte e expectativas de pagamento. Registre achados com URL, data e limitações. Não inclua marcas concorrentes nos materiais do graao. Não invente volumes, resultados ou rankings. Priorize hipóteses qualitativas quando dados quantitativos não existirem.
 
 ## 08 — PHASE 03: STRATEGIC SCOPE
 
@@ -199,7 +199,7 @@ Transmita profissionalismo, especialização, confiança, competência, clareza 
 
 #### 1. Referência visual permanente
 - Consulte https://pro.magicui.design/ antes de desenhar. Explore referências públicas de Header, Hero, Social Proof, Feature Cards, CTA, FAQ e Footer; selecione de 3 a 6 referências pertinentes, com URL, componente, princípio aprendido e adaptação à marca em `docs/07-design-system.md`.
-- Magic UI Pro orienta composição, tipografia, espaçamento, estados e acabamento; o blueprint adaptado da graao orienta arquitetura. Não copie a estética SaaS indistintamente, nem código, imagens ou templates pagos sem licença/acesso autorizado. Implemente componentes próprios compatíveis com a stack existente; não migre de framework para imitar uma referência. Se o acesso falhar, registre a limitação e aplique este padrão sem alegar consulta.
+- Magic UI Pro orienta composição, tipografia, espaçamento, estados e acabamento; o blueprint adaptado do graao orienta arquitetura. Não copie a estética SaaS indistintamente, nem código, imagens ou templates pagos sem licença/acesso autorizado. Implemente componentes próprios compatíveis com a stack existente; não migre de framework para imitar uma referência. Se o acesso falhar, registre a limitação e aplique este padrão sem alegar consulta.
 - Antes de propagar o design: planeje o mobile em 390px, defina direção visual, tokens e composição; implemente uma amostra funcional de header, hero, seção de conteúdo, CTA e footer. Inspecione em navegador real a 375/390px, refine e só então propague aos templates. Use aprovação humana se exigida pelo workspace.
 
 #### 2. Restrições visuais inegociáveis
@@ -221,7 +221,7 @@ Transmita profissionalismo, especialização, confiança, competência, clareza 
 #### 4. Componentes e botões não genéricos
 - Cada componente precisa de uma função, variante, estado, comportamento mobile e referência/adaptação registrada. Header enxuto, hero claro, provas agrupadas, FAQs legíveis, footer organizado. Não use animações da biblioteca como requisito automático.
 - Crie um Button system centralizado: primary (ação de conversão), secondary (alternativa real), tertiary/link (navegação). Um CTA principal por agrupamento; preserve o mesmo objetivo comercial em todo o site. Defina altura, padding, tipografia, raio, ícone funcional opcional, contraste e estados default/hover/focus/active/disabled/loading. Não use degradê, glow ou ícone de seta indiscriminadamente. Botões com ação usam `<button>`; navegação usa `<a>`.
-- Rótulos descrevem ação e resultado: “Conhecer os planos”, “Ver a graao em ação”, “Explorar o CRM”, “Conhecer o suporte” (apenas ações realmente disponíveis). Evite “Saiba mais”, “Clique aqui”, “Começar”, “Enviar” sem contexto. Não invente promessa de rapidez, gratuidade ou disponibilidade. CTA secundário não deve competir visualmente com primário. Preserve destinos, mensagens contextualizadas, integrações e tracking.
+- Rótulos descrevem ação e resultado: “Conhecer os planos”, “Ver o graao em ação”, “Explorar o CRM”, “Conhecer o suporte” (apenas ações realmente disponíveis). Evite “Saiba mais”, “Clique aqui”, “Começar”, “Enviar” sem contexto. Não invente promessa de rapidez, gratuidade ou disponibilidade. CTA secundário não deve competir visualmente com primário. Preserve destinos, mensagens contextualizadas, integrações e tracking.
 
 #### 5. Copy enxuta sem perda de conteúdo
 - Uma ideia por bloco, verbo ativo, benefício específico, resposta direta no início. Sem jargão, texto publicitário vazio, promessas genéricas, repetição de keywords ou frases de preenchimento. Não use “Transforme seus sonhos em realidade”, “Soluções inovadoras”, “Excelência que você merece” sem substância comprovada.
@@ -298,11 +298,11 @@ JSON-LD conforme dados reais: Organization, WebSite, SoftwareApplication, WebPag
 
 ## 23 — PHASE 09: CONVERSION ENGINEERING
 
-Defina um CTA principal após validar o fluxo comercial: contratação/cadastro ou visita aos planos quando estes efetivamente conduzem à contratação. Alternativa provisória: canal oficial confirmado, com limitação registrada. CTAs secundários: conhecer produto, demonstração e suporte, sem competir com o objetivo. Não invente trial. Formulários com campos mínimos, validação, loading, erro, consentimento quando necessário, proteção anti-spam e sucesso somente após retorno real. Integre preferencialmente CRM da graao mediante autorização; não invente endpoints. Envio de dados reais, assinatura, cobrança e publicação exigem autorização. Ao demonstrar Pix, não gerar cobrança real nem confundir recebimento do cliente com forma de assinatura.
+Defina um CTA principal após validar o fluxo comercial: contratação/cadastro ou visita aos planos quando estes efetivamente conduzem à contratação. Alternativa provisória: canal oficial confirmado, com limitação registrada. CTAs secundários: conhecer produto, demonstração e suporte, sem competir com o objetivo. Não invente trial. Formulários com campos mínimos, validação, loading, erro, consentimento quando necessário, proteção anti-spam e sucesso somente após retorno real. Integre preferencialmente CRM do graao mediante autorização; não invente endpoints. Envio de dados reais, assinatura, cobrança e publicação exigem autorização. Ao demonstrar Pix, não gerar cobrança real nem confundir recebimento do cliente com forma de assinatura.
 
 ## 24 — ANALYTICS & TRACKING
 
-Eventos de referência: `primary_cta_click`, `pricing_view`, `signup_start`, `signup_completed`, `demo_start`, `demo_completed`, `capability_view`, `use_case_view`, `support_click`, `whatsapp_click`, `form_submit_success`. Dispare conclusão somente após confirmação real. Identifique origem e UTM quando permitido, sem PII no analytics. Não invente IDs nem declare integração sem homologação. Considere GA4, GTM, Search Console, Bing e CRM da graao conforme autorização e consentimento.
+Eventos de referência: `primary_cta_click`, `pricing_view`, `signup_start`, `signup_completed`, `demo_start`, `demo_completed`, `capability_view`, `use_case_view`, `support_click`, `whatsapp_click`, `form_submit_success`. Dispare conclusão somente após confirmação real. Identifique origem e UTM quando permitido, sem PII no analytics. Não invente IDs nem declare integração sem homologação. Considere GA4, GTM, Search Console, Bing e CRM do graao conforme autorização e consentimento.
 
 ## 25 — PERFORMANCE ENGINEERING
 

@@ -1,7 +1,7 @@
 // graao: Importar do GHL — o leitor. Roda na aba do GHL (mundo MAIN), com o cliente HTTP do próprio app do GHL
 // (__vue_app__.config.globalProperties.$http), que já vai com o login de quem está usando. Só faz GET: nada é criado,
 // salvo ou apagado no GHL, e nenhuma senha, token ou cookie sai daqui. Lê o mesmo que a extração usada nos templates
-// da graao, mais os gatilhos de cada workflow e as pesquisas. Um endereço que falha vira um item em `errors`.
+// do graao, mais os gatilhos de cada workflow e as pesquisas. Um endereço que falha vira um item em `errors`.
 (function () {
   const B = 'https://backend.leadconnectorhq.com';
   const S = 'https://services.leadconnectorhq.com';
@@ -138,7 +138,7 @@
     return D;
   }
 
-  /** Divide a leitura nas partes que a graao recebe (dump, triggers, surveys), em pedaços de até `size` caracteres. */
+  /** Divide a leitura nas partes que o graao recebe (dump, triggers, surveys), em pedaços de até `size` caracteres. */
   function parts(dump, size) {
     const limit = Math.max(1, Number(size) || 1000000);
     const { triggers = {}, surveys = [], ...rest } = dump;

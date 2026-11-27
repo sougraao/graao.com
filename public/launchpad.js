@@ -15,7 +15,7 @@ export function launchpad(c) {
   const current = setupProgress(selected);
   const next = selected.find(task => task.percent < 100)?.id || selected[0].id;
   return `<div class="page lp-page">
-    <header class="page-head"><div><h1>Guia de configuração</h1><p>${name ? `Olá, ${h(name)}. ` : 'Boas-vindas à Graao. '}Tudo o que você precisa para começar, um passo de cada vez.</p></div><a class="secondary" href="${c.access?.modules && !c.access.modules.includes('dashboard') ? '#' + tasks[0].modules[0] : '#dashboard'}">Ir para o workspace ${icon('arrow', 16)}</a></header>
+    <header class="page-head"><div><h1>Guia de configuração</h1><p>${name ? `Olá, ${h(name)}. ` : 'Boas-vindas ao Graao. '}Tudo o que você precisa para começar, um passo de cada vez.</p></div><a class="secondary" href="${c.access?.modules && !c.access.modules.includes('dashboard') ? '#' + tasks[0].modules[0] : '#dashboard'}">Ir para o workspace ${icon('arrow', 16)}</a></header>
     <div class="lp-layout"><aside class="lp-aside"><nav aria-label="Categorias de configuração">${categories.map(([key, label, ico]) => {
       const p = setupProgress(tasks.filter(task => task.categories.includes(key)));
       return `<a href="#launchpad/${key}" class="lp-category ${key === category[0] ? 'selected' : ''}" ${key === category[0] ? 'aria-current="page"' : ''}>${icon(ico, 19)}<span>${h(label)}</span><small aria-label="${p.done} de ${tasks.filter(task => task.categories.includes(key)).length} tarefas concluídas">${p.done}/${tasks.filter(task => task.categories.includes(key)).length}</small></a>`;

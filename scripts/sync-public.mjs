@@ -4,7 +4,7 @@
 // chamada à função, sem cache. O preset de Node da Vercel só publica o public/ que está no repositório
 // (um public/ gerado no build é ignorado), por isso ele é versionado. Se faltar um arquivo aqui, a função
 // ainda o serve de ui/ (includeFiles "ui/**" em server.mjs no vercel.json); antes dessa correção, o
-// arquivo faltando respondia 500 e o app ficava em "Abrindo a graao…" (21/11/2026).
+// arquivo faltando respondia 500 e o app ficava em "Abrindo o graao…" (21/11/2026).
 // ui/ é a fonte; este script só copia de ui/ para public/, nunca o contrário.
 //
 //   node scripts/sync-public.mjs             copia o que falta ou mudou em public/

@@ -30,7 +30,7 @@ Tipografia oficial: **pendente** — Familjen Grotesk é proposta do builder.
 | Componente | Função | Caminho |
 |---|---|---|
 | Header | nav fixa; mega menu de Funcionalidades (Atrair, Converter, Atender e gerir); "Entrar" + CTA primário; menu mobile com `aria-expanded` (system.js) | `src/components/Header.astro`, `src/data/nav.json` |
-| Footer | fechamento com CTA "Começar com a graao" + colunas + legal + Instagram/YouTube | `src/components/Footer.astro` |
+| Footer | fechamento com CTA "Começar com o graao" + colunas + legal + Instagram/YouTube | `src/components/Footer.astro` |
 | Cta | `comecar` (sempre `LOGIN_URL`), `planos`, `link` | `src/components/Cta.astro` |
 | Faq | perguntas abertas por inteiro (sem acordeão), JSON-LD FAQPage quando não há marcador | `src/components/Faq.astro` |
 | Breadcrumbs | trilha + JSON-LD BreadcrumbList | `src/components/Breadcrumbs.astro` |

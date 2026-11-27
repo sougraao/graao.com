@@ -858,7 +858,7 @@ export function installAutomation({ c, mutate, render, flash, dialog, close }) {
         flash(nextActive ? 'Fluxo publicado.' : 'Fluxo alterado para rascunho.');
       } else if (op === 'ai-workflow-modal') {
         dialog('Construa usando IA', `<form class="wf-modal wf-ai-modal" data-wf-form="ai-workflow-form" data-wf-folder="${h(id || '')}">
-          <p class="wf-ai-desc">Descreva em linguagem natural o objetivo da sua automação. A inteligência da Graao configurará o gatilho, as condições e as ações automaticamente.</p>
+          <p class="wf-ai-desc">Descreva em linguagem natural o objetivo da sua automação. A inteligência do Graao configurará o gatilho, as condições e as ações automaticamente.</p>
           <label>Instrução para a IA
             <textarea name="prompt" rows="4" placeholder="Ex: Quando um lead preencher o formulário no site, adicione a tag 'Novo Lead', crie uma oportunidade de R$ 3.000 no pipeline e agende uma ligação manual para retorno." required autofocus></textarea>
           </label>

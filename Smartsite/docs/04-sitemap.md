@@ -32,23 +32,23 @@ Rotas geradas no build (`Smartsite/site/dist/`). Consolidações em relação à
 | C10 | Core | Privacidade | `/privacidade/` | política | `/` | NOT STARTED / PENDING |
 | C11 | Core | Termos | `/termos/` | contrato | `/` | NOT STARTED / PENDING |
 | C12 | Core | Cases | `/historias-de-clientes/` | evidência real | `/` | NOT STARTED / PENDING |
-| F01 | Capability | Funcionalidades | `/funcionalidades/` | funcionalidades na graao | `/` | NOT STARTED / PENDING |
-| F02 | Capability | CRM | `/funcionalidades/crm/` | crm na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F03 | Capability | Sites | `/funcionalidades/sites/` | sites na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F04 | Capability | Landing pages | `/funcionalidades/landing-pages/` | landing pages na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F05 | Capability | Funis | `/funcionalidades/funis/` | funis na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F06 | Capability | Automações | `/funcionalidades/automacoes/` | automações na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F07 | Capability | IA | `/funcionalidades/inteligencia-artificial/` | ia na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F08 | Capability | Atendimento | `/funcionalidades/atendimento/` | atendimento na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F09 | Capability | WhatsApp | `/funcionalidades/whatsapp/` | whatsapp na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F10 | Capability | E-mail marketing | `/funcionalidades/email-marketing/` | e-mail marketing na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F11 | Capability | Redes sociais | `/funcionalidades/redes-sociais/` | redes sociais na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F12 | Capability | Agendamentos | `/funcionalidades/agendamentos/` | agendamentos na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F13 | Capability | Formulários | `/funcionalidades/formularios/` | formulários na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F14 | Capability | Reputação | `/funcionalidades/reputacao/` | reputação na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F15 | Capability | Relatórios | `/funcionalidades/relatorios/` | relatórios na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F16 | Capability | Pagamentos e Pix | `/funcionalidades/pagamentos/` | pagamentos e pix na graao | `/funcionalidades/` | NOT STARTED / PENDING |
-| F17 | Capability | Gestão de agências | `/funcionalidades/gestao-de-agencias/` | gestão de agências na graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F01 | Capability | Funcionalidades | `/funcionalidades/` | funcionalidades no graao | `/` | NOT STARTED / PENDING |
+| F02 | Capability | CRM | `/funcionalidades/crm/` | crm no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F03 | Capability | Sites | `/funcionalidades/sites/` | sites no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F04 | Capability | Landing pages | `/funcionalidades/landing-pages/` | landing pages no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F05 | Capability | Funis | `/funcionalidades/funis/` | funis no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F06 | Capability | Automações | `/funcionalidades/automacoes/` | automações no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F07 | Capability | IA | `/funcionalidades/inteligencia-artificial/` | ia no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F08 | Capability | Atendimento | `/funcionalidades/atendimento/` | atendimento no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F09 | Capability | WhatsApp | `/funcionalidades/whatsapp/` | whatsapp no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F10 | Capability | E-mail marketing | `/funcionalidades/email-marketing/` | e-mail marketing no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F11 | Capability | Redes sociais | `/funcionalidades/redes-sociais/` | redes sociais no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F12 | Capability | Agendamentos | `/funcionalidades/agendamentos/` | agendamentos no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F13 | Capability | Formulários | `/funcionalidades/formularios/` | formulários no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F14 | Capability | Reputação | `/funcionalidades/reputacao/` | reputação no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F15 | Capability | Relatórios | `/funcionalidades/relatorios/` | relatórios no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F16 | Capability | Pagamentos e Pix | `/funcionalidades/pagamentos/` | pagamentos e pix no graao | `/funcionalidades/` | NOT STARTED / PENDING |
+| F17 | Capability | Gestão de agências | `/funcionalidades/gestao-de-agencias/` | gestão de agências no graao | `/funcionalidades/` | NOT STARTED / PENDING |
 | U01 | Use case | Soluções | `/solucoes/` | soluções com Marketing 360 | `/` | NOT STARTED / PENDING |
 | U02 | Use case | Agências | `/solucoes/agencias/` | agências com Marketing 360 | `/solucoes/` | NOT STARTED / PENDING |
 | U03 | Use case | Profissionais de marketing | `/solucoes/profissionais-de-marketing/` | profissionais de marketing com Marketing 360 | `/solucoes/` | NOT STARTED / PENDING |

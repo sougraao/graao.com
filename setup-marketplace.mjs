@@ -1,4 +1,4 @@
-// Marketplace de Setups de conta: catálogo oficial da Graao + publicações da comunidade.
+// Marketplace de Setups de conta: catálogo oficial do Graao + publicações da comunidade.
 import { randomUUID } from 'node:crypto';
 import { agentTemplate } from './agent-model.mjs';
 import { marketplaceCategories } from './ui/agency-data.js';

@@ -27,7 +27,7 @@ Isto **não** resolve o tráfego de saída (egress) estourado: o egress conta ig
 **Antes de começar:**
 
 - **Cota:** um projeto novo na mesma organização divide a mesma cota. Se a restrição de 23/12 chegar, ela vale para a organização inteira. Opções: esperar a D28 trazer o egress para baixo de 5 GB no ciclo seguinte, ou passar a organização para o **Pro** (US$ 25/mês, 250 GB de egress, backups diários, e libera a proteção de senha vazada da D3).
-- **Limite de projetos:** o plano Free limita os projetos gratuitos ativos. A organização da graao tem 1; confirme no painel, ao criar, que cabe o segundo.
+- **Limite de projetos:** o plano Free limita os projetos gratuitos ativos. A organização do graao tem 1; confirme no painel, ao criar, que cabe o segundo.
 - **Ferramentas no computador de quem roda o passo 5:** Supabase CLI (já instalada aqui), **Docker Desktop aberto** (o `supabase db dump` roda o `pg_dump` num contêiner) e o cliente `psql`.
 
 ## Quem faz o quê

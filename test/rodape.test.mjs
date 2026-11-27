@@ -34,7 +34,7 @@ test('linha do rodapé: direitos com a marca exibida, protegida, e a versão qua
   assert.match(rodapeHtml(), /<span class="rodape-build" data-rodape-build>build 60c160a<\/span>/);
 });
 
-test('páginas da graao e painel carregam a linha do rodapé', () => {
+test('páginas do graao e painel carregam a linha do rodapé', () => {
   for (const page of ['index.html', 'login.html', 'privacidade.html', 'mcp-autorizar.html']) {
     const html = readFileSync(new URL(`../ui/${page}`, import.meta.url), 'utf8');
     assert.match(html, /Feita no Brasil com ☕, carinho e muita API\./, page);

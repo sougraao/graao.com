@@ -38,7 +38,7 @@ async function problem(res: Response, fallback: string) {
 }
 
 /**
- * Arquivos da Prancheta guardados na graao: `workspace=agency` para a agência,
+ * Arquivos da Prancheta guardados no graao: `workspace=agency` para a agência,
  * ou o id da subconta. As chamadas vão para a mesma origem, com o cookie da sessão.
  */
 export function createGraaoRepo(workspace: string) {

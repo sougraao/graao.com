@@ -266,7 +266,7 @@ function route(){ const [key,tab,project]=location.hash.slice(1).split('/');
   if(c.mode==='agency'){ agencyUI?.leave(); c.mode=''; renderedView=''; }
   if (c.account) { renderAccountLifecycle(); return; }
   if (!c.s) {
-    app.innerHTML = bootScreen('Abrindo a graao…');
+    app.innerHTML = bootScreen('Abrindo o graao…');
     openingWorkspace ??= openInitialWorkspace()
       .then(() => {
         if ((c.s || c.account) && c.mode !== 'agency') {
@@ -598,7 +598,7 @@ function opportunityDialog(action) {
   } else if (action === 'opportunity-import') {
     const history = c.s.imports.filter(row=>row.object === 'opportunities').slice(-5).reverse();
     dialog('Importar oportunidades',option('Pipeline padrão','pipelineId',pipelineId,pipelineChoices())+
-      '<p>Envie até 500 linhas. Informe <b>title</b> e o <b>email</b> ou <b>contactid</b> de um contato existente. Sem etapa indicada, a Graao usa a primeira do pipeline.</p>'+
+      '<p>Envie até 500 linhas. Informe <b>title</b> e o <b>email</b> ou <b>contactid</b> de um contato existente. Sem etapa indicada, o Graao usa a primeira do pipeline.</p>'+
       '<button class="secondary" type="button" data-act="opportunity-template">Baixar modelo CSV</button>'+
       '<label>Arquivo CSV<input name="file" type="file" accept=".csv,text/csv" required></label>'+
       (history.length ? '<h3>Importações recentes</h3>'+history.map(row=>`<div class="line-item"><span>${h(row.file || 'CSV')}</span><span>${row.added} importada(s)</span></div>`).join('') : ''),
@@ -870,7 +870,7 @@ document.addEventListener('click',async ev=>{
       case 'new-workspace':dialog('Criar workspace',input('Nome do workspace','name','',true),{form:'workspace',buttons:'<button class="secondary" type="button" data-act="close">Cancelar</button><button class="primary">Criar workspace</button>'});break;
       case 'search':dialog('Buscar no workspace','<div id="search-results" class="bui-search-host"></div>');mountGlobalSearch();break;
       case 'dialer':dialog('Discador','<p>O discador não está conectado. Chamadas de voz exigem a configuração de um provedor de telefonia autorizado.</p>');break;
-      case 'updates':dialog('Novidades','<p>A graao está rodando localmente com tudo atualizado.</p>');break;
+      case 'updates':dialog('Novidades','<p>O graao está rodando localmente com tudo atualizado.</p>');break;
       case 'notifications':dialog('Notificações',`<p>${c.m.unread} mensage${c.m.unread===1?'m não lida':'ns não lidas'}.</p><button class="secondary" data-go="conversations">Abrir conversas</button>`);break;
       case 'help':dialog('Ajuda','<p>Gerencie contatos, oportunidades, agendamentos, formulários e automações. Acesse Configurações para gerenciar workspaces.</p><button class="secondary" data-go="dashboard">Abrir painel</button>');break;
       case 'reload':await load();render();flash('Workspace atualizado.');break;
@@ -945,7 +945,7 @@ document.addEventListener('click',async ev=>{
       case 'phone-call': {
         let agentPhone='';
         try{ agentPhone=localStorage.getItem('graao-agent-phone')||''; }catch{}
-        agentPhone=await askText('Qual é o seu telefone?',{text:'A Graao liga primeiro para o seu telefone e, quando você atender, completa a ligação com o contato.',value:agentPhone,type:'tel',ok:'Ligar agora'});
+        agentPhone=await askText('Qual é o seu telefone?',{text:'O Graao liga primeiro para o seu telefone e, quando você atender, completa a ligação com o contato.',value:agentPhone,type:'tel',ok:'Ligar agora'});
         if(!agentPhone) break;
         try{ localStorage.setItem('graao-agent-phone',agentPhone); }catch{}
         await api(url('/api/phone/call'),{contactId:c.thread,agentPhone});

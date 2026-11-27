@@ -218,7 +218,7 @@ function listings(c) {
     <section class="surface set-card"><div class="set-section"><header class="set-head"><h2>Dados oficiais da empresa</h2>
         <p class="dim">${gbp.status ? 'Vindos do Perfil da Empresa no Google.' : 'Conecte o Google em Configurações para usar os dados do Perfil da Empresa.'} Use exatamente estes dados em todos os diretórios: diferenças confundem o Google e os clientes.</p></header><div class="set-body">
         <dl class="rp-nap">${canonical.map(([label, value]) => `<div><dt>${label}</dt><dd>${value ? `${h(value)} <button type="button" class="wf-text rp-link-btn" data-rp-act="copy" data-value="${h(value)}">Copiar</button>` : '<span class="dim">—</span>'}</dd></div>`).join('')}</dl></div></div>
-      <div class="set-section"><header class="set-head"><h2>Presença nos diretórios</h2><p class="dim">A graao não sincroniza estes diretórios automaticamente (isso exige um parceiro pago, como a Yext). Confira cada perfil, corrija o que estiver diferente e registre aqui.</p></header><div class="set-body">
+      <div class="set-section"><header class="set-head"><h2>Presença nos diretórios</h2><p class="dim">O graao não sincroniza estes diretórios automaticamente (isso exige um parceiro pago, como a Yext). Confira cada perfil, corrija o que estiver diferente e registre aqui.</p></header><div class="set-body">
         <div class="rp-score small" style="--score:${Math.round(ok / directories.length * 100)}" role="img" aria-label="${ok} de ${directories.length} diretórios corretos"><b>${ok}/${directories.length}</b><small>corretos</small></div></div></div></section>
     <section class="rp-listings">${rows}</section>`, ' ');
 }

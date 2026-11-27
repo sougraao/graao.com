@@ -10,7 +10,7 @@ export async function lerPagina(rota) {
   return readFile(`${dist}${limpa ? `${limpa}/` : ''}index.html`, 'utf8');
 }
 
-test('home publicada com tema da graao', async () => {
+test('home publicada com tema do graao', async () => {
   const html = await lerPagina('');
   assert.match(html, /lang="pt-BR"/);
   assert.match(html, /Graao/);
@@ -18,8 +18,8 @@ test('home publicada com tema da graao', async () => {
 
 test('título da aba sem repetição: home só com o nome do site, artigo com artigo e site', async () => {
   const titulo = html => html.match(/<title>([^<]*)<\/title>/)[1];
-  assert.equal(titulo(await lerPagina('')), 'Central de ajuda da Graao');
-  assert.equal(titulo(await lerPagina('conversas/caixa-unificada')), 'Atender na caixa unificada | Central de ajuda da Graao');
+  assert.equal(titulo(await lerPagina('')), 'Central de ajuda do Graao');
+  assert.equal(titulo(await lerPagina('conversas/caixa-unificada')), 'Atender na caixa unificada | Central de ajuda do Graao');
 });
 
 test('página de suporte leva ao grupo de suporte no WhatsApp', async () => {

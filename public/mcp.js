@@ -16,10 +16,10 @@ const guide = (title, steps, extra = '') => `<details class="mcp-guide"><summary
 function connect(c) {
   const url = address(c);
   const cursor = JSON.stringify({ mcpServers: { graao: { url } } }, null, 2);
-  return section('Conectar uma IA', 'Use o endereço desta subconta no Claude, no ChatGPT, no Cursor ou em outro programa com MCP. A pessoa entra com o login da graao e escolhe o que a IA pode fazer.',
+  return section('Conectar uma IA', 'Use o endereço desta subconta no Claude, no ChatGPT, no Cursor ou em outro programa com MCP. A pessoa entra com o login do graao e escolhe o que a IA pode fazer.',
     copyField('Endereço MCP desta subconta', url) +
-    guide('Claude (site, celular e Desktop)', ['Abra <b>Configurações</b> › <b>Conectores</b> e clique em <b>Adicionar conector personalizado</b>.', 'Cole o endereço MCP e confirme.', 'Clique em <b>Conectar</b>, entre na graao e escolha o acesso.']) +
-    guide('ChatGPT', ['Nas configurações, ative o <b>modo de desenvolvedor</b> dos conectores. Depende do plano do ChatGPT.', 'Crie um conector, cole o endereço MCP e escolha <b>OAuth</b>.', 'Entre na graao e escolha o acesso.']) +
+    guide('Claude (site, celular e Desktop)', ['Abra <b>Configurações</b> › <b>Conectores</b> e clique em <b>Adicionar conector personalizado</b>.', 'Cole o endereço MCP e confirme.', 'Clique em <b>Conectar</b>, entre no graao e escolha o acesso.']) +
+    guide('ChatGPT', ['Nas configurações, ative o <b>modo de desenvolvedor</b> dos conectores. Depende do plano do ChatGPT.', 'Crie um conector, cole o endereço MCP e escolha <b>OAuth</b>.', 'Entre no graao e escolha o acesso.']) +
     guide('Claude Code', ['No terminal, rode o comando abaixo.', 'Dentro do Claude Code, digite <code>/mcp</code> e faça o login.'], copyField('Comando', `claude mcp add --transport http graao ${url}`)) +
     guide('Cursor e outros', ['Cole a configuração abaixo no arquivo de MCP do programa.', 'Faça o login quando ele pedir.'], `<pre class="mcp-code"><code>${h(cursor)}</code></pre><button type="button" class="secondary" data-mcp-copy="${h(cursor)}">${i('copy', 15)} Copiar configuração</button>`) +
     guide('Com chave, sem login (n8n, scripts)', ['Em <b>Agência</b> › <b>Configurações</b> › <b>Integrações privadas</b>, crie um token só com os escopos necessários.', 'Envie o token no cabeçalho abaixo. Token no endereço não é aceito.'], copyField('Cabeçalho', 'Authorization: Bearer SEU_TOKEN')));

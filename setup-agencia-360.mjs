@@ -1,5 +1,5 @@
 // Setup Oficial Graao: Agência Completa 360° (Prospecção → Onboarding → Retenção)
-// Converte toda a operação end-to-end de agência em ativos nativos da Graao.
+// Converte toda a operação end-to-end de agência em ativos nativos do Graao.
 
 export const agenciaCompleta360Spec = {
   id: 'official-agencia-completa-360',

@@ -25,7 +25,7 @@ export function emailServicesView(c) {
   const e = c.emailDomain, name = c.s?.profile?.name || 'Sua empresa';
   if (!e) return card(`${tile}<h2>Serviços de e-mail</h2><p class="dim">Carregando o domínio de envio…</p>`);
   if (e.error) return card(`${tile}<h2>Serviços de e-mail</h2><p class="form-status">${h(e.error)}</p><button class="secondary" data-act="email-refresh">Tentar novamente</button>`);
-  if (!e.configured) return card(`${tile}<h2>Serviços de e-mail</h2><p class="dim">O envio de e-mail ainda não foi configurado nesta instalação da graao. Peça ao administrador da agência para definir <code>RESEND_API_KEY</code> e <code>PORTAL_EMAIL_FROM</code>.</p>`);
+  if (!e.configured) return card(`${tile}<h2>Serviços de e-mail</h2><p class="dim">O envio de e-mail ainda não foi configurado nesta instalação do graao. Peça ao administrador da agência para definir <code>RESEND_API_KEY</code> e <code>PORTAL_EMAIL_FROM</code>.</p>`);
   const platform = e.agencyAddress ? `<b>${h(e.agencyAddress)}</b>, o domínio de envio da agência` : e.platformAddress ? `<b>${h(e.platformAddress)}</b>` : 'o endereço da plataforma';
   if (!e.domain) return `<form class="surface settings-form set-form" data-form="email-domain-add"><section class="set-section"><header class="set-head">${tile}<h2>Domínio de envio próprio</h2>
     <p class="dim">Hoje os e-mails desta subconta (faturas, recibos, orçamentos, documentos para assinar, carrinhos abandonados e relatórios) saem de ${platform}. Com um domínio próprio eles saem do endereço da empresa, com SPF e DKIM, e chegam com menos chance de cair no spam.</p></header><div class="set-body">

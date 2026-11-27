@@ -11,7 +11,7 @@ import { Steps, Aside, CardGrid, LinkCard } from '@astrojs/starlight/components'
 import Print from '../../../components/Print.astro';
 import Requisitos from '../../../components/Requisitos.astro';
 
-Quando um cliente sai da agência ou uma subconta foi criada por engano, você pode excluí-la. A subconta sai da lista na hora e ninguém mais consegue entrar nela. Ela fica 30 dias na **Lixeira**, e nesse prazo você pode restaurá-la. Depois dos 30 dias, a graao apaga todos os dados dela de vez.
+Quando um cliente sai da agência ou uma subconta foi criada por engano, você pode excluí-la. A subconta sai da lista na hora e ninguém mais consegue entrar nela. Ela fica 30 dias na **Lixeira**, e nesse prazo você pode restaurá-la. Depois dos 30 dias, o graao apaga todos os dados dela de vez.
 
 <Requisitos permissao="Dono ou admin da agência" />
 
@@ -62,14 +62,14 @@ Depois dos 30 dias não há como recuperar a subconta. Contatos, conversas, neg�
 
 ## O que é apagado depois dos 30 dias
 
-A graao apaga a subconta inteira, sem deixar nada para trás:
+O graao apaga a subconta inteira, sem deixar nada para trás:
 
 - Todos os dados dela: contatos, conversas, negócios, agendas, automações, campanhas e configurações.
 - As conexões com Google, Meta Ads, Google Ads e redes sociais, com as permissões que elas guardavam.
 - Os sites e funis do AI Studio, o portal do cliente, a comunidade e o domínio de e-mail da subconta.
 - O histórico de visitas e formulários do rastreamento.
 - Os arquivos da Mídia, as fotos, os áudios e os vídeos das conversas.
-- O número de WhatsApp: a graao desconecta o aparelho e apaga a conexão no servidor de WhatsApp da agência.
+- O número de WhatsApp: o graao desconecta o aparelho e apaga a conexão no servidor de WhatsApp da agência.
 - O acesso dos usuários que só tinham essa subconta na lista.
 
 Ficam só os registros que a agência precisa guardar: os lançamentos de cobrança já feitos e o histórico de ações da agência, que diz quem excluiu a subconta e quando.
@@ -77,7 +77,7 @@ Ficam só os registros que a agência precisa guardar: os lançamentos de cobran
 ## Perguntas frequentes
 
 **Por que não consigo excluir uma subconta?**
-Se a subconta tem uma assinatura de plano em andamento, a graao pede que você cancele a cobrança primeiro. Assim o cliente não continua sendo cobrado por uma conta que não existe mais.
+Se a subconta tem uma assinatura de plano em andamento, o graao pede que você cancele a cobrança primeiro. Assim o cliente não continua sendo cobrado por uma conta que não existe mais.
 
 **Quem pode excluir uma subconta?**
 Só o dono e os admins da agência. Usuários da agência sem essa permissão não veem o botão **Excluir**.
@@ -86,10 +86,10 @@ Só o dono e os admins da agência. Usuários da agência sem essa permissão n�
 Abra a **Lixeira** no fim da página **Subcontas** e clique em **Restaurar**. Dá para fazer isso por 30 dias depois da exclusão.
 
 **O número de WhatsApp da subconta é desconectado?**
-Enquanto a subconta está na lixeira, a graao para de enviar e receber mensagens por ela. Depois dos 30 dias, o aparelho é desconectado e a conexão é apagada do servidor. Se quiser usar o número em outra subconta antes disso, desconecte-o em **Conectar o WhatsApp das subcontas**.
+Enquanto a subconta está na lixeira, o graao para de enviar e receber mensagens por ela. Depois dos 30 dias, o aparelho é desconectado e a conexão é apagada do servidor. Se quiser usar o número em outra subconta antes disso, desconecte-o em **Conectar o WhatsApp das subcontas**.
 
 **E se o servidor de WhatsApp estiver fora do ar no dia de apagar?**
-A subconta espera na lixeira e a graao tenta de novo a cada hora. Se o servidor continuar fora do ar por 7 dias, a graao apaga a subconta mesmo assim e anota no histórico da agência o que não conseguiu apagar.
+A subconta espera na lixeira e o graao tenta de novo a cada hora. Se o servidor continuar fora do ar por 7 dias, o graao apaga a subconta mesmo assim e anota no histórico da agência o que não conseguiu apagar.
 
 ## Veja também
 

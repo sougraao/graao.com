@@ -1,5 +1,5 @@
 // Confirmação do celular da agência pelo WhatsApp (/api/verify/...).
-// A pessoa manda "Confirmar graao XXXXXX" para o número da graao; o webhook próprio desta linha confere o código,
+// A pessoa manda "Confirmar graao XXXXXX" para o número do graao; o webhook próprio desta linha confere o código,
 // trava o número (uma conta por celular) e começa o teste. Nada do que chega por esta linha é guardado.
 import { timingSafeEqual } from 'node:crypto';
 import { startTrial } from '../agency-billing-model.mjs';
@@ -13,10 +13,10 @@ const PER_AGENCY = 5;
 const PER_IP = 20;
 
 export const VERIFY_REPLIES = {
-  done: 'Pronto, sua conta da graao está confirmada.',
-  taken: 'Este número já tem uma conta na graao.',
+  done: 'Pronto, sua conta do graao está confirmada.',
+  taken: 'Este número já tem uma conta no graao.',
   phone: 'Abra o WhatsApp no celular deste número e envie a mensagem de novo.',
-  expired: 'Este código venceu. Gere outro na graao.'
+  expired: 'Este código venceu. Gere outro no graao.'
 };
 
 const sameSecret = (a, b) => {
@@ -120,7 +120,7 @@ export function createVerifyRoutes(deps) {
       if (!phone) throw error('Digite um celular com DDD (ou com o código do país, se for de fora do Brasil).', 400);
       if (!allowIp(clientIp(req))) throw error('Muitas tentativas a partir desta conexão. Aguarde alguns minutos.', 429);
       const owner = await lockOwner(phone);
-      if (owner && owner !== who.agencyId) throw Object.assign(error('Este número já tem uma conta na graao.', 409), { code: 'PHONE_TAKEN' });
+      if (owner && owner !== who.agencyId) throw Object.assign(error('Este número já tem uma conta no graao.', 409), { code: 'PHONE_TAKEN' });
       const at = now();
       const { code, hash } = newCode();
       const expiresAt = new Date(at.getTime() + CODE_MS).toISOString();

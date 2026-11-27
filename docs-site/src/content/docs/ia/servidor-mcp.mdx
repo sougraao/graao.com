@@ -1,6 +1,6 @@
 ---
-title: Conectar o Claude, o ChatGPT e outras IAs à graao
-description: Ligue uma IA à subconta pelo servidor MCP, com o login da graao, e escolha se ela só lê ou também age em seu nome.
+title: Conectar o Claude, o ChatGPT e outras IAs ao graao
+description: Ligue uma IA à subconta pelo servidor MCP, com o login do graao, e escolha se ela só lê ou também age em seu nome.
 modulo: ia
 sidebar:
   order: 3
@@ -13,7 +13,7 @@ import Requisitos from '../../../components/Requisitos.astro';
 
 O servidor MCP deixa uma IA trabalhar com os dados da subconta: buscar contatos, ver a agenda, mover oportunidades, criar posts e responder conversas. Cada pessoa conecta com o próprio login, e a IA nunca faz mais do que essa pessoa pode fazer.
 
-<Requisitos permissao="Login da graao com acesso à subconta. Para ver a tela, acesso ao módulo Marketing" integracoes={['Uma IA que aceite servidores MCP remotos, como Claude, ChatGPT, Claude Code ou Cursor']} />
+<Requisitos permissao="Login do graao com acesso à subconta. Para ver a tela, acesso ao módulo Marketing" integracoes={['Uma IA que aceite servidores MCP remotos, como Claude, ChatGPT, Claude Code ou Cursor']} />
 
 ## Passo a passo
 
@@ -27,9 +27,9 @@ O servidor MCP deixa uma IA trabalhar com os dados da subconta: buscar contatos,
 
    <Print src="docs/ia/servidor-mcp/02-guia-do-claude.8e08253e.webp" alt="Guia do Claude aberto, com os três passos para adicionar o conector." />
 
-3. A IA abre a tela de autorização da graao. Se precisar, entre com o seu login. Confira o nome e o endereço de quem pede, escolha **Só ler** ou **Ler e agir** e clique em **Autorizar**.
+3. A IA abre a tela de autorização do graao. Se precisar, entre com o seu login. Confira o nome e o endereço de quem pede, escolha **Só ler** ou **Ler e agir** e clique em **Autorizar**.
 
-   <Print src="docs/ia/servidor-mcp/03-autorizar.ad6b6d6b.webp" alt="Tela Conectar Claude à graao com a subconta e as opções Só ler e Ler e agir." />
+   <Print src="docs/ia/servidor-mcp/03-autorizar.ad6b6d6b.webp" alt="Tela Conectar Claude ao graao com a subconta e as opções Só ler e Ler e agir." />
 
 4. Volte à tela **IA & MCP**. A conexão aparece em **IAs conectadas**, com a pessoa e o acesso. Para tirar o acesso, clique em **Desconectar**: vale na hora.
 
@@ -61,7 +61,7 @@ Não. Os módulos que o seu usuário não abre não aparecem para a IA. Se a ag�
 Enquanto a IA usar a conexão, ela se renova sozinha. Depois de 90 dias sem renovar, é preciso conectar de novo.
 
 **A IA disse que a mensagem foi registrada, mas não saiu. Por quê?**
-A resposta da graao informa se a mensagem saiu de verdade. Ela pode ficar só registrada quando o canal não está conectado. SMS e chat do site não são enviados por aqui, e contatos com bloqueio de mensagens são recusados.
+A resposta do graao informa se a mensagem saiu de verdade. Ela pode ficar só registrada quando o canal não está conectado. SMS e chat do site não são enviados por aqui, e contatos com bloqueio de mensagens são recusados.
 
 **Posso colocar o token no endereço (`?token=`)?**
 Não. O token só é aceito no cabeçalho, porque endereços ficam gravados em históricos e registros.

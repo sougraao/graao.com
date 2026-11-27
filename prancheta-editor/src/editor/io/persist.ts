@@ -73,7 +73,7 @@ export async function saveNow() {
 }
 
 export async function saveToBrowser() {
-  if (await saveNow()) store.toast('Salvo na graao');
+  if (await saveNow()) store.toast('Salvo no graao');
 }
 
 export function saveLocalCopy() {

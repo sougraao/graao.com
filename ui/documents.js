@@ -71,7 +71,7 @@ function actionButtons(list, name) {
 
 function templatesList(c) {
   const own = (c.s.documentTemplates || []).filter(row => matches(c, row.title)).sort(byUpdated);
-  return `<section class="dc-group"><h2>Modelos da Graao</h2><div class="dc-cards">${socTemplates.map(tpl => `<article class="surface dc-card">
+  return `<section class="dc-group"><h2>Modelos do Graao</h2><div class="dc-cards">${socTemplates.map(tpl => `<article class="surface dc-card">
       <span class="dc-card-icon">${icon(tpl.kind === 'contract' ? 'book' : 'file', 18)}</span><div><b>${h(tpl.title)}</b><small class="dim">${h(label(documentKinds, tpl.kind))} · ${tpl.blocks.length} blocos</small></div>
       <div class="dc-card-actions"><button type="button" class="secondary" data-dc-act="use" data-id="${tpl.id}">Usar</button><button type="button" class="secondary" data-dc-act="copy-graao-template" data-id="${tpl.id}">Duplicar para editar</button></div></article>`).join('')}</div></section>
     <section class="dc-group"><div class="dc-group-head"><h2>Seus modelos</h2><button type="button" class="secondary" data-dc-act="new-template">${icon('plus', 15)} Novo modelo</button></div>
@@ -91,9 +91,9 @@ function libraryList(c) {
     <div class="dc-card-actions">${graao ? `<button type="button" class="secondary" data-dc-act="copy-graao-block" data-id="${item.id}">Duplicar para editar</button>`
       : `<a class="secondary" href="#payments/document/${h(item.id)}">Editar</a><button type="button" class="icon-btn" data-dc-act="delete" data-key="contentBlocks" data-id="${h(item.id)}" aria-label="Excluir: ${h(item.name)}" title="Excluir">${icon('trash', 16)}</button>`}</div></article>`;
   return `<p class="dim dc-note">Trechos prontos para inserir em qualquer documento pelo editor, na aba Biblioteca.</p>
-    <section class="dc-group"><h2>Da Graao</h2><div class="dc-cards">${socLibrary.map(item => card(item, true)).join('')}</div></section>
+    <section class="dc-group"><h2>Do Graao</h2><div class="dc-cards">${socLibrary.map(item => card(item, true)).join('')}</div></section>
     <section class="dc-group"><div class="dc-group-head"><h2>Seus itens</h2><button type="button" class="secondary" data-dc-act="new-block">${icon('plus', 15)} Novo item</button></div>
-    ${own.length ? `<div class="dc-cards">${own.map(item => card(item, false)).join('')}</div>` : '<p class="dim dc-note">Nenhum item seu ainda. Duplique um item da Graao ou crie um do zero.</p>'}</section>`;
+    ${own.length ? `<div class="dc-cards">${own.map(item => card(item, false)).join('')}</div>` : '<p class="dim dc-note">Nenhum item seu ainda. Duplique um item do Graao ou crie um do zero.</p>'}</section>`;
 }
 
 function listView(c) {
@@ -317,7 +317,7 @@ function paymentProps(c, d) {
   const total = documentTotal(d.blocks);
   const connected = c.pay && !c.pay.error ? Boolean(c.pay.connected) : null;
   const head = field('Cobrança', `<select data-dc-pay="mode"><option value="">Sem cobrança</option>${paymentModes.map(([value, text]) => option(value, text, pay?.mode || '')).join('')}</select>`,
-    'Quando todos assinarem, a Graao cria a cobrança no valor total do documento.');
+    'Quando todos assinarem, o Graao cria a cobrança no valor total do documento.');
   if (!pay?.mode) return head + '<p class="dim dc-note">O documento só coleta assinaturas.</p>';
   const parts = paymentParts(pay, total);
   const schedule = pay.mode === 'one_time' ? `<h3 class="dc-subhead">Parcelas</h3>
@@ -493,7 +493,7 @@ function newDocumentDialog(c, presetTemplate = '') {
     <div class="dc-two"><label>Tipo<select name="kind">${documentKinds.map(([value, text]) => option(value, text, 'proposal')).join('')}</select></label>
       <label>Cliente<select name="contactId"><option value="">Escolher depois</option>${c.s.contacts.map(row => option(row.id, row.name, '')).join('')}</select></label></div>
     <fieldset class="fm-templates"><legend>Começar com</legend>${radio('', 'Em branco', 'Página vazia com um destinatário.')}
-      ${socTemplates.map(tpl => radio(tpl.id, tpl.title, `Modelo da Graao · ${label(documentKinds, tpl.kind)}`)).join('')}
+      ${socTemplates.map(tpl => radio(tpl.id, tpl.title, `Modelo do Graao · ${label(documentKinds, tpl.kind)}`)).join('')}
       ${own.map(tpl => radio(tpl.id, tpl.title, `Seu modelo · ${label(documentKinds, tpl.kind)}`)).join('')}</fieldset>
     <p class="form-status" role="alert" data-dc-error></p>
     <div class="co-form-actions"><button type="button" class="secondary" data-act="close">Cancelar</button><button class="primary" type="submit">Criar documento</button></div></form>`;

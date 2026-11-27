@@ -137,7 +137,7 @@ function homeMain(model, custom = []) {
     <h3 class="ags-section-title">Comece por um caso de uso</h3>
     <p class="dim ags-section-text">Gatilhos e recursos já configurados. Edite o que quiser depois de escolher.</p>
     ${custom.length ? `<h3 class="ags-section-title">Modelos da subconta</h3><div class="ags-templates">${custom.map(templateCard).join('')}</div>
-    <h3 class="ags-section-title">Modelos da graao</h3>` : ''}
+    <h3 class="ags-section-title">Modelos do graao</h3>` : ''}
     <div class="ags-templates">${agentTemplates.map(templateCard).join('')}</div>
   </div>`;
 }

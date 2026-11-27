@@ -21,7 +21,7 @@ if (!args.includes('--email') || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
 const store = supabaseFromEnv() || createSqliteStore(resolve(process.env.GO_DB_PATH || resolve(import.meta.dirname, '..', '.data', 'go.sqlite')));
 const found = await store.findAgency({ profile: { email } }) || await store.findAgency({ users: [{ email }] });
 if (!found) {
-  console.error(`Nenhuma agência encontrada para ${email}. A pessoa precisa ter entrado na graao pelo menos uma vez.`);
+  console.error(`Nenhuma agência encontrada para ${email}. A pessoa precisa ter entrado no graao pelo menos uma vez.`);
   process.exit(1);
 }
 const preview = seedSetups(hydrateAgency(structuredClone(found.state), found.id));

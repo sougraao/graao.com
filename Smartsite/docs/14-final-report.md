@@ -7,7 +7,7 @@
 - Conteúdo baseado só no que o código da plataforma faz (`documents/PRODUCT_EVIDENCE_REGISTER.md`); limites ditos com clareza (sem SMS, sem sincronização com Google Agenda, sem domínio próprio para sites, comissões de afiliados só calculadas).
 - Capturas reais da plataforma (workspace de demonstração local, dados fictícios); 10 telas pendentes.
 - SEO: canonical em `https://www.graao.com`, sitemap sem páginas noindex, robots, JSON-LD.
-- Conversão: "Começar com a graao" → `https://graao.com/login` (login Google cria a agência).
+- Conversão: "Começar com o graao" → `https://graao.com/login` (login Google cria a agência).
 
 ## Como rodar
 ```

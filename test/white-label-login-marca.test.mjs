@@ -1,5 +1,5 @@
 // White Label: a tela de entrada no domínio da agência. Produção, 26/11 (graao.com): a página chegava com a marca da
-// graao e só depois trocava o nome; o texto, o rodapé, o ícone da aba e as cores seguiam da graao, e o logotipo
+// graao e só depois trocava o nome; o texto, o rodapé, o ícone da aba e as cores seguiam do graao, e o logotipo
 // guardado como /asset/<hash>.png nunca aparecia (o login só aceitava data:image). Agora o servidor monta a marca.
 import test from 'node:test';
 import assert from 'node:assert/strict';

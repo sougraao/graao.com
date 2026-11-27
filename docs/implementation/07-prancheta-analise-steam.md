@@ -1,4 +1,4 @@
-# 07 · Prancheta da Steam: como funciona (análise para a graao)
+# 07 · Prancheta da Steam: como funciona (análise para o graao)
 
 Fonte analisada: `D:\meus documentos\Steam\src\tools\prancheta` (LAB Um Cara Caramelo).
 Data: 2026-11-23.
@@ -12,18 +12,18 @@ do Google, em `googleFontsList.ts`). A única dependência de execução fora do
 React é o MediaPipe, carregado por CDN só quando alguém remove o fundo de uma
 imagem.
 
-A Prancheta atual da graao (`ui/prancheta.js`, 1.254 linhas) é outra coisa: um
+A Prancheta atual do graao (`ui/prancheta.js`, 1.254 linhas) é outra coisa: um
 editor em DOM, com lâminas, formas simples (retângulo, círculo, texto, linha,
 seta) e um inspetor básico.
 
 As duas já conversam em parte:
 
 - `Steam/src/tools/prancheta/graaoRepo.ts` fala com `/api/prancheta/*` do
-  `server.mjs` da graao (porta padrão 4317), com `?workspace=<subconta>`.
-- `prancheta-model.mjs` da graao guarda o documento da Steam (`DocumentData`)
+  `server.mjs` do graao (porta padrão 4317), com `?workspace=<subconta>`.
+- `prancheta-model.mjs` do graao guarda o documento da Steam (`DocumentData`)
   no campo `document` de cada arquivo, e `graaoToDocument`/`documentToGraao`
   convertem entre os dois formatos.
-- `PranchetaApp.tsx` troca de repositório sozinho: com `workspace` usa a graao,
+- `PranchetaApp.tsx` troca de repositório sozinho: com `workspace` usa o graao,
   sem ele usa o Supabase do LAB.
 
 ## 2. Arquitetura em camadas
@@ -142,13 +142,13 @@ distribuir, imagem (inserir, conta-gotas, remover fundo, "efeito revista").
 
 - `PranchetaSession`: um escritor por documento, salvamento 700 ms depois da
   última mudança, salvamento ao esconder a aba e aviso no `beforeunload`.
-- **Concorrência otimista:** cada gravação envia `expectedUpdatedAt`; a graao
+- **Concorrência otimista:** cada gravação envia `expectedUpdatedAt`; o graao
   devolve 409 e o editor mostra "salvar cópia / recarregar".
 - Limite de 25 MB por documento (imagens ficam embutidas como data URL).
 - No LAB, tabela `prancheta_files` (id, user_id, name, document jsonb,
   size_bytes, thumbnail, timestamps).
 
-## 9. O que a graao já tem para recebê-la
+## 9. O que o graao já tem para recebê-la
 
 | Rota | Faz |
 |---|---|
@@ -172,29 +172,29 @@ Lacunas encontradas (corrigidas, ver §11):
 
 ## 10. Diferença que decide o caminho
 
-A graao não tem etapa de build nem dependências no `package.json`: o front é
+O graao não tem etapa de build nem dependências no `package.json`: o front é
 JavaScript puro em `ui/`, servido como está. A Prancheta da Steam depende de
-React, TypeScript e Vite. Trazer o editor para dentro da graao passa por uma
+React, TypeScript e Vite. Trazer o editor para dentro do graao passa por uma
 destas portas:
 
 1. **Pacote pronto:** compilar o editor da Steam num único módulo JS e servir
    em `ui/`, montado na rota `#agency/prancheta` com o `graaoRepo`.
 2. **Reescrita em JS puro:** portar o modelo, o canvas e os painéis para
-   módulos de `ui/`, no mesmo estilo do resto da graao.
-3. **Iframe:** abrir a Prancheta hospedada na Steam dentro da graao.
+   módulos de `ui/`, no mesmo estilo do resto do graao.
+3. **Iframe:** abrir a Prancheta hospedada na Steam dentro do graao.
 
 O plano das Apresentações (`06-apresentacoes-google-slides.md`, item 5) já
 prevê extrair o núcleo da Prancheta (seleção, arraste, alças, inspetor) para
-reaproveitar nos slides, o que pesa a favor de um núcleo que viva na graao.
+reaproveitar nos slides, o que pesa a favor de um núcleo que viva no graao.
 
-## 11. Como ficou na graao (2026-11-23)
+## 11. Como ficou no graao (2026-11-23)
 
-Caminho escolhido: **pacote pronto, com o código-fonte dentro da graao**.
+Caminho escolhido: **pacote pronto, com o código-fonte dentro do graao**.
 
 | Parte | Onde |
 |---|---|
 | Código do editor (cópia da Steam, adaptada) | `prancheta-editor/src/editor/` |
-| Entrada da graao: abrir, salvar, voltar, Mídia Drive, Social Planner | `prancheta-editor/src/main.tsx`, `repo.ts`, `session.ts`, `graao.css` |
+| Entrada do graao: abrir, salvar, voltar, Mídia Drive, Social Planner | `prancheta-editor/src/main.tsx`, `repo.ts`, `session.ts`, `graao.css` |
 | Build (esbuild, dependências só nesta pasta) | `prancheta-editor/package.json`, `build.mjs` → `npm run build:prancheta` |
 | Pacote servido (vai para o git) | `ui/vendor/prancheta-editor.js` e `.css`, espelhados em `public/vendor/` |
 | Página do editor | `ui/prancheta-editor.html` (`/prancheta-editor.html?workspace=&file=`) |

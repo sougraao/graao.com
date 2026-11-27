@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Refazer a tela Marketing › Eventos no padrão visual da Graao e trazer tudo o que o planejador do Parceiras Conselho tem.
+**Goal:** Refazer a tela Marketing › Eventos no padrão visual do Graao e trazer tudo o que o planejador do Parceiras Conselho tem.
 
 **Architecture:** O evento continua em `eventPlans` com `plan = { brief, items }`. O modelo (`event-planner-model.mjs`) ganha controle de revisão e campos novos; os dados do modelo de lançamento vão para `ui/event-planner-data.js`; um editor de copy no formato do WhatsApp vira módulo próprio (`ui/event-copy-editor.js`); `ui/event-planner.js` passa a usar `pageShell`, `utabs`, `.metrics/.metric`, `.badge`, `dialog` e tokens `--g-*`. Funções de renderização retornam HTML e são testáveis em Node.
 
@@ -277,7 +277,7 @@ test('Messages section filters by channel and shows code and rendered copy', () 
   - Validações no formulário (iguais ao Parceiras): link “Validado” exige endereço (“Preencha o endereço para validar o link.”); mensagem “Agendada” exige data e horário (“Preencha data e horário para marcar a mensagem como agendada.”); endereço precisa começar com http(s).
   - Integrações: manter o conteúdo atual do orquestrador, só com o visual novo.
 - [ ] **Step 4: Run** `node --test test/event-planner-ui.test.mjs test/event-planner.test.mjs` — Expected: PASS.
-- [ ] **Step 5: Commit** `node scripts/sync-public.mjs && git add ui/event-planner.js public/event-planner.js test/event-planner-ui.test.mjs && git commit -m "feat(eventos): tela do evento no padrão da Graao com paridade do Parceiras"`
+- [ ] **Step 5: Commit** `node scripts/sync-public.mjs && git add ui/event-planner.js public/event-planner.js test/event-planner-ui.test.mjs && git commit -m "feat(eventos): tela do evento no padrão do Graao com paridade do Parceiras"`
 
 ---
 

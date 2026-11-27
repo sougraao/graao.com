@@ -1,4 +1,4 @@
-// Converte uma subconta extraída do GHL num template de setup da Graao.
+// Converte uma subconta extraída do GHL num template de setup do Graao.
 // Entrada: { dump, triggers, surveys, page(pageId) } (a extração do GHL em memória; a leitura de pasta fica em scripts/ghl-template).
 // Saída: o objeto do template { id, title, ..., assets, sites } pronto para gravar em setup-templates/<id>.json.
 import { createHash } from 'node:crypto';
@@ -48,7 +48,7 @@ export function convert(source, meta) {
     const row = { id: id('cf', f.id), name: f.name, object: OBJECTS[f.model] || 'Contact', type: FIELD_TYPES[f.dataType] || 'Single line',
       options: (f.picklistOptions || []).map(String).slice(0, 50), folder: folders.get(f.parentId) || '', placeholder: f.placeholder || '', key: f.fieldKey || `contact.${keyOf(f.name)}` };
     if (!['Dropdown (single)'].includes(row.type)) row.options = [];
-    if (['MULTIPLE_OPTIONS', 'CHECKBOX'].includes(f.dataType)) note(`Campo "${f.name}": múltipla escolha no GHL; na Graao vira texto (as opções ficam separadas por vírgula).`);
+    if (['MULTIPLE_OPTIONS', 'CHECKBOX'].includes(f.dataType)) note(`Campo "${f.name}": múltipla escolha no GHL; no Graao vira texto (as opções ficam separadas por vírgula).`);
     fieldById.set(f.id, row);
     return row;
   });
@@ -130,7 +130,7 @@ export function convert(source, meta) {
       if (s > 0) fields.push({ id: `${hash(survey._id, 4)}b${s}`, type: 'break', label: slide.slideName || '', placeholder: '', key: '', required: false, hidden: false, width: 100, options: [], help: '', text: '', value: '' });
       (slide.slideData || []).forEach((f, i) => { const field = formField(f, `${s}x${i}`, `${hash(survey._id, 4)}s`); if (field) fields.push(field); });
     });
-    // No GHL a pesquisa pode vir depois de um formulário que já identificou o contato. Na Graao ela cria o contato,
+    // No GHL a pesquisa pode vir depois de um formulário que já identificou o contato. No Graao ela cria o contato,
     // então ganha um último passo com nome, e-mail e telefone.
     if (!fields.some(f => f.type === 'email' || f.type === 'phone')) {
       const p = hash(survey._id, 4);
@@ -371,7 +371,7 @@ export function convert(source, meta) {
         const [offset, offsetUnit] = m % 1440 === 0 ? [m / 1440, 'days'] : m % 60 === 0 ? [m / 60, 'hours'] : [m, 'minutes'];
         return [S('wait', { mode: 'event_date', offset, offsetUnit, direction: s.when === 'after' ? 'after' : 'before' })];
       }
-      if (a.window?.days) note('Esperas do GHL com janela de horário (dias úteis, 9h às 17h): na Graao a espera conta o tempo corrido.');
+      if (a.window?.days) note('Esperas do GHL com janela de horário (dias úteis, 9h às 17h): no Graao a espera conta o tempo corrido.');
       return [S('wait', { mode: 'delay', amount, unit })];
     }
 

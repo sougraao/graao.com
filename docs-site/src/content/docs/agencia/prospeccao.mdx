@@ -11,9 +11,9 @@ import { Steps, Aside, CardGrid, LinkCard } from '@astrojs/starlight/components'
 import Requisitos from '../../../components/Requisitos.astro';
 import Automacao from '../../../components/Automacao.astro';
 
-A Prospecção ajuda a agência a achar novos clientes. Você busca um nicho numa região, salva as empresas que interessam e acompanha cada uma até virar cliente. A graao usa a API oficial do Google Maps: os dados de cada empresa são lidos do Google na hora em que você abre a lista, então estão sempre atualizados.
+A Prospecção ajuda a agência a achar novos clientes. Você busca um nicho numa região, salva as empresas que interessam e acompanha cada uma até virar cliente. O graao usa a API oficial do Google Maps: os dados de cada empresa são lidos do Google na hora em que você abre a lista, então estão sempre atualizados.
 
-<Requisitos permissao="Acesso à Prospecção no painel da agência" integracoes={['Google Maps (configurado pela graao)']} />
+<Requisitos permissao="Acesso à Prospecção no painel da agência" integracoes={['Google Maps (configurado pelo graao)']} />
 
 ## Passo a passo
 
@@ -42,16 +42,16 @@ A Prospecção ajuda a agência a achar novos clientes. Você busca um nicho num
 ## Perguntas frequentes
 
 **Por que os dados do Google não ficam salvos no prospect?**
-A regra do Google Maps só permite guardar o identificador do lugar. Por isso a graao lê nome, endereço, telefone, site e avaliações do Google na primeira vez que você abre a Prospecção e mantém esses dados enquanto a aba do navegador estiver aberta. Ao abrir a graao numa aba nova, eles são lidos de novo e chegam atualizados.
+A regra do Google Maps só permite guardar o identificador do lugar. Por isso o graao lê nome, endereço, telefone, site e avaliações do Google na primeira vez que você abre a Prospecção e mantém esses dados enquanto a aba do navegador estiver aberta. Ao abrir o graao numa aba nova, eles são lidos de novo e chegam atualizados.
 
 **Um cartão aparece como "Prospect do Maps", sem telefone nem site. O que houve?**
-O Google não respondeu para aquela empresa (por exemplo, a cota do dia acabou ou o lugar saiu do Maps). Recarregue a página mais tarde: a graao tenta de novo. Se quiser que o cartão nunca dependa do Google, abra **Editar prospect** e digite os dados você mesmo.
+O Google não respondeu para aquela empresa (por exemplo, a cota do dia acabou ou o lugar saiu do Maps). Recarregue a página mais tarde: o graao tenta de novo. Se quiser que o cartão nunca dependa do Google, abra **Editar prospect** e digite os dados você mesmo.
 
 **O link do relatório compartilhado mostra o nome da empresa?**
 Sim. Quem abre o link vê o nome e os dados da empresa lidos do Google na hora, como na sua tela.
 
 **A busca mostra empresas do OpenStreetMap em vez do Google. Por quê?**
-Isso só acontece quando o Google Maps não está configurado no servidor. Nesse caso a graao usa o OpenStreetMap, e os dados dessas empresas ficam salvos no prospect.
+Isso só acontece quando o Google Maps não está configurado no servidor. Nesse caso o graao usa o OpenStreetMap, e os dados dessas empresas ficam salvos no prospect.
 
 ## Veja também
 

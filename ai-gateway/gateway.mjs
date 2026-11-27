@@ -1,4 +1,4 @@
-// graao AI Gateway: a camada única entre as funcionalidades da graao e os provedores de IA.
+// graao AI Gateway: a camada única entre as funcionalidades do graao e os provedores de IA.
 //
 //   funcionalidade → graaoAI.generate/stream/structured/embed/agent (pedido normalizado + contexto do servidor)
 //     → kill switch e política da funcionalidade → roteador (filtros + pontuação, free-first)
@@ -493,14 +493,14 @@ export function createGraaoAI({ store, env = process.env, request = fetch, clock
   /**
    * Compatibilidade com o formato da Responses API (as funcionalidades atuais, via openai.mjs). Com a chave da agência,
    * o corpo vai sem tradução para a OpenAI (mesmo comportamento de antes) e ganha kill switch, circuit breaker,
-   * repetição de falha passageira e log. Sem chave, só quando o administrador liberou: modelos gratuitos da graao.
+   * repetição de falha passageira e log. Sem chave, só quando o administrador liberou: modelos gratuitos do graao.
    */
   async function responses(body, rawCtx, { signal = undefined, timeoutMs = 60_000 } = {}) {
     const ctx = context(rawCtx);
     const feature = FEATURES[rawCtx.feature] ? rawCtx.feature : 'legacy.openai';
     if (!ctx.byok.openai) {
       const config = await loadConfig();
-      if (config.agenciesWithoutKey !== 'free') throw new GatewayError('disabled', { internal: 'sem chave e sem IA da graao liberada' });
+      if (config.agenciesWithoutKey !== 'free') throw new GatewayError('disabled', { internal: 'sem chave e sem IA do graao liberada' });
       const req = fromResponsesBody(body, { feature });
       if (req.needs.includes('webSearch')) throw new GatewayError('no_route', { internal: 'web_search só com a chave da OpenAI' });
       const result = await run('generate', { ...req, __normalized: true, mode: 'free' }, { ...rawCtx, byok: {}, plan: 'free' }, { signal });
@@ -548,7 +548,7 @@ export function createGraaoAI({ store, env = process.env, request = fetch, clock
     }
   }
 
-  /** Há modelo gratuito da graao liberado para agências sem chave? (decide se openai.mjs pede a chave ou segue) */
+  /** Há modelo gratuito do graao liberado para agências sem chave? (decide se openai.mjs pede a chave ou segue) */
   async function platformFreeAvailable() {
     const config = await loadConfig();
     if (config.killSwitch.all || config.agenciesWithoutKey !== 'free') return false;

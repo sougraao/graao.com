@@ -11,7 +11,7 @@ Workspace específico para graao, adaptado do starter V2.1. Ainda não é o webs
 
 ## Arquivos
 - `SMARTSITE_MASTER_PROMPT.md` — 33 seções de execução, do diagnóstico à entrega; arquitetura SaaS nacional, design e interatividade.
-- `BUSINESS_BRIEF.md` — dados da graao e lacunas.
+- `BUSINESS_BRIEF.md` — dados do graao e lacunas.
 - `START_HERE.md` — comando de ativação.
 - `documents/` — marca/copy, contrato de experiência e registro de evidências.
 - `references/` — blueprint adaptado e original histórico.

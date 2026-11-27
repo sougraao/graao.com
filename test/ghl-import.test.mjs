@@ -166,7 +166,7 @@ test('never fetches images on internal networks, not even through a redirect', a
     [LOOP]: () => new Response(PNG, { headers: { 'Content-Type': 'image/png' } }),
   } });
   const { job, html } = await runImport(t, { ghlFetch, ghlResolve: publicDns({ 'interno.exemplo': '10.0.0.5' }) });
-  for (const url of [META, INTERNAL, LOOP]) assert.ok(!seen.includes(url), `a graao pediu ${url}`);
+  for (const url of [META, INTERNAL, LOOP]) assert.ok(!seen.includes(url), `o graao pediu ${url}`);
   assert.ok(seen.includes(HOP));
   assert.ok(html.includes(META) && html.includes(INTERNAL) && html.includes(HOP));
   assert.ok(job.notes.some(text => /3 imagens/.test(text)), job.notes.join(' | '));

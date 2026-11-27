@@ -125,7 +125,7 @@ function unwrap(message, once = false, depth = 0) {
   return inner ? unwrap(inner, once || Boolean(single), depth + 1) : { message, once };
 }
 
-// A mídia da mensagem e, quando o arquivo não fica na graao, o porquê em `skip`.
+// A mídia da mensagem e, quando o arquivo não fica no graao, o porquê em `skip`.
 function evolutionMedia(raw) {
   const { message, once } = unwrap(raw);
   if (!message) return null;
@@ -1262,7 +1262,7 @@ export function createWhatsAppHandler({
     return true;
   }
 
-  // A linha de confirmação do celular (routes/verify.mjs): uma instância da graao no servidor global, sem row de agência.
+  // A linha de confirmação do celular (routes/verify.mjs): uma instância do graao no servidor global, sem row de agência.
   function verifyLine(instanceName) {
     if (!hasManaged || !instanceName) return null;
     const sub = { instanceName };

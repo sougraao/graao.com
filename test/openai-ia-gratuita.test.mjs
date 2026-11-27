@@ -1,5 +1,5 @@
 // Fluxos sem chave da OpenAI: as ações de texto (bot de IA na conversa, Rodar agente, ações de IA) usam a IA
-// gratuita da graao quando o dono da plataforma a liberou. O gateway aqui é simulado: só diz se a IA grátis está livre.
+// gratuita do graao quando o dono da plataforma a liberou. O gateway aqui é simulado: só diz se a IA grátis está livre.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createOpenAI } from '../openai.mjs';

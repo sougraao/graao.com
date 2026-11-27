@@ -261,7 +261,7 @@ export function installDashboardControls({ c, dialog, close, render, load, mutat
     if (file.size > 200000) throw new Error('O arquivo é grande demais para um modelo de painel.');
     let template;
     try { template = JSON.parse(await file.text()); } catch { throw new Error('O arquivo não é um JSON válido.'); }
-    if (template?.format !== 'graao-dashboard' || !Array.isArray(template.widgets)) throw new Error('Este arquivo não é um modelo de painel da graao.');
+    if (template?.format !== 'graao-dashboard' || !Array.isArray(template.widgets)) throw new Error('Este arquivo não é um modelo de painel do graao.');
     const unknown = template.widgets.filter(widget => !widgets[widget?.kind]).length;
     return { template, widgets:template.widgets.filter(widget => widgets[widget?.kind]), unknown };
   }

@@ -4,7 +4,7 @@ Data: 2026-11-23 · Status: aguardando aprovação
 
 ## Intenção
 
-Na graao, cada subconta pode criar comunidades que os clientes acessam em `/portal/<workspace>`. A comunidade
+No graao, cada subconta pode criar comunidades que os clientes acessam em `/portal/<workspace>`. A comunidade
 funciona (canais, enquetes, eventos ao vivo, ranking com níveis, emblemas, planos pagos, perguntas de adesão,
 primeiros passos, moderação), mas é **feia e pouco intuitiva**: botão "Entrar" esticado na largura toda, abas
 soltas, páginas vazias sem identidade. O dono quer que ela fique **bonita, intuitiva e fluida como a plataforma

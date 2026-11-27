@@ -2,7 +2,7 @@
 
 Gerado em 20/11/2026 a partir de 142 telas visitadas (125 da subconta e 17 da agência) num Chrome com CDP. O código JS de cada tela foi capturado com `Debugger.getScriptSource`, e as chamadas de API foram registradas só como método e caminho, sem headers nem corpo. IDs foram trocados por `:id`/`:locationId`. Chamadas que aparecem em mais de 30% das telas (polling, sessão, sidebar) foram removidas. Evidências REA: `ev_ab5c348b…` (casca) e `ev_1ea708ee…` (construtor de workflows).
 
-Uso: referência para desenhar os modelos de dados e as APIs da Graao. **Não** copiar código nem textos.
+Uso: referência para desenhar os modelos de dados e as APIs do Graao. **Não** copiar código nem textos.
 
 ## 1. Workflows: catálogo de gatilhos e ações
 
@@ -112,7 +112,7 @@ As mesmas apps aparecem nos dois painéis, com uma única diferença: Mistral AI
 
 Airtable · Apify · Asana · Basecamp · Browse AI · Cal.com · Calendly · ClickUp · Fathom · Google Contacts · Google Forms · Housecall Pro · HubSpot · Jira · Jotform · Klaviyo · Linear · Manus AI · Mistral AI · Monday.com · Notion · OpenRouter · Todoist · Typeform, além de "Discover" (marketplace).
 
-Para a Graao, o modelo equivalente é um **catálogo de conectores**, em que cada app declara os próprios gatilhos e ações. O Pergunte a Graao já tem conectores multi-tenant (`graao-chat.mjs`) que podem ser reaproveitados.
+Para o Graao, o modelo equivalente é um **catálogo de conectores**, em que cada app declara os próprios gatilhos e ações. O Pergunte o Graao já tem conectores multi-tenant (`graao-chat.mjs`) que podem ser reaproveitados.
 
 ### 1.4 Tipos internos (snake_case) vistos no código do construtor (`client-app-automation-workflows`)
 
@@ -130,11 +130,11 @@ Tipos encontrados no código do construtor que têm rótulo de interface. Os gen
 | IVR / telefonia | `ivr`, `ivr_say`, `ivr_connect_call`, `ivr_hangup`, `ivr_collect_voicemail`, ivr_incoming_call (gatilho) |
 | Gatilhos extras vistos no construtor | `contact_changed`, `note_changed`, `task_added`, `email_event`, inbound_trigger (e-mail recebido), `inbound_webhook`, `trigger_link`, `affiliate_created`, `payment_received`, `invoice`, product_*/lesson_*/category_* (cursos), `offer_access_*`, `opportunity_decay`, `task_due_date_reminder`, `scheduler_trigger`, `conv_ai_autonomous_trigger` |
 
-> Os nomes de exibição completos estão na seção 1.3. Esta tabela traz os ids internos correspondentes, úteis para modelar o motor de workflows da Graao.
+> Os nomes de exibição completos estão na seção 1.3. Esta tabela traz os ids internos correspondentes, úteis para modelar o motor de workflows do Graao.
 
 ## 2. Telas → micro-apps → APIs
 
-Para cada tela: os micro-frontends carregados e os endpoints específicos que ela chamou. É o mapa para modelar o back-end equivalente na Graao.
+Para cada tela: os micro-frontends carregados e os endpoints específicos que ela chamou. É o mapa para modelar o back-end equivalente no Graao.
 
 ### Subconta · dashboard
 
@@ -1217,7 +1217,7 @@ Criado o grupo "RASCUNHO GRAAO comunidade" e percorrido como administrador no po
 14. **Importador do Skool**: membros e conteúdo, via credenciais.
 15. **Descoberta**: aparecer na busca pública e no diretório (gokollab.com), com categoria.
 
-**Para a Graao:** a Graao já tem comunidades com canais, publicações, enquetes e ranking por níveis (commit `feat(communities)`). As principais lacunas são:
+**Para o Graao:** o Graao já tem comunidades com canais, publicações, enquetes e ranking por níveis (commit `feat(communities)`). As principais lacunas são:
 - eventos com pagamento e gravações;
 - transmissão ao vivo;
 - assinaturas e planos por comunidade;
@@ -1262,7 +1262,7 @@ Criado o curso gratuito "RASCUNHO GRAAO curso" e percorrido no editor. Nenhuma a
 
 Cada seção tem "reset".
 
-**Para a Graao:** a Graao já tem cursos com módulos, aulas, liberação gradual e progresso (commit `feat(courses)`). As principais lacunas são:
+**Para o Graao:** o Graao já tem cursos com módulos, aulas, liberação gradual e progresso (commit `feat(courses)`). As principais lacunas são:
 - estrutura de exemplo ao criar;
 - submódulos;
 - quiz com nota mínima;
@@ -1298,7 +1298,7 @@ Iniciado o "Custom Agency App" de rascunho "RASCUNHO GRAAO app" (domínio fictí
 | Subscription | **Whitelabel App + Zap**: trimestral US$ 1.491 (setup de US$ 497 grátis, suporte prioritário) ou mensal US$ 497. Inclui iOS e Android, marca, cores, logos, reordenar menu, todos os módulos do CRM, faturas e atualizações grátis |
 | Gerador de screenshots | Etapas: escolha de aparelho → telas → … Abas iPhone/iPad/Android, modelos (iPhone 17 Pro/Pro Max, iPad Pro, Samsung S25 Ultra, Pixel 10 Pro), **9 telas** com texto sobreposto, "Download Assets" para as lojas |
 
-**Para a Graao:** hoje a Graao tem o "Aplicativo móvel" na agência. Para chegar a esse nível, faltam:
+**Para o Graao:** hoje o Graao tem o "Aplicativo móvel" na agência. Para chegar a esse nível, faltam:
 - um app nativo único e configurável por agência (white-label), com tema, logos e login;
 - navegação superior e inferior configurável e uma Home com indicadores;
 - categorias de apps;

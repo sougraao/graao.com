@@ -1,5 +1,5 @@
-// Pergunte à Graao — componente de chat completo inspirado na referência do ChatGPT,
-// integrado ao design system, autenticação e contexto vivo da agência na Graao.
+// Pergunte ao Graao — componente de chat completo inspirado na referência do ChatGPT,
+// integrado ao design system, autenticação e contexto vivo da agência no Graao.
 import { Marked } from '/vendor/marked.js';
 import DOMPurify from '/vendor/purify.js';
 import { highlight } from '/highlight.js';
@@ -185,7 +185,7 @@ export function createGraaoChat({ api, flash, onOpenOpenAISettings, getHeaders }
         <div class="sc-history">
           <h2 class="sc-history-title">Recentes</h2>
           <ol class="sc-history-list" data-sc="history-list"></ol>
-          <p class="sc-history-empty" data-sc="history-empty" hidden>Suas conversas com a Graao aparecem aqui.</p>
+          <p class="sc-history-empty" data-sc="history-empty" hidden>Suas conversas com o Graao aparecem aqui.</p>
         </div>
         <div class="sc-side-foot">
           <button type="button" class="sc-nav-item" data-sc-action="open-settings">${icon('settings', 17)}<span>Configurações do chat</span></button>
@@ -218,7 +218,7 @@ export function createGraaoChat({ api, flash, onOpenOpenAISettings, getHeaders }
 
       <div class="sc-content" data-sc="content">
         <div class="sc-scroller" data-sc="scroller">
-          <div class="sc-thread" data-sc="thread" role="region" aria-label="Conversa com a Graao"></div>
+          <div class="sc-thread" data-sc="thread" role="region" aria-label="Conversa com o Graao"></div>
         </div>
         <button type="button" class="sc-scroll-down" data-sc="scroll-down" aria-label="Rolar até o fim" hidden>${icon('arrowDown', 17)}</button>
 
@@ -238,8 +238,8 @@ export function createGraaoChat({ api, flash, onOpenOpenAISettings, getHeaders }
                   <button type="button" class="sc-menu-item" data-sc-action="attach">${icon('paperclip', 17)}<span>Adicionar fotos e arquivos</span></button>
                 </div>
               </div>
-              <label class="sr-only" for="sc-prompt">Pergunte à Graao</label>
-              <textarea id="sc-prompt" class="sc-text" data-sc="prompt" rows="1" placeholder="Pergunte à Graao sobre subcontas, receita, setups, equipe…" aria-label="Pergunte à Graao"></textarea>
+              <label class="sr-only" for="sc-prompt">Pergunte ao Graao</label>
+              <textarea id="sc-prompt" class="sc-text" data-sc="prompt" rows="1" placeholder="Pergunte ao Graao sobre subcontas, receita, setups, equipe…" aria-label="Pergunte ao Graao"></textarea>
               <button type="button" class="sc-icon-btn sc-mic" data-sc="dictate-btn" aria-label="Iniciar ditado" title="Ditar">${icon('mic', 18)}</button>
               <button type="submit" class="sc-send" data-sc="send-btn" aria-label="Enviar mensagem"></button>
             </div>
@@ -248,7 +248,7 @@ export function createGraaoChat({ api, flash, onOpenOpenAISettings, getHeaders }
           <div class="sc-suggestions" data-sc="suggestions">
             ${QUICK_PROMPTS.map(p => `<button type="button" class="sc-suggestion" data-sc-action="quick-prompt" data-q="${escapeHtml(p)}">${escapeHtml(p)}</button>`).join('')}
           </div>
-          <p class="sc-disclaimer">A Graao pode cometer erros. Confira informações importantes nos relatórios da agência.</p>
+          <p class="sc-disclaimer">O Graao pode cometer erros. Confira informações importantes nos relatórios da agência.</p>
         </div>
 
         <div class="sc-drop-overlay" data-sc="drop-overlay" hidden><div>Solte os arquivos aqui para anexar à conversa</div></div>
@@ -289,7 +289,7 @@ export function createGraaoChat({ api, flash, onOpenOpenAISettings, getHeaders }
         <div class="sc-tab-pane active" data-sc-pane="general">
           <div class="sc-setting-block">
             <label class="sc-setting-label" for="sc-instructions">Instruções personalizadas</label>
-            <p class="sc-setting-hint">Como a Graao deve responder ou o que deve considerar sobre a sua agência?</p>
+            <p class="sc-setting-hint">Como o Graao deve responder ou o que deve considerar sobre a sua agência?</p>
             <textarea id="sc-instructions" data-sc="instructions" rows="4" placeholder="Ex.: Responda de forma objetiva, sempre destacando oportunidades de aumento de MRR."></textarea>
             <div class="sc-setting-actions">
               <button type="button" class="primary" data-sc-action="save-instructions">Salvar instruções</button>
@@ -1375,7 +1375,7 @@ export function createGraaoChat({ api, flash, onOpenOpenAISettings, getHeaders }
       empty.innerHTML = `
         <div class="sc-empty-icon">🎯</div>
         <h4>Nenhuma habilidade adicionada</h4>
-        <p>Habilidades permitem que a Graao execute tarefas avançadas sob demanda com prompts especializados ou arquivos <code>SKILL.md</code>.</p>
+        <p>Habilidades permitem que o Graao execute tarefas avançadas sob demanda com prompts especializados ou arquivos <code>SKILL.md</code>.</p>
         <button type="button" class="primary" data-sc-action="open-skill-form">+ Adicionar primeira habilidade</button>
       `;
       els.skillsList.append(empty);
@@ -1898,7 +1898,7 @@ export function createGraaoChat({ api, flash, onOpenOpenAISettings, getHeaders }
         await openConversation(targetConvId, { updateHash: false });
       }
     } catch (err) {
-      flash(err.message || 'Não foi possível carregar o chat da Graao.', true);
+      flash(err.message || 'Não foi possível carregar o chat do Graao.', true);
     }
   }
 

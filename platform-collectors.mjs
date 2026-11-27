@@ -203,7 +203,7 @@ export const collectTwilio = guarded('twilio', 'Twilio', async function collectT
 });
 
 export const collectOpenAI = guarded('openai', 'OpenAI', async function collectOpenAI({ env, request, now, timeoutMs = 8000 }) {
-  // Só as chaves da conta da graao: OPENAI_API_KEY é a do "Pergunte à Graao"; as agências usam chaves próprias.
+  // Só as chaves da conta do graao: OPENAI_API_KEY é a do "Pergunte ao Graao"; as agências usam chaves próprias.
   const key = env.OPENAI_API_KEY, admin = env.OPENAI_ADMIN_KEY;
   const link = 'https://platform.openai.com/usage';
   if (!key && !admin) return notConfigured('openai', 'OpenAI', link);

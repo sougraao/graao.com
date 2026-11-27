@@ -1,5 +1,5 @@
 // Compila o editor da Prancheta (prancheta-editor/src, React + TypeScript) num
-// pacote único servido pela graao: ui/vendor/prancheta-editor.js e .css.
+// pacote único servido pelo graao: ui/vendor/prancheta-editor.js e .css.
 // O pacote gerado vai para o git, então o servidor não precisa de etapa de build.
 // Uso (na raiz): npm run build:prancheta
 import { build } from 'esbuild';
@@ -19,7 +19,7 @@ const result = await build({
   jsx: 'automatic',
   minify: true,
   legalComments: 'none',
-  // A fonte da plataforma já é servida pela graao em /fonts/.
+  // A fonte da plataforma já é servida pelo graao em /fonts/.
   external: ['/fonts/*'],
   define: { 'process.env.NODE_ENV': '"production"' },
   metafile: true,

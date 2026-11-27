@@ -1,4 +1,4 @@
-// Rotas do servidor MCP: /api/mcp (as ferramentas), o OAuth que conecta uma IA com o login da graao, a tela de
+// Rotas do servidor MCP: /api/mcp (as ferramentas), o OAuth que conecta uma IA com o login do graao, a tela de
 // consentimento (/mcp/autorizar) e a lista de IAs conectadas.
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -28,7 +28,7 @@ export function createMcpRoutes(deps) {
   async function caller(req, res, asked) {
     const header = String(req.headers.authorization || '');
     if (!header) {
-      if (auth && !auth.hasSession(req)) throw error('Conecte com uma chave de API ou com o login da graao.', 401);
+      if (auth && !auth.hasSession(req)) throw error('Conecte com uma chave de API ou com o login do graao.', 401);
       return { workspace: asked, who: await workspaceAccess(req, res, asked, { hide: true }) };
     }
     const token = header.replace(/^Bearer\s+/i, '');

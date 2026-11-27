@@ -52,7 +52,7 @@ test('Confirmar libera o teste e responde no WhatsApp', async t => {
   assert.equal(agency.body.billing.phone, '•••• 4567');
   assert.equal(agency.body.agency.billing.verify, undefined, 'o hash do código não sai do servidor');
   assert.equal((await call('/api/workspaces', { who: 'nova' })).status, 200);
-  assert.deepEqual(sent().at(-1), { number: PHONE, text: 'Pronto, sua conta da graao está confirmada.' });
+  assert.deepEqual(sent().at(-1), { number: PHONE, text: 'Pronto, sua conta do graao está confirmada.' });
   const taken = await call('/api/verify/start', { who: 'outra', body: { phone: PHONE } });
   assert.deepEqual([taken.status, taken.body.code], [409, 'PHONE_TAKEN']);
   const again = await call('/api/verify/start', { who: 'nova', body: { phone: '5531911112222' } });
@@ -76,7 +76,7 @@ test('Duas agências, mesmo número, ao mesmo tempo: uma só confirma', async t 
   const statuses = [(await call('/api/verify/status', { who: 'nova' })).body, (await call('/api/verify/status', { who: 'outra' })).body];
   assert.equal(statuses.filter(s => s.status === 'verified').length, 1, JSON.stringify(statuses));
   assert.deepEqual(statuses.find(s => s.status !== 'verified'), { status: 'refused', reason: 'phone-taken' });
-  assert.ok(sent().some(m => m.text === 'Este número já tem uma conta na graao.'));
+  assert.ok(sent().some(m => m.text === 'Este número já tem uma conta no graao.'));
 });
 
 test('Remetente só com LID é recusado com a resposta de abrir pelo celular', async t => {

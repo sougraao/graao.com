@@ -8,8 +8,8 @@ export default defineConfig({
   site: 'https://doc.graao.com',
   integrations: [
     starlight({
-      title: 'Central de ajuda da Graao',
-      description: 'Documentação da graao para agências: como usar cada ferramenta da plataforma, passo a passo.',
+      title: 'Central de ajuda do Graao',
+      description: 'Documentação do graao para agências: como usar cada ferramenta da plataforma, passo a passo.',
       logo: { src: './src/assets/logo-graao.svg', alt: 'Graao' },
       favicon: '/favicon.svg',
       defaultLocale: 'root',

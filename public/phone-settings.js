@@ -52,7 +52,7 @@ export function phoneSettingsView(c) {
   const title = `${tile}<h2>${h(tr('Telefonia'))}</h2>`;
   if (!p) return card(`${title}<p class="dim">${h(tr('Carregando os números…'))}</p>`);
   if (p.error) return card(`${title}<p class="form-status">${h(p.error)}</p><button class="secondary" data-act="phone-refresh">${h(tr('Tentar novamente'))}</button>`);
-  if (!p.configured) return card(`${title}<p class="dim">${h(tr('A telefonia ainda não foi configurada nesta instalação da graao. Peça ao administrador da agência para definir'))} <code>TWILIO_ACCOUNT_SID</code>, <code>TWILIO_AUTH_TOKEN</code> ${h(tr('e'))} <code>PHONE_PUBLIC_ORIGIN</code>.</p>`);
+  if (!p.configured) return card(`${title}<p class="dim">${h(tr('A telefonia ainda não foi configurada nesta instalação do graao. Peça ao administrador da agência para definir'))} <code>TWILIO_ACCOUNT_SID</code>, <code>TWILIO_AUTH_TOKEN</code> ${h(tr('e'))} <code>PHONE_PUBLIC_ORIGIN</code>.</p>`);
   const found = c.phoneSearch || [];
   return `${card(`${title}<p class="dim">${h(tr('Números de telefone da subconta, pela Twilio. As ligações aparecem em Conversas e em Relatórios → Ligações e disparam o gatilho Ligação terminou.'))}</p>
     <form class="settings-form inline-gap" data-form="phone-search">

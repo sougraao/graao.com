@@ -4,9 +4,9 @@ Data: 25/11/2026. Base: `docs/implementation/08-cobrancas-ghl-e-fiscal.md` (cama
 
 ## 1. Para que serve
 
-Hoje qualquer pessoa entra com o Google e ganha uma agência completa, de graça e sem limite. O plano é só um nome (`billing-plan`). A graao não recebe nada e não sabe quem é quem.
+Hoje qualquer pessoa entra com o Google e ganha uma agência completa, de graça e sem limite. O plano é só um nome (`billing-plan`). O graao não recebe nada e não sabe quem é quem.
 
-Esta entrega faz a graao cobrar a agência como o GHL cobra: teste grátis, plano mensal pago no cartão, bloqueio de quem não paga e limites por plano. Também liga o programa de afiliados da graao, que hoje só existe na tela.
+Esta entrega faz o graao cobrar a agência como o GHL cobra: teste grátis, plano mensal pago no cartão, bloqueio de quem não paga e limites por plano. Também liga o programa de afiliados do graao, que hoje só existe na tela.
 
 Decisões do usuário (25/11/2026):
 
@@ -15,27 +15,27 @@ Decisões do usuário (25/11/2026):
 - **Uma conta por celular**, confirmado pelo WhatsApp na criação da conta.
 - Planos de **R$ 97, R$ 297 e R$ 497** por mês, com as mesmas limitações do GHL.
 - **Sem cupom.**
-- Link de afiliado da graao funcionando.
-- Número que recebe as confirmações: o celular do usuário, por enquanto, até a graao ter o dela. Fica numa variável de ambiente, nunca no código.
+- Link de afiliado do graao funcionando.
+- Número que recebe as confirmações: o celular do usuário, por enquanto, até o graao ter o dela. Fica numa variável de ambiente, nunca no código.
 - Aprovadas as recomendações: só o dono confirma o celular; as agências atuais confirmam no próximo acesso e ganham 15 dias a partir daí; bloqueio não apaga dados; afiliado recebe 40% de cada mensalidade paga, pago por fora.
 
 ## 2. Objetivos, não objetivos e o que seria fracasso
 
 Objetivos:
 
-1. Ninguém usa a graao sem celular confirmado.
+1. Ninguém usa o graao sem celular confirmado.
 2. Um celular, uma agência, um teste.
 3. Quem não paga perde o acesso no dia certo; quem paga não percebe nada.
 4. Cada plano libera o mesmo que o plano do GHL de mesmo preço.
 5. Indicação feita pelo link vira comissão sem ninguém digitar nada.
 
-Não objetivos: plano anual, cupom, upgrade com cobrança proporcional, nota fiscal da graao (NFS-e), recarga automática da carteira, adicionais mensais (camada 1.8), pagamento automático da comissão.
+Não objetivos: plano anual, cupom, upgrade com cobrança proporcional, nota fiscal do graao (NFS-e), recarga automática da carteira, adicionais mensais (camada 1.8), pagamento automático da comissão.
 
 Seria fracasso, mesmo funcionando:
 
 - Cobrar duas vezes, ou cobrar quem cancelou.
 - Bloquear agência que pagou (atraso do webhook não pode virar bloqueio).
-- O WhatsApp pessoal do usuário ser banido ou ter as conversas dele guardadas na graao.
+- O WhatsApp pessoal do usuário ser banido ou ter as conversas dele guardadas no graao.
 - Clientes finais das agências (sites, formulários, lojas) pararem por causa do bloqueio da agência.
 - Uma agência atual perder dados ou acesso sem aviso.
 
@@ -55,14 +55,14 @@ Seria fracasso, mesmo funcionando:
 |---|---|---|
 | **A. Cartão só na extensão ou no pagamento** (escolhida) | 15 dias sem cartão. Estender = assinatura com `trialDays: 15`, R$ 0,00 hoje, primeira cobrança no 30º dia. Pagar = assinatura sem teste. | Um só cadastro de cartão, sem malabarismo no gateway. O celular confirmado segura o abuso que o cartão seguraria. |
 | B. Cartão no cadastro (igual ao GHL) | Assinatura com 15 dias de teste logo no cadastro. Estender = cancelar e criar outra com 15 dias, a agência digita o cartão de novo. | Dois cadastros de cartão e uma assinatura cancelada no meio. Recusada. |
-| C. Cartão salvo e cobrança feita pela graao | Checkout transparente guarda o `cardToken`; a graao cobra quando quiser. | Contradiz "o AbacatePay renova" (decisão da entrega 1) e põe tentativas e renovação do nosso lado. Recusada. |
+| C. Cartão salvo e cobrança feita pelo graao | Checkout transparente guarda o `cardToken`; o graao cobra quando quiser. | Contradiz "o AbacatePay renova" (decisão da entrega 1) e põe tentativas e renovação do nosso lado. Recusada. |
 
 Verificação do celular:
 
 | Abordagem | Por que |
 |---|---|
-| **Código enviado pela pessoa** (escolhida) | A tela mostra um código e um botão que abre o WhatsApp com a mensagem pronta para o número da graao. Quem manda é a pessoa: a graao só responde. Menor risco de banimento e confirma o número de quem enviou. |
-| Código enviado pela graao | Exige mandar mensagem a desconhecidos pela Evolution, que não é oficial. Recusada. |
+| **Código enviado pela pessoa** (escolhida) | A tela mostra um código e um botão que abre o WhatsApp com a mensagem pronta para o número do graao. Quem manda é a pessoa: o graao só responde. Menor risco de banimento e confirma o número de quem enviou. |
+| Código enviado pelo graao | Exige mandar mensagem a desconhecidos pela Evolution, que não é oficial. Recusada. |
 
 ## 5. O desenho
 
@@ -92,7 +92,7 @@ billing: {
 }
 ```
 
-`Exempt` vale só para a agência raiz (a graao). Quem decide o acesso é uma função pura `agencyAccess(agency, now)` em `agency-billing-model.mjs`, testada à parte, que devolve `{ status, daysLeft, canUse, plan, limits }`.
+`Exempt` vale só para a agência raiz (o graao). Quem decide o acesso é uma função pura `agencyAccess(agency, now)` em `agency-billing-model.mjs`, testada à parte, que devolve `{ status, daysLeft, canUse, plan, limits }`.
 
 **Atraso do webhook nunca bloqueia.** O bloqueio por fim de teste só acontece se não houver assinatura em `PENDING` com checkout pago ou em teste; antes de bloquear, o cron consulta o AbacatePay (`/subscriptions/get`).
 
@@ -101,7 +101,7 @@ billing: {
 1. Pessoa entra com o Google. `accessContext` (server.mjs:593) continua criando a agência, agora com `billing.status = 'Unverified'`.
 2. Enquanto `Unverified`, toda rota da agência e das subcontas devolve 402 com `code: 'PHONE_REQUIRED'` e o app abre a tela **Confirme seu celular**:
    - campo do celular (com DDI, Brasil por padrão);
-   - botão **Confirmar pelo WhatsApp**, que abre `https://wa.me/<número da graao>?text=Confirmar%20graao%20<código>`;
+   - botão **Confirmar pelo WhatsApp**, que abre `https://wa.me/<número do graao>?text=Confirmar%20graao%20<código>`;
    - QR do mesmo link para quem está no computador;
    - a tela espera a confirmação sozinha (consulta a cada 3 s, por até 15 min).
 3. Código: 6 caracteres sem ambiguidade (sem 0/O/1/I), válido por 15 min, guardado como hash na agência com o celular digitado. No máximo 5 códigos por hora por agência e 20 por IP.
@@ -109,8 +109,8 @@ billing: {
    - ignora tudo que não for texto no formato `Confirmar graao XXXXXX`;
    - **nunca guarda** mensagens, contatos ou mídia (é o WhatsApp pessoal do usuário);
    - acha o código, confere que o número real do remetente (normalizado) é o mesmo digitado; LID sem número real = recusa com resposta "abra pelo celular deste número";
-   - tenta `store.insert('phone-' + sha256(e164), { agencyId, at })`. Vazio = número já usado: responde "este número já tem uma conta na graao" e marca o código como recusado;
-   - sucesso: grava `phone`, `phoneVerifiedAt`, `status = 'Trial'`, `trialEndsAt = agora + 15 dias`, e responde "Pronto, sua conta da graao está confirmada".
+   - tenta `store.insert('phone-' + sha256(e164), { agencyId, at })`. Vazio = número já usado: responde "este número já tem uma conta no graao" e marca o código como recusado;
+   - sucesso: grava `phone`, `phoneVerifiedAt`, `status = 'Trial'`, `trialEndsAt = agora + 15 dias`, e responde "Pronto, sua conta do graao está confirmada".
 5. Normalização: só dígitos; Brasil (55) com celular de 10 dígitos ganha o 9 depois do DDD. A trava usa o número normalizado.
 6. Convidados para a equipe da agência (`store.findAgency({ users: … })`) não confirmam celular.
 7. Agências atuais: na migração, todas menos a raiz ficam `Unverified`; ao confirmar, ganham 15 dias a partir da confirmação. Nenhum dado muda.
@@ -124,22 +124,22 @@ Se a instância cair, a tela diz "a confirmação está fora do ar, tente em alg
 
 ### 5.3 Teste, extensão e pagamento
 
-Na conta da graao no AbacatePay, um produto por plano e variação: `graao-agency-<plano>` (mensal, sem teste) e `graao-agency-<plano>-t15` (mensal, `trialDays: 15`). Reaproveita `ensureProduct`.
+Na conta do graao no AbacatePay, um produto por plano e variação: `graao-agency-<plano>` (mensal, sem teste) e `graao-agency-<plano>-t15` (mensal, `trialDays: 15`). Reaproveita `ensureProduct`.
 
 - **Aviso:** faixa no topo do app nos dias 12, 13, 14 e 15 ("Seu teste acaba em N dias") e e-mail no dia 12. Botão **Escolher plano**.
 - **Tela de planos** (Configurações → Plano e cobrança): três cartões com preço e limites, botão **Assinar** e, se ainda não estendeu e o teste está no fim (a partir do dia 12 ou já bloqueada por fim de teste), **Ganhar mais 15 dias**.
 - **Assinar:** `subscriptions/create` sem teste, `methods: ['CARD', 'PIX']`, `retryPolicy: { maxRetry: 8, retryEvery: 3 }` (≈ 21 dias, como o GHL), metadata `{ agency: agencyId, plan }`. `subscription.completed` → `Active`.
 - **Ganhar mais 15 dias:** mesma chamada com o produto `-t15` e só `CARD`. `subscription.trial_started` → `Trial`, `extended = true`, `trialEndsAt = agora + 15 dias`. A primeira cobrança no 30º dia chega como `subscription.renewed` → `Active`.
-- **Webhook:** o webhook de agência da raiz já existe (`/api/abacatepay/webhook/agency/agency`). Eventos com `metadata.agency` vão para `agency.billing` da agência indicada; os demais seguem como hoje. Cada pagamento entra no livro da graao (camada `platform`, nova) com a mesma chave idempotente da entrega 1.
+- **Webhook:** o webhook de agência da raiz já existe (`/api/abacatepay/webhook/agency/agency`). Eventos com `metadata.agency` vão para `agency.billing` da agência indicada; os demais seguem como hoje. Cada pagamento entra no livro do graao (camada `platform`, nova) com a mesma chave idempotente da entrega 1.
 - **Falha:** `subscription.payment_failed` → `PastDue`, acesso normal, faixa vermelha e e-mail aos administradores. `subscription.cancelled` com `max_payment_retries_exceeded` → `Blocked`.
 - **Troca de plano:** subir libera os limites na hora e o preço novo vale no próximo ciclo (`change-plan`). Descer só se a agência já cabe no plano menor (ex.: até 3 subcontas no Starter), e também vale no próximo ciclo.
-- **Cancelar:** a agência pede; a graao guarda `cancelAt = nextChargeAt` e cancela na API nesse dia. Até lá, tudo normal.
+- **Cancelar:** a agência pede; o graao guarda `cancelAt = nextChargeAt` e cancela na API nesse dia. Até lá, tudo normal.
 - **Bloqueada:** a agência e os usuários das subcontas só veem a tela de pagamento. Sites, formulários, lojas, webhooks e automações das subcontas **continuam funcionando** (os clientes finais não pagam pelo atraso da agência). Nada é apagado.
 - **Cron:** o cron que já chama `/api/social/cron` a cada minuto roda também `agencyBillingSweep`, no máximo uma vez por hora (marca da última execução na agência raiz): fim de teste, cancelamentos agendados e e-mails de aviso. Antes de bloquear, consulta o gateway.
 
 ### 5.4 Limites dos planos (iguais ao GHL)
 
-Fonte: gohighlevel.com/pricing e central de ajuda do GHL, consultadas em 25/11/2026. O GHL renomeou o plano de US$ 497 de "Agency Pro" para "Founder"; na graao fica **Agency Pro**.
+Fonte: gohighlevel.com/pricing e central de ajuda do GHL, consultadas em 25/11/2026. O GHL renomeou o plano de US$ 497 de "Agency Pro" para "Founder"; no graao fica **Agency Pro**.
 
 | | Starter R$ 97 | Unlimited R$ 297 | Agency Pro R$ 497 |
 |---|---|---|---|
@@ -158,13 +158,13 @@ Onde trava (sempre no servidor, nunca só na tela): `createAccount` (server.mjs:
 
 A constante `agencyPlans` (ui/agency-data.js:120) passa a ser `[['Starter', 97], ['Unlimited', 297], ['Agency Pro', 497]]` em reais, junto com um `planLimits` único usado pelo servidor e pela tela.
 
-### 5.5 Afiliados da graao
+### 5.5 Afiliados do graao
 
 - Link: `https://graao.com/?ref=<código>`. Hoje nada lê o `ref`. A página inicial (login) grava o cookie `graao_ref` por 90 dias; o primeiro link vale (igual aos cookies de afiliado das subcontas).
 - Na confirmação do celular, se houver `graao_ref` válido e não for a própria agência (mesmo código ou mesmo celular), grava `billing.referredBy` e cria a indicação na agência que indicou (`referrals`, já existe) com status **Em teste**.
 - Cada pagamento da assinatura da agência indicada (`completed` e `renewed`) gera uma comissão de 40% do valor pago, com 30 dias de carência (reembolso e contestação estornam, como no programa das subcontas). Indicação muda para **Ativa**; cancelada ou bloqueada vira **Inativa**.
 - A agência que indica vê as indicações e as comissões, e cadastra a chave Pix (no lugar de PayPal/Wise). Ela **não** digita indicação nem registra pagamento (hoje a tela deixa; isso sai).
-- O admin da raiz vê o que deve a cada afiliado e marca **Pago** depois de pagar por Pix por fora. Cada pagamento entra no livro da graao.
+- O admin da raiz vê o que deve a cada afiliado e marca **Pago** depois de pagar por Pix por fora. Cada pagamento entra no livro do graao.
 
 ### 5.6 O que muda para quem já usa
 
@@ -179,22 +179,22 @@ Quatro PRs, cada um com testes, artigo e linha nas novidades:
 1. **Celular confirmado** (5.2): verificação, trava por número, migração das agências atuais para `Unverified`. Artigo `comece-aqui/criar-conta`.
 2. **Teste e plano** (5.1 e 5.3): estados, tela de planos, assinatura, webhook, cron, bloqueio. Artigo `agencia/plano-da-graao`.
 3. **Limites por plano** (5.4). Atualiza os artigos das telas que ganham selo.
-4. **Afiliados da graao** (5.5). Artigo `agencia/afiliados-da-graao`.
+4. **Afiliados do graao** (5.5). Artigo `agencia/afiliados-da-graao`.
 
-O 1 entra em produção sozinho (sem ele, ninguém chega ao teste). O 2 só vai para produção com a conta da graao no AbacatePay ligada na raiz e com assinaturas liberadas.
+O 1 entra em produção sozinho (sem ele, ninguém chega ao teste). O 2 só vai para produção com a conta do graao no AbacatePay ligada na raiz e com assinaturas liberadas.
 
 ## 7. Antes de ir para produção (do usuário)
 
-- Conectar o AbacatePay da graao (CNPJ da graao) na agência raiz e pedir a liberação de assinaturas.
+- Conectar o AbacatePay do graao (CNPJ do graao) na agência raiz e pedir a liberação de assinaturas.
 - Ligar o celular de confirmação na Evolution como instância própria (QR) e definir as três variáveis na Vercel.
-- Saber que o WhatsApp pessoal fica conectado à Evolution como aparelho: a graao não guarda as conversas, mas a Evolution recebe todas, e há risco de banimento por ser API não oficial. Trocar pelo número da graao assim que existir.
+- Saber que o WhatsApp pessoal fica conectado à Evolution como aparelho: o graao não guarda as conversas, mas a Evolution recebe todas, e há risco de banimento por ser API não oficial. Trocar pelo número do graao assim que existir.
 - Revisar com o contador a nota da mensalidade (fora desta entrega).
 
 ## 8. Escolhas deixadas ao construtor
 
 - Nome dos arquivos novos (sugestão: `agency-billing-model.mjs`, `phone-verify.mjs`, `routes/verify.mjs`).
-- Texto exato das mensagens, seguindo o tom da graao.
-- Forma do QR (a graao já gera QR em `qr-model.mjs`).
+- Texto exato das mensagens, seguindo o tom do graao.
+- Forma do QR (o graao já gera QR em `qr-model.mjs`).
 - Testes: modelo puro com relógio injetado; webhook com payloads gravados do AbacatePay em modo de teste; trava do celular com duas confirmações simultâneas.
 
 ## 9. Escolhas feitas por mim (o usuário pode mudar)
@@ -206,4 +206,4 @@ O 1 entra em produção sozinho (sem ele, ninguém chega ao teste). O 2 só vai 
 - Atraso: 8 tentativas a cada 3 dias (≈ 21 dias com acesso), depois bloqueio.
 - Cookie de afiliado de 90 dias, vale o primeiro link; comissão com 30 dias de carência.
 - Excluir a agência não libera o celular.
-- Os recursos que o GHL reserva ao plano de US$ 497 além do modo SaaS (salas de reunião, eventos, gestão de projetos) **não** ficam travados na graao: aqui eles já existem para todos, e tirar de quem usa seria perda. Só o modo SaaS e a criação de subconta pela API ficam no Agency Pro.
+- Os recursos que o GHL reserva ao plano de US$ 497 além do modo SaaS (salas de reunião, eventos, gestão de projetos) **não** ficam travados no graao: aqui eles já existem para todos, e tirar de quem usa seria perda. Só o modo SaaS e a criação de subconta pela API ficam no Agency Pro.

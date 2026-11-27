@@ -46,7 +46,7 @@ test('Agência nova fica fechada até confirmar o celular, mas vê a própria te
   assert.equal(blocked.body.billing.status, 'Unverified');
 });
 
-test('A agência da graao é isenta e segue aberta', async t => {
+test('A agência do graao é isenta e segue aberta', async t => {
   const { get } = await boot(t);
   const workspaces = await get('/api/workspaces', 'root');
   assert.equal(workspaces.status, 200, JSON.stringify(workspaces.body));
@@ -92,7 +92,7 @@ test('Sem a linha de confirmação no ar, o cadastro de agência nova fica fecha
   assert.equal(closed.body.code, 'SIGNUP_CLOSED');
   await assert.rejects(async () => store.load('agency-u1'), /not found/i, 'nenhuma agência foi criada');
   const root = await get('/api/agency', 'root');
-  assert.equal(root.status, 200, 'a agência da graao continua entrando');
+  assert.equal(root.status, 200, 'a agência do graao continua entrando');
 });
 
 test('A cobrança pública não mostra o celular inteiro', () => {

@@ -11,8 +11,8 @@ const SETUP = {
   cloudflare: 'CLOUDFLARE_API_TOKEN',
   hostinger: 'HOSTINGER_API_TOKEN',
   evolution: 'EVOLUTION_BASE_URL e EVOLUTION_API_KEY',
-  twilio: 'TWILIO_ACCOUNT_SID e TWILIO_AUTH_TOKEN (só se a graao usar a telefonia)',
-  openai: 'OPENAI_ADMIN_KEY (gasto do mês da conta da graao; as agências usam chaves próprias)',
+  twilio: 'TWILIO_ACCOUNT_SID e TWILIO_AUTH_TOKEN (só se o graao usar a telefonia)',
+  openai: 'OPENAI_ADMIN_KEY (gasto do mês da conta do graao; as agências usam chaves próprias)',
   resend: 'RESEND_API_KEY com acesso total',
   meta: 'META_APP_ID e META_APP_SECRET'
 };

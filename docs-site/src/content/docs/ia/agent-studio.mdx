@@ -13,7 +13,7 @@ import Requisitos from '../../../components/Requisitos.astro';
 
 Um agente de IA trabalha sozinho quando algo acontece na subconta: responde quem mandou mensagem, qualifica um lead novo, confirma um agendamento ou escreve um resumo para a equipe. Cada agente tem instruções, gatilhos (quando ele age) e recursos (o que ele pode usar, como a base de conhecimento ou a pesquisa na web).
 
-<Requisitos permissao="Acesso ao módulo Agentes de IA na subconta" integracoes={['Chave da OpenAI conectada nas configurações da agência, para conversar com o agente no Modo de teste', 'Nas automações, sem a chave, o agente usa a IA gratuita da graao quando ela está liberada']} />
+<Requisitos permissao="Acesso ao módulo Agentes de IA na subconta" integracoes={['Chave da OpenAI conectada nas configurações da agência, para conversar com o agente no Modo de teste', 'Nas automações, sem a chave, o agente usa a IA gratuita do graao quando ela está liberada']} />
 
 ## Passo a passo
 
@@ -57,7 +57,7 @@ Quem coloca o agente no WhatsApp é uma automação. Os gatilhos que aparecem no
 
 </Steps>
 
-As respostas usam a chave da OpenAI de quem salvou o fluxo. Sem a chave, o agente responde com a IA gratuita da graao, quando a plataforma a liberou; o editor do fluxo avisa qual das duas vale. Agentes com **pesquisa na web** e as ações **Gerar imagem com IA** e **Gerar vídeo com IA** precisam da chave.
+As respostas usam a chave da OpenAI de quem salvou o fluxo. Sem a chave, o agente responde com a IA gratuita do graao, quando a plataforma a liberou; o editor do fluxo avisa qual das duas vale. Agentes com **pesquisa na web** e as ações **Gerar imagem com IA** e **Gerar vídeo com IA** precisam da chave.
 
 ## Perguntas frequentes
 
@@ -65,7 +65,7 @@ As respostas usam a chave da OpenAI de quem salvou o fluxo. Sem a chave, o agent
 Na aba **Atividade** do editor e em **Logs**. Quando o agente precisa de aprovação antes de agir, o pedido aparece em **Aprovações**.
 
 **Preciso de uma chave da OpenAI para o agente atender no WhatsApp?**
-Não, quando a IA gratuita da graao está liberada: o editor do fluxo mostra "esta etapa usa a IA gratuita da graao". Com a chave conectada, o fluxo usa a OpenAI da agência.
+Não, quando a IA gratuita do graao está liberada: o editor do fluxo mostra "esta etapa usa a IA gratuita do graao". Com a chave conectada, o fluxo usa a OpenAI da agência.
 
 **Quanto de IA a subconta está usando?**
 Em **Uso de IA**, no canto inferior esquerdo da tela Agentes de IA.

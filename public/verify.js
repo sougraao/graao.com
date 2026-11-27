@@ -12,7 +12,7 @@ const LIMIT_MS = 15 * 60000;
 export function statusMessage({ status, reason } = {}) {
   if (status === 'waiting' && reason === 'lid') return 'A mensagem chegou sem o número. Abra o WhatsApp no celular deste número e envie de novo.';
   if (status === 'refused' && reason === 'other-phone') return 'A mensagem veio de outro número. Gere um novo código e envie do celular que você digitou.';
-  if (status === 'refused' && reason === 'phone-taken') return 'Este número já tem uma conta na graao. Use outro número ou fale com o suporte.';
+  if (status === 'refused' && reason === 'phone-taken') return 'Este número já tem uma conta no graao. Use outro número ou fale com o suporte.';
   if (status === 'expired') return 'Este código venceu. Gere outro e envie em até 15 minutos.';
   return '';
 }
@@ -35,7 +35,7 @@ export function verifyView(state = {}, marca = domainBrand()) {
   }
   return `<section class="vf-card">
     <h1>Confirme seu celular</h1>
-    <p>${marca ? 'Para continuar, confirme o celular com WhatsApp do responsável pela conta.' : 'Cada conta da graao fica ligada a um celular com WhatsApp. Depois da confirmação você tem 15 dias de teste grátis, sem cartão.'}</p>
+    <p>${marca ? 'Para continuar, confirme o celular com WhatsApp do responsável pela conta.' : 'Cada conta do graao fica ligada a um celular com WhatsApp. Depois da confirmação você tem 15 dias de teste grátis, sem cartão.'}</p>
     <form data-vf-form>
       <label>Celular com WhatsApp
         <input type="tel" name="phone" autocomplete="tel" inputmode="tel" required placeholder="(11) 91234-5678" value="${esc(state.phone || '')}">
@@ -53,7 +53,7 @@ const titles = { AGENCY_BLOCKED: 'Agência bloqueada', SIGNUP_CLOSED: 'Cadastro 
 export function gateView({ code, error } = {}, state = { step: 'form' }, marca = domainBrand()) {
   const inner = code === 'PHONE_REQUIRED' ? verifyView(state, marca)
     : `<section class="vf-card"><h1>${titles[code] || 'Quase lá'}</h1><p>${esc(error)}</p></section>`;
-  // White Label: no domínio da agência, o topo mostra o logotipo ou o nome dela no lugar da graao.
+  // White Label: no domínio da agência, o topo mostra o logotipo ou o nome dela no lugar do graao.
   const brand = !marca ? 'graao' : marca.logo ? `<img class="vf-brand-logo" src="${esc(marca.logo)}" alt="${esc(marca.name)}">` : esc(marca.name);
   const leave = code === 'NOT_INVITED' ? 'Entrar com outra conta' : 'Sair';
   return `<div class="vf-brand">${brand}</div>${inner}<button type="button" class="vf-logout" data-vf-logout>${leave}</button>`;

@@ -1,4 +1,4 @@
-// graao AI Gateway: o contrato único entre as funcionalidades da graao e os provedores.
+// graao AI Gateway: o contrato único entre as funcionalidades do graao e os provedores.
 // Uma funcionalidade nunca fala com um provedor: monta um pedido normalizado e recebe uma resposta normalizada.
 import { GatewayError } from './errors.mjs';
 import { DATA_CLASSES } from './privacy.mjs';

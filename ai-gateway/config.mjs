@@ -14,7 +14,7 @@ export const DEFAULT_FREE_ORDER = Object.freeze(['groq', 'openrouter', 'cloudfla
 // Funcionalidades que já usam IA (todas pela chave própria da agência hoje) e as novas que passam pelo gateway.
 // dataClass é o pior caso do contexto que cada uma envia.
 export const FEATURES = Object.freeze({
-  'graao.chat': { label: 'Pergunte à Graao', dataClass: 'confidential', mode: 'auto' },
+  'graao.chat': { label: 'Pergunte ao Graao', dataClass: 'confidential', mode: 'auto' },
   'content.writer': { label: 'Escrita de conteúdo', dataClass: 'confidential', mode: 'auto' },
   'conversation.reply': { label: 'Respostas nas Conversas', dataClass: 'personal', mode: 'auto' },
   'agent.reply': { label: 'Agentes de IA', dataClass: 'personal', mode: 'agent' },
@@ -38,11 +38,11 @@ const DEFAULT_PLANS = {
 
 const blankProvider = (id, index) => ({
   enabled: false, priority: DEFAULT_FREE_ORDER.includes(id) ? DEFAULT_FREE_ORDER.indexOf(id) : 10 + index,
-  // O administrador confirma que a conta da graao neste provedor está no plano gratuito (sem cartão/cobrança).
+  // O administrador confirma que a conta do graao neste provedor está no plano gratuito (sem cartão/cobrança).
   freeTier: false,
   // Liberar uso pago deste provedor (ainda limitado pelo orçamento e pelo kill switch).
   paidAllowed: false,
-  // Os termos do provedor permitem o uso comercial da graao (revisado por pessoa). Sem isso, nada vai à rota automática.
+  // Os termos do provedor permitem o uso comercial do graao (revisado por pessoa). Sem isso, nada vai à rota automática.
   commercialUse: false,
   privacy: defaultPrivacy(),
   // Limites da conta informados pelo administrador (0 = desconhecido; o gateway usa contadores conservadores).
@@ -62,7 +62,7 @@ export function blankConfig() {
       breaker: { failures: 5, cooldownMs: 60_000 }
     },
     features: {},
-    // Agências sem chave própria: 'off' (como hoje: pede a chave) ou 'free' (usa modelos gratuitos da graao).
+    // Agências sem chave própria: 'off' (como hoje: pede a chave) ou 'free' (usa modelos gratuitos do graao).
     agenciesWithoutKey: 'off',
     plans: structuredClone(DEFAULT_PLANS),
     budgets: { monthlyMicros: 0, dailyMicros: 0, perOrgMonthlyMicros: 0, alertAt: 0.8 },

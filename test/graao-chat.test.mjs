@@ -37,7 +37,7 @@ async function start(opts = {}) {
   return { base, call, stream, close: () => new Promise(resolve => server.close(resolve)) };
 }
 
-test('Pergunte à Graao streams live agency metrics, persists history, branches, feedback, search, rename, export/import', async t => {
+test('Pergunte ao Graao streams live agency metrics, persists history, branches, feedback, search, rename, export/import', async t => {
   const local = await start(); t.after(local.close);
 
   // Verify Vercel __path rewrite routing works for /api/ask/*
@@ -145,7 +145,7 @@ test('Temporary chats are never stored in history and sub-account users are deni
   assert.equal(denied.status, 403);
 });
 
-test('Pergunte à Graao static assets are served cleanly', async t => {
+test('Pergunte ao Graao static assets are served cleanly', async t => {
   const local = await start(); t.after(local.close);
   for (const path of ['/graao-chat.js', '/graao-chat.css', '/highlight.js', '/vendor/marked.js', '/vendor/purify.js']) {
     const r = await fetch(local.base + path);
@@ -153,7 +153,7 @@ test('Pergunte à Graao static assets are served cleanly', async t => {
   }
 });
 
-test('Pergunte à Graao persists conversations and custom instructions through Supabase store rules', async t => {
+test('Pergunte ao Graao persists conversations and custom instructions through Supabase store rules', async t => {
   const rows = new Map();
   const storageKey = 'a'.repeat(64);
   const supabaseStore = createSupabaseStore({
@@ -211,12 +211,12 @@ test('Pergunte à Graao persists conversations and custom instructions through S
   assert.equal(reply.status, 200);
   const chatRow = rows.get('chat-agency');
   assert.ok(chatRow, 'chat-agency row should exist in Supabase go_workspaces');
-  assert.equal(chatRow.name, 'Pergunte à Graao');
+  assert.equal(chatRow.name, 'Pergunte ao Graao');
   assert.equal(chatRow.state.instructions, 'Responda sempre em tópicos objetivos.');
   assert.equal(chatRow.state.conversations.length, 1);
 });
 
-test('Pergunte à Graao manages custom skills (agentskills.io) and has no external connectors', async t => {
+test('Pergunte ao Graao manages custom skills (agentskills.io) and has no external connectors', async t => {
   const local = await start({ openAISecret: 'graao-chat-test-seal-secret-32ch!!' }); t.after(local.close);
 
   // 1. Initial state returns empty skills and no connectors

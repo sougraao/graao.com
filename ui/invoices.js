@@ -45,7 +45,7 @@ function recurringList(c) {
         <button type="button" class="icon-btn" data-iv-act="duplicate" data-kind="recurring-invoice" data-id="${h(rec.id)}" aria-label="Duplicar ${h(rec.name)}" title="Duplicar">${icon('copy', 16)}</button>
         ${rec.status === 'active' ? '' : `<button type="button" class="icon-btn" data-iv-act="delete" data-kind="recurring-invoice" data-id="${h(rec.id)}" aria-label="Excluir ${h(rec.name)}" title="Excluir">${icon('trash', 16)}</button>`}</td></tr>`).join('')}</tbody></table></div>`
     : `<div class="surface empty">${icon('pay', 26)}<strong>${all.length ? 'Nenhuma fatura recorrente aqui' : 'Cobre todo mês sem lembrar de emitir'}</strong>
-      <p>${all.length ? 'Tente outra situação ou busca.' : 'Monte os itens uma vez, escolha a frequência e a Graao emite a fatura e manda o link de pagamento ao cliente a cada ciclo.'}</p>
+      <p>${all.length ? 'Tente outra situação ou busca.' : 'Monte os itens uma vez, escolha a frequência e o Graao emite a fatura e manda o link de pagamento ao cliente a cada ciclo.'}</p>
       ${all.length ? '' : '<button type="button" class="primary" data-iv-act="new" data-kind="recurring-invoice">Nova fatura recorrente</button>'}</div>`;
   return pageShell({ title: 'Pagamentos', desc: 'Faturas emitidas sozinhas a cada ciclo, com link de pagamento para o cliente.',
     cta: `<button type="button" class="primary" data-iv-act="new" data-kind="recurring-invoice">${icon('plus', 16)} Nova fatura recorrente</button>`,

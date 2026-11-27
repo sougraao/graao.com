@@ -179,9 +179,9 @@ export function storePackage(app, id, origin) {
     listing: { name: app.appName, developer: app.store.developer, supportEmail: app.store.supportEmail, supportUrl: app.store.supportUrl, privacyUrl: app.store.privacyUrl, iosBundle: app.store.iosBundle },
     steps: [
       'Google Play: instale o Bubblewrap (npm i -g @bubblewrap/cli), salve twa-manifest.json numa pasta e rode "bubblewrap build". Envie o .aab no Play Console da agência.',
-      `Copie a impressão SHA-256 da chave de assinatura (Play Console → Integridade do app) para a Graao; o arquivo ${base}/.well-known/assetlinks.json passa a liberar o app em tela cheia.`,
+      `Copie a impressão SHA-256 da chave de assinatura (Play Console → Integridade do app) para o Graao; o arquivo ${base}/.well-known/assetlinks.json passa a liberar o app em tela cheia.`,
       `App Store: em pwabuilder.com, abra ${base}/mobile/${id}/ e baixe o pacote iOS com o Bundle ID ${app.store.iosBundle || '(defina)'}; abra no Xcode, assine com a conta Apple Developer da agência e envie pelo App Store Connect.`,
-      'Nas duas lojas, use o nome, o e-mail e os links de suporte e privacidade acima. Cada nova publicação na Graao atualiza o app sem novo envio (o conteúdo vem da web).'
+      'Nas duas lojas, use o nome, o e-mail e os links de suporte e privacidade acima. Cada nova publicação no Graao atualiza o app sem novo envio (o conteúdo vem da web).'
     ]
   };
 }

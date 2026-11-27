@@ -7,7 +7,7 @@ export const agencyLevel = role => role.startsWith('Agency');
 // Menu lateral da agência: [chave, rótulo, ícone, grupo]. O grupo decide a seção do menu (agencyNavGroups);
 // a ordem dentro da seção é a desta lista. 'rodape' fica embaixo, fora das seções.
 export const agencyNav = [
-  ['dashboard', 'Painel da agência', 'grid', 'inicio'], ['ask', 'Pergunte à Graao', 'spark', 'inicio'], ['ai-suite', 'Central de IA', 'studio', 'inicio'],
+  ['dashboard', 'Painel da agência', 'grid', 'inicio'], ['ask', 'Pergunte ao Graao', 'spark', 'inicio'], ['ai-suite', 'Central de IA', 'studio', 'inicio'],
   ['accounts', 'Subcontas', 'users', 'clientes'], ['brand-groups', 'Grupos de marcas', 'tag', 'clientes'], ['snapshots', 'Setups de conta', 'box', 'clientes'], ['saas', 'Configurador SaaS', 'sliders', 'clientes'],
   ['prospecting', 'Prospecção', 'search', 'vendas'], ['presentations', 'Apresentações', 'play', 'vendas'], ['prancheta', 'Prancheta', 'palette', 'vendas'], ['affiliate', 'Portal de afiliados', 'link', 'vendas'], ['partners', 'Parceiros', 'award', 'vendas'],
   ['mobile-app', 'Aplicativo móvel', 'mobile', 'apps'], ['desktop-app', 'Aplicativo desktop', 'monitor', 'apps'],

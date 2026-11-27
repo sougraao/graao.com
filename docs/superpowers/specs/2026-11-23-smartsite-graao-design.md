@@ -4,13 +4,13 @@ Data: 2026-11-23 · Status: rascunho para aprovação
 
 ## 1. Intenção
 
-Construir o site institucional completo da graao (graao.com) a partir do kit em `Smartsite/`
+Construir o site institucional completo do graao (graao.com) a partir do kit em `Smartsite/`
 (`BUSINESS_BRIEF.md`, `SMARTSITE_MASTER_PROMPT.md`, `documents/`, `docs/04-sitemap.md`).
 O site responde a uma pergunta comercial — *qual plataforma brasileira reúne tudo o que um
 negócio precisa para fazer Marketing 360?* — para agências, profissionais de marketing e
-pequenas empresas do Brasil, e leva a uma conversão real: criar a conta na graao.
+pequenas empresas do Brasil, e leva a uma conversão real: criar a conta no graao.
 
-O próprio site é prova do que a graao vende: bonito, fácil, mobile-first, brasileiro.
+O próprio site é prova do que o graao vende: bonito, fácil, mobile-first, brasileiro.
 
 ## 2. Objetivos, não-objetivos, anti-objetivos
 
@@ -62,7 +62,7 @@ conectores; checkout AbacatePay com Pix e cartão em `abacatepay.mjs`).
 **Nível A — funciona de ponta a ponta (pode ser prometido):**
 WhatsApp bidirecional (instância por subconta, QR/pareamento, entrada vira contato/conversa);
 Planejador Social com publicação/agendamento em Facebook, Instagram, LinkedIn, TikTok, YouTube,
-Pinterest, Threads, Google Business e Bluesky; IA (Pergunte à Graao, AI Studio que gera e revisa
+Pinterest, Threads, Google Business e Bluesky; IA (Pergunte ao Graao, AI Studio que gera e revisa
 sites, Estúdio de Agentes); páginas e funis publicados, formulários públicos/incorporáveis,
 trigger links; motor de automações; prospecção com Google Places e relatórios compartilháveis;
 portal do cliente/área de membros com login por link; API pública v1; agência → subcontas,
@@ -117,7 +117,7 @@ Total ≈ 37 páginas. Páginas de nível B ficam no ar com texto honesto; nenhu
 - **Domínio (decisão do usuário):** o site mora em `https://www.graao.com`; `graao.com`
   continua sendo a plataforma como hoje. Canonicals, sitemap e `site` do Astro usam o `www`.
   O domínio fica numa única constante de configuração.
-- **Primária:** "Começar com a graao" → `https://graao.com/login` (login Google cria a agência
+- **Primária:** "Começar com o graao" → `https://graao.com/login` (login Google cria a agência
   automaticamente — fluxo real; página da plataforma, fora do escopo deste site).
 - **Secundárias:** "Ver planos" → `/planos/`. Comunidade **só para clientes** (decisão do
   usuário): a página explica a comunidade e diz que o acesso vem com a conta; o link do grupo

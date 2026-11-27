@@ -11,7 +11,7 @@ import { Steps, Aside, CardGrid, LinkCard } from '@astrojs/starlight/components'
 import Print from '../../../components/Print.astro';
 import Requisitos from '../../../components/Requisitos.astro';
 
-Sem configuração, as subcontas enviam e-mails pelo domínio compartilhado da graao. Com o domínio de envio da agência, as subcontas que você escolher passam a enviar faturas, documentos, campanhas e automações com um endereço da agência, como avisos@envio.suaagencia.com.br. Você só precisa de um domínio e de acesso ao DNS dele.
+Sem configuração, as subcontas enviam e-mails pelo domínio compartilhado do graao. Com o domínio de envio da agência, as subcontas que você escolher passam a enviar faturas, documentos, campanhas e automações com um endereço da agência, como avisos@envio.suaagencia.com.br. Você só precisa de um domínio e de acesso ao DNS dele.
 
 <Requisitos permissao="Dono ou admin da agência" integracoes={['Acesso ao DNS do domínio da agência']} />
 
@@ -23,7 +23,7 @@ Sem configuração, as subcontas enviam e-mails pelo domínio compartilhado da g
 
    <Print src="docs/agencia/dominio-de-envio/01-dominio-e-endereco.a5b113cf.webp" alt="Formulário Criar domínio dedicado com envio.agenciademo.com.br no domínio de envio e avisos antes do @." />
 
-2. A graao cria o domínio no serviço de e-mail e mostra a tabela de registros de DNS: SPF, DKIM e o DMARC recomendado. Use o botão de copiar de cada linha e crie os registros no painel do seu domínio (Registro.br, Cloudflare ou onde o domínio estiver).
+2. O graao cria o domínio no serviço de e-mail e mostra a tabela de registros de DNS: SPF, DKIM e o DMARC recomendado. Use o botão de copiar de cada linha e crie os registros no painel do seu domínio (Registro.br, Cloudflare ou onde o domínio estiver).
 
    <Print src="docs/agencia/dominio-de-envio/02-registros-dns.dc0ec5d0.webp" alt="Tabela com os registros SPF, DKIM e DMARC do domínio de envio, cada um com nome, valor e status." />
 
@@ -37,7 +37,7 @@ Sem configuração, as subcontas enviam e-mails pelo domínio compartilhado da g
 
 </Steps>
 
-<Aside type="tip">Enquanto o domínio não é verificado, nada muda para os clientes: as subcontas escolhidas continuam enviando pelo domínio compartilhado da graao.</Aside>
+<Aside type="tip">Enquanto o domínio não é verificado, nada muda para os clientes: as subcontas escolhidas continuam enviando pelo domínio compartilhado do graao.</Aside>
 
 ## Perguntas frequentes
 
@@ -45,7 +45,7 @@ Sem configuração, as subcontas enviam e-mails pelo domínio compartilhado da g
 Não. A subconta com domínio próprio continua enviando pelo dela. O domínio da agência vale só para as subcontas marcadas que não têm domínio próprio.
 
 **O que acontece se eu remover o domínio?**
-O domínio sai do serviço de e-mail e as subcontas voltam a enviar pelo domínio compartilhado da graao.
+O domínio sai do serviço de e-mail e as subcontas voltam a enviar pelo domínio compartilhado do graao.
 
 **Por que usar um subdomínio, como "envio."?**
 Assim a reputação de envio das subcontas fica separada do e-mail do dia a dia da agência, e os registros novos não mexem no que já existe no domínio principal.
@@ -53,6 +53,6 @@ Assim a reputação de envio das subcontas fica separada do e-mail do dia a dia 
 ## Veja também
 
 <CardGrid>
-  <LinkCard title="Usar o domínio da agência no endereço das subcontas" href="/agencia/dominio-proprio/" description="Clientes entrando na graao por um endereço da agência." />
-  <LinkCard title="Colocar a marca da agência na graao" href="/agencia/white-label/" description="Logotipo e cores da agência dentro das subcontas." />
+  <LinkCard title="Usar o domínio da agência no endereço das subcontas" href="/agencia/dominio-proprio/" description="Clientes entrando no graao por um endereço da agência." />
+  <LinkCard title="Colocar a marca da agência no graao" href="/agencia/white-label/" description="Logotipo e cores da agência dentro das subcontas." />
 </CardGrid>

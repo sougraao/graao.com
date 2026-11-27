@@ -1,4 +1,4 @@
-// Toasts da graao: avisos empilhados no canto da tela, sem dependências (estilos em toast.css).
+// Toasts do graao: avisos empilhados no canto da tela, sem dependências (estilos em toast.css).
 //
 //   toast('Salvo.')                                   aviso neutro
 //   toast.success / error / warning / info / loading  com ícone; erros ficam mais tempo na tela

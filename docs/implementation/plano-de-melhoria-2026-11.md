@@ -30,7 +30,7 @@ NOTA COMPOSTA: 7.0 / 10 (cobertura parcial: 1 de 6 categorias)
 
 Os 3 testes que falham hoje vêm do trabalho não commitado, não da `main`:
 
-1. `test/landing.test.mjs`: `ui/landing.html` foi trocado por um modelo em inglês chamado "Tidewell — Tides in Motion" (+1.863 linhas). A landing da graao virou `ui/landing.graao.bak.html`.
+1. `test/landing.test.mjs`: `ui/landing.html` foi trocado por um modelo em inglês chamado "Tidewell — Tides in Motion" (+1.863 linhas). A landing do graao virou `ui/landing.graao.bak.html`.
 2. `test/public-mirror.test.mjs`: `ui/i18n.js` mudou e `public/` não foi sincronizado (`node scripts/sync-public.mjs`).
 3. `Smartsite/site/tests/output.test.mjs`: a pasta `dist/.taste-skill/` (sobra de uma skill de design) entra na varredura de páginas e quebra o teste de canonical.
 

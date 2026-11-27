@@ -287,7 +287,7 @@ export function iconSwapButton(label, { variant = 'secondary', size = 'sm', type
   return b;
 }
 
-/** Todos os botões de ação do Beautiful UI usam o mesmo contrato Icon Swap da graao. */
+/** Todos os botões de ação do Beautiful UI usam o mesmo contrato Icon Swap do graao. */
 export function button(label, options = {}) {
   return iconSwapButton(label, options);
 }

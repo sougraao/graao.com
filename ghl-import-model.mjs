@@ -1,6 +1,6 @@
 // Importar do GHL: o código que liga a extensão do Chrome à agência e o estado de cada importação (agency.ghlImports).
 // O código vale 30 minutos, serve uma vez e só o SHA-256 dele fica guardado. A extensão manda a extração em partes
-// (dump, triggers, surveys), cada uma em pedaços de até 3 MB; depois a janela da graao conduz a conversão (ghl-import-run.mjs).
+// (dump, triggers, surveys), cada uma em pedaços de até 3 MB; depois a janela do graao conduz a conversão (ghl-import-run.mjs).
 import { createHash, randomBytes } from 'node:crypto';
 import { uid } from './model.mjs';
 
@@ -51,7 +51,7 @@ export function newImportCode(agency, { now = Date.now(), random = randomBytes }
 export function jobByCode(agency, code, { now = Date.now() } = {}) {
   const hash = codeHash(code);
   const job = (agency.ghlImports || []).find(row => row.codeHash === hash);
-  if (!job || now > job.expiresAt || !['waiting', 'receiving'].includes(job.status)) fail('Código inválido ou expirado. Gere outro na graao.', 401);
+  if (!job || now > job.expiresAt || !['waiting', 'receiving'].includes(job.status)) fail('Código inválido ou expirado. Gere outro no graao.', 401);
   return job;
 }
 
@@ -74,5 +74,5 @@ export function finishUpload(job) {
   job.status = 'received';
 }
 
-/** O job como a janela da graao vê (sem o hash do código). */
+/** O job como a janela do graao vê (sem o hash do código). */
 export const jobView = ({ codeHash: _hash, ...job }) => job;

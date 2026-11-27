@@ -1,10 +1,10 @@
-# Design: central de documentação e suporte da graao (doc.graao.com)
+# Design: central de documentação e suporte do graao (doc.graao.com)
 
 Data: 2026-11-24 · Status: aguardando aprovação
 
 ## 1. Intenção
 
-A graao já tem quase tudo o que a GoHighLevel oferece: 10 das 11 fases do painel de paridade estão concluídas (`docs/implementation/painel/progresso.js`). Falta uma central onde a agência aprenda a usar cada ferramenta sozinha, como o portal de suporte da GHL (cerca de 2.700 artigos em 51 categorias) e a documentação da Zaia (zaiadocs.gitbook.io/recursos).
+O graao já tem quase tudo o que a GoHighLevel oferece: 10 das 11 fases do painel de paridade estão concluídas (`docs/implementation/painel/progresso.js`). Falta uma central onde a agência aprenda a usar cada ferramenta sozinha, como o portal de suporte da GHL (cerca de 2.700 artigos em 51 categorias) e a documentação da Zaia (zaiadocs.gitbook.io/recursos).
 
 O site fica em `https://doc.graao.com`. Tem a estrutura e o modelo da Zaia: menu lateral por assunto, páginas de seção com cartões, tutoriais passo a passo com print em cada passo e vídeos curtos. A cobertura segue o mapa da GHL. Prints e vídeos ficam no Cloudflare R2.
 
@@ -21,7 +21,7 @@ Só as agências: dono, equipe e quem opera as subcontas pela agência. Por isso
 
 **Objetivos**
 - Uma agência nova monta a primeira subconta, conecta o WhatsApp, cria um pipeline e liga uma automação usando só a documentação.
-- Todo módulo da graao tem pelo menos uma página "para que serve + passo a passo".
+- Todo módulo do graao tem pelo menos uma página "para que serve + passo a passo".
 - Cada entrega nova chega com a sua página no mesmo PR.
 - Busca que acha o artigo pelo nome da tela ou da ação.
 
@@ -33,7 +33,7 @@ Só as agências: dono, equipe e quem opera as subcontas pela agência. Por isso
 
 **Antiobjetivos (falha mesmo que funcione)**
 - Prints ou vídeos com dados reais de clientes. Todo print sai de uma conta de demonstração com dados fictícios.
-- Copiar textos, prints ou a marca da GHL ou da Zaia. A graao recria a organização, não o conteúdo.
+- Copiar textos, prints ou a marca da GHL ou da Zaia. O graao recria a organização, não o conteúdo.
 - Artigo desatualizado, que mostra uma tela que já não existe. Toda mudança de tela que afeta um artigo atualiza o artigo.
 - Publicar o link do grupo de WhatsApp da comunidade. Ele é só para clientes; ver a memória do site institucional.
 - Documentação que só um desenvolvedor consegue ler. A linguagem é a do dono da agência.
@@ -72,7 +72,7 @@ Só as agências: dono, equipe e quem opera as subcontas pela agência. Por isso
 - Menu lateral em grupos, gerado pelas pastas e ordenado por `sidebar.order`.
 - Busca local (Pagefind), sumário "Nesta página", anterior/próximo e "Atualizado em" (data do último commit do arquivo).
 - Componentes nativos: `Steps` (passo a passo), `CardGrid`/`LinkCard` (páginas de seção como "Integrações e Canais" da Zaia), `Aside` (dica, atenção, perigo), `Tabs`, `Badge` (Novo, Beta).
-- Tema com as cores, a fonte e o logo da graao, nos modos claro e escuro.
+- Tema com as cores, a fonte e o logo do graao, nos modos claro e escuro.
 - `llms.txt` (plugin `starlight-llms-txt`), para que o Graao Chat e IAs externas leiam a documentação.
 
 ### 6.3 Componentes próprios (`docs-site/src/components/`)
@@ -97,13 +97,13 @@ Só as agências: dono, equipe e quem opera as subcontas pela agência. Por isso
 ### 6.6 Publicação
 - Novo projeto na Vercel (`graao-docs`) com raiz em `docs-site/`, saída estática, domínio `doc.graao.com` (CNAME na Cloudflare).
 - Build só quando necessário: o projeto `graao-docs` ignora commits que não tocam em `docs-site/`, e o projeto do app ignora commits que só tocam em `docs-site/` (Ignored Build Step nos dois). Isso protege o limite de deploys.
-- O site é **público**, como os da GHL e da Zaia: ajuda quem está avaliando a graao e o SEO. Nada sensível entra nele.
+- O site é **público**, como os da GHL e da Zaia: ajuda quem está avaliando o graao e o SEO. Nada sensível entra nele.
 
 ## 7. Estrutura de conteúdo (menu lateral)
 
-Os grupos seguem o mapa de categorias da GHL, reorganizado pelos módulos da graao. Os nomes de tela e de menu nos artigos devem ser exatamente os de `ui/` (em pt-BR).
+Os grupos seguem o mapa de categorias da GHL, reorganizado pelos módulos do graao. Os nomes de tela e de menu nos artigos devem ser exatamente os de `ui/` (em pt-BR).
 
-1. **Comece aqui**: Bem-vindo à graao · Conceitos (agência, subconta, usuários e papéis) · Primeiros passos da agência (checklist do Launchpad) · Novidades · Suporte
+1. **Comece aqui**: Bem-vindo ao graao · Conceitos (agência, subconta, usuários e papéis) · Primeiros passos da agência (checklist do Launchpad) · Novidades · Suporte
 2. **Agência**: Painel da agência · Subcontas · Setups de conta (snapshots) · Planos SaaS e cobrança das subcontas · Revenda com margem · White label (marca, domínio, app) · Carteira · Labs e AI Suite · Prospecção · Relatórios consolidados
 3. **Configurações**: Dados da empresa · Usuários e permissões · Domínios · Mídia Drive · Notificações · Registro de auditoria · Preferências de comunicação
 4. **CRM**: Contatos · Listas inteligentes · Empresas · Objetos personalizados · Oportunidades e pipelines · Tarefas e projetos · Campos e variáveis · Importar e exportar · Lixeira de contatos
@@ -173,7 +173,7 @@ Regras de escrita: frases curtas, voz ativa e "você"; nomes de botões em **neg
 
 | Fase | Entrega | Pronto quando |
 |---|---|---|
-| F0 Infra | `docs-site/` com Starlight e o tema da graao, bucket R2 público em `midia.graao.com`, `scripts/midia.mjs`, projeto Vercel com preview | O preview abre com tema da graao e um print vindo do R2 |
+| F0 Infra | `docs-site/` com Starlight e o tema do graao, bucket R2 público em `midia.graao.com`, `scripts/midia.mjs`, projeto Vercel com preview | O preview abre com tema do graao e um print vindo do R2 |
 | F1 Esqueleto e regra | Os 16 grupos com páginas de seção, modelo de artigo, componentes, Comece aqui, Suporte, Novidades; regra §9 ligada no CI | O menu completo navega; um PR de teste sem doc falha no check |
 | F2 Essenciais | ~25 artigos da jornada da agência nova: conceitos, primeira subconta, setups, white label e domínio, usuários, WhatsApp, e-mail, contatos, pipeline, primeiro workflow, calendário, gateway e fatura, Agent Studio, Planejador social, pedidos de avaliação | Uma pessoa de fora monta uma subconta funcionando só com a doc |
 | F3 Cobertura | Os demais módulos, acompanhados por uma lista de cobertura (módulo → artigos → status) no painel de melhoria | Todo item "feito" do painel de paridade tem artigo |

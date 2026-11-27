@@ -4,7 +4,7 @@ const failure = (message, status) => Object.assign(new Error(message), { status 
 const ACCESS = 'go_access';
 const REFRESH = 'go_refresh';
 const GOOGLE_FLOW = 'go_google_flow';
-// White Label: o domínio da agência para onde a graao.com devolve o código do Google (o Supabase só volta para ela).
+// White Label: o domínio da agência para onde o graao.com devolve o código do Google (o Supabase só volta para ela).
 const RELAY = 'go_google_relay';
 const RELAY_HOST = /^(?=.{4,200}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/;
 const ACCOUNT = 'go_account_';
@@ -269,7 +269,7 @@ export function createSupabaseAuth({ projectUrl, publishableKey, request = fetch
     hasSession,
     user,
     /**
-     * `callbackOrigin` é para onde o Supabase devolve o código. No domínio de uma agência é a graao.com, a única
+     * `callbackOrigin` é para onde o Supabase devolve o código. No domínio de uma agência é o graao.com, a única
      * origem na lista do Supabase; ela repassa o código (relayStart/relayTarget) e a troca acontece aqui, onde está o
      * verificador PKCE. O código sozinho não abre conta nenhuma.
      */
@@ -294,7 +294,7 @@ export function createSupabaseAuth({ projectUrl, publishableKey, request = fetch
         ...(entry ? { login_hint: entry.email } : { prompt: 'select_account' })
       }).href;
     },
-    /** Na graao.com: guarda para qual domínio de agência o código vai e segue para o Google. Só aceita o Supabase. */
+    /** No graao.com: guarda para qual domínio de agência o código vai e segue para o Google. Só aceita o Supabase. */
     relayStart(req,res,host,to) {
       let target;
       try { target = new URL(to); } catch { target = null; }
@@ -304,7 +304,7 @@ export function createSupabaseAuth({ projectUrl, publishableKey, request = fetch
       writeCookie(req,res,RELAY,host,600);
       return target.href;
     },
-    /** Na volta do Google à graao.com: o domínio da agência que espera o código, uma vez só; '' sem repasse. */
+    /** Na volta do Google ao graao.com: o domínio da agência que espera o código, uma vez só; '' sem repasse. */
     relayTarget(req,res) {
       const host = readCookie(req,RELAY);
       if (host) writeCookie(req,res,RELAY,'',0);

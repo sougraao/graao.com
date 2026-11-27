@@ -273,7 +273,7 @@ function threadPanel(c, all) {
       <label class="thread-assign">${i('contacts',14)}<select data-inbox-assign aria-label="Atribuir conversa">${options([['','Sem atribuição'], ...teammates(c).map(n => [n,n])], t.assignee)}</select></label>
       <button class="icon-btn ${following ? 'active' : ''}" data-inbox-follow aria-pressed="${following}" aria-label="${following ? 'Deixar de seguir' : 'Seguir'} conversa" title="${following ? 'Deixar de seguir' : 'Seguir'}">${i('bell')}</button>
       <button class="icon-btn ${t.starred ? 'gold' : ''}" data-act="toggle-star" aria-label="Marcar ou desmarcar estrela">${i('star')}</button>
-      ${contact.phone && (c.s.phone?.numbers || []).length ? `<button class="icon-btn" data-act="phone-call" aria-label="${h(tr('Ligar pelo número da Graao'))}" title="${h(tr('Ligar pelo número da Graao'))}">${i('phone')}</button>` : ''}
+      ${contact.phone && (c.s.phone?.numbers || []).length ? `<button class="icon-btn" data-act="phone-call" aria-label="${h(tr('Ligar pelo número do Graao'))}" title="${h(tr('Ligar pelo número do Graao'))}">${i('phone')}</button>` : ''}
       <button class="icon-btn" data-act="mark-unread" aria-label="Marcar como não lida">${i('mail')}</button></div>
     ${deadlines.length ? `<div class="thread-sla">${deadlines.map(item => `<span class="sla-clock-group">
       <span class="badge ${item.state === 'Overdue' ? 'red' : 'blue'}" data-sla-clock="${item.id}">${tr(item.channel)} · ${tr(item.state)}</span>

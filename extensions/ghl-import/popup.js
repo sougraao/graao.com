@@ -1,7 +1,7 @@
 // graao: Importar do GHL — a janela da extensão. Lê a subconta aberta na aba (reader.js, no mundo MAIN, só GET) e envia
-// a leitura para a graao em pedaços, autenticada pelo código de importação gerado na graao. Nada é gravado no GHL.
+// a leitura para o graao em pedaços, autenticada pelo código de importação gerado no graao. Nada é gravado no GHL.
 const DEFAULT_ORIGIN = 'https://graao.com';
-const PIECE = 1000000; // caracteres por pedaço: em UTF-8 fica abaixo dos 3 MB que a graao aceita
+const PIECE = 1000000; // caracteres por pedaço: em UTF-8 fica abaixo dos 3 MB que o graao aceita
 const CODE = /^[2-9A-HJ-NP-Z]{3}-[2-9A-HJ-NP-Z]{3}-[2-9A-HJ-NP-Z]{3}$/;
 const $ = id => document.getElementById(id);
 
@@ -22,7 +22,7 @@ async function send(origin, code, path, body) {
   const response = await fetch(`${origin}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Graao-Import-Code': code }, body: JSON.stringify(body) });
   if (response.ok) return response.json();
   const problem = await response.json().catch(() => ({}));
-  throw new Error(problem.error || `A graao respondeu ${response.status}.`);
+  throw new Error(problem.error || `O graao respondeu ${response.status}.`);
 }
 
 async function start() {
@@ -68,13 +68,13 @@ async function start() {
       if (!result || result.error) throw new Error(result?.error || 'A leitura no GHL não terminou. Tente de novo.');
       const { parts } = result;
       for (const [i, part] of parts.entries()) {
-        show(`Enviando para a graao (${i + 1} de ${parts.length})…`);
+        show(`Enviando para o graao (${i + 1} de ${parts.length})…`);
         progress(0.65 + 0.33 * (i / parts.length));
         await send(origin, code, '/api/ghl-import/part', part);
       }
       await send(origin, code, '/api/ghl-import/done', {});
       progress(1);
-      show(result.errors ? `Enviado. Volte para a graao: a conversão começa sozinha (${result.errors} ${result.errors === 1 ? 'item não pôde ser lido e vai' : 'itens não puderam ser lidos e vão'} no relatório).` : 'Enviado. Volte para a graao: a conversão começa sozinha.', 'good');
+      show(result.errors ? `Enviado. Volte para o graao: a conversão começa sozinha (${result.errors} ${result.errors === 1 ? 'item não pôde ser lido e vai' : 'itens não puderam ser lidos e vão'} no relatório).` : 'Enviado. Volte para o graao: a conversão começa sozinha.', 'good');
     } catch (problem) {
       clearInterval(timer);
       show(problem.message || 'Não deu certo. Tente de novo.', 'bad');

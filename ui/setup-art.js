@@ -1,4 +1,4 @@
-// Ilustrações dos templates de setup (uma por segmento da GHL, 123 no total, e a do funil de reuniões), no estilo editorial da graao.
+// Ilustrações dos templates de setup (uma por segmento da GHL, 123 no total, e a do funil de reuniões), no estilo editorial do graao.
 // Os SVGs ficam em /setup-art/<chave>.svg e usam 4 cores: o pink e o laranja viram as duas cores da conta
 // (--g-brand e --g-brand-2, via --ilu-primaria/--ilu-secundaria em agency.css); preto e branco são fixos.
 // Para herdar essas variáveis o SVG precisa estar no DOM, então setupArt() devolve um contêiner leve e o

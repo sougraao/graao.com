@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { makeServer } from '../server.mjs';
 import { createSqliteStore } from '../storage.mjs';
 
-// Caminho "ao vivo" do Pergunte à Graao: um provedor compatível com a OpenAI (aqui simulado por
+// Caminho "ao vivo" do Pergunte ao Graao: um provedor compatível com a OpenAI (aqui simulado por
 // openAIRequest, sem rede) com streaming e raciocínio.
 const AI_BASE = 'http://ia.teste/v1';
 

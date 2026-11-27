@@ -1,4 +1,4 @@
-// Linha de direitos e versão no pé das páginas da graao.
+// Linha de direitos e versão no pé das páginas do graao.
 // Páginas estáticas trazem a linha no HTML (`.rodape-graao`) e carregam este módulo só para preencher a versão.
 // O painel monta a linha com `rodapeHtml(nome)`, que já traz a versão quando ela foi lida.
 const ano = new Date().getFullYear();
@@ -25,7 +25,7 @@ export function carregarBuild(buscar = globalThis.fetch) {
   return pedido;
 }
 
-/** A linha do rodapé. `nome` é a marca exibida: a graao, ou a da agência no painel da subconta. */
+/** A linha do rodapé. `nome` é a marca exibida: o graao, ou a da agência no painel da subconta. */
 export function rodapeHtml(nome = 'graao') {
   if (typeof document !== 'undefined') carregarBuild();
   return `<footer class="rodape-graao"><span>© ${ano} ${esc(nome || 'graao')}. Feita no Brasil com ☕, carinho e muita API.</span><span class="rodape-build" data-rodape-build>${esc(textoBuild())}</span></footer>`;

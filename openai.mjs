@@ -33,7 +33,7 @@ export function createOpenAI({ store, model, secret, request = fetch, gateway = 
   }
 
   const status = apiKey => ({ configured: Boolean(apiKey), last4: apiKey?.slice(-4) || '', model });
-  // A IA gratuita da graao está liberada para quem não tem chave (o dono ligou a opção e há modelo grátis ativo).
+  // A IA gratuita do graao está liberada para quem não tem chave (o dono ligou a opção e há modelo grátis ativo).
   const platformFree = async () => Boolean(gateway && await gateway.platformFreeAvailable().catch(() => false));
   const platformConnection = (session, scope) => ({ apiKey: null, model, request, platform: true, ...gatewayScope(session, scope) });
   return {
@@ -50,7 +50,7 @@ export function createOpenAI({ store, model, secret, request = fetch, gateway = 
     },
     /**
      * A chave da agência (BYOK). `scope`: { org, feature, allowPlatform }. Sem chave, e só quando o dono da plataforma
-     * liberou "Agências sem chave usam a IA gratuita da graao" e a funcionalidade usa apenas texto (allowPlatform),
+     * liberou "Agências sem chave usam a IA gratuita do graao" e a funcionalidade usa apenas texto (allowPlatform),
      * devolve uma conexão sem chave que o gateway atende com modelos gratuitos.
      */
     async requireConnection(session, scope = {}) {
@@ -112,7 +112,7 @@ function legacyError(error, problem, byok) {
 // `onUsage`, when the caller meters AI spend, receives the model and token counts of every call,
 // including failed ones (with zero tokens and the error message).
 // Com `gateway` na conexão (o normal no servidor), a chamada passa pelo graao AI Gateway: o corpo segue igual para a
-// OpenAI com a chave da agência, ou, sem chave e com a IA gratuita da graao liberada, vai a um modelo gratuito.
+// OpenAI com a chave da agência, ou, sem chave e com a IA gratuita do graao liberada, vai a um modelo gratuito.
 export async function openAIResponse(body, { apiKey, request, timeout, problem, onUsage, gateway, gatewayContext }) {
   const started = Date.now();
   try {

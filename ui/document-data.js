@@ -314,7 +314,7 @@ export const contactVariables = [['contact.first_name', 'Primeiro nome'], ['cont
   ['contact.phone', 'Telefone'], ['contact.company', 'Empresa'], ['account.name', 'Nome da empresa (subconta)'],
   ['document.title', 'Título do documento'], ['document.total', 'Total do documento'], ['document.expires_at', 'Validade']];
 
-/* ───────── Biblioteca de conteúdo e modelos da Graao ───────── */
+/* ───────── Biblioteca de conteúdo e modelos do Graao ───────── */
 
 const t = html => ({ type: 'text', html });
 export const socLibrary = [

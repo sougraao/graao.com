@@ -1,4 +1,4 @@
-# 06 · Apresentações — engenharia reversa do Google Slides e plano para a graao
+# 06 · Apresentações — engenharia reversa do Google Slides e plano para o graao
 
 Data: 2026-11-23 · Ferramenta: REA (MCP) via Chrome DevTools, perfil temporário e anônimo.
 Alvo: apresentação pública de exemplo da API do Slides (`1EAYk18WDjIG-zp_0vLm3CsfQh_i8eXc67Jo2O9C6Vuc`, "Baby album"), aberta em `/edit`.
@@ -78,7 +78,7 @@ DOM com 563 `<g>`, 95 `<text>`, 66 `<path>`, 42 `<clipPath>`, 40 `<image>`, 14 `
 
 ---
 
-## 2. O que a graao já tem
+## 2. O que o graao já tem
 
 | | Apresentações (`ui/presentations.js`, `ui/presentation-data.js`, `presentation-model.mjs`) | Prancheta (`ui/prancheta.js`, `prancheta-model.mjs`) |
 |---|---|---|
@@ -92,7 +92,7 @@ A distância para o Slides não está no visual: está no **modelo**. O construt
 
 ---
 
-## 3. Arquitetura proposta para a graao
+## 3. Arquitetura proposta para o graao
 
 Decisões tiradas do que foi observado; os itens marcados **(escolha)** são de design nosso, não do Google.
 
@@ -110,7 +110,7 @@ Decisões tiradas do que foi observado; os itens marcados **(escolha)** são de 
 | **F1 · Núcleo** | modelo novo (tema/layout/slide/elementos), migração dos 8 layouts, render SVG, caixa de texto, forma, imagem, linha; mover, redimensionar, girar; desfazer/refazer; autosave por operações | 1.1–1.4 |
 | **F2 · Editor completo** | tabela, agrupar, alinhar e distribuir, guias e grade, ordem z, cortar imagem, listas e estilos por nível, editar tema e layouts, tira com arrastar para reordenar | 1.2, 1.6 |
 | **F3 · Apresentar** | transições e animações por objeto, visualização do apresentador com notas e cronômetro, link público e PDF no novo render, exportação PPTX | 1.5, 1.6 |
-| **F4 · Colaboração e IA** | histórico de versões, comentários, edição simultânea com presença, "gerar slide/imagem" com a IA da graao | 1.5 |
+| **F4 · Colaboração e IA** | histórico de versões, comentários, edição simultânea com presença, "gerar slide/imagem" com a IA do graao | 1.5 |
 
 ## 4. Em aberto
 
