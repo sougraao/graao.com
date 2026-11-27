@@ -11,10 +11,10 @@
   },
   "functions": {
     "api/index.mjs": {
-      "includeFiles": "{ui/**,setup-templates/**}"
+      "includeFiles": "{ui/**,setup-templates/**,extensions/**}"
     },
     "server.mjs": {
-      "includeFiles": "{ui/**,setup-templates/**}"
+      "includeFiles": "{ui/**,setup-templates/**,extensions/**}"
     }
   },
   "rewrites": [

@@ -5,8 +5,10 @@
   overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
-  padding: 0 !important;
+  /* Reserva a altura do topo flutuante (liquid-glass.css), senão o chat começa por baixo da barra. */
+  padding: var(--lg-top-h, 0px) 0 0 !important;
 }
+.workspace > :is(.ag-banner, .lp-return) ~ .screen-ask-chat { padding-top: 0 !important; }
 
 .sc-host {
   flex: 1;
@@ -470,8 +472,9 @@
 }
 
 .sc-home-badge .g-mark {
-  width: 52px;
-  height: 52px;
+  /* proporção do gato (≈2,2:1), sem sobra em cima e embaixo */
+  width: 88px;
+  height: 40px;
   display: block;
 }
 

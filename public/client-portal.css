@@ -9,7 +9,7 @@
 .cp-section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .cp-section-title p,.cp-admin .cp-card p{margin:5px 0 0;color:var(--g-dim);font-size:13px}
 .cp-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;min-height:136px;padding:22px 28px;border-radius:12px;overflow:hidden;color:#fff;
-  background:linear-gradient(105deg,color-mix(in srgb,var(--g-brand, #b8460b) 72%,#100d0a) 0%,var(--g-brand-2, #c2410c) 52%,#1e1a16 100%)}
+  background:linear-gradient(105deg,color-mix(in srgb,var(--g-brand, #b8460b) 72%,#111111) 0%,var(--g-brand-2, #c2410c) 52%,#1c1c1c 100%)}
 .cp-hero-copy{position:relative;z-index:1;max-width:330px}
 .cp-admin .cp-hero h2{font-size:clamp(24px,3vw,31px);letter-spacing:-.03em;text-shadow:0 1px 12px #3b0b3a40}
 .cp-admin .cp-hero p{margin:7px 0 0;color:#fff;opacity:.92;font-size:13.5px;line-height:1.45}
@@ -24,7 +24,7 @@
 .cp-phone-c .cp-phone-media{background:linear-gradient(135deg,#f6c7a1,#c9855a)}
 .cp-phone-line{height:5px;border-radius:5px;background:#ede8f1}
 .cp-phone-button{height:12px;margin-top:2px;border-radius:5px;background:#231a2b}
-.cp-hero-cta{position:relative;z-index:1;justify-self:end;padding:8px 14px;border:0;border-radius:7px;background:#fff;color:#100d0a;font-weight:700;font-size:13px;box-shadow:0 4px 14px #100d0a2e}
+.cp-hero-cta{position:relative;z-index:1;justify-self:end;padding:8px 14px;border:0;border-radius:7px;background:#fff;color:#111111;font-weight:700;font-size:13px;box-shadow:0 4px 14px #1111112e}
 .cp-hero-cta:hover{background:#fff0e6}
 .cp-hero-cta:focus-visible{outline:2px solid #fff;outline-offset:3px}
 .cp-dashboard-title h2{font-size:clamp(24px,3vw,30px)}

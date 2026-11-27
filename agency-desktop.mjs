@@ -6,15 +6,16 @@
 import { isAssetUrl } from './asset-store.mjs';
 
 export const desktopPresets = [
-  { id: 'graao', name: 'Laranja Graao', background: '#100d0a', text: '#faf7f3', button: '#ff6b1a', buttonText: '#100d0a' },
-  { id: 'rosa', name: 'Rosa', background: '#fff5fa', text: '#1e1821', button: '#b71889', buttonText: '#ffffff' },
-  { id: 'oceano', name: 'Oceano', background: '#f0f7fc', text: '#0f2230', button: '#0e6ba8', buttonText: '#ffffff' },
-  { id: 'esmeralda', name: 'Esmeralda', background: '#f0f9f4', text: '#14261b', button: '#1f7a4d', buttonText: '#ffffff' },
+  { id: 'graao', name: 'Laranja Graao', background: '#111111', text: '#f5f5f5', button: '#ff6b1a', buttonText: '#111111' },
+  { id: 'brasa', name: 'Brasa', background: '#fbf6f2', text: '#2a160b', button: '#c2410c', buttonText: '#ffffff' },
+  { id: 'ambar', name: 'Âmbar', background: '#fdf8ee', text: '#2b1d07', button: '#a15c07', buttonText: '#ffffff' },
+  { id: 'esmeralda', name: 'Esmeralda', background: '#f5f8f3', text: '#14261b', button: '#1f7a4d', buttonText: '#ffffff' },
+  { id: 'oceano', name: 'Oceano', background: '#f3f8f8', text: '#0d2529', button: '#0e7490', buttonText: '#ffffff' },
+  { id: 'violeta', name: 'Violeta', background: '#f7f4fa', text: '#1f1633', button: '#6d28d9', buttonText: '#ffffff' },
+  { id: 'rosa', name: 'Rosa', background: '#fbf4f6', text: '#2a1220', button: '#be185d', buttonText: '#ffffff' },
   { id: 'ardosia', name: 'Ardósia', background: '#f4f6f8', text: '#1f2933', button: '#334e68', buttonText: '#ffffff' },
-  { id: 'rose', name: 'Rosé', background: '#fff4f5', text: '#2a1215', button: '#c2415c', buttonText: '#ffffff' },
-  { id: 'ambar', name: 'Âmbar', background: '#fffaf0', text: '#2b1d07', button: '#b45309', buttonText: '#ffffff' },
-  { id: 'violeta', name: 'Violeta', background: '#f7f4ff', text: '#1f1633', button: '#6d28d9', buttonText: '#ffffff' },
-  { id: 'minimal', name: 'Minimalista', background: '#ffffff', text: '#111111', button: '#111111', buttonText: '#ffffff' }
+  { id: 'neon', name: 'Neon', background: '#111111', text: '#f5f5f5', button: '#1fe5f0', buttonText: '#062a2d' },
+  { id: 'minimal', name: 'Minimalista', background: '#ffffff', text: '#1a1a1a', button: '#1a1a1a', buttonText: '#ffffff' }
 ];
 
 const fail = (message, status = 400) => { throw Object.assign(new Error(message), { status }); };
@@ -38,7 +39,12 @@ export const desktopDefaults = () => ({ appName: 'My Agency', title: 'Todas as f
 export function desktopOf(state) {
   const base = desktopDefaults(), prior = state.desktopApp || {};
   state.desktopApp = { ...base, ...prior, theme: { ...base.theme, ...(prior.theme || {}), ...(prior.primary && !prior.theme ? { button: prior.primary } : {}) } };
-  return state.desktopApp;
+  // Um rascunho ainda no padrão antigo (Rosa Graao) passa para o padrão novo; app publicado fica como está.
+  const app = state.desktopApp;
+  const rosaAntigo = app.theme.preset === 'rosa' && app.theme.button === '#b71889' && app.theme.background === '#fff5fa';
+  const laranjaQuente = app.theme.preset === 'graao' && app.theme.background === '#100d0a';
+  if (app.status !== 'published' && (rosaAntigo || laranjaQuente)) app.theme = { ...base.theme };
+  return app;
 }
 
 /** 'desktop-app': saves the customizer. Images that are left out stay as they were; 'remove' clears one. */

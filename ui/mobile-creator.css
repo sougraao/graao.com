@@ -55,7 +55,7 @@
 .mc-color{display:grid;gap:6px;justify-items:start}
 :is(.mc-color,.mc-tokens) input[type=color]{width:100%;max-width:160px;height:40px;padding:4px;border:1px solid var(--g-line-2);border-radius:var(--r-control);background:var(--g-field);cursor:pointer}
 .mc-all summary{cursor:pointer;font-weight:650;font-size:13px;min-height:32px;display:list-item;line-height:32px}
-.mc-tokens{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;padding-top:8px}
+.mc-tokens{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:12px;padding-top:8px}
 .mc-warn{display:flex;align-items:center;gap:8px;margin:0;padding:10px 14px;border-radius:14px;background:var(--g-orange-100);color:var(--g-orange-ink);font-weight:600;font-size:13px}
 
 .mc-modules,.mc-links{list-style:none;margin:0;padding:0;display:grid;gap:8px}
@@ -99,6 +99,11 @@
 .mc-seg button[aria-pressed=true]{background:var(--g-brand-surface);color:var(--g-ink)}
 .mc-phone{padding:9px;border-radius:44px;background:var(--g-surface-3);border:1px solid var(--g-line-2)}
 .mc-phone .ma-frame{zoom:.76;border-radius:46px}
+/* Respiro do aparelho: barra de status no topo e indicador de início embaixo, como num celular de verdade */
+.mc-phone .ma-frame::before{content:"9:41";flex:none;height:40px;padding:14px 0 0 34px;font-size:14px;font-weight:700;line-height:1;color:var(--cm-font);background:var(--cm-background)}
+.mc-phone .ma-frame:has(.ma-entry)::before{position:absolute;inset:0 0 auto;z-index:3;background:none;color:#fff}
+.mc-phone .ma-frame .ma-tabs{padding-bottom:22px}
+.mc-phone .ma-frame::after{content:"";position:absolute;left:50%;bottom:8px;z-index:5;width:128px;height:5px;margin-left:-64px;border-radius:5px;background:var(--cm-font);opacity:.3}
 .mc-ghost{height:112px;border:1px solid var(--cm-border);border-radius:20px;background:var(--cm-surface)}
 
 @container (max-width:1060px){

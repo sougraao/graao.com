@@ -1231,7 +1231,7 @@ document.fonts?.ready.then(() => document.querySelectorAll('[data-g]').forEach(e
 /* Theme toggle: microkit diagonal wipe via View Transitions API */
 let themeBusy = null;
 let themeStorageKey;
-// O graao abre no escuro (carvão #100D0A/#1E1A16 + laranja #FF6B1A); o claro é escolha de quem usa.
+// O graao abre no escuro (cinza #111111/#1C1C1C + laranja #FF6B1A); o claro é escolha de quem usa.
 let themeFallback = 'dark';
 
 function applyTheme(theme) {
@@ -1264,6 +1264,25 @@ function relativeLuminance(hex) {
   return red * 0.2126 + green * 0.7152 + blue * 0.0722;
 }
 
+// O favicon acompanha a cor principal ativa: o gato sem fundo do /favicon.svg, repintado com ela. Um White Label
+// com logo próprio já troca o link no servidor (white-label.mjs) e fica como está.
+let faviconSource = null;
+let faviconTurn = 0;
+async function paintFavicon(color) {
+  const link = document.querySelector?.('link[rel="icon"]');
+  if (!link) return;
+  const original = link.dataset.graaoFavicon || link.getAttribute('href');
+  if (original !== '/favicon.svg') return;
+  link.dataset.graaoFavicon = original;
+  const turn = ++faviconTurn;
+  if (color === DEFAULT_BRAND_PRIMARY) { link.setAttribute('href', original); return; }
+  try {
+    faviconSource ??= fetch(original).then(response => response.ok ? response.text() : Promise.reject(new Error(String(response.status))));
+    const svg = (await faviconSource).replaceAll(DEFAULT_BRAND_PRIMARY, color);
+    if (turn === faviconTurn) link.setAttribute('href', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+  } catch { faviconSource = null; }
+}
+
 export function applyBrandColor(primaryValue, secondaryValue, accentValue) {
   const root = document.documentElement;
   const primary = /^#[0-9a-f]{6}$/i.test(primaryValue) ? primaryValue.toLowerCase() : DEFAULT_BRAND_PRIMARY;
@@ -1283,6 +1302,7 @@ export function applyBrandColor(primaryValue, secondaryValue, accentValue) {
   }
   root.toggleAttribute('data-custom-accent', customAccent);
   root.toggleAttribute('data-custom-brand', custom);
+  paintFavicon(custom ? primary : DEFAULT_BRAND_PRIMARY);
   if (!custom) {
     for (const prop of [
       '--g-custom-brand', '--g-custom-brand-2', '--g-custom-brand-accent',

@@ -242,6 +242,7 @@ export const tr = (value, lang = getLanguage()) => {
 
 // Regex de substituições dinâmicas para Espanhol Latino
 export const DYNAMIC_PATTERNS = [
+  [/^©\s*(\d{4})\s+(.+?)\.\s+Feito no Brasil com ☕, mordidas e muito MCP\.$/, '© $1 $2. Hecho en Brasil con ☕, mordiscos y mucho MCP.'],
   [/^abrindo\s+(.+)$/i, 'Abriendo $1'],
   [/^(\d+)\s+contatos?$/i, '$1 contactos'],
   [/^(\d+)\s+oportunidades?$/i, '$1 oportunidades'],
@@ -311,6 +312,28 @@ export function translateText(text) {
 }
 
 const SKIP_TAGS = new Set(['SCRIPT', 'STYLE', 'CODE', 'PRE', 'SVG', 'NOSCRIPT', 'TEXTAREA']);
+const TRANSLATED_ATTRS = ['placeholder', 'title', 'aria-label', 'data-tip'];
+
+function translateAttrs(el) {
+  for (const attr of TRANSLATED_ATTRS) {
+    const val = el.getAttribute(attr);
+    if (!val || !val.trim()) continue;
+    const translated = translateText(val);
+    if (translated === val) continue;
+    el.__graaoOrigAttrs ??= {};
+    if (el.__graaoOrigAttrs[attr] === undefined) el.__graaoOrigAttrs[attr] = val;
+    el.setAttribute(attr, translated);
+  }
+}
+
+function translateTextNode(node) {
+  const val = node.nodeValue;
+  if (!val || !val.trim()) return;
+  const translated = translateText(val);
+  if (translated === val) return;
+  if (node.__graaoOrig === undefined) node.__graaoOrig = val;
+  node.nodeValue = translated;
+}
 
 export function translateDom(root = document.body) {
   if (!root || typeof document === 'undefined') return;
@@ -324,7 +347,10 @@ export function translateDom(root = document.body) {
     {
       acceptNode(node) {
         if (node.nodeType === Node.ELEMENT_NODE) {
-          if (SKIP_TAGS.has(node.tagName) || node.dataset?.noTranslate) {
+          if (node.dataset?.noTranslate) return NodeFilter.FILTER_REJECT;
+          if (SKIP_TAGS.has(node.tagName)) {
+            // O conteúdo de um campo de texto é do usuário, mas o placeholder e o rótulo são da interface.
+            if (node.tagName === 'TEXTAREA') translateAttrs(node);
             return NodeFilter.FILTER_REJECT;
           }
           return NodeFilter.FILTER_ACCEPT;
@@ -343,29 +369,9 @@ export function translateDom(root = document.body) {
   let current = walker.nextNode();
   while (current) {
     if (current.nodeType === Node.TEXT_NODE) {
-      const val = current.nodeValue;
-      if (val && val.trim()) {
-        const translated = translateText(val);
-        if (translated !== val) {
-          if (current.__graaoOrig === undefined) current.__graaoOrig = val;
-          current.nodeValue = translated;
-        }
-      }
+      translateTextNode(current);
     } else if (current.nodeType === Node.ELEMENT_NODE) {
-      const attrs = ['placeholder', 'title', 'aria-label', 'data-tip'];
-      for (const attr of attrs) {
-        const val = current.getAttribute(attr);
-        if (val && val.trim()) {
-          const translated = translateText(val);
-          if (translated !== val) {
-            current.__graaoOrigAttrs ??= {};
-            if (current.__graaoOrigAttrs[attr] === undefined) {
-              current.__graaoOrigAttrs[attr] = val;
-            }
-            current.setAttribute(attr, translated);
-          }
-        }
-      }
+      translateAttrs(current);
     }
     current = walker.nextNode();
   }
@@ -409,6 +415,12 @@ export function initI18n() {
           for (const node of m.addedNodes) {
             if (node.nodeType === Node.ELEMENT_NODE) {
               translateDom(node);
+            } else if (node.nodeType === Node.TEXT_NODE) {
+              // el.textContent = '…' troca só o nó de texto: traduz também esse caso.
+              const parent = node.parentElement;
+              if (parent && !SKIP_TAGS.has(parent.tagName) && !parent.closest('[data-no-translate]')) {
+                translateTextNode(node);
+              }
             }
           }
         }

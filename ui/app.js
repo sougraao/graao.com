@@ -20,7 +20,7 @@ import { installLedger } from './ledger.js';
 import { formatTaxId } from './tax-id.js';
 import { afterStudioRender, exportStudioProject, installStudio, studioBlock } from './studio.js';
 import { studioTemplates } from './studio-data.js';
-import { sidebar } from './sidebar.js';
+import { sidebar, sideBrand } from './sidebar.js';
 import { topbar } from './topbar.js';
 import { crmEntityNames, crmEvents, crmForm, crmTabs, customInputs } from './crm.js';
 import { socialEvents } from './social.js';
@@ -324,7 +324,7 @@ const navItem=([id,pt,ico])=>({href:`#${id}`,label:tr(pt),icon:ico,current:c.vie
 function appSidebar(brand){
   const items=nav.slice(0,-1).map((n,k)=>[n,k]).filter(([n])=>allowedView(n[0]));
   const links=(c.agency?.menuLinks||[]).map(l=>l.openIn==='Inside the app'?{href:`#link/${l.id}`,label:tr(l.title),icon:l.icon,current:c.view==='link'&&c.tab===l.id}:{href:l.url,label:tr(l.title),icon:l.icon,external:true});
-  return sidebar({label:tr('Navegação'),home:c.access?.agency?'#agency/dashboard':'#launchpad',brand,mark:c.agency?.logo?`<img class="ag-logo" src="${h(c.agency.logo)}" alt="">`:logo,
+  return sidebar({label:tr('Navegação'),home:c.access?.agency?'#agency/dashboard':'#launchpad',brand,mark:c.agency?.logo?`<img class="ag-logo" src="${h(c.agency.logo)}" alt="">`:logo,show:sideBrand(brand!==brandName(c.agency?.brand)||c.agency?.logo?c.agency:null),
     account:{name:c.s.profile.name,caption:tr('Subconta · trocar'),attr:'data-act="workspaces"',tip:tr('Trocar de workspace')},
     toggle:'data-act="nav"',open:c.navOpen,
     groups:[{title:tr('Principal'),items:items.filter(([,k])=>k<7).map(([n])=>navItem(n))},{title:tr('Crescimento'),items:items.filter(([,k])=>k>=7).map(([n])=>navItem(n))},{title:tr('Atalhos'),items:links}],

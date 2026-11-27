@@ -19,6 +19,13 @@ O graao nunca recebe senha, token ou cookie do GHL: a extensão envia só os dad
 - `storage`: lembrar o endereço do graao (campo **Avançado**).
 - `host_permissions`: só o graao (`graao.com`) e o computador local, para testes.
 
+## Para onde envia
+
+O botão **Instalar no Chrome** do graao baixa esta pasta em .zip (`/downloads/graao-importar-do-ghl.zip`, montado por
+`extension-zip.mjs`) com um `graao.json` a mais: o endereço do graao de onde ela foi baixada. A extensão envia para esse
+endereço; sem o arquivo, para `https://www.graao.com` (`graao.com` redireciona para `www`, e o envio não segue
+redirecionamento). Um endereço digitado em **Avançado** vale por cima dos dois.
+
 ## Carregar sem a loja (desenvolvimento)
 
 1. Abra `chrome://extensions` e ligue o **Modo do desenvolvedor**.

@@ -135,7 +135,7 @@ import { snapshotAssets } from './ui/agency-data.js';
 import { effectiveAccess, hasModule, requireAgencyCommand, requireCapability, requireModule, requireRecordEffects, requireSetupModules, workspaceView } from './authorization.mjs';
 import { attachAccounts, claimDue, evergreenDue, feedPosts, parseFeed, settle } from './social-model.mjs';
 import { authUrl, publish as socialPublish, seal, unseal } from './social-providers.mjs';
-import { quickReplies, sendMetaMessage, subscribeMetaPage } from './meta-messaging.mjs';
+import { quickReplies, sendMetaCommentReply, sendMetaMessage, subscribeMetaPage } from './meta-messaging.mjs';
 import { generateImage, startVideo, videoContent, videoStatus } from './openai-media.mjs';
 import { inboundAddress } from './email-inbound.mjs';
 import { createPhoneHandler } from './phone-server.mjs';
@@ -222,7 +222,7 @@ export const staticFiles = new Map([
   ['/graao.css','text/css; charset=utf-8'], ['/lucide-animated.css','text/css; charset=utf-8'], ['/inbox.css','text/css; charset=utf-8'], ['/inbox.js','text/javascript; charset=utf-8'], ['/inbox-data.js','text/javascript; charset=utf-8'], ['/message-media.js','text/javascript; charset=utf-8'], ['/inbox-live.js','text/javascript; charset=utf-8'], ['/graao-dark.css','text/css; charset=utf-8'], ['/graao.js','text/javascript; charset=utf-8'], ['/sidebar.js','text/javascript; charset=utf-8'],
   ['/topbar.js','text/javascript; charset=utf-8'], ['/i18n.js','text/javascript; charset=utf-8'],
   ['/fonts/plus-jakarta-sans.woff2','font/woff2'], ['/favicon.svg','image/svg+xml'],
-  ['/privacidade.html','text/html; charset=utf-8'], ['/skull_flame_animated.svg','image/svg+xml'],
+  ['/privacidade.html','text/html; charset=utf-8'], ['/skull_flame_animated.svg','image/svg+xml'], ['/graao-gato.svg','image/svg+xml'], ['/gato.js','text/javascript; charset=utf-8'],
   ['/login.css','text/css; charset=utf-8'], ['/login.js','text/javascript; charset=utf-8'],
 ]);
 // Estáticos que só abrem com sessão (como o app): sem login, 303 para /login. O smoke pós-deploy usa a mesma lista.
@@ -1868,6 +1868,12 @@ export function makeServer({
         results.push({ runId: item.runId, kind: 'whatsapp', text: sent?.sent ? 'mensagem interativa enviada' : sent?.reason === 'not-connected' ? 'WhatsApp não conectado' : sent?.reason === 'unsupported' ? 'o provedor de WhatsApp não envia mensagens interativas' : 'mensagem interativa não enviada',
           ...(sent?.sent ? {} : { failed: sent?.reason === 'not-connected' ? 'not_connected' : sent?.reason === 'invalid-phone' ? 'invalid_phone' : sent?.reason === 'account-suspended' ? 'suspended' : 'provider_error', messageId: item.messageId || '' }) });
       }
+      if (item.kind === 'meta-comment-reply') {
+        const sent = await deliverMetaCommentReply(workspace, state, item).catch(() => ({ sent: false, reason: 'provider_error' }));
+        const channel = item.network === 'facebook' ? 'Facebook' : 'Instagram';
+        const why = { not_connected: 'conta não conectada no Social Planner', suspended: 'subconta suspensa' }[sent.reason] || 'erro da Meta';
+        results.push({ runId: item.runId, kind: 'meta', text: sent.sent ? `Comentário do ${channel}: respondido` : `Comentário do ${channel}: não respondido (${why})`, ...(sent.sent ? {} : { failed: sent.reason, messageId: item.messageId || '' }) });
+      }
       if (item.kind === 'meta-message') {
         const sent = await deliverMetaMessage(workspace, state, item).catch(() => ({ sent: false, reason: 'provider_error' }));
         const place = item.network === 'facebook' ? 'Messenger' : 'Direct';
@@ -2210,11 +2216,14 @@ if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); wind
       for (const [key, value] of Object.entries(row.routes)) if (value.workspace === workspace) delete row.routes[key];
       for (const account of accounts) row.routes[account.externalId] = { workspace, accountId: account.id, network: account.provider };
     });
-    // Ask Meta to send each page's messages to this app (best effort: the page may lack the messaging permission).
-    for (const account of accounts.filter(row => row.provider === 'facebook')) {
+    // Ask Meta to send each linked page's messages, comments and leads to this app. Instagram accounts share their linked Page token.
+    const pages = new Map();
+    for (const account of accounts) {
       const secret = (() => { try { return unseal(secrets[account.id]); } catch { return null; } })();
-      await subscribeMetaPage({ token: secret?.token, pageId: account.externalId }, metaFetch).catch(() => false);
+      const pageId = account.provider === 'instagram' ? secret?.pageId : account.externalId;
+      if (secret?.token && /^\d{3,64}$/.test(String(pageId || ''))) pages.set(String(pageId), secret.token);
     }
+    for (const [pageId, token] of pages) await subscribeMetaPage({ token, pageId }, metaFetch).catch(() => false);
   }
   // The page token and page id that send on this channel for this contact id key ("facebook:<pageId>").
   async function metaSender(workspace, state, key) {
@@ -2225,6 +2234,14 @@ if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); wind
     try { secret = unseal(((await socialRow(`social-${workspace}`)).tokens || {})[account.id]); } catch { secret = null; }
     if (!secret?.token) return null;
     return { token: secret.token, pageId: network === 'instagram' ? secret.pageId : externalId };
+  }
+  // One public reply on the exact Facebook or Instagram comment that triggered the workflow.
+  async function deliverMetaCommentReply(workspace, state, { network, accountId, commentId, body }) {
+    if (privateSpace.test(workspace)) return { sent: false, reason: 'not_connected' };
+    if (!await accountIsActive(state.agencyId || AGENCY_ID, workspace, 'conversations')) return { sent: false, reason: 'suspended' };
+    const sender = await metaSender(workspace, state, network + ':' + accountId);
+    if (!sender) return { sent: false, reason: 'not_connected' };
+    return sendMetaCommentReply({ token: sender.token, commentId, network, text: body }, metaFetch);
   }
   // One message to a contact on Messenger or Direct, trying each connected account the contact has written to.
   async function deliverMetaMessage(workspace, state, { network, recipients, body, buttons = [] }) {

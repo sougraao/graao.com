@@ -69,10 +69,10 @@ dialog:has(.card-prefs) { width: min(620px, calc(100vw - 24px)); }
 
 /* ---- Smart tags and quick actions on cards ------------------------------------------------- */
 .st-orange { --st: #c2410c; } .st-blue { --st: #1d4ed8; } .st-green { --st: #15803d; } .st-red { --st: #b91c1c; }
-.st-purple { --st: #7e22ce; } .st-pink { --st: #be185d; } .st-slate { --st: #475569; } .st-gray { --st: #57534e; } .st-teal { --st: #0f766e; }
+.st-purple { --st: #7e22ce; } .st-pink { --st: #be185d; } .st-slate { --st: #475569; } .st-gray { --st: #525252; } .st-teal { --st: #0f766e; }
 :root[data-theme=dark] .st-orange { --st: #fdba74; } :root[data-theme=dark] .st-blue { --st: #93c5fd; } :root[data-theme=dark] .st-green { --st: #86efac; }
 :root[data-theme=dark] .st-red { --st: #fca5a5; } :root[data-theme=dark] .st-purple { --st: #d8b4fe; } :root[data-theme=dark] .st-pink { --st: #f9a8d4; }
-:root[data-theme=dark] .st-slate { --st: #cbd5e1; } :root[data-theme=dark] .st-gray { --st: #d6d3d1; } :root[data-theme=dark] .st-teal { --st: #5eead4; }
+:root[data-theme=dark] .st-slate { --st: #cbd5e1; } :root[data-theme=dark] .st-gray { --st: #d4d4d4; } :root[data-theme=dark] .st-teal { --st: #5eead4; }
 .smart-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
 .smart-tag { display: inline-flex; align-items: center; padding: 1px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 650; color: var(--st); background: color-mix(in srgb, var(--st) 13%, transparent); border: 1px solid color-mix(in srgb, var(--st) 30%, transparent); }
 .quick-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--g-line); }

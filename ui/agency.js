@@ -4,7 +4,7 @@ import { desktopPage, desktopPreview, readDesktop } from './agency-desktop.js';
 import { createMobileCreator } from './agency-mobile.js';
 import { formatTokens, formatUsd, usageKinds } from './ai-data.js';
 import { labCatalog, labModes } from './labs-data.js';
-import { sidebar } from './sidebar.js';
+import { sidebar, sideBrand } from './sidebar.js';
 import { topbar } from './topbar.js';
 import { applyBrandColor } from './graao.js';
 import { tr, translateDom, getLanguage } from './i18n.js';
@@ -219,6 +219,7 @@ export function startAgency(env) {
       home: '#agency/dashboard',
       brand: brandName(),
       mark: logo,
+      show: sideBrand(null),
       account: { name: company.name || tr('Minha Agência'), logo: company.logo || '', caption: tr('Agência · ir para subconta'), attr: 'data-ag="switch-account"', tip: tr('Trocar para uma subconta') },
       toggle: 'data-ag="nav"',
       open: A.navOpen,
@@ -1167,6 +1168,12 @@ export function startAgency(env) {
               ${c.logo ? '<label class="check"><input type="checkbox" name="removeLogo"> Remover logotipo</label>' : ''}
             </div>
           </div>
+          <fieldset class="ag-logo-display" aria-describedby="ag-logo-display-hint">
+            <legend>Marca no menu das subcontas</legend>
+            ${[['mark-name', 'Isotipo e nome', 'O logotipo ao lado do nome da agência.'], ['name', 'Só o nome', 'O nome da agência, sem o logotipo.'], ['mark', 'Só o isotipo', 'Só o logotipo, sem o nome.']]
+              .map(([value, title, text]) => `<label class="choice"><input type="radio" name="logoDisplay" value="${value}" ${(c.logoDisplay || 'mark-name') === value ? 'checked' : ''}><strong>${title}</strong><span>${text}</span></label>`).join('')}
+            <small class="dim" id="ag-logo-display-hint">Aparece no topo do menu lateral das subcontas. Sem logotipo enviado, o menu mostra o nome. Com o menu recolhido, aparece só o isotipo.</small>
+          </fieldset>
         </div>`)}
         <footer class="set-foot"><p class="form-status" role="alert"></p><button class="primary">Salvar dados da empresa</button></footer>
       </form>`;

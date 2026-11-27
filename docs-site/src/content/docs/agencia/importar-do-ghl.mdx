@@ -18,7 +18,7 @@ Se a sua agência está saindo do GHL, você não precisa montar tudo de novo. A
 ## Antes de começar
 
 - O link de compartilhamento do snapshot sozinho não serve: sem login no GHL, ele só mostra a tela de entrada. Carregue o snapshot numa subconta do GHL (pode ser uma subconta de teste) e importe a partir dela.
-- Instale a extensão no Chrome. Enquanto ela não aparece na Chrome Web Store, peça o arquivo ao suporte do graao, descompacte, abra `chrome://extensions`, ligue o **Modo do desenvolvedor** e clique em **Carregar sem compactação**, escolhendo a pasta da extensão.
+- Instale a extensão no Chrome. Enquanto ela não aparece na Chrome Web Store, baixe a pasta pelo próprio graao: na janela **Importar do GHL**, clique em **Instalar no Chrome** para baixar o arquivo `graao-importar-do-ghl.zip`. Descompacte, abra `chrome://extensions`, ligue o **Modo do desenvolvedor** e clique em **Carregar sem compactação**, escolhendo a pasta `graao-importar-do-ghl`.
 
 ## Passo a passo
 
@@ -28,7 +28,7 @@ Se a sua agência está saindo do GHL, você não precisa montar tudo de novo. A
 
    <Print src="docs/agencia/importar-do-ghl/01-botao.ee013506.webp" alt="Tela Setups de conta na aba Importados, com o botão Importar do GHL em destaque no topo." />
 
-2. O graao mostra o passo a passo e um **código de importação** de 9 letras e números. Ele vale 30 minutos e serve uma vez. Clique em **Copiar** e deixe esta janela aberta.
+2. O graao mostra o passo a passo e um **código de importação** de 9 letras e números. Ele vale 30 minutos e serve uma vez. Se ainda não tem a extensão, clique em **Instalar no Chrome** para baixar a pasta dela (veja [Antes de começar](#antes-de-começar)). Clique em **Copiar** e deixe esta janela aberta.
 
    <Print src="docs/agencia/importar-do-ghl/02-codigo.49d5a4ec.webp" alt="Janela Importar do GHL com os três passos, o botão Instalar no Chrome e o código de importação em destaque." />
 
@@ -62,6 +62,9 @@ Não vêm: contatos, conversas, oportunidades, pagamentos e históricos. Widgets
 
 **O graao vê a minha senha do GHL?**
 Não. A extensão usa o login que já está aberto no seu Chrome, só para **ler** a subconta. Ela não cria, não salva e não apaga nada no GHL, e envia para o graao apenas os dados lidos. Senha, token e cookies nunca saem do seu navegador.
+
+**Onde baixo a extensão?**
+Na própria janela **Importar do GHL**: o botão **Instalar no Chrome** baixa o arquivo `graao-importar-do-ghl.zip` com a pasta da extensão. Depois de descompactar, carregue a pasta em `chrome://extensions` com o **Modo do desenvolvedor** ligado. Quando sair uma versão nova, baixe de novo e clique em atualizar no cartão da extensão.
 
 **O código expirou. E agora?**
 Feche a janela e clique em **Importar do GHL** de novo para gerar outro código. Cada código vale 30 minutos e serve para uma importação.

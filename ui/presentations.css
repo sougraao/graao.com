@@ -20,7 +20,7 @@
 }
 
 .pres-header p {
-  color: var(--muted, #6b665e);
+  color: var(--muted, #666666);
   margin: 0;
   font-size: 14px;
 }
@@ -34,7 +34,7 @@
 
 .pres-card {
   background: var(--surface, #ffffff);
-  border: 1px solid var(--line, #e3e0d8);
+  border: 1px solid var(--line, #e3e3e3);
   border-radius: var(--radius, 14px);
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -124,13 +124,13 @@
   font-size: 16px;
   font-weight: 700;
   margin: 0;
-  color: var(--ink, #1d1b18);
+  color: var(--ink, #1c1c1c);
   cursor: pointer;
 }
 
 .pres-card-meta {
   font-size: 13px;
-  color: var(--muted, #6b665e);
+  color: var(--muted, #666666);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -143,14 +143,14 @@
   gap: 8px;
   margin-top: auto;
   padding-top: 12px;
-  border-top: 1px solid var(--line, #e3e0d8);
+  border-top: 1px solid var(--line, #e3e3e3);
   flex-wrap: wrap;
 }
 
 /* Templates Section */
 .pres-templates-shelf {
-  background: var(--surface-2, #f0eee9);
-  border: 1px solid var(--line, #e3e0d8);
+  background: var(--surface-2, #f0f0f0);
+  border: 1px solid var(--line, #e3e3e3);
   border-radius: var(--radius, 14px);
   padding: 20px;
   display: flex;
@@ -164,7 +164,7 @@
 }
 
 .pres-templates-header p {
-  color: var(--muted, #6b665e);
+  color: var(--muted, #666666);
   font-size: 13px;
   margin: 0;
 }
@@ -177,7 +177,7 @@
 
 .pres-tpl-card {
   background: var(--surface, #ffffff);
-  border: 1px solid var(--line, #e3e0d8);
+  border: 1px solid var(--line, #e3e3e3);
   border-radius: 10px;
   padding: 16px;
   display: flex;
@@ -189,12 +189,12 @@
   font-size: 16px;
   font-weight: 700;
   margin: 0;
-  color: var(--ink, #1d1b18);
+  color: var(--ink, #1c1c1c);
 }
 
 .pres-tpl-card p {
   font-size: 13px;
-  color: var(--muted, #6b665e);
+  color: var(--muted, #666666);
   line-height: 1.4;
   margin: 0;
   flex: 1;
@@ -207,8 +207,8 @@
 }
 
 .pres-tag {
-  background: var(--surface-2, #f0eee9);
-  color: var(--muted, #6b665e);
+  background: var(--surface-2, #f0f0f0);
+  color: var(--muted, #666666);
   font-size: 11px;
   font-weight: 600;
   padding: 2px 8px;

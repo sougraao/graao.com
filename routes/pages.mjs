@@ -5,6 +5,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { afterLogin } from '../auth.mjs';
+import { EXTENSION_FOLDER, EXTENSION_ZIP_PATH, extensionZip, requestOrigin } from '../extension-zip.mjs';
 import { find } from '../model.mjs';
 import { NEXT_ROUTE } from './next-route.mjs';
 import { brandedPage, isPlatformHost, requestHost, whiteLabelBrand } from '../white-label.mjs';
@@ -57,6 +58,13 @@ export function createPageRoutes(deps) {
     // Política de privacidade pública (LGPD e o link exigido pelo login com Google).
     if (p === '/privacidade' || p === '/privacidade/') p = '/privacidade.html';
     const platformPaths = ['/app','/app/','/painel','/painel/'];
+    // A extensão do Chrome "Importar do GHL" (extensions/ghl-import) em .zip, para o botão "Instalar no Chrome".
+    // O zip leva o endereço deste graao (muda por domínio), por isso não fica em cache compartilhado.
+    if ((method==='GET'||method==='HEAD') && p === EXTENSION_ZIP_PATH) {
+      res.setHeader('Content-Disposition', `attachment; filename="${EXTENSION_FOLDER}.zip"`);
+      res.setHeader('Cache-Control', 'no-store');
+      return send(200, 'application/zip', method==='HEAD' ? undefined : extensionZip(root, { origin: requestOrigin(req) }));
+    }
     // A raiz é a página inicial pública (ui/index.html); o login com Google mora em /login (ui/login.html).
     const homePaths = ['/','/index.html'];
     const loginPaths = ['/login','/login.html'];

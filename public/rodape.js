@@ -28,7 +28,7 @@ export function carregarBuild(buscar = globalThis.fetch) {
 /** A linha do rodapé. `nome` é a marca exibida: o graao, ou a da agência no painel da subconta. */
 export function rodapeHtml(nome = 'graao') {
   if (typeof document !== 'undefined') carregarBuild();
-  return `<footer class="rodape-graao"><span>© ${ano} ${esc(nome || 'graao')}. Feita no Brasil com ☕, carinho e muita API.</span><span class="rodape-build" data-rodape-build>${esc(textoBuild())}</span></footer>`;
+  return `<footer class="rodape-graao"><span>© ${ano} ${esc(nome || 'graao')}. Feito no Brasil com ☕, mordidas e muito MCP.</span><span class="rodape-build" data-rodape-build>${esc(textoBuild())}</span></footer>`;
 }
 
 if (typeof document !== 'undefined' && document.querySelector('[data-rodape-build]')) carregarBuild();

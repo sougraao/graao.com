@@ -90,9 +90,9 @@
 /* ── Início ── */
 .ma-home{width:min(680px,100%);margin:0 auto;padding:8px 16px 24px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
 .ma-home h1{font-size:26px;font-weight:800;line-height:1.2;letter-spacing:-.02em;color:var(--cm-font);overflow-wrap:anywhere}
-.ma-chips{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:0 16px;scrollbar-width:none}
-.ma-chips::-webkit-scrollbar{display:none}
-.ma-chip{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid var(--cm-border);border-radius:999px;background:var(--cm-surface);font-size:14px;font-weight:650}
+/* Atalhos: até três blocos lado a lado, ícone em cima e nome embaixo, sem nada cortado na borda da tela */
+.ma-chips{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px}
+.ma-chip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:68px;padding:10px 6px;border:1px solid var(--cm-border);border-radius:16px;background:var(--cm-surface);font-size:13px;font-weight:650;line-height:1.2;text-align:center;overflow-wrap:anywhere}
 .ma-chip svg{color:var(--ma-link)}
 .ma-chip:active{background:var(--cm-tertiary)}
 .ma-block{padding:14px 16px;display:grid;gap:6px}
@@ -137,7 +137,7 @@
   :root[data-app-mode] .inbox-shell .message-compose .inline-gap{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
   :root[data-app-mode] .inbox-shell .message-compose .inline-gap>*{flex:none;white-space:nowrap}
 }
-@media (max-width:360px){.ma-head{padding-inline:12px;gap:6px}.ma-home{padding-inline:12px}.ma-chips{margin:0 -12px;padding:0 12px}.ma-tabs :is(a,button){font-size:10.5px}}
+@media (max-width:360px){.ma-head{padding-inline:12px;gap:6px}.ma-home{padding-inline:12px}.ma-tabs :is(a,button){font-size:10.5px}}
 
 /* ── Preview in the creator: the same pieces at the size of a phone ── */
 .ma-frame{position:relative;isolation:isolate;width:375px;height:740px;overflow:hidden;display:flex;flex-direction:column;background:var(--cm-background);user-select:none}

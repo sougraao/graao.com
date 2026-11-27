@@ -1,7 +1,7 @@
 import { AUDIT_IN_DOCUMENT } from './agency-audit.mjs';
 import { usageSummary } from './ui/ai-data.js';
 import { sanitizeFiscal } from './tax-id.mjs';
-import { desktopDefaults, publishDesktop, saveDesktop } from './agency-desktop.mjs';
+import { desktopDefaults, desktopOf, publishDesktop, saveDesktop } from './agency-desktop.mjs';
 import { mobileDefaults, mobileOf, publishMobile, saveMobileLook, saveMobileStore } from './agency-mobile.mjs';
 import { createHash, randomBytes } from 'node:crypto';
 import { isAssetUrl } from './asset-store.mjs';
@@ -37,6 +37,9 @@ const previousDefaults = [
 const fail = (message, status = 400) => { throw Object.assign(new Error(message), { status }); };
 const str = (value, limit = 240) => typeof value === 'string' ? value.trim().slice(0, limit) : typeof value === 'number' ? String(value).slice(0, limit) : '';
 const req = (value, label, limit) => str(value, limit) || fail(`${label} is required.`);
+// Como a marca da agência aparece no topo do menu das subcontas: isotipo e nome, só o nome ou só o isotipo.
+export const logoDisplays = ['mark-name', 'name', 'mark'];
+const logoDisplay = (value, current) => value === undefined ? current || 'mark-name' : logoDisplays.includes(value) ? value : fail('Escolha como a marca aparece no menu: isotipo e nome, só o nome ou só o isotipo.');
 const one = (value, options, label) => options.includes(value) ? value : fail(`Choose a valid ${label}.`);
 const num = (value, label, max = 1e9) => {
   if (value === '' || value === undefined || value === null) return 0;
@@ -68,7 +71,7 @@ export const hash = text => createHash('sha256').update(text).digest('hex');
 export function blankAgency() {
   return {
     profile: { name: 'Agency', first: 'Agency', last: 'Owner', email: '', phone: '', language: platformLanguage },
-    company: { name: 'My Agency', brand: platformBrand, domain: '', website: '', phone: '', address: '', primary: defaultPrimary, secondary: defaultSecondary, accent: defaultAccent, logo: '', timezone: 'America/Sao_Paulo', currency: defaults.profile.currency },
+    company: { name: 'My Agency', brand: platformBrand, domain: '', website: '', phone: '', address: '', primary: defaultPrimary, secondary: defaultSecondary, accent: defaultAccent, logo: '', logoDisplay: 'mark-name', timezone: 'America/Sao_Paulo', currency: defaults.profile.currency },
     fiscal: null, ledgerOutbox: [],
     accounts: {}, plans: [], snapshots: [], snapshotLoads: [], ghlImports: [], prospects: [], partners: [], ideas: [], menuLinks: [], announcements: [],
     users: [], referrals: [], addonRequests: [], apiKeys: [], privateIntegrations: [], mcpGrants: [], audit: [], brandGroups: [], presentations: [], pranchetaFiles: [],
@@ -115,6 +118,7 @@ export function hydrateAgency(state, id) {
     else if (value && typeof value === 'object' && !Array.isArray(value) && !['accounts', 'integrations', 'reselling', 'systemEmails', 'labs'].includes(key)) state[key] = { ...value, ...state[key] };
   }
   mobileOf(state);
+  desktopOf(state);
   delete state.stripe;
   state.profile.language = platformLanguage;
   state.company.brand = platformBrand;
@@ -592,6 +596,7 @@ export function executeAgency(state, command, { accountIds = [], actor, sharedSn
         website: url(d.website, 'Website'), phone: str(d.phone, 48), address: str(d.address, 300), primary: color(d.primary),
         secondary: d.secondary === undefined ? state.company.secondary || defaultSecondary : color(d.secondary),
         accent: d.accent === undefined ? state.company.accent || defaultAccent : color(d.accent),
+        logoDisplay: logoDisplay(d.logoDisplay, state.company.logoDisplay),
         timezone: req(d.timezone, 'Time zone', 60), currency: defaults.profile.currency });
       if (d.logo !== undefined) state.company.logo = d.logo === 'remove' ? '' : d.logo ? image(d.logo) : state.company.logo;
       log('Company settings updated', state.company.name);
@@ -1076,7 +1081,7 @@ export function agencyOverview(agency, workspaces) {
 export function agencyForWorkspace(agency, workspace, includePermissions = false) {
   const applies = item => !item.accounts?.length || item.accounts.includes(workspace);
   return {
-    brand: platformBrand, name: agency.company.name, primary: agency.company.primary, secondary: agency.company.secondary || defaultSecondary, accent: agency.company.accent || defaultAccent, logo: agency.company.logo,
+    brand: platformBrand, name: agency.company.name, primary: agency.company.primary, secondary: agency.company.secondary || defaultSecondary, accent: agency.company.accent || defaultAccent, logo: agency.company.logo, logoDisplay: agency.company.logoDisplay || 'mark-name',
     menuLinks: agency.menuLinks.filter(l => l.showOn !== 'Agency' && applies(l)).map(({ id, title, url: href, icon, openIn }) => ({ id, title, url: href, icon, openIn })),
     announcements: agency.announcements.filter(a => a.published && applies(a)).map(({ id, title, body, tone }) => ({ id, title, body, tone })),
     users: agency.users.filter(user => String(user.role || '').startsWith('Agency') || user.accounts?.includes(workspace))

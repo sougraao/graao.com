@@ -4,52 +4,112 @@
   <meta charset="utf-8">
   <title>Importar para o graao</title>
   <style>
-    :root { --ink: #1d1b22; --muted: #6b6775; --line: #e7e4ec; --brand: #ff4f9a; --brand-ink: #fff; --bad: #c62f4a; --good: #127a52; --bg: #fff; --soft: #f7f5fa; }
-    @media (prefers-color-scheme: dark) { :root { --ink: #f2eff7; --muted: #a9a4b4; --line: #34303d; --bg: #17151c; --soft: #211e28; --bad: #ff7a90; --good: #5fd3a0; } }
+    /* Mesma identidade do app (ui/tokens.css): laranja #FF6B1A só na ação principal, cinzas neutros, escuro como padrão,
+       Plus Jakarta Sans e raios concêntricos. */
+    @font-face { font-family: "Plus Jakarta Sans"; src: url("plus-jakarta-sans.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
+    :root {
+      color-scheme: dark;
+      --ink: #f5f5f5; --ink-2: #d9d9d9; --dim: #a6a6a6;
+      --line: rgba(255,255,255,.09); --line-2: rgba(255,255,255,.15);
+      --canvas: #111111; --surface: #1c1c1c; --surface-2: #262626; --surface-3: #333333;
+      --brand-fill: #ff6b1a; --brand-fill-hover: #ff7f38; --brand-on: #1a1410; --brand-text: #ff8a4c;
+      --accent: #1fe5f0;
+      --bad: #ff8a9e; --bad-surface: rgba(255,90,120,.12); --good: #76d29b; --good-surface: rgba(118,210,155,.12);
+      --focus: 0 0 0 3px color-mix(in srgb, var(--accent) 55%, transparent);
+      --r-chip: 8px; --r-control: 12px; --r-group: 16px; --r-pill: 999px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        color-scheme: light;
+        --ink: #1a1a1a; --ink-2: #383838; --dim: #5c5c5c;
+        --line: rgba(23,23,23,.09); --line-2: rgba(23,23,23,.15);
+        --canvas: #fafafa; --surface: #ffffff; --surface-2: #f4f4f4; --surface-3: #e5e5e5;
+        --brand-text: #b8460b; --accent: #00727c;
+        --bad: #c81e4b; --bad-surface: #fdebef; --good: #157f3c; --good-surface: #eaf8ef;
+      }
+    }
     * { box-sizing: border-box; }
-    body { margin: 0; width: 340px; font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: var(--bg); }
-    header { display: flex; gap: 10px; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--line); }
-    header img { width: 28px; height: 28px; border-radius: 8px; }
-    header strong { font-size: 15px; }
-    main { padding: 14px 16px 16px; display: grid; gap: 12px; }
-    p { margin: 0; color: var(--muted); }
-    ol { margin: 0; padding-left: 18px; color: var(--muted); display: grid; gap: 4px; }
-    label { display: grid; gap: 6px; font-weight: 600; }
-    input { font: inherit; padding: 9px 11px; border: 1px solid var(--line); border-radius: 10px; background: var(--soft); color: var(--ink); }
-    #code { font: 600 20px/1 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .12em; text-align: center; text-transform: uppercase; }
-    button { font: 600 14px/1 inherit; font-family: inherit; padding: 11px 14px; border: 0; border-radius: 999px; background: var(--brand); color: var(--brand-ink); cursor: pointer; }
+    body { margin: 0; width: 360px; font: 500 13.5px/1.5 "Plus Jakarta Sans", -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: var(--canvas); -webkit-font-smoothing: antialiased; }
+    header { display: flex; gap: 12px; align-items: center; padding: 16px 18px 14px; border-bottom: 1px solid var(--line); }
+    header .logo { width: 44px; height: auto; flex: none; }
+    header strong { display: block; font-size: 15.5px; font-weight: 700; letter-spacing: -.01em; }
+    header span { display: block; color: var(--dim); font-size: 12px; }
+    main { padding: 16px 18px 18px; display: grid; gap: 14px; }
+    p { margin: 0; }
+    .dim { color: var(--dim); }
+    code { font: 600 12px ui-monospace, "SFMono-Regular", Consolas, monospace; padding: 1px 5px; border-radius: 6px; background: var(--surface-2); color: var(--ink-2); }
+    form { display: grid; gap: 14px; }
+    .steps { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 8px; color: var(--ink-2); }
+    .steps li { counter-increment: step; display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
+    .steps li::before { content: counter(step); display: grid; place-items: center; width: 22px; height: 22px; border-radius: var(--r-pill); background: var(--surface-2); border: 1px solid var(--line); color: var(--ink); font-size: 11.5px; font-weight: 700; }
+    .steps b { color: var(--ink); font-weight: 700; }
+    .label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
+    input { font: inherit; width: 100%; border: 1px solid var(--line-2); border-radius: var(--r-control); background: var(--surface-2); color: var(--ink); outline: none; transition: border-color .15s, box-shadow .15s; }
+    input::placeholder { color: var(--dim); opacity: .7; }
+    input:focus-visible { border-color: transparent; box-shadow: var(--focus); }
+    #code { height: 56px; padding: 0 14px; font: 700 23px/1 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .18em; text-align: center; text-transform: uppercase; background: var(--surface); }
+    #origin { height: 38px; padding: 0 12px; font-size: 13px; }
+    button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 42px; font-family: inherit; font-size: 14px; font-weight: 700; line-height: 1; border: 0; border-radius: var(--r-pill); background: var(--brand-fill); color: var(--brand-on); cursor: pointer; transition: background .15s, transform .1s; }
+    button:hover:not(:disabled) { background: var(--brand-fill-hover); }
+    button:active:not(:disabled) { transform: scale(.985); }
+    button:focus-visible { outline: none; box-shadow: var(--focus); }
     button:disabled { opacity: .55; cursor: default; }
-    details summary { cursor: pointer; color: var(--muted); }
-    details label { margin-top: 8px; font-weight: 500; }
-    .bar { height: 6px; border-radius: 999px; background: var(--soft); overflow: hidden; }
-    .bar span { display: block; height: 100%; width: 0; background: var(--brand); transition: width .3s; }
-    .status { min-height: 20px; }
-    .status.bad { color: var(--bad); }
-    .status.good { color: var(--good); font-weight: 600; }
+    button svg { width: 16px; height: 16px; }
+    .bar { height: 6px; border-radius: var(--r-pill); background: var(--surface-3); overflow: hidden; }
+    .bar span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--brand-fill); transition: width .3s ease; }
+    .status { min-height: 0; font-size: 12.5px; color: var(--ink-2); }
+    .status:empty { display: none; }
+    .status.bad, .status.good { padding: 10px 12px; border-radius: var(--r-control); font-weight: 600; }
+    .status.bad { color: var(--bad); background: var(--bad-surface); }
+    .status.good { color: var(--good); background: var(--good-surface); }
+    details { border-top: 1px solid var(--line); padding-top: 12px; }
+    details summary { cursor: pointer; color: var(--dim); font-size: 12.5px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 6px; }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::before { content: ""; width: 6px; height: 6px; border: solid currentColor; border-width: 0 1.5px 1.5px 0; transform: rotate(-45deg); transition: transform .15s; }
+    details[open] summary::before { transform: rotate(45deg); }
+    details summary:hover { color: var(--ink); }
+    details .where { font-weight: 500; opacity: .8; }
+    details .where:not(:empty)::before { content: "· "; }
+    details .label { margin-top: 10px; }
+    details .hint { margin-top: 6px; font-size: 11.5px; }
+    .empty { display: grid; gap: 10px; padding: 16px; border: 1px solid var(--line); border-radius: var(--r-group); background: var(--surface); color: var(--ink-2); }
+    .empty strong { color: var(--ink); font-size: 14px; }
+    .foot { display: flex; gap: 8px; align-items: center; font-size: 11.5px; color: var(--dim); }
+    .foot svg { flex: none; width: 14px; height: 14px; }
     [hidden] { display: none !important; }
   </style>
 </head>
 <body>
-  <header><img src="icon-128.png" alt=""><strong>Importar para o graao</strong></header>
+  <header>
+    <img class="logo" src="logo-gato.svg" alt="graao">
+    <div><strong>Importar do GHL</strong><span>Leve esta subconta para o graao</span></div>
+  </header>
   <main>
-    <section id="nolocation" hidden>
-      <p>Abra no GHL a subconta onde o snapshot está carregado (o endereço tem <code>/location/…</code>) e clique na extensão de novo.</p>
+    <section id="nolocation" class="empty" hidden>
+      <strong>Abra uma subconta do GHL</strong>
+      <p>Entre na subconta onde o snapshot está carregado (o endereço tem <code>/location/…</code>) e clique na extensão de novo.</p>
     </section>
     <form id="form" hidden>
-      <ol>
-        <li>No graao, em Setups de conta, clique em <strong>Importar do GHL</strong>.</li>
-        <li>Copie o código que aparece lá e cole aqui.</li>
-        <li>Deixe esta janela aberta até terminar.</li>
+      <ol class="steps">
+        <li><span>No graao, em <b>Setups de conta</b>, clique em <b>Importar do GHL</b>.</span></li>
+        <li><span>Copie o código que aparece lá e cole aqui.</span></li>
+        <li><span>Deixe esta janela aberta até terminar.</span></li>
       </ol>
-      <label>Código de importação<input id="code" autocomplete="off" spellcheck="false" maxlength="11" placeholder="XXX-XXX-XXX" required></label>
-      <details>
-        <summary>Avançado</summary>
-        <label>Endereço do graao<input id="origin" type="url" placeholder="https://graao.com"></label>
-      </details>
-      <button id="go" type="submit">Importar esta subconta</button>
+      <div>
+        <label class="label" for="code">Código de importação</label>
+        <input id="code" autocomplete="off" spellcheck="false" maxlength="11" placeholder="XXX-XXX-XXX" required>
+      </div>
+      <button id="go" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Importar esta subconta</button>
       <div class="bar" id="bar" hidden><span></span></div>
       <p class="status" id="status" role="status" aria-live="polite"></p>
+      <details>
+        <summary>Avançado <span class="where" id="where"></span></summary>
+        <label class="label" for="origin">Endereço do graao</label>
+        <input id="origin" type="url" placeholder="https://www.graao.com">
+        <p class="hint dim">Vazio: o graao de onde você baixou a extensão.</p>
+      </details>
     </form>
+    <p class="foot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Só lê o GHL: nada é criado, salvo ou apagado lá.</p>
   </main>
   <script src="popup.js"></script>
 </body>

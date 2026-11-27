@@ -40,6 +40,33 @@ export function metaInbound(body) {
   return out;
 }
 
+/** Public comments received through Page feed or Instagram comment webhooks. */
+export function metaComments(body) {
+  const network = body?.object === 'page' ? 'facebook' : body?.object === 'instagram' ? 'instagram' : '';
+  if (!network || !Array.isArray(body.entry)) return [];
+  const out = [];
+  const commentId = value => str(String(value?.comment_id ?? value?.id ?? ''), 140);
+  const validCommentId = value => /^\d{3,64}(?:_\d{3,64})?$/.test(value);
+  for (const entry of body.entry.slice(0, 50)) {
+    for (const change of Array.isArray(entry?.changes) ? entry.changes.slice(0, 50) : []) {
+      const value = change?.value || {};
+      const isFacebookComment = network === 'facebook' && change?.field === 'feed' && value.item === 'comment' && ['add', 'edited'].includes(value.verb);
+      const isInstagramComment = network === 'instagram' && ['comments', 'live_comments'].includes(change?.field);
+      if (!isFacebookComment && !isInstagramComment) continue;
+      const accountId = str(String(entry?.id ?? ''), 64), id = commentId(value);
+      const senderId = str(String(value.from?.id ?? value.sender_id ?? value.from_id ?? ''), 64);
+      const body = str(value.message ?? value.text, 4000);
+      if (!/^\d{3,64}$/.test(accountId) || !validCommentId(id) || !body || senderId === accountId) continue;
+      const handle = str(value.from?.username ?? value.username, 120).replace(/^@/, '');
+      const authorName = str(value.from?.name ?? value.from?.username ?? value.username, 120);
+      out.push({ network, accountId, commentId: id, senderId, body, authorName, handle,
+        mediaId: str(String(value.media?.id ?? value.media_id ?? value.post_id ?? value.parent_id ?? ''), 140),
+        parentId: str(String(value.parent_id ?? ''), 140) });
+    }
+  }
+  return out;
+}
+
 /** The Lead Ads submissions of a webhook body (object "page", field "leadgen"). */
 export function metaLeads(body) {
   if (body?.object !== 'page' || !Array.isArray(body.entry)) return [];
@@ -102,6 +129,23 @@ export async function sendMetaMessage({ token, pageId, recipientId, text, button
   return { sent: false, reason: metaFailure(data.error), detail: str(data.error?.message, 300) };
 }
 
+/** Replies to a public Facebook or Instagram comment from the connected business. */
+export async function sendMetaCommentReply({ token, commentId, network, text }, request = fetch) {
+  if (!token || !commentId) return { sent: false, reason: 'not_connected' };
+  const message = str(text, 1000).trim();
+  if (!message) return { sent: false, reason: 'provider_error' };
+  const edge = network === 'instagram' ? 'replies' : 'comments';
+  let response;
+  try {
+    response = await request(`https://graph.facebook.com/${graphVersion()}/${encodeURIComponent(commentId)}/${edge}?access_token=${encodeURIComponent(token)}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message }), signal: AbortSignal.timeout(15000)
+    });
+  } catch { return { sent: false, reason: 'provider_error' }; }
+  const data = await response.json().catch(() => ({}));
+  if (response.ok) return { sent: true, id: str(String(data.id ?? data.comment_id ?? ''), 200) };
+  return { sent: false, reason: metaFailure(data.error), detail: str(data.error?.message, 300) };
+}
+
 /** The sender's name, for a new contact (best effort; the profile may be private). */
 export async function metaSenderName({ token, senderId, network }, request = fetch) {
   if (!token || !senderId) return '';
@@ -114,11 +158,11 @@ export async function metaSenderName({ token, senderId, network }, request = fet
   } catch { return ''; }
 }
 
-/** Lets the page send this app its messages (Messenger and Instagram) and Lead Ads; asked when the account is connected. */
+/** Lets the page send this app Messenger, comment, Direct and Lead Ads webhooks; asked when the account is connected. */
 export async function subscribeMetaPage({ token, pageId }, request = fetch) {
   if (!token || !pageId) return false;
   try {
-    const response = await request(`https://graph.facebook.com/${graphVersion()}/${encodeURIComponent(pageId)}/subscribed_apps?subscribed_fields=messages,leadgen&access_token=${encodeURIComponent(token)}`, { method: 'POST', signal: AbortSignal.timeout(10000) });
+    const response = await request(`https://graph.facebook.com/${graphVersion()}/${encodeURIComponent(pageId)}/subscribed_apps?subscribed_fields=messages,leadgen,feed&access_token=${encodeURIComponent(token)}`, { method: 'POST', signal: AbortSignal.timeout(10000) });
     return response.ok;
   } catch { return false; }
 }

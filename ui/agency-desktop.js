@@ -2,13 +2,15 @@
 // subtitle, logo, background, illustration) with a live preview of its sign-in screen, and the Status panel
 // (publish, version, link to install). The server side is agency-desktop.mjs.
 import { icon } from './icons.js';
+import { colorPicker } from './color-picker.js';
 
 const h = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 export const desktopPresets = [
-  ['graao', 'Laranja Graao', '#100d0a', '#faf7f3', '#ff6b1a', '#100d0a'], ['rosa', 'Rosa', '#fff5fa', '#1e1821', '#b71889', '#ffffff'], ['oceano', 'Oceano', '#f0f7fc', '#0f2230', '#0e6ba8', '#ffffff'],
-  ['esmeralda', 'Esmeralda', '#f0f9f4', '#14261b', '#1f7a4d', '#ffffff'], ['ardosia', 'Ardósia', '#f4f6f8', '#1f2933', '#334e68', '#ffffff'],
-  ['rose', 'Rosé', '#fff4f5', '#2a1215', '#c2415c', '#ffffff'], ['ambar', 'Âmbar', '#fffaf0', '#2b1d07', '#b45309', '#ffffff'],
-  ['violeta', 'Violeta', '#f7f4ff', '#1f1633', '#6d28d9', '#ffffff'], ['minimal', 'Minimalista', '#ffffff', '#111111', '#111111', '#ffffff']
+  ['graao', 'Laranja Graao', '#111111', '#f5f5f5', '#ff6b1a', '#111111'], ['brasa', 'Brasa', '#fbf6f2', '#2a160b', '#c2410c', '#ffffff'],
+  ['ambar', 'Âmbar', '#fdf8ee', '#2b1d07', '#a15c07', '#ffffff'], ['esmeralda', 'Esmeralda', '#f5f8f3', '#14261b', '#1f7a4d', '#ffffff'],
+  ['oceano', 'Oceano', '#f3f8f8', '#0d2529', '#0e7490', '#ffffff'], ['violeta', 'Violeta', '#f7f4fa', '#1f1633', '#6d28d9', '#ffffff'],
+  ['rosa', 'Rosa', '#fbf4f6', '#2a1220', '#be185d', '#ffffff'], ['ardosia', 'Ardósia', '#f4f6f8', '#1f2933', '#334e68', '#ffffff'],
+  ['neon', 'Neon', '#111111', '#f5f5f5', '#1fe5f0', '#062a2d'], ['minimal', 'Minimalista', '#ffffff', '#1a1a1a', '#1a1a1a', '#ffffff']
 ];
 const tokens = [['background', 'Fundo'], ['text', 'Texto'], ['button', 'Botão'], ['buttonText', 'Texto do botão']];
 const images = [['icon', 'Ícone do app *', '1024 × 1024, PNG. Aparece na barra de tarefas e no menu iniciar.', 'image/png'], ['logo', 'Logo completo', '512 × 128. No topo da tela de entrada.', 'image/png,image/jpeg,image/webp'],
@@ -24,8 +26,8 @@ function screen(app) {
 }
 
 export function desktopPage(agency, origin, agencyId) {
-  const app = { appName: 'My Agency', title: '', subtitle: '', theme: { preset: 'graao', background: '#100d0a', text: '#faf7f3', button: '#ff6b1a', buttonText: '#100d0a' }, status: 'draft', version: 0, ...agency.desktopApp };
-  app.theme = { preset: 'graao', background: '#100d0a', text: '#faf7f3', button: '#ff6b1a', buttonText: '#100d0a', ...(agency.desktopApp?.theme || {}) };
+  const app = { appName: 'My Agency', title: '', subtitle: '', theme: { preset: 'graao', background: '#111111', text: '#f5f5f5', button: '#ff6b1a', buttonText: '#111111' }, status: 'draft', version: 0, ...agency.desktopApp };
+  app.theme = { preset: 'graao', background: '#111111', text: '#f5f5f5', button: '#ff6b1a', buttonText: '#111111', ...(agency.desktopApp?.theme || {}) };
   const link = `${origin}/desktop/${agencyId}/`;
   const steps = [Boolean(app.icon), Boolean(app.appName && app.title && app.subtitle), app.status === 'published'];
   return `<div class="page"><header class="page-head"><div><h1>Aplicativo desktop</h1><p>O app da sua agência para Windows, macOS e Linux: janela própria, seu nome e seu ícone, abrindo direto na tela de entrada com a sua marca.</p></div></header>
@@ -34,7 +36,7 @@ export function desktopPage(agency, origin, agencyId) {
       <section class="set-section"><header class="set-head"><h2>Tema</h2><p class="dim">Escolha um tema pronto ou monte o seu.</p></header><div class="set-body"><div class="dk-presets">${desktopPresets.map(([id, name, bg, fg, btn]) => `<label class="dk-preset"><input type="radio" name="preset" value="${id}" ${app.theme.preset === id ? 'checked' : ''}>
         <span style="background:${bg};color:${fg}"><i style="background:${btn}"></i>${h(name)}</span></label>`).join('')}
         <label class="dk-preset"><input type="radio" name="preset" value="custom" ${app.theme.preset === 'custom' ? 'checked' : ''}><span>${icon('edit', 13)} Personalizado</span></label></div>
-      <div class="field-grid">${tokens.map(([key, label]) => `<label>${label}<input type="color" name="${key}" value="${h(app.theme[key])}"></label>`).join('')}</div></div></section>
+      <div class="field-grid dk-colors">${tokens.map(([key, label]) => colorPicker(app.theme[key], { name: key, id: `dk-${key}-color`, label, fallback: '#111111' })).join('')}</div></div></section>
       <section class="set-section"><header class="set-head"><h2>Identidade</h2><p class="dim">O nome na barra de tarefas e os textos da tela de entrada.</p></header><div class="set-body">
       <div class="field-grid"><label>Nome do app *<input name="appName" required maxlength="50" value="${h(app.appName)}" placeholder="Ex.: Agência Norte"></label>
         <label>Domínio (opcional)<input name="domain" maxlength="200" value="${h(app.domain || '')}" placeholder="app.suaagencia.com.br"></label></div>
@@ -63,7 +65,8 @@ export function desktopPreview(form, el) {
   if (['appName', 'title', 'subtitle'].includes(el.name)) box.querySelectorAll(`[data-ad="${el.name}"]`).forEach(node => { node.textContent = el.value; });
   if (el.name === 'preset') {
     const preset = desktopPresets.find(row => row[0] === el.value);
-    if (preset) tokens.forEach(([key], i) => { form.elements[key].value = preset[2 + i]; });
+    // o seletor redesenha a amostra com o evento graao:color-sync (sem disparar input, que marcaria Personalizado)
+    if (preset) tokens.forEach(([key], i) => { const field = form.elements[key]; field.value = preset[2 + i].toUpperCase(); field.dispatchEvent(new Event('graao:color-sync')); });
   }
   if (tokens.some(([key]) => key === el.name)) { const custom = form.querySelector('[name="preset"][value="custom"]'); if (custom) custom.checked = true; }
   const vars = { background: '--bg', text: '--fg', button: '--btn', buttonText: '--btn-fg' };

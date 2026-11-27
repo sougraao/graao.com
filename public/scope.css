@@ -27,7 +27,7 @@
     radial-gradient(60% 80% at 106% 62%,color-mix(in srgb,var(--ag-pink) 34%,transparent) 0%,transparent 64%),
     radial-gradient(55% 65% at 62% -12%,color-mix(in srgb,var(--ag-purple) 26%,transparent) 0%,transparent 64%),
     radial-gradient(45% 55% at -4% -8%,color-mix(in srgb,var(--ag-blue) 22%,transparent) 0%,transparent 62%),
-    linear-gradient(120deg,#faf7f3 0%,#fbf1e8 50%,#faf7f3 100%);
+    linear-gradient(120deg,#fafafa 0%,#fbf1e8 50%,#fafafa 100%);
 }
 
 /* ───────── Workspace switchers (agency ↔ sub-accounts) ───────── */

@@ -152,6 +152,8 @@ export function mountColorPicker(root) {
   });
   slider.addEventListener('change', () => emit('change'));
   field.addEventListener('input', readHex);
+  // quem troca o valor por código (um tema pronto, por exemplo) avisa o seletor sem disparar input
+  field.addEventListener('graao:color-sync', readHex);
   field.addEventListener('blur', () => {
     readHex();
     updateField(true);
