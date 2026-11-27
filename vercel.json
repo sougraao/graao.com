@@ -4,7 +4,7 @@
   "regions": ["gru1"],
   "schedules": {
     "social-publisher": {
-      "schedule": "* * * * *",
+      "schedule": "*/15 * * * *",
       "path": "/api/social/cron",
       "requestMethod": "GET"
     }
