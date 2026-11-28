@@ -203,3 +203,26 @@ test('report says when email templates lost their images', async t => {
   const { job } = await runImport(t, { source: { ...fixture, dump: { ...fixture.dump, emailTemplates } } });
   assert.ok(job.notes.some(text => /e-mail/.test(text) && /imagens/.test(text)), job.notes.join(' | '));
 });
+
+// Segurança (auditoria, item 9, 27/11/2026): /api/ghl-import/part e /done não tinham limite, e cada pedido procura o
+// código em todas as agências. Agora, depois de 30 códigos inválidos de uma conexão em 10 minutos, ela recebe 429 antes
+// da busca. Quem manda um código válido não é contado: uma importação de verdade tem muitas partes.
+test('the 31st invalid import code from one connection gets 429, and a valid import with many parts goes through', async t => {
+  const local = await start(); t.after(local.close);
+  for (let i = 0; i < 30; i++) {
+    const wrong = await local.call('/api/ghl-import/part', { name: 'dump', index: 0, total: 1, data: '{}' }, fromExtension(`ERR-${String(i).padStart(3, '0')}-XYZ`));
+    assert.equal(wrong.status, 401, `tentativa ${i + 1}`);
+  }
+  const blocked = await local.call('/api/ghl-import/done', {}, fromExtension('ERR-999-XYZ'));
+  assert.equal(blocked.status, 429);
+  assert.match(blocked.body.error, /Muitas tentativas/);
+
+  const other = await start(); t.after(other.close);
+  const issued = await other.call('/api/agency/ghl-import-code', {});
+  const data = JSON.stringify(fixture.dump);
+  const parts = Array.from({ length: 50 }, (_, index) => data.slice(Math.floor(index * data.length / 50), Math.floor((index + 1) * data.length / 50)));
+  for (const [index, piece] of parts.entries()) {
+    const sent = await other.call('/api/ghl-import/part', { name: 'dump', index, total: parts.length, data: piece }, fromExtension(issued.body.code));
+    assert.equal(sent.status, 200, `parte ${index + 1}: ${JSON.stringify(sent.body)}`);
+  }
+});
