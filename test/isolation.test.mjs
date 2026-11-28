@@ -255,7 +255,7 @@ test('Paused public content stays readable without transactions and a closed wor
   const draft = await save('forms', { name: 'Unpublished form', active: false });
   const course = await save('courses', { name: 'Unrestricted lesson', lesson: 'First', body: 'Course material', active: true, portalOnly: false });
   const link = await save('triggerLinks', { name: 'Tracked', url: 'https://example.test/target' });
-  const file = await save('files', { name: 'media.png', data: 'data:image/png;base64,aW1hZ2U=' });
+  const file = await save('files', { name: 'media.png', data: 'data:image/png;base64,iVBORw0KGgo=' });
   const media = `/m/${workspace}/${file}`;
   assert.equal((await fetch(base + media)).status, 404);
   assert.equal((await fetch(base + media, { headers: { Cookie: `go_access=${tokenFor(ownerB)}` } })).status, 404);

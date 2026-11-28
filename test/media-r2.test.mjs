@@ -16,6 +16,9 @@ function fakeBucket() {
     if (init.method === 'DELETE') { objects.delete(key); return new Response(null, { status: 204 }); }
     const found = objects.get(key);
     if (!found) return new Response(null, { status: 404 });
+    // GET com Range: os primeiros bytes, para conferir o tipo pelo conteúdo.
+    const range = /bytes=0-(\d+)/.exec(Object.entries(init.headers || {}).find(([name]) => name.toLowerCase() === 'range')?.[1] || '');
+    if (init.method === 'GET') return new Response(range ? found.body.subarray(0, Number(range[1]) + 1) : found.body, { status: range ? 206 : 200, headers: { 'content-type': found.type } });
     return new Response(null, { status: 200, headers: { 'content-length': String(found.body.length), 'content-type': found.type } });
   };
   return { objects, r2: createR2({ accountId: account, accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'graao-arquivos', request }) };
@@ -47,7 +50,7 @@ test('Large Mídia Drive files go straight to R2 and come back through a signed 
 
   assert.equal((await post('/api/media/upload-done?workspace=demo', { token: asked.body.token })).status, 409, 'nothing in the bucket yet');
   const key = decodeURIComponent(upload.pathname.replace('/graao-arquivos/', ''));
-  objects.set(key, { body: Buffer.alloc(2_000_000), type: 'video/mp4' }); // the browser's PUT
+  objects.set(key, { body: Buffer.concat([Buffer.from('\0\0\0\x18ftypisom', 'latin1'), Buffer.alloc(2_000_000 - 12)]), type: 'video/mp4' }); // the browser's PUT
   const done = await post('/api/media/upload-done?workspace=demo', { token: asked.body.token });
   assert.equal(done.status, 201);
   const file = done.body.state.files.find(row => row.id === done.body.id);
@@ -92,7 +95,7 @@ test('Links over 700 KB are imported into R2 when it is configured', async t => 
   const requested = [];
   const { post } = await start(t, { r2, fetchMedia: async (address, options) => {
     requested.push(options.maxBytes);
-    return { status: 200, headers: { 'content-type': 'audio/mpeg' }, body: Buffer.alloc(900_000, 1), truncated: false };
+    return { status: 200, headers: { 'content-type': 'audio/mpeg' }, body: Buffer.concat([Buffer.from('ID3'), Buffer.alloc(900_000 - 3, 1)]), truncated: false };
   } });
   const imported = await post('/api/media/import?workspace=demo', { url: 'https://cdn.example/podcast.mp3' });
   assert.equal(imported.status, 200);
@@ -152,4 +155,19 @@ test('AI-generated videos are written to R2 instead of chunk rows', async t => {
   assert.equal(objects.get(video.r2Key).type, 'video/mp4');
   const served = await fetch(`${base}/m/demo/video/${video.id}`, { redirect: 'manual' });
   assert.equal(served.status, 302);
+});
+
+// Segurança (auditoria, item 12): no envio grande o navegador escolhe o tipo; o servidor lê o começo do objeto no R2.
+test('A large upload whose content does not match its type is refused and removed from R2', async t => {
+  const { objects, r2 } = fakeBucket();
+  const { post, state } = await start(t, { r2 });
+  const body = Buffer.concat([Buffer.from('<html><script>fetch("/api/state")</script>'), Buffer.alloc(1_000_000)]);
+  const asked = await post('/api/media/upload-url?workspace=demo', { name: 'foto.png', mime: 'image/png', size: body.length });
+  const key = decodeURIComponent(new URL(asked.body.uploadUrl).pathname.replace('/graao-arquivos/', ''));
+  objects.set(key, { body, type: 'image/png' });
+  const done = await post('/api/media/upload-done?workspace=demo', { token: asked.body.token });
+  assert.equal(done.status, 422);
+  assert.match(done.body.error, /não confere com o tipo/);
+  assert.equal(objects.has(key), false, 'o objeto sai do R2');
+  assert.equal((await state()).files.some(file => file.r2Key === key), false);
 });
