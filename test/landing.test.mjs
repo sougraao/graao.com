@@ -7,6 +7,12 @@ import { makeServer } from '../server.mjs';
 import { createSqliteStore } from '../storage.mjs';
 import { verifiedAgencies } from './helpers/verified-agencies.mjs';
 
+// Estes testes tratam de permissões: o membro cadastrado já aceitou o convite (o aceite está em test/convite-aceite.test.mjs).
+const acceptInvite = async (store, email) => {
+  const found = email && await store.findAgency({ users: [{ email }] });
+  if (found) await store.change(found.id, state => { for (const user of state.users) if (user.email === email) delete user.invitePending; });
+};
+
 async function start(options = { auth: null, allowLocalAccess: true }) {
   const { server, host } = makeServer({ dbPath: ':memory:', port: 0, ...options });
   await new Promise((resolve, reject) => { server.on('error', reject); server.listen(0, host, resolve); });
@@ -203,6 +209,7 @@ test('Google accounts open empty agencies and existing agency permissions still 
     data: { first: 'Bob', last: 'Test', email: bob.email, role: 'Account User', accounts: ['demo', secondAccountId], permissions: ['contacts'] }
   }, adminHeaders);
   assert.equal(membership.status, 200);
+  await acceptInvite(store, bob.email);
   const memberLogin = await oauthLogin(base, 'bob-oauth');
   const memberHeaders = { Cookie: cookies(memberLogin) };
   const memberState = await fetch(base + '/api/state?workspace=demo', { headers: memberHeaders }).then(r => r.json());
@@ -258,6 +265,7 @@ test('Users in one agency supply their own OpenAI key for Studio and agent tests
   assert.equal((await post(base, '/api/agency/action', { type: 'save', key: 'users', data: {
     first: 'Bob', last: 'Test', email: bob.email, role: 'Account User', accounts: ['demo']
   } }, aliceHeaders)).status, 200);
+  await acceptInvite(store, bob.email);
   const bobHeaders = { Cookie: cookies(await oauthLogin(base, 'bob-oauth')) };
   const connect = (apiKey, headers) => post(base, '/api/openai', { action: 'connect', apiKey }, headers);
   const state = headers => fetch(base + '/api/state', { headers }).then(res => res.json());

@@ -7,6 +7,12 @@ import { createSqliteStore } from '../storage.mjs';
 import { verifiedAgencies } from './helpers/verified-agencies.mjs';
 import { blank } from '../model.mjs';
 
+// Estes testes tratam de permissões: o membro cadastrado já aceitou o convite (o aceite está em test/convite-aceite.test.mjs).
+const acceptInvite = async (store, email) => {
+  const found = email && await store.findAgency({ users: [{ email }] });
+  if (found) await store.change(found.id, state => { for (const user of state.users) if (user.email === email) delete user.invitePending; });
+};
+
 const oauthClaims = Buffer.from(JSON.stringify({ amr: [{ method: 'oauth' }] })).toString('base64url');
 const identity = email => ({ id: randomUUID(), email, email_confirmed_at: '2026-11-18', identities: [{ provider: 'google' }] });
 const tokenFor = user => `${user.id}.${oauthClaims}.signature`;
@@ -57,6 +63,7 @@ async function start(t) {
   const agencyAction = async (user, body) => {
     const response = await call('/api/agency/action', { user, body });
     assert.equal(response.status, 200, response.body.error);
+    if (body.type === 'save' && body.key === 'users') await acceptInvite(store, body.data?.email);
     return response.body.result;
   };
   return { base, store, ownerA, ownerB, member, expired, call, createWorkspace, agencyAction };

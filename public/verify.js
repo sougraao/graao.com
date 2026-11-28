@@ -49,9 +49,21 @@ export function verifyView(state = {}, marca = domainBrand()) {
 
 const titles = { AGENCY_BLOCKED: 'Agência bloqueada', SIGNUP_CLOSED: 'Cadastro fechado', NOT_INVITED: 'Acesso não liberado' };
 
+/** Convite de uma agência no primeiro login pelo graao.com: a pessoa escolhe antes de entrar. */
+function inviteView({ agency, error } = {}) {
+  const name = esc(agency || 'Uma agência');
+  return `<section class="vf-card"><h1>${name} convidou você</h1>
+    <p>Entre como membro para trabalhar na equipe de ${name}, ou crie a sua própria agência no graao.</p>
+    ${error ? errorLine(error) : ''}
+    <button type="button" class="primary" data-vf-invite="accept">Entrar como membro</button>
+    <button type="button" class="secondary" data-vf-invite="own">Criar minha agência</button>
+  </section>`;
+}
+
 /** O que cobre o app enquanto a agência não pode usar: formulário para o dono, aviso para os outros casos. */
-export function gateView({ code, error } = {}, state = { step: 'form' }, marca = domainBrand()) {
+export function gateView({ code, error, agency } = {}, state = { step: 'form' }, marca = domainBrand()) {
   const inner = code === 'PHONE_REQUIRED' ? verifyView(state, marca)
+    : code === 'INVITE_PENDING' ? inviteView({ agency, error: state.error })
     : `<section class="vf-card"><h1>${titles[code] || 'Quase lá'}</h1><p>${esc(error)}</p></section>`;
   // White Label: no domínio da agência, o topo mostra o logotipo ou o nome dela no lugar do graao.
   const brand = !marca ? 'graao' : marca.logo ? `<img class="vf-brand-logo" src="${esc(marca.logo)}" alt="${esc(marca.name)}">` : esc(marca.name);
@@ -59,14 +71,14 @@ export function gateView({ code, error } = {}, state = { step: 'form' }, marca =
   return `<div class="vf-brand">${brand}</div>${inner}<button type="button" class="vf-logout" data-vf-logout>${leave}</button>`;
 }
 
-export function mountGate(root, { code, error, api, onDone, open = link => window.open(link, '_blank', 'noopener') }) {
+export function mountGate(root, { code, error, agency, api, onDone, open = link => window.open(link, '_blank', 'noopener') }) {
   const box = document.createElement('div');
   box.className = 'vf-gate';
   box.setAttribute('role', 'dialog');
   box.setAttribute('aria-modal', 'true');
   root.append(box);
   let state = { step: 'form' }, timer = 0, started = 0;
-  const paint = () => { box.innerHTML = gateView({ code, error }, state); box.querySelector('input,a.vf-open')?.focus(); };
+  const paint = () => { box.innerHTML = gateView({ code, error, agency }, state); box.querySelector('input,a.vf-open')?.focus(); };
   const stop = () => { clearInterval(timer); timer = 0; };
   async function poll() {
     if (Date.now() - started > LIMIT_MS) { stop(); state = { step: 'form', phone: state.phone, error: statusMessage({ status: 'expired' }) }; return paint(); }
@@ -101,6 +113,12 @@ export function mountGate(root, { code, error, api, onDone, open = link => windo
   });
   box.addEventListener('click', async event => {
     if (event.target.closest('[data-vf-reset]')) { stop(); state = { step: 'form', phone: state.phone }; paint(); }
+    const choice = event.target.closest('[data-vf-invite]')?.dataset.vfInvite;
+    if (choice && !state.busy) {
+      state = { step: 'form', busy: true };
+      try { await api(choice === 'accept' ? '/api/invite/accept' : '/api/invite/decline', {}); box.remove(); return onDone(); }
+      catch (e) { state = { step: 'form', error: e.message }; paint(); }
+    }
     if (event.target.closest('[data-vf-logout]')) {
       await fetch('/api/auth/logout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' }).catch(() => null);
       location.replace('/login');
