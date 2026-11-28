@@ -32,11 +32,23 @@ export function createGhlImportRoutes(deps) {
     try { return JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}'); } catch { throw error('Pedaço inválido da importação.', 400); }
   }
 
+  // Códigos inválidos por conexão a cada 10 minutos. Cada pedido procura o código em todas as agências: passado o limite,
+  // a conexão recebe 429 antes da busca. Código válido não conta, porque uma importação de verdade manda muitas partes.
+  const failures = new Map(), FAILURES_MAX = 30;
+  const clientIp = req => String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim().slice(0, 64);
+  const blocked = ip => { const hit = failures.get(ip); return Boolean(hit && hit.reset > Date.now() && hit.count >= FAILURES_MAX); };
+  const failed = ip => {
+    const at = Date.now(), hit = failures.get(ip);
+    if (!hit || hit.reset < at) { if (failures.size > 5000) failures.clear(); failures.set(ip, { count: 1, reset: at + 600000 }); } else hit.count += 1;
+  };
+
   /** A agência dona do código (o código vem no cabeçalho, nunca na URL). */
   async function agencyOfCode(req) {
+    const ip = clientIp(req);
+    if (blocked(ip)) throw error('Muitas tentativas com código inválido a partir desta conexão. Aguarde alguns minutos.', 429);
     const code = String(req.headers['x-graao-import-code'] || '');
     const found = code ? await store.findAgency({ ghlImports: [{ codeHash: codeHash(code) }] }) : null;
-    if (!found) throw error('Código inválido ou expirado. Gere outro no graao.', 401);
+    if (!found) { failed(ip); throw error('Código inválido ou expirado. Gere outro no graao.', 401); }
     return { code, agencyId: found.id };
   }
 
