@@ -1434,9 +1434,12 @@ export function makeServer({
     return ++hit.count <= 300;
   };
   // The sub-account's pixels (GA4, Tag Manager, Meta) on a public page: the loader tag and a CSP that allows them.
+  // O Tag Manager das subcontas só carrega nas páginas públicas com GO_PUBLIC_GTM=1: elas ficam na mesma origem do app
+  // e uma tag de HTML personalizado agiria com a sessão de quem visita (auditoria P1). GA4 e Pixel da Meta seguem.
+  const publicGtm = platformEnv.GO_PUBLIC_GTM === '1';
   const withPixels = (state, workspace, headers, body) => {
-    if (!hasPixels(state?.tracking) || typeof body !== 'string') return [headers, body];
-    return [{ ...headers, 'Content-Security-Policy': widenCsp(headers['Content-Security-Policy']) }, injectPixels(body, workspace)];
+    if (!hasPixels(state?.tracking, { gtm: publicGtm }) || typeof body !== 'string') return [headers, body];
+    return [{ ...headers, 'Content-Security-Policy': widenCsp(headers['Content-Security-Policy'], { gtm: publicGtm }) }, injectPixels(body, workspace)];
   };
   // Sends the visitor to a destination: a plain redirect, or a short page when the whole window must change (inside a
   // frame) or when the pixel needs a moment before an external address.
@@ -2419,7 +2422,7 @@ if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); wind
   const phoneRoute = createPhoneRoutes({ error, spaceId, privateSpace, phone, payload, workspaceAccess });
   const inboxRoute = createInboxRoutes({ store, error, spaceId, privateSpace, workspaceAccess });
   const whatsappRoute = createWhatsappRoutes({ messageMedia, error, spaceId, whatsapp, waha, payload, publicBase, listWorkspaces, requireActiveAccount, webhookBlockReason, access, workspaceAccess });
-  const siteRoute = createSiteRoutes({ store, ready, error, workspaceSegment, trackingPath, allowTracking, change, changeSite, flushLater, formFields, publicAccountPolicy, publicBase, siteDoc, studioGuard, trackingLog, withPixels });
+  const siteRoute = createSiteRoutes({ store, ready, error, workspaceSegment, trackingPath, allowTracking, change, changeSite, flushLater, formFields, publicAccountPolicy, publicBase, siteDoc, studioGuard, trackingLog, withPixels, publicGtm });
   const webinarRoute = createWebinarRoutes({ store, ready, error, workspaceSegment, change, payload, publicAccountPolicy, publicBase, publicPreview });
   const qrRoute = createQrRoutes({ store, ready, workspaceSegment, change, publicAccountPolicy, publicBase });
   const reputationRoute = createReputationRoutes({ store, ready, error, workspaceSegment, allowSign, change, clientPortal, flushLater, moveVideoToR2, payload, publicAccountPolicy, publicBase, sendVideo });

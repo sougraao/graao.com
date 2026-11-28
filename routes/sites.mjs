@@ -24,7 +24,7 @@ function siteVisitorOf(req, workspace) {
 export function createSiteRoutes(deps) {
   const {
     store, ready, error, workspaceSegment, trackingPath, allowTracking, change, changeSite, flushLater, formFields, publicAccountPolicy,
-    publicBase, siteDoc, studioGuard, trackingLog, withPixels
+    publicBase, siteDoc, studioGuard, trackingLog, withPixels, publicGtm = false
   } = deps;
   const templatePreviewPath = /^\/studio-template\/([a-z0-9-]{1,40})\/([a-z0-9-]{1,40})$/;
   const previewPath = new RegExp(`^/studio-preview/${workspaceSegment}/([0-9a-f-]{36})/([0-9a-f-]{36})$`);
@@ -78,7 +78,7 @@ export function createSiteRoutes(deps) {
       if (method !== 'GET' && method !== 'HEAD') throw error('Method not allowed.', 405);
       await publicAccountPolicy(workspace, false, 'sites');
       const t = trackingOf(await store.load(workspace));
-      const body = part === '/pixels.js' ? pixelsScript(t) : trackerScript(workspace, publicBase(req), t);
+      const body = part === '/pixels.js' ? pixelsScript(t, { gtm: publicGtm }) : trackerScript(workspace, publicBase(req), t);
       res.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8', 'Cache-Control': 'public, max-age=300', 'Access-Control-Allow-Origin': '*', 'Cross-Origin-Resource-Policy': 'cross-origin' });
       return res.end(method === 'HEAD' ? undefined : body);
     }
