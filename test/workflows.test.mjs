@@ -269,8 +269,10 @@ test('Social engagement automation: comment trigger with keyword executes Instag
     ]
   });
   const c = contact(s, { name: 'Lucas Silva', tags: [] });
-  execute(s, { type: 'social-interaction-trigger', data: { kind: 'comment', network: 'instagram', comment: 'Eu QUERO saber mais!', contactId: c } });
+  execute(s, { type: 'social-interaction-trigger', data: { kind: 'comment', network: 'instagram', comment: 'Eu QUERO saber mais!', contactId: c, accountId: '17841400000000001', commentId: '17900000000000001' } });
   assert.equal(runsOf(s, id).length, 1, 'social comment with keyword enrolls contact');
   assert.ok(s.messages.some(m => m.channel === 'Instagram' && m.body.includes('https://graao.app/oferta')), 'sent DM');
-  assert.ok(s.messages.some(m => m.channel === 'Instagram' && m.body.includes('[Resposta ao comentário]')), 'replied to comment');
+  const reply = s.messages.find(m => m.channel === 'Instagram' && m.publicComment);
+  assert.ok(reply && reply.body === 'Enviamos o link no seu Direct!' && reply.commentId === '17900000000000001', 'replied to comment');
+  assert.ok(s.workflowOutbox.some(item => item.kind === 'meta-comment-reply' && item.commentId === '17900000000000001' && item.accountId === '17841400000000001'), 'public reply queued for Meta');
 });
