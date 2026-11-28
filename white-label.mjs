@@ -80,6 +80,18 @@ export function hostingDomains({ token = process.env.VERCEL_API_TOKEN, project =
       if (result.ok || result.status === 404) return true;
       fail(result.body?.error?.message || 'A hospedagem não removeu o domínio antigo.', 502);
     },
+    /**
+     * Does this hosting really serve the host? Only reads: on the project, verified, and with the DNS pointing here.
+     * The Google login code goes only to such a host (routes/auth.mjs); a domain saved by an agency is not enough.
+     */
+    async serves(host) {
+      if (!configured || !host) return false;
+      const [domain, config] = await Promise.all([
+        call(`/v9/projects/${encodeURIComponent(project)}/domains/${encodeURIComponent(host)}`),
+        call(`/v6/domains/${encodeURIComponent(host)}/config`)
+      ]);
+      return domain.ok && domain.body?.verified === true && config.ok && config.body?.misconfigured === false;
+    },
     async status(host) {
       if (!host) return { domain: '', cname: whiteLabelCname, hosting: configured, verification: [] };
       if (!configured) return { domain: host, cname: whiteLabelCname, hosting: false, verification: [] };

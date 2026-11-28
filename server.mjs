@@ -2414,7 +2414,8 @@ if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); wind
   const connectorRoute = createConnectorRoutes({ store, error, spaceId, privateSpace, change, payload, publicBase, requireActiveAccount, workspaceAccess, connectorRequest });
   // White Label: a origem que o Supabase aceita na volta do Google; nos domínios das agências o código passa por ela.
   const platformOrigin = String(process.env.PLATFORM_PUBLIC_ORIGIN || process.env.PORTAL_PUBLIC_ORIGIN || process.env.SOCIAL_PUBLIC_URL || '').replace(/\/+$/, '');
-  const authRoute = createAuthRoutes({ auth, ready, error, payload, accessContext, store, platformOrigin });
+  // O repasse do login para os domínios das agências só liga com GO_AUTH_RELAY=1 e só para domínios que a hospedagem serve.
+  const authRoute = createAuthRoutes({ auth, ready, error, payload, accessContext, store, platformOrigin, hosting, relay: platformEnv.GO_AUTH_RELAY === '1' });
   const pushRoute = createPushRoutes({ error, spaceId, privateSpace, change, payload, pushEnv, access, loadAgency, workspaceAccess });
   const phoneRoute = createPhoneRoutes({ error, spaceId, privateSpace, phone, payload, workspaceAccess });
   const inboxRoute = createInboxRoutes({ store, error, spaceId, privateSpace, workspaceAccess });

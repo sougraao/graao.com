@@ -3,16 +3,23 @@
 // fechamento de makeServer (deps) e, a cada requisição, o contexto da rota (ctx). A proteção de origem dos POSTs é a do
 // servidor, antes de qualquer rota.
 import { AGENCY_ID } from '../agency-model.mjs';
+import { afterLogin } from '../auth.mjs';
 import { NEXT_ROUTE } from './next-route.mjs';
 import { isPlatformHost, requestHost, whiteLabelBrand } from '../white-label.mjs';
 
 export function createAuthRoutes(deps) {
-  const { auth, ready, error, payload, accessContext, store, platformOrigin = '' } = deps;
+  const { auth, ready, error, payload, accessContext, store, platformOrigin = '', hosting = null, relay = false } = deps;
   // White Label: o domínio salvo por uma agência (app.suaagencia.com.br). O Supabase só devolve o login para a
   // graao.com, então ali o código do Google é repassado para o domínio da agência, que conclui a entrada.
+  // Segurança: o código do Google abre a conta de quem entrou, então só vai para um domínio que esta hospedagem serve
+  // (na Vercel, verificado e com o DNS apontando para cá). Salvar um domínio não basta: ele pode apontar para um
+  // servidor de quem o salvou. O repasse fica desligado sem GO_AUTH_RELAY=1 (relay).
   const platformHost = (() => { try { return new URL(platformOrigin).host; } catch { return ''; } })();
-  const isAgencyHost = async host => Boolean(platformHost) && host !== platformHost && !isPlatformHost(host)
+  // Conferido a cada ida e a cada volta, sem cache: um DNS que deixou de apontar para cá para o repasse na hora.
+  const servedHere = async host => await Promise.resolve(hosting?.serves?.(host)).catch(() => false) === true;
+  const isWhiteLabelHost = async host => Boolean(platformHost) && host !== platformHost && !isPlatformHost(host)
     && (await ready, (await whiteLabelBrand(store, host)).name !== undefined);
+  const isAgencyHost = async host => relay === true && await isWhiteLabelHost(host) && await servedHere(host);
   // Para onde a conta abre e o nome da agência dela, com as regras de acesso da própria conta.
   async function place(req, profile, next) {
     await ready;
@@ -40,9 +47,10 @@ export function createAuthRoutes(deps) {
       return goTo(await auth.callback(req, res, url.searchParams, destination));
     }
     if (method === 'GET' && operation === 'relay') {
+      if (relay !== true) throw error('Page not found.',404);
       const host = String(url.searchParams.get('host') || '').toLowerCase();
       if (!(await isAgencyHost(host))) throw error('Este domínio não é de nenhuma agência.',400);
-      return goTo(auth.relayStart(req, res, host, url.searchParams.get('to') || ''));
+      return goTo(auth.relayStart(req, res, host, url.searchParams.get('to') || '', platformOrigin));
     }
     if (method === 'GET' && operation === 'accounts') return json(await auth.accounts(req, res, async profile => (await place(req, profile, '/app')).agency));
     if (method !== 'POST') throw error('Page not found.',404);
@@ -53,6 +61,9 @@ export function createAuthRoutes(deps) {
         const authorize = await auth.google(req, res, url.origin, input.next, { ...options, callbackOrigin: platformOrigin });
         return json({ url: `${platformOrigin}/api/auth/relay?${new URLSearchParams({ host, to: authorize })}` });
       }
+      // Sem repasse (desligado ou domínio que a hospedagem não serve), o login do Google no domínio da agência não
+      // tem como voltar para cá: a entrada acontece no graao.com.
+      if (await isWhiteLabelHost(host)) return json({ url: `${platformOrigin}/login?${new URLSearchParams({ next: afterLogin(input.next) })}` });
       return json({ url: await auth.google(req, res, url.origin, input.next, options) });
     }
     if (operation === 'switch') {
