@@ -42,7 +42,7 @@ function orderDetail(c, row) {
       ${order.phone ? `<p>Telefone: ${h(order.phone)}</p>` : ''}${order.note ? `<p><b>Observação:</b> <span data-no-translate="1">${h(order.note)}</span></p>` : ''}<p class="dim">Feito em ${h(fmt(order.created, zone, true))}.</p><p><a class="text-link" href="#payments/invoices">Ver fatura</a></p></div>
     <form class="st-order-form" data-or-form="${h(order.id)}"><h3>Andamento</h3><label>Status<select name="status"${order.status === 'Cancelled' ? ' disabled' : ''}>${Object.entries(orderStatusNames).map(([status, [label]]) => `<option value="${status}"${order.status === status ? ' selected' : ''}>${label}</option>`).join('')}</select></label>
       <label>Código de rastreio<input name="tracking" value="${h(order.tracking || '')}" maxlength="120"></label><button class="primary"${order.status === 'Cancelled' ? ' disabled' : ''}>Salvar andamento</button>
-      <p class="dim">Pago fecha a fatura e registra a transação. Entregue dispara o gatilho “Pedido entregue”. Cancelado devolve o estoque e anula a fatura.</p></form></div>`;
+      <p class="dim">Pago fecha a fatura e registra a transação. Entregue dispara o gatilho “Pedido entregue”. Cancelado devolve o estoque e o cupom e anula a fatura.</p></form></div>`;
 }
 
 function ordersScreen(c) {

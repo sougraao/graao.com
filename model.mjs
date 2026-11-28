@@ -19,7 +19,7 @@ import { adCollections, adDefaults, adSettingsOf, attributionSnapshot, recordAtt
 import { socialBeforeDelete, socialCollections, socialCommand, socialFields, workflowPost } from './social-model.mjs';
 import { chatBeforeDelete, chatCollections, chatCommand, chatFields } from './chat-model.mjs';
 import { blogBeforeDelete, blogCollections, blogFields, blogView } from './blog-model.mjs';
-import { storeAfterSave, storeBeforeDelete, storeCheckout, storeCollections, storeFields } from './store-model.mjs';
+import { expiredOrders, orderPaidLate, storeAfterSave, storeBeforeDelete, storeCheckout, storeCollections, storeFields } from './store-model.mjs';
 import { webinarBeforeDelete, webinarCollections, webinarCommand, webinarFields } from './webinar-model.mjs';
 import { qrCollections, qrFields, qrScan } from './qr-model.mjs';
 import { mediaBeforeDelete, mediaCollections as driveCollections, mediaCommand, mediaCommandTypes, mediaFields as driveFields, mediaFile, mediaKind, storedFile } from './media-model.mjs';
@@ -678,6 +678,17 @@ function executeCommand(s, command, { workspace = 'demo', trackClick = true } = 
   if (typeof type === 'string' && type.startsWith('catalog-')) return catalogCommand(s, { ...command, data:d }, { workspace });
   if (type === 'store-cart-restore') return restoreCart(s, id, str(d.tokenHash, 64));
   if (type === 'checkout-tick') return checkoutTick(s, d.at ? Date.parse(d.at) : Date.now(), { workspace, run, add });
+  // Só do servidor (cron e webhook): não estão em authorization.mjs, então /api/action recusa.
+  if (type === 'store-orders-expire') {
+    const due = expiredOrders(s, d.at ? Date.parse(d.at) : Date.now());
+    for (const orderId of due) {
+      const order = find(s, 'orders', orderId);
+      executeCommand(s, { type: 'save', key: 'orders', id: orderId, data: { id: orderId, status: 'Cancelled', note: order.note, tracking: order.tracking } }, { workspace });
+      find(s, 'orders', orderId).expiredAt = new Date().toISOString();
+    }
+    return due.length;
+  }
+  if (type === 'store-order-paid-late') return orderPaidLate(s, id, run);
   if (typeof type === 'string' && type.startsWith('checkout-')) return checkoutCommand(s, { ...command, data:d }, { workspace });
   if (['webinar-register','webinar-attend','webinar-reminders'].includes(type)) return webinarCommand(s, { ...command, data:d }, { add, run, now });
   if (type === 'qr-scan') return qrScan(s, id, d);

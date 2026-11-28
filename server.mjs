@@ -91,6 +91,7 @@ import { mapsEmbedKey, placeSummaries, placesConfigured, placesSearch } from './
 import { isGooglePlace } from './ui/prospect-report.js';
 import { osmLookup, osmSearch } from './prospecting-osm.mjs';
 import { adsConfigured, changeMetaAudience, freshAdsSecret, sendMetaEvents, sendGa4Event, syncAds, uploadGoogleConversion } from './ads-providers.mjs';
+import { expiredOrders } from './store-model.mjs';
 import { hasPixels, injectPixels, widenCsp } from './tracking.mjs';
 import { createTrackingLog } from './tracking-events.mjs';
 import { scopedReads } from './read-scope.mjs';
@@ -1453,6 +1454,18 @@ export function makeServer({
     if (!hit || hit.reset < at) { if (signHits.size > 5000) signHits.clear(); signHits.set(ip, { count: 1, reset: at + 600000 }); return true; }
     return ++hit.count <= 120;
   };
+  // Compras públicas (checkout da loja, link de pagamento) e o cálculo do carrinho, por conexão a cada 10 minutos. Cada
+  // compra prende estoque, gasta cupom, cria contato e fatura e abre cobrança; o cálculo diz se um cupom existe.
+  // Contadores próprios: os do carrinho (allowSign) não somam aqui.
+  const windowLimit = max => {
+    const hits = new Map();
+    return ip => {
+      const at = Date.now(), hit = hits.get(ip);
+      if (!hit || hit.reset < at) { if (hits.size > 5000) hits.clear(); hits.set(ip, { count: 1, reset: at + 600000 }); return true; }
+      return ++hit.count <= max;
+    };
+  };
+  const allowPurchase = windowLimit(20), allowQuote = windowLimit(30);
   const callbackPath = provider => `/api/social/callback/${provider === 'instagram' ? 'facebook' : provider}`;
   const validateInvite = (row, key) => {
     const invite = row.invite;
@@ -1985,6 +1998,14 @@ export function makeServer({
   }
   // Abandoned checkouts: open carts idle for longer than the configured wait become abandoned (contact,
   // workflow trigger and recovery e-mail).
+  // Pedidos pagos online que passaram do prazo sem pagamento são cancelados (store-model.mjs, expiredOrders).
+  async function runExpiredOrders(workspace, at = Date.now()) {
+    const state = await store.load(workspace);
+    if (!expiredOrders(state, at).length) return 0;
+    const count = (await change(workspace, { type: 'store-orders-expire', data: { at: new Date(at).toISOString() } })).id || 0;
+    if (count) await flushWorkflows(workspace);
+    return count;
+  }
   async function runAbandonedCheckouts(workspace, at = Date.now()) {
     const state = await store.load(workspace);
     const limit = at - abandonedOf(state).afterMinutes * 60000;
@@ -2144,6 +2165,7 @@ export function makeServer({
       } catch (e) { console.error(`Livro (${w.id}): ${e.message}`); }
       try { await runRecurringInvoices(w.id); } catch (e) { console.error(`Recurring invoices (${w.id}): ${e.message}`); }
       try { await runAbandonedCheckouts(w.id); } catch (e) { console.error(`Abandoned checkouts (${w.id}): ${e.message}`); }
+      try { await runExpiredOrders(w.id); } catch (e) { console.error(`Expired orders (${w.id}): ${e.message}`); }
       try { await runEmailCampaigns(w.id); } catch (e) { console.error(`E-mail campaigns (${w.id}): ${e.message}`); }
       try { await runAllAds(w.id); } catch (e) { console.error(`Ads (${w.id}): ${e.message}`); }
     }, { concurrency: cronConcurrency, budgetMs: cronBudgetMs, start: Math.floor(at / 60_000) });
@@ -2388,14 +2410,14 @@ if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); wind
   const billingRoute = createBillingRoutes({ abacate, accessContext, verifiedUser, canOpen, changeAgency, recordAudit, error, pausedError, publicBase, retryPolicyOf, spaceId,
     store, access, requireCapability, workspaceAccess, listWorkspaces });
   const storePageRoute = createStorePageRoutes({ store, ready, error, publicAccountPolicy, publicPreview, storePath, withPixels });
-  const storeApiRoute = createStoreApiRoutes({ store, ready, error, abacate, allowSign, allowTracking, change, flushLater, payload, publicAccountPolicy, publicBase, storeApi });
+  const storeApiRoute = createStoreApiRoutes({ store, ready, error, abacate, allowSign, allowTracking, allowPurchase, allowQuote, change, flushLater, payload, publicAccountPolicy, publicBase, storeApi });
   const pranchetaRoute = createPranchetaRoutes({ store, error, access, change, changeAgency, loadAgency, payload, requireActiveAccount, workspaceAccess });
   const portalRoute = createPortalRoutes({ store, auth, ready, root, error, portalApi, portalPage, abacate, change, clientPortal, community, flushLater, grantOffer, payload, publicAccountPolicy, publicBase, requireActiveAccount, workspaceAccess });
   const documentRoute = createDocumentRoutes({ store, ready, root, error, workspaceSegment, abacate, allowSign, change, flushLater, payload, publicAccountPolicy, publicBase });
   const affiliateRoute = createAffiliateRoutes({ store, ready, error, workspaceSegment, allowSign, change, flushLater, payload, publicAccountPolicy, publicBase, referralsOf });
   const offerPageRoute = createOfferPageRoutes({ store, ready, error, workspaceSegment, clientPortal, publicAccountPolicy, withPixels });
   const offerApiRoute = createOfferApiRoutes({ store, ready, error, workspaceSegment, abacate, change, grantOffer, payload, publicAccountPolicy, publicBase });
-  const paymentLinkRoute = createPaymentLinkRoutes({ store, ready, error, workspaceSegment, abacate, change, payload, publicAccountPolicy, publicBase, clientPortal, withPixels });
+  const paymentLinkRoute = createPaymentLinkRoutes({ store, ready, error, workspaceSegment, abacate, allowPurchase, change, payload, publicAccountPolicy, publicBase, clientPortal, withPixels });
   const bookingRoute = createBookingRoutes({ store, ready, error, workspaceSegment, allowSign, change, flushLater, formBody, leave, publicAccountPolicy, withPixels });
   const preferenceRoute = createPreferenceRoutes({ store, ready, error, workspaceSegment, change, flushLater, formBody, publicAccountPolicy });
   const agencyAppRoute = createAgencyAppRoutes({ store, auth, ready, error, loadAgency });

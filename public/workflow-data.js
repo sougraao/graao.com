@@ -290,6 +290,7 @@ export const triggerCatalog = [
     { type: 'order_submitted', label: 'Pedido feito na loja', icon: 'box', fields: [f('storeId', 'Loja', 'ref', { source: 'stores', empty: 'Qualquer loja' })] },
     { type: 'order_paid', label: 'Pedido pago', icon: 'box', fields: [f('storeId', 'Loja', 'ref', { source: 'stores', empty: 'Qualquer loja' })] },
     { type: 'order_fulfilled', label: 'Pedido entregue', icon: 'box', fields: [f('storeId', 'Loja', 'ref', { source: 'stores', empty: 'Qualquer loja' })] },
+    { type: 'order_paid_late', label: 'Pedido pago depois de expirar', icon: 'box', fields: [f('storeId', 'Loja', 'ref', { source: 'stores', empty: 'Qualquer loja' })] },
     { type: 'product_review', label: 'Avaliação de produto enviada', icon: 'star', fields: [f('storeId', 'Loja', 'ref', { source: 'stores', empty: 'Qualquer loja' }),
       f('rating', 'Quando a nota for', 'select', { options: [any('Qualquer nota'), ['2', '2 estrelas ou menos'], ['3', '3 estrelas ou menos']] })] },
     { type: 'abandoned_checkout', label: 'Checkout abandonado', icon: 'box', fields: [f('storeId', 'Loja', 'ref', { source: 'stores', empty: 'Qualquer loja' }),

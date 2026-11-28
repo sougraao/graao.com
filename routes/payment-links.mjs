@@ -5,7 +5,7 @@ import { paymentLinkCsp, paymentLinkPath, renderPaymentLinkPage, sellableLink } 
 import { NEXT_ROUTE } from './next-route.mjs';
 
 export function createPaymentLinkRoutes(deps) {
-  const { store, ready, error, workspaceSegment, abacate, change, payload, publicAccountPolicy, publicBase, clientPortal, withPixels } = deps;
+  const { store, ready, error, workspaceSegment, abacate, allowPurchase = () => true, change, payload, publicAccountPolicy, publicBase, clientPortal, withPixels } = deps;
   const pagePath = new RegExp(`^/pagar/${workspaceSegment}/([0-9a-f-]{36})/?$`);
   const apiPath = new RegExp(`^/api/pagar/${workspaceSegment}/([0-9a-f-]{36})$`);
   const sellable = (state, linkId) => {
@@ -31,6 +31,9 @@ export function createPaymentLinkRoutes(deps) {
       await ready;
       if (method !== 'POST') throw error('Method not allowed.', 405);
       const [, workspace, linkId] = api;
+      // Cada compra abre fatura, contato e cobrança na AbacatePay: no máximo 20 por conexão a cada 10 minutos.
+      const ip = String(req.headers?.['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim().slice(0, 64);
+      if (!allowPurchase(ip)) throw error('Muitas tentativas a partir desta conexão. Aguarde alguns minutos.', 429);
       const input = await payload(req);
       await publicAccountPolicy(workspace, true, 'payments');
       const current = await store.load(workspace);

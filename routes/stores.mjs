@@ -39,8 +39,9 @@ export function createStorePageRoutes(deps) {
 
 export function createStoreApiRoutes(deps) {
   const {
-    store, ready, error, abacate, allowSign, allowTracking, change, flushLater, payload, publicAccountPolicy, publicBase, storeApi
+    store, ready, error, abacate, allowSign, allowTracking, allowPurchase = () => true, allowQuote = () => true, change, flushLater, payload, publicAccountPolicy, publicBase, storeApi
   } = deps;
+  const clientIp = req => String(req.headers?.['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim().slice(0, 64);
   return async function storeApiRoute({ req, p, method, json }) {
     const storeCall = p.match(storeApi);
     if (storeCall) {
@@ -74,12 +75,14 @@ export function createStoreApiRoutes(deps) {
         return json((await change(workspace,{ type:'store-cart-restore', id:storeId, data:{ tokenHash:digest } })).id);
       }
       if (op === 'quote') {
+        if (!allowQuote(clientIp(req))) throw error('Muitas tentativas a partir desta conexão. Aguarde alguns minutos.',429);
         const state = await store.load(workspace);
         const shop = state.stores?.find(item => item.id === storeId && item.active);
         if (!shop) throw error('Esta loja não está aberta.',404);
         const { coupon_, giftCard_, ...quote } = quoteOrder(state, shop, input);
         return json(quote);
       }
+      if (!allowPurchase(clientIp(req))) throw error('Muitas tentativas a partir desta conexão. Aguarde alguns minutos.',429);
       const result = await change(workspace,{ type:'store-checkout', id:storeId, data:input });
       const order = result.state.orders.find(item => item.id === result.id), shop = result.state.stores.find(item => item.id === storeId);
       let payUrl = '';

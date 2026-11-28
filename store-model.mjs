@@ -72,8 +72,34 @@ export function storeAfterSave(s, key, prior, row, add) {
   if (row.status === 'Cancelled') {
     if (invoice && invoice.status !== 'Paid') invoice.status = 'Void';
     for (const line of row.items) { const item = store?.items.find(entry => entry.productId === line.productId); if (item && item.stock !== null) item.stock += line.qty; }
+    // O uso do cupom volta com o estoque: um pedido cancelado não gasta o limite do cupom.
+    const coupon = row.coupon && s.coupons.find(item => item.code === row.coupon);
+    if (coupon && coupon.redemptions > 0) coupon.redemptions -= 1;
     row.cancelledAt = new Date().toISOString();
   }
+}
+
+// Pedido pago online que fica sem pagamento é cancelado depois deste tempo, devolvendo estoque, cupom e cartão-presente.
+export const ORDER_EXPIRY_MINUTES = 60;
+
+/** Pedidos online pendentes há mais de ORDER_EXPIRY_MINUTES e com a fatura ainda sem pagamento. */
+export function expiredOrders(s, at = Date.now()) {
+  const limit = at - ORDER_EXPIRY_MINUTES * 60000;
+  return (s.orders || []).filter(order => order.status === 'Pending' && order.online === true && Date.parse(order.created) <= limit
+    && s.invoices.find(item => item.id === order.invoiceId)?.status !== 'Paid').map(order => order.id);
+}
+
+/**
+ * O pagamento de um pedido que já expirou chegou (a cobrança da AbacatePay continua aberta depois da expiração): o pedido
+ * fica cancelado, com o aviso na observação e o gatilho "Pedido pago depois de expirar", para a equipe enviar ou estornar.
+ */
+export function orderPaidLate(s, id, run) {
+  const order = s.orders.find(row => row.id === id);
+  if (!order || order.status !== 'Cancelled' || !order.expiredAt || order.paidLateAt) return false;
+  order.paidLateAt = new Date().toISOString();
+  order.note = str(`${order.note ? `${order.note}\n` : ''}Pago depois de expirar. Confira o estoque e envie o pedido ou estorne o pagamento.`, 1000);
+  run(s, 'order_paid_late', { contactId: order.contactId, storeId: order.storeId, total: order.total });
+  return true;
 }
 
 function couponFor(s, code, subtotal) {
@@ -147,7 +173,10 @@ export function storeCheckout(s, command, { add, run }) {
   const number = s.orders.reduce((max, order) => Math.max(max, order.number || 0), 1000) + 1;
   const invoice = add(s, 'invoices', { title: `Pedido #${number} · ${store.name}`, contactId: contact.id, value: quote.total, due: today(), status: 'Open' });
   const { coupon_, giftCard_, ...totals } = quote;
-  const order = add(s, 'orders', { storeId: store.id, number, contactId: contact.id, name, email, phone, ...totals, items: quote.lines, address, note: str(d.note, 500), status: 'Pending', invoiceId: invoice.id, tracking: '' });
+  // online: pago pela AbacatePay. Só esses expiram sem pagamento (expiredOrders); Pix manual, transferência e dinheiro
+  // esperam a baixa da equipe.
+  const order = add(s, 'orders', { storeId: store.id, number, contactId: contact.id, name, email, phone, ...totals, items: quote.lines, address, note: str(d.note, 500), status: 'Pending', invoiceId: invoice.id, tracking: '',
+    online: store.payment.method === 'AbacatePay' });
   if (s.orders.length > 20000) s.orders.splice(0, s.orders.length - 20000);
   moveInventory(s, quote.lines, -1, `Pedido #${number}`);
   redeemGiftCard(s, giftCard_, quote.giftCardAmount, order);
