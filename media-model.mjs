@@ -21,9 +21,33 @@ export const mediaMime = data => String(data || '').slice(5, String(data || '').
 export const r2KeysOf = files => new Set((files || []).map(file => file.r2Key).filter(Boolean));
 export const mediaKind = data => mediaTypes[mediaMime(data)] || 'other';
 
+// Segurança (auditoria, item 12): o tipo vem do navegador, então o começo do arquivo precisa bater com ele. Um HTML
+// enviado como image/png é recusado. TXT e CSV não têm assinatura e seguem como antes.
+const startsWith = (bytes, ...values) => values.every((value, at) => value === null || bytes[at] === value);
+const ascii = (bytes, at, text) => bytes.subarray(at, at + text.length).toString('latin1') === text;
+const signatures = {
+  'image/png': b => startsWith(b, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a),
+  'image/jpeg': b => startsWith(b, 0xff, 0xd8, 0xff),
+  'image/gif': b => ascii(b, 0, 'GIF87a') || ascii(b, 0, 'GIF89a'),
+  'image/webp': b => ascii(b, 0, 'RIFF') && ascii(b, 8, 'WEBP'),
+  'video/mp4': b => ascii(b, 4, 'ftyp'),
+  'video/webm': b => startsWith(b, 0x1a, 0x45, 0xdf, 0xa3),
+  'audio/mpeg': b => ascii(b, 0, 'ID3') || (b[0] === 0xff && (b[1] & 0xe0) === 0xe0),
+  'audio/wav': b => ascii(b, 0, 'RIFF') && ascii(b, 8, 'WAVE'),
+  'audio/ogg': b => ascii(b, 0, 'OggS'),
+  'application/pdf': b => ascii(b, 0, '%PDF-')
+};
+/** Quantos bytes do começo do arquivo bastam para conferir o tipo. */
+export const SIGNATURE_BYTES = 16;
+/** O começo do arquivo (Buffer) confere com o tipo declarado? */
+export const bytesMatch = (mime, head) => signatures[mime] ? signatures[mime](Buffer.from(head || [])) : Boolean(mediaTypes[mime]);
+const wrongBytes = 'O conteúdo do arquivo não confere com o tipo dele. Envie o arquivo original, sem trocar a extensão.';
+
 export function mediaFile(value) {
   const type = typeof value === 'string' && value.length <= 1_000_000 && value.match(dataPattern)?.[1];
   if (!type || !mediaTypes[type]) fail('Escolha um arquivo de imagem, vídeo, áudio, PDF, TXT ou CSV de até 700 KB.');
+  const start = value.indexOf(',') + 1;
+  if (!bytesMatch(type, Buffer.from(value.slice(start, start + 24), 'base64'))) fail(wrongBytes, 422);
   return value;
 }
 
@@ -44,7 +68,8 @@ export const mediaFields = {
     return {
       name: str(d.name ?? prior?.name, 240) || fail('Dê um nome ao arquivo.'),
       // A file kept in R2 has no inline data; its object key, type and size never change after upload.
-      data: prior?.r2Key ? '' : d.data === undefined && prior ? prior.data : mediaFile(d.data),
+      // Só um conteúdo novo é conferido: renomear ou mover um arquivo salvo antes continua funcionando.
+      data: prior?.r2Key ? '' : prior && (d.data === undefined || d.data === prior.data) ? prior.data : mediaFile(d.data),
       folderId: d.folderId === undefined ? prior?.folderId || '' : folderParent(s, d.folderId),
       trashedAt: prior?.trashedAt || ''
     };
@@ -107,6 +132,7 @@ export function importedMeta(response, address, limit = mediaLimitBytes) {
   const declared = Number(response.headers['content-length']);
   if (response.truncated || response.body.length > limit || declared > limit) fail(`O arquivo tem mais de ${limit === mediaLimitBytes ? '700 KB' : `${Math.round(limit / 1024 / 1024)} MB`}.`, 413);
   if (!response.body.length) fail('O arquivo está vazio.', 422);
+  if (!bytesMatch(type, response.body.subarray(0, SIGNATURE_BYTES))) fail(wrongBytes, 422);
   let name = '';
   try { name = decodeURIComponent(new URL(address).pathname.split('/').filter(Boolean).pop() || ''); } catch { /* keep fallback */ }
   return { name: str(name, 240) || 'arquivo-importado', mime: type };

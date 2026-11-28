@@ -45,7 +45,7 @@ test('Files rename and move without resending data, go to trash, restore and emp
 test('Only supported media types are stored', () => {
   const s = blank();
   assert.throws(() => save(s, 'files', { name: 'x.svg', data: 'data:image/svg+xml;base64,PHN2Zz4=' }), /arquivo/);
-  for (const data of ['data:video/mp4;base64,AAAA', 'data:text/csv;base64,YSxi', 'data:application/pdf;base64,JVBE']) save(s, 'files', { name: 'ok', data });
+  for (const data of ['data:video/mp4;base64,AAAAGGZ0eXBpc29t', 'data:text/csv;base64,YSxi', 'data:application/pdf;base64,JVBERi0=']) save(s, 'files', { name: 'ok', data });
   assert.deepEqual(s.files.map(f => mediaKind(f.data)), ['video', 'doc', 'doc']);
 });
 
@@ -66,9 +66,9 @@ test('Older workspaces gain media folders and trash commands need the media modu
 });
 
 test('URL imports keep the remote type and name, and refuse pages and oversized files', () => {
-  const ok = importedFile({ status: 200, headers: { 'content-type': 'image/png; charset=binary' }, body: Buffer.from('png'), truncated: false },
+  const ok = importedFile({ status: 200, headers: { 'content-type': 'image/png; charset=binary' }, body: Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]), truncated: false },
     'https://cdn.example/fotos/Logo%20Final.png?v=2');
-  assert.deepEqual(ok, { name: 'Logo Final.png', data: 'data:image/png;base64,cG5n' });
+  assert.deepEqual(ok, { name: 'Logo Final.png', data: 'data:image/png;base64,iVBORw0KGgo=' });
   assert.throws(() => importedFile({ status: 200, headers: { 'content-type': 'text/html' }, body: Buffer.from('<html>') }, 'https://youtube.com/watch'), /link direto/);
   assert.throws(() => importedFile({ status: 200, headers: { 'content-type': 'image/png' }, body: Buffer.alloc(10), truncated: true }, 'https://a.example/x.png'), /700 KB/);
   assert.throws(() => importedFile({ status: 404, headers: {}, body: Buffer.alloc(0) }, 'https://a.example/x.png'), /404/);
@@ -96,4 +96,29 @@ test('Upload URL imports a remote file into the chosen folder through the media 
   assert.deepEqual([file.name, file.folderId, file.data], ['anim.gif', folder.body.id, 'data:image/gif;base64,R0lGODlh']);
   assert.deepEqual(requested, [['https://cdn.example/a/anim.gif', 700_001]]);
   assert.equal((await post('/api/media/import?workspace=demo', { url: 42 })).status, 400);
+});
+
+// Segurança (auditoria, item 12, 27/11/2026): o tipo do arquivo vinha só do navegador. Agora o começo do arquivo precisa
+// bater com ele, no envio direto, na importação por link e no envio grande para o R2 (test/media-r2.test.mjs).
+const html = `data:image/png;base64,${Buffer.from('<html><script>alert(1)</script>').toString('base64')}`;
+
+test('A file whose content does not match its type is refused, inline and by link', () => {
+  const s = blank('Bytes');
+  assert.throws(() => save(s, 'files', { name: 'foto.png', data: html }), /não confere com o tipo/);
+  assert.throws(() => execute(s, { type: 'portal-file', data: { name: 'foto.png', data: html, email: 'ana@exemplo.com' } }), /não confere com o tipo/);
+  assert.throws(() => importedFile({ status: 200, headers: { 'content-type': 'image/png' }, body: Buffer.from('<html>oi</html>'), truncated: false }, 'https://a.example/x.png'), /não confere com o tipo/);
+  for (const data of [png, mp3, 'data:image/jpeg;base64,/9j/4AAQ', 'data:image/gif;base64,R0lGODlh', 'data:image/webp;base64,UklGRiQAAABXRUJQ', 'data:audio/ogg;base64,T2dnUw==',
+    'data:audio/wav;base64,UklGRiQAAABXQVZF', 'data:video/webm;base64,GkXfow==', 'data:text/plain;base64,b2k='])
+    save(s, 'files', { name: 'ok', data });
+});
+
+test('Files saved before the check can still be renamed and moved', () => {
+  const s = blank('Antigo');
+  const id = save(s, 'files', { name: 'foto.png', data: png });
+  const row = s.files.find(file => file.id === id);
+  row.data = html;   // gravado antes desta conferência
+  save(s, 'files', { ...row, name: 'foto antiga.png' }, id);
+  save(s, 'files', { name: 'só o nome.png' }, id);
+  assert.equal(s.files.find(file => file.id === id).name, 'só o nome.png');
+  assert.throws(() => save(s, 'files', { name: 'novo.png', data: `data:image/png;base64,${Buffer.from('<svg/>').toString('base64')}` }, id), /não confere com o tipo/);
 });

@@ -4,7 +4,7 @@
 // de makeServer (deps) e, a cada requisição, o contexto da rota (ctx).
 import { ASSET_PATH, assetBytes } from '../asset-store.mjs';
 import { requireWorkspaceCommand, workspaceView } from '../authorization.mjs';
-import { importedFile, importedMeta, mediaLimitBytes, mediaTypes } from '../media-model.mjs';
+import { bytesMatch, importedFile, importedMeta, mediaLimitBytes, mediaTypes, SIGNATURE_BYTES } from '../media-model.mjs';
 import { uid } from '../model.mjs';
 import { R2_MAX_BYTES } from '../r2-storage.mjs';
 import { NEXT_ROUTE } from './next-route.mjs';
@@ -90,6 +90,11 @@ export function createDriveRoutes(deps) {
       if (stored.size !== ticket.s || stored.type !== ticket.m) {
         await r2.remove(ticket.k).catch(() => {});
         throw error('O arquivo enviado não confere com o que foi pedido. Tente de novo.', 422);
+      }
+      // O tipo veio do navegador: o começo do arquivo precisa bater com ele (um HTML como image/png é apagado).
+      if (!bytesMatch(ticket.m, await r2.start(ticket.k, SIGNATURE_BYTES))) {
+        await r2.remove(ticket.k).catch(() => {});
+        throw error('O conteúdo do arquivo não confere com o tipo dele. Envie o arquivo original, sem trocar a extensão.', 422);
       }
       let result;
       try { result = await change(id, { type:'media-stored', data:{ id: ticket.i, r2Key: ticket.k, mime: ticket.m, size: ticket.s, name: ticket.n, folderId: ticket.f } }); }

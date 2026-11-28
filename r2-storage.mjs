@@ -77,6 +77,13 @@ export function createR2({ accountId, accessKeyId, secretAccessKey, bucket, juri
       if (!response.ok) throw fail(`O R2 não respondeu sobre o arquivo (${response.status}).`, 502);
       return { size: Number(response.headers.get('content-length')), type: String(response.headers.get('content-type') || '').split(';')[0].trim().toLowerCase() };
     },
+    /** Os primeiros `bytes` do objeto (para conferir o tipo pelo conteúdo); null quando não existe. */
+    async start(key, bytes = 16) {
+      const response = await call('GET', pathOf(key), { headers: { range: `bytes=0-${bytes - 1}` } });
+      if (response.status === 404) return null;
+      if (!response.ok) throw fail(`O R2 não respondeu sobre o arquivo (${response.status}).`, 502);
+      return Buffer.from(await response.arrayBuffer()).subarray(0, bytes);
+    },
     async remove(key) {
       const response = await call('DELETE', pathOf(key));
       if (!response.ok && response.status !== 404) throw fail(`O R2 não apagou o arquivo (${response.status}).`, 502);
