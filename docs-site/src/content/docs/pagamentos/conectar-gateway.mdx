@@ -43,6 +43,15 @@ Não. Cada subconta recebe na conta AbacatePay que ela mesma conectou.
 **Dá para testar antes de cobrar de verdade?**
 Sim. Conecte com a chave do modo teste da AbacatePay; depois troque pela chave de produção.
 
+**O que acontece com um pedido da loja que ninguém pagou?**
+Na loja com pagamento pela AbacatePay, o pedido que passa 60 minutos sem pagamento é cancelado sozinho. O estoque, o uso do cupom e o saldo do cartão-presente voltam. Pedidos com Pix manual, transferência, dinheiro ou pagamento manual não expiram: eles esperam a sua baixa.
+
+**E se o cliente pagar depois que o pedido expirou?**
+A fatura fica paga e o pedido continua cancelado, com o aviso "Pago depois de expirar" na observação. Para ser avisado na hora, crie um fluxo com o gatilho **Pedido pago depois de expirar**, por exemplo para mandar uma mensagem à equipe. Confira o estoque e envie o pedido ou estorne o pagamento na AbacatePay.
+
+**Por que um cliente viu "Muitas tentativas a partir desta conexão"?**
+Para barrar robôs, a loja e o link de pagamento aceitam até 20 compras por conexão a cada 10 minutos, e o carrinho calcula até 30 vezes no mesmo intervalo. Quem passar disso espera alguns minutos e tenta de novo.
+
 ## Veja também
 
 <CardGrid>

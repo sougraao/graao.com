@@ -68,6 +68,9 @@ export function settleCharge(state, charge, workspace) {
     execute(state, { type: 'save', key: 'orders', id: order.id, data: { id: order.id, status: 'Paid', note: order.note, tracking: order.tracking } }, { workspace });
   } else {
     execute(state, { type: 'save', key: 'invoices', id: invoice.id, data: { title: invoice.title, contactId: invoice.contactId, value: invoice.value, due: invoice.due, status: 'Paid' } }, { workspace });
+    // Pedido online que expirou sem pagamento e foi pago depois: a equipe é avisada (store-model.mjs, orderPaidLate).
+    const expired = state.orders?.find(item => item.invoiceId === invoice.id && item.status === 'Cancelled' && item.expiredAt);
+    if (expired) execute(state, { type: 'store-order-paid-late', id: expired.id }, { workspace });
   }
   return state.invoices.find(item => item.id === invoice.id);
 }

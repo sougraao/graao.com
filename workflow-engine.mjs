@@ -423,7 +423,7 @@ export function createEngine({ add, now, preferencePath = null, makeAffiliate = 
       case 'recurring_invoice_status': return !c.status || c.status === ctx.status;
       case 'document_paid': return !c.templateId || c.templateId === ctx.templateId;
       case 'document_status': return (!c.status || c.status === ctx.status) && (!c.templateId || c.templateId === ctx.templateId);
-      case 'order_submitted': case 'order_paid': case 'order_fulfilled': return !c.storeId || c.storeId === ctx.storeId;
+      case 'order_submitted': case 'order_paid': case 'order_fulfilled': case 'order_paid_late': return !c.storeId || c.storeId === ctx.storeId;
       case 'email_event': return (!c.event || c.event === ctx.event) && (!c.campaignId || c.campaignId === ctx.campaignId);
       case 'product_review': return (!c.storeId || c.storeId === ctx.storeId) && (!c.rating || Number(ctx.rating) <= Number(c.rating));
       case 'abandoned_checkout': return (!c.storeId || c.storeId === ctx.storeId) && (!c.status || c.status === ctx.status);

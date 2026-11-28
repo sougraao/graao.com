@@ -2143,7 +2143,7 @@ export default {
   "Páginas": "Páginas",
   "Páginas e funis publicados": "Páginas e funis publicados",
   "Pago": "Pago",
-  "Pago fecha a fatura e registra a transação. Cancelado devolve o estoque e anula a fatura.": "Pago fecha a fatura e registra a transação. Cancelado devolve o estoque e anula a fatura.",
+  "Pago fecha a fatura e registra a transação. Cancelado devolve o estoque e o cupom e anula a fatura.": "Pago fecha a fatura e registra a transação. Cancelado devolve o estoque e o cupom e anula a fatura.",
   "Paid": "Pago",
   "Paid ads": "Anúncios pagos",
   "Paid invoices": "Faturas pagas",
