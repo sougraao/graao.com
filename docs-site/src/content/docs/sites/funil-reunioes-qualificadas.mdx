@@ -77,6 +77,8 @@ Com o Pixel da Meta, o GA4 ou o Tag Manager ligados em **Marketing → Rastreame
 
 Cada evento conta uma vez por envio, mesmo se a pessoa recarregar a página.
 
+<Aside type="caution">Por segurança, o contêiner do Tag Manager não carrega nas páginas públicas do graao (funil, formulário, agenda, loja, oferta e link de pagamento). Um contêiner pode rodar qualquer código, e essas páginas ficam no mesmo endereço do painel. O GA4 e o Pixel da Meta continuam contando os eventos da tabela.</Aside>
+
 ## Campanhas na Meta
 
 Os públicos do método são criados no Gerenciador de Anúncios: quem viu 95% dos vídeos, quem visitou as páginas, quem se cadastrou (evento Lead) e quem agendou (evento Schedule). Na campanha de público frio, use semelhantes e exclua quem já conhece você; na de remarketing, anuncie para esses públicos. Para incluir ou tirar contatos de um público pela lista do graao, use a ação "Público personalizado da Meta" em um fluxo.
@@ -94,6 +96,9 @@ O funil precisa estar publicado e a página precisa existir. Para a agenda, a p�
 
 **Posso usar o formulário e a agenda no meu próprio site?**
 Sim. O código do formulário está em **Integrar**. Para a agenda, use um iframe com o endereço da página de agendamento e `?embed=1` no fim.
+
+**Configurei o Tag Manager e as tags não disparam nas páginas do graao. Por quê?**
+O contêiner do Tag Manager ficou desligado nas páginas públicas do graao por segurança. Ligue o GA4 ou o Pixel da Meta em **Marketing → Rastreamento** para medir essas páginas. No seu próprio site o Tag Manager funciona normalmente.
 
 **Carregar o template de novo apaga o que editei?**
 Não. No modo que mantém o que já existe, as páginas editadas continuam como estão.

@@ -44,7 +44,9 @@ export function originAllowed(t, origin) {
 }
 
 // ---- Pixels on the Graao public pages -------------------------------------------------------------
-export const hasPixels = t => Boolean(t?.ga4 || t?.gtm || t?.metaPixel);
+// Segurança: o Tag Manager roda o que o dono do contêiner quiser (tags de HTML personalizado), e as páginas públicas
+// ficam na mesma origem do app. Por isso o servidor só o liga com GO_PUBLIC_GTM=1 ({ gtm: false } nos outros casos).
+export const hasPixels = (t, { gtm = true } = {}) => Boolean(t?.ga4 || (gtm && t?.gtm) || t?.metaPixel);
 const vendors = {
   script: ['https://www.googletagmanager.com', 'https://connect.facebook.net'],
   connect: ['https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://www.googletagmanager.com', 'https://www.facebook.com', 'https://connect.facebook.net'],
@@ -55,7 +57,7 @@ const vendors = {
  * The page's CSP with the pixel vendors allowed. pixels.js comes from this site ('self') and loads the
  * vendors' scripts; nothing inline is added. Tag Manager tags that inject inline code stay blocked.
  */
-export function widenCsp(csp) {
+export function widenCsp(csp, { gtm = true } = {}) {
   const parts = new Map(String(csp || '').split(';').map(p => p.trim()).filter(Boolean).map(p => { const [name, ...rest] = p.split(/\s+/); return [name, rest]; }));
   const add = (name, values) => {
     const cur = (parts.get(name) || []).filter(v => v !== "'none'");
@@ -64,7 +66,7 @@ export function widenCsp(csp) {
   add('script-src', ["'self'", ...vendors.script]);
   add('connect-src', ["'self'", ...vendors.connect]);
   if (!(parts.get('img-src') || []).includes('https:')) add('img-src', vendors.img);
-  add('frame-src', vendors.frame);
+  if (gtm) add('frame-src', vendors.frame);
   return [...parts].map(([name, values]) => [name, ...values].join(' ')).join('; ');
 }
 /** The pixels loader tag, before </head> (or at the start of a fragment). */
@@ -79,9 +81,9 @@ export function injectPixels(html, workspace) {
  * counts and a reload never counts twice. Other public forms keep sending Lead on submit. Inside a frame of the same
  * site the page view was already counted by the page around it.
  */
-export function pixelsScript(t) {
-  if (!hasPixels(t)) return '/* Nenhum pixel configurado. */';
-  const cfg = JSON.stringify({ ga4: t.ga4 || '', gtm: t.gtm || '', meta: t.metaPixel || '' });
+export function pixelsScript(t, { gtm = true } = {}) {
+  if (!hasPixels(t, { gtm })) return '/* Nenhum pixel configurado. */';
+  const cfg = JSON.stringify({ ga4: t.ga4 || '', gtm: (gtm && t.gtm) || '', meta: t.metaPixel || '' });
   return `(function(){var c=${cfg},w=window,d=document,inner=false;try{inner=w.parent!==w&&w.parent.location.origin===location.origin;}catch(e){}
 function load(src){var s=d.createElement('script');s.async=true;s.src=src;d.head.appendChild(s);}
 w.dataLayer=w.dataLayer||[];
