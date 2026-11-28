@@ -295,14 +295,25 @@ export function createSupabaseAuth({ projectUrl, publishableKey, request = fetch
       }).href;
     },
     /** No graao.com: guarda para qual domínio de agência o código vai e segue para o Google. Só aceita o Supabase. */
-    relayStart(req,res,host,to) {
+    relayStart(req,res,host,to,callbackOrigin) {
       let target;
       try { target = new URL(to); } catch { target = null; }
-      if (!RELAY_HOST.test(String(host || '')) || !target || target.origin !== base.origin || target.pathname !== '/auth/v1/authorize') {
+      const challenge = target?.searchParams.get('code_challenge') || '';
+      const hint = target?.searchParams.get('login_hint') || '';
+      if (!RELAY_HOST.test(String(host || '')) || !target || target.origin !== base.origin || target.pathname !== '/auth/v1/authorize'
+          || !/^[a-zA-Z0-9_-]{43}$/.test(challenge) || hint.length > 254 || /[\r\n]/.test(hint) || !/^https:\/\/[^/]+$/.test(String(callbackOrigin || ''))) {
         throw failure('Este endereço de entrada não é válido.',400);
       }
       writeCookie(req,res,RELAY,host,600);
-      return target.href;
+      // O endereço do Supabase é montado aqui, igual ao de google(): de quem fez o link só vem o desafio PKCE (e o e-mail
+      // sugerido). Assim a volta é sempre para o graao.com e nenhum outro parâmetro vem de fora.
+      return endpoint('authorize', {
+        provider: 'google',
+        redirect_to: `${callbackOrigin}/api/auth/callback/google`,
+        code_challenge: challenge,
+        code_challenge_method: 's256',
+        ...(hint ? { login_hint: hint } : { prompt: 'select_account' })
+      }).href;
     },
     /** Na volta do Google ao graao.com: o domínio da agência que espera o código, uma vez só; '' sem repasse. */
     relayTarget(req,res) {
