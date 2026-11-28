@@ -38,6 +38,7 @@ import { createInboxRoutes } from './routes/inbox.mjs';
 import { createWhatsappRoutes, createWhatsappWebhookRoutes } from './routes/whatsapp.mjs';
 import { createAskRoutes } from './routes/ask.mjs';
 import { createVerifyRoutes } from './routes/verify.mjs';
+import { createInviteRoutes } from './routes/invite.mjs';
 import { createBrandAIRoutes, createContentAIRoutes, createConversationAIRoutes } from './routes/content-ai.mjs';
 import { createSeoRoutes } from './routes/seo.mjs';
 import { createAbacatePayRoutes, createAbacatePayWorkspaceRoutes, createWalletRoutes } from './routes/payments.mjs';
@@ -674,7 +675,7 @@ export function makeServer({
     domainAgencies.set(host, { agency, expiresAt: Date.now() + 60000 });
     return agency;
   }
-  async function accessContext(req,session,{ gate = true } = {}) {
+  async function accessContext(req,session,{ gate = true, own = false } = {}) {
     if (!session && !localAccess) throw error('O login do Supabase ainda não foi configurado.',503);
     const agencyId = !session || session.id === agencyOwnerId ? AGENCY_ID : `agency-${session.id}`;
     let agency;
@@ -684,7 +685,8 @@ export function makeServer({
       const email = session.email.toLowerCase();
       // White Label: no domínio de uma agência só entra quem ela liberou; ninguém vira cliente novo do graao por ali.
       const domain = await domainAgency(req);
-      let invite = await store.findAgency({ users: [{ email, loginEnabled: true }] });
+      // own: a pessoa convidada escolheu criar a própria agência (POST /api/invite/decline).
+      let invite = own ? null : await store.findAgency({ users: [{ email, loginEnabled: true }] });
       if (domain && invite && invite.id !== domain.id) {
         const state = await store.load(domain.id);
         invite = hydrateAgency(state, domain.id).users.some(user => user.loginEnabled && user.email === email) ? { id: domain.id, state } : null;
@@ -694,7 +696,15 @@ export function makeServer({
       }
       if (invite) {
         agency = hydrateAgency(invite.state, invite.id);
-        const member = agency.users.find(user => user.loginEnabled && user.email === email);
+        let member = agency.users.find(user => user.loginEnabled && user.email === email);
+        // Convite novo (auditoria, item 9): no graao.com a pessoa escolhe antes de entrar. No domínio da agência ela
+        // foi lá de propósito, então entra e o convite fica aceito. Membros de antes da mudança não têm a marca.
+        if (member.invitePending) {
+          if (!domain) throw Object.assign(error(`${agency.company?.name || 'Uma agência'} convidou você para a equipe dela.`, 409), { code: 'INVITE_PENDING', agency: agency.company?.name || '' });
+          await changeAgency(invite.id, current => { const row = current.users.find(user => user.id === member.id); if (row) delete row.invitePending; });
+          agency = hydrateAgency(await store.load(invite.id), invite.id);
+          member = agency.users.find(user => user.id === member.id);
+        }
         const who = { ...userAccess(agency,member.id), agencyId: invite.id, userId: member.id, session, owner: member.role === 'Agency Owner' };
         if (gate && verifyOn && !agencyAccess(agency.billing, new Date()).canUse) agency = hydrateAgency((await store.load(invite.id)), invite.id);
         if (gate) requireAgencyOpen(agency, true);
@@ -1168,9 +1178,13 @@ export function makeServer({
         requireAgencyCommand(currentActor, input, agency);
         if (sharedSnapshot) requireSetupModules(currentActor, Object.keys(sharedSnapshot.assets || {}));
         ensureAccounts(agency, workspaces);
+        const priorEmail = input.type === 'save' && input.key === 'users' && input.id ? agency.users.find(user => user.id === input.id)?.email : undefined;
         const result = executeAgency(agency, input, { accountIds: workspaces.map(w => w.id), actor: who.name, sharedSnapshot, emailDomain });
         if (who.session && input.type === 'save' && input.key === 'users') {
-          agency.users.find(user => user.id === result).loginEnabled = true;
+          const row = agency.users.find(user => user.id === result);
+          row.loginEnabled = true;
+          // Convite novo ou para outro e-mail: a pessoa aceita no primeiro login (accessContext). Editar não pergunta de novo.
+          if (row.email !== priorEmail) row.invitePending = true;
         }
         return result;
       });
@@ -2423,6 +2437,7 @@ if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); wind
   const webinarRoute = createWebinarRoutes({ store, ready, error, workspaceSegment, change, payload, publicAccountPolicy, publicBase, publicPreview });
   const qrRoute = createQrRoutes({ store, ready, workspaceSegment, change, publicAccountPolicy, publicBase });
   const reputationRoute = createReputationRoutes({ store, ready, error, workspaceSegment, allowSign, change, clientPortal, flushLater, moveVideoToR2, payload, publicAccountPolicy, publicBase, sendVideo });
+  const inviteRoute = createInviteRoutes({ store, accessContext, verifiedUser, changeAgency, error });
   const verifyRoute = createVerifyRoutes({ store, accessContext, verifiedUser, changeAgency, loadFresh, whatsapp, phoneVerify, payload, error, publicBase });
   const askRoute = createAskRoutes({ accessContext, verifiedUser, handleAsk, listWorkspaces, ensureAccounts, agencyWorkspaceViews, publicAgency, abacate });
   const brandAIRoute = createBrandAIRoutes({ store, error, spaceId, privateSpace, workspaceAccess, payload, brandFetch, brandResolve, localAccess, contentAI, openAI, meteredAI, content });
@@ -2545,6 +2560,8 @@ if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); wind
       if (emailRouteHandled !== NEXT_ROUTE) return emailRouteHandled;
       const abacatePayWorkspaceRouteHandled = await abacatePayWorkspaceRoute({ req, res, p, method, id, json });
       if (abacatePayWorkspaceRouteHandled !== NEXT_ROUTE) return abacatePayWorkspaceRouteHandled;
+      const inviteRouteHandled = await inviteRoute({ req, res, p, method, json });
+      if (inviteRouteHandled !== NEXT_ROUTE) return inviteRouteHandled;
       const verifyRouteHandled = await verifyRoute({ req, res, p, method, json });
       if (verifyRouteHandled !== NEXT_ROUTE) return verifyRouteHandled;
       const whatsappWebhookHandled = await whatsappWebhookRoute({ req, p, method, url, json });
@@ -2644,7 +2661,8 @@ if (window.opener) { window.opener.postMessage(m, ${JSON.stringify(base)}); wind
         error: e.status ? e.message : 'The workspace could not complete this request.',
         ...(e.code === 'ACCOUNT_SUSPENDED' && { code: e.code, account: e.account }), ...(['FISCAL_REQUIRED', 'ACCOUNT_CHANGED', 'ACCOUNT_SIGNED_OUT'].includes(e.code) && { code: e.code }),
         ...(['PHONE_REQUIRED', 'AGENCY_BLOCKED', 'AGENCY_NOT_ACTIVE'].includes(e.code) && { code: e.code, billing: e.billing }),
-        ...(['PHONE_TAKEN', 'VERIFY_OFF', 'ALREADY_VERIFIED', 'SIGNUP_CLOSED', 'NOT_INVITED'].includes(e.code) && { code: e.code })
+        ...(['PHONE_TAKEN', 'VERIFY_OFF', 'ALREADY_VERIFIED', 'SIGNUP_CLOSED', 'NOT_INVITED'].includes(e.code) && { code: e.code }),
+        ...(e.code === 'INVITE_PENDING' && { code: e.code, agency: e.agency })
       }, e.status || 500);
     }
   });

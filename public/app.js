@@ -179,7 +179,7 @@ const accounts = installAccounts({ session: () => c.access?.session || agencyUI?
 // Agência sem celular confirmado, convidado de agência não ativada, agência bloqueada ou cadastro fechado: a tela de verify.js cobre o app.
 let gateOpen=null;
 function showGate(data){
-  gateOpen ??= import('./verify.js').then(({ mountGate }) => mountGate(document.body, { code: data.code, error: data.error, api, onDone: () => location.reload() }))
+  gateOpen ??= import('./verify.js').then(({ mountGate }) => mountGate(document.body, { code: data.code, error: data.error, agency: data.agency, api, onDone: () => location.reload() }))
     .catch(error => { gateOpen = null; throw error; });
 }
 async function api(path,body){
@@ -191,7 +191,7 @@ async function api(path,body){
     location.replace('/login?' + new URLSearchParams({ next }));
   }
   if (!response.ok) {
-    if ((response.status === 402 && ['PHONE_REQUIRED', 'AGENCY_NOT_ACTIVE', 'AGENCY_BLOCKED'].includes(data.code)) || ['SIGNUP_CLOSED', 'NOT_INVITED'].includes(data.code)) showGate(data);
+    if ((response.status === 402 && ['PHONE_REQUIRED', 'AGENCY_NOT_ACTIVE', 'AGENCY_BLOCKED'].includes(data.code)) || ['SIGNUP_CLOSED', 'NOT_INVITED', 'INVITE_PENDING'].includes(data.code)) showGate(data);
     if (data.code === 'ACCOUNT_SUSPENDED' && c.mode !== 'agency' && !path.startsWith('/api/state?') &&
         new URL(path, location.origin).searchParams.get('workspace') === c.workspace) {
       await load();
