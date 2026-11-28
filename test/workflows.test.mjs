@@ -269,8 +269,28 @@ test('Social engagement automation: comment trigger with keyword executes Instag
     ]
   });
   const c = contact(s, { name: 'Lucas Silva', tags: [] });
-  execute(s, { type: 'social-interaction-trigger', data: { kind: 'comment', network: 'instagram', comment: 'Eu QUERO saber mais!', contactId: c } });
+  // O comentário chega como o webhook da Meta manda (routes/meta.mjs): conta, comentário e quem comentou.
+  execute(s, { type: 'social-interaction-trigger', data: { kind: 'comment', network: 'instagram', body: 'Eu QUERO saber mais!', comment: 'Eu QUERO saber mais!',
+    senderId: '17841400000000001', accountId: '17841400000000002', commentId: '17900000000000003', contactId: c } });
   assert.equal(runsOf(s, id).length, 1, 'social comment with keyword enrolls contact');
   assert.ok(s.messages.some(m => m.channel === 'Instagram' && m.body.includes('https://graao.app/oferta')), 'sent DM');
-  assert.ok(s.messages.some(m => m.channel === 'Instagram' && m.body.includes('[Resposta ao comentário]')), 'replied to comment');
+  const reply = s.messages.find(m => m.channel === 'Instagram' && m.publicComment);
+  assert.equal(reply?.body, 'Enviamos o link no seu Direct!', 'replied to comment');
+  assert.equal(reply.commentId, '17900000000000003');
+  assert.ok(s.workflowOutbox.some(item => item.kind === 'meta-comment-reply' && item.commentId === '17900000000000003' && item.accountId === '17841400000000002' && item.messageId === reply.id),
+    'the public reply waits in the outbox to be sent to Meta');
+});
+
+test('Social engagement automation: replying to a comment needs a comment received from Meta', () => {
+  const s = blank('W');
+  const id = flow(s, {
+    triggers: [{ type: 'social_comment_received', config: { network: 'instagram' } }],
+    steps: [{ type: 'reply_social_comment', config: { body: 'Obrigado!' } }]
+  });
+  const c = contact(s, { name: 'Lucas Silva', tags: [] });
+  execute(s, { type: 'social-interaction-trigger', data: { kind: 'comment', network: 'instagram', comment: 'Adorei', contactId: c } });
+  const [run] = runsOf(s, id);
+  assert.equal(run.trace.at(-1).result, 'erro: esta ação exige um comentário recebido pela Meta');
+  assert.ok(!s.messages.some(m => m.publicComment || m.body.includes('Obrigado!')), 'nothing is answered without the Meta comment');
+  assert.ok(!(s.workflowOutbox || []).some(item => item.kind === 'meta-comment-reply'));
 });
